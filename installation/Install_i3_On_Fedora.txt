@@ -1,0 +1,39 @@
+# This note is to record my i3 installation on fedora 32
+# 2020.11.07
+
+# Main i3
+dnf install i3 xss-lock rofi feh arandr
+dnf install xcompmgr numlocks
+
+# Configuration file
+mkdir ~/.config/i3
+mkdir ~/.config/dunst
+mkdir ~/.config/conky
+dnf install dunst conky
+cp ~/Desktop/Multiplexer_Configs/i3_config ~/.config/i3/
+cp ~/Desktop/Multiplexer_Configs/dunstrc ~/.config/dunst/
+cp ~/Desktop/Multiplexer_Configs/conky.conf ~/.config/conky/
+
+# Applications
+dnf install dolphin ranger google-chrome
+
+# I3 python package
+dnf install xdotool
+pip install i3-resurrect i3-workspace-swap
+pip install bumblebee-status --user
+
+# Monitor light control
+dnf install xbacklight brightnessctl light
+
+# Bluetooth
+dnf install bluez blueman broadcom-bt-firmware.noarch bluez-libs-devel.x86_64 hidapi bluez-tools bluez-hcidump.x86_64
+
+# Sound control
+dnf install alsa-plugins-pulseaudio pavucontrol
+
+# Ibus-chewing
+dnf install ibus ibus-chewing
+# if it shows "No module named 'gi'" when running ibus-setup
+# here's the solution:
+#   (1) dnf install gobject python3-gobject
+#   (2) vim /usr/bin/ibus-setup , change python2 -> python3

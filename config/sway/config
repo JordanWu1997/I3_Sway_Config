@@ -1,0 +1,379 @@
+# ======================================================================================
+# Migrate from i3 to sway
+# ======================================================================================
+# --------------------------------------------------------------------------------------
+# This modified configuration file is highly refered to link below
+# Reference
+#       -
+# Modified by Jordan Wu on 2020/11/22
+# --------------------------------------------------------------------------------------
+
+# ======================================================================================
+# keyboard and Trackpad Setup
+# ======================================================================================
+#
+#
+
+# ======================================================================================
+# All Windows Settings
+# ======================================================================================
+# This is initial setup for all windows and floating windows in i3
+
+# Colour of border, background, text, indicator, and child_border
+# Default theme
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
+
+# For windows role/class, run xprop to check
+# Floating for pop-up
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [title="Preference$"] floating enable
+for_window [title="Pages Unresponsive"] floating enable
+for_window [class="VirtualBox"] floating enable
+for_window [class="Nm-connection-editor"] floating enable
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Org.gnome.DejaDup"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Arandr"] floating enable
+for_window [title="Battery Warning"] sticky enable
+
+# Switch focus to pop-up window
+focus_on_window_activation smart
+
+# Popups during fullscreen mode
+popup_during_fullscreen smart
+
+# Gaps
+gaps inner 10
+gaps outer 10
+smart_gaps on
+
+# Set windows titlebar fontsize
+font pango: DroidSansMono Nerd Font 12
+title_align center
+for_window [class=".*"] title_format "%title"
+for_window [title=".* Copying.*"] title_format "File transfer in progress..."
+for_window [title=".* Moving.*"] title_format "File transfer in progress..."
+
+# Monitor
+output HDMI-A-1 scale 0.9
+output eDP-1 position -1920 0 res 1920x1080
+output HDMI-A-1 position 0 0 res 1920x1080
+## Set wallpaper (From local wallpapers)
+#output * bg /usr/share/backgrounds/default.png fill
+output * bg ~/Pictures/WALLPAPERS/FEDORA/Helix_Fedora.png  fill
+
+# ======================================================================================
+# This is to set all startup programs and their key bindings
+# ======================================================================================
+
+# Setup mod (Prefix)
+# Mod1: alt, Mod4: win
+set $mod Mod4
+set $mod1 Mod1
+
+# Setup terminal
+set $terminal gnome-terminal
+
+# Gap manager
+bindsym $mod+z gaps outer current plus 5
+bindsym $mod+Shift+z gaps outer current minus 5
+bindsym $mod+x gaps inner current plus 5
+bindsym $mod+Shift+x gaps inner current minus 5
+
+# Battery warning [https://github.com/rjekker/i3-battery-popup]
+exec --no-startup-id i3-battery-popup -N -L 40
+exec ibus-daemon --xim --daemonize -r
+
+# Multimedia
+bindsym --locked XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +5%
+bindsym --locked XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') -5%
+bindsym --locked XF86AudioMute exec --no-startup-id pactl set-sink-mute $(pacmd list-sinks |awk '/* index:/{print $3}') toggle
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+bindsym --locked XF86AudioNext exec playerctl next
+bindsym --locked XF86AudioPrev exec playerctl previous
+
+# Brightness controls
+bindsym --locked XF86MonBrightnessUp exec --no-startup-id light -A 10
+bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
+
+# Rofi menu (program launcher, window manager)
+# Configure Rofi in $HOME/.config/rofi/.config
+bindsym $mod+d exec --no-startup-id rofi -show drun -terminal $terminal # -theme $rofi_theme
+bindsym $mod+Shift+d exec --no-startup-id rofi -show run -terminal $terminal # -theme $rofi_theme
+bindsym $mod1+d exec --no-startup-id rofi -show window -terminal $terminal # -theme $rofi_theme
+bindsym $mod1+Shift+d exec --no-startup-id rofi -show windowcd -terminal $terminal # -theme $rofi_theme
+bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal # -theme $rofi_theme
+
+# ======================================================================================
+# All Bindkeys
+# ======================================================================================
+# This is to save all bindkeys of modes and programs
+
+# Start a terminal
+bindsym $mod+Return exec $terminal
+
+# Close (Kill) window
+bindsym $mod+Shift+c kill
+
+# Kill focus window
+bindsym $mod1+F4 kill
+bindsym $mod+Shift+q kill
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split in horizontal orientation
+# Split in vertical orientation
+bindsym $mod+c split toggle
+bindsym $mod+q split toggle
+
+# Toggle fullscreen
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle global
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Focus the parent/child container
+bindsym $mod+a focus parent
+bindsym $mod+Shift+a focus child
+
+# Border toggle
+bindsym $mod+t border toggle
+
+# Marks on titlebar
+show_marks yes
+bindsym $mod+m exec swaymsg mark $(rofi -dmenu -lines 0 -p 'Mark')
+bindsym $mod+g exec swaymsg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
+bindsym $mod+p exec swaymsg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+set $ws11 "11"
+set $ws12 "12"
+set $ws13 "13"
+set $ws14 "14"
+set $ws15 "15"
+set $ws16 "16"
+set $ws17 "17"
+set $ws18 "18"
+set $ws19 "19"
+set $ws20 "20"
+
+# Back and Forth
+workspace_auto_back_and_forth yes
+
+# Switch to near workspace
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+bindsym Ctrl+$mod1+Tab workspace back_and_forth
+
+# Switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+bindsym $mod+F1 workspace number $ws11
+bindsym $mod+F2 workspace number $ws12
+bindsym $mod+F3 workspace number $ws13
+bindsym $mod+F4 workspace number $ws14
+bindsym $mod+F5 workspace number $ws15
+bindsym $mod+F6 workspace number $ws16
+bindsym $mod+F7 workspace number $ws17
+bindsym $mod+F8 workspace number $ws18
+bindsym $mod+F9 workspace number $ws19
+bindsym $mod+F10 workspace number $ws20
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+Shift+F1 move container to workspace number $ws11
+bindsym $mod+Shift+F2 move container to workspace number $ws12
+bindsym $mod+Shift+F3 move container to workspace number $ws13
+bindsym $mod+Shift+F4 move container to workspace number $ws14
+bindsym $mod+Shift+F5 move container to workspace number $ws15
+bindsym $mod+Shift+F6 move container to workspace number $ws16
+bindsym $mod+Shift+F7 move container to workspace number $ws17
+bindsym $mod+Shift+F8 move container to workspace number $ws18
+bindsym $mod+Shift+F9 move container to workspace number $ws19
+bindsym $mod+Shift+F10 move container to workspace number $ws20
+
+## Reload the configuration file
+## Exit sway
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+e exec swaynag -t warning -f 'pango:DroidSansMono Nerd Font 10' \
+                           -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' \
+                           -b 'Yes, exit sway' 'swaymsg exit'
+
+# swaylock
+bindsym Ctrl+$mod1+l mode "swaylock: Return to lock/Escape to Cancel"
+
+mode "swaylock: Return to lock/Escape to Cancel" {
+    bindsym Return mode "default" exec swaylock -t -f -i /usr/share/backgrounds/default.png
+    bindsym Escape mode "default"
+}
+
+# Resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+
+mode "resize" {
+    # These bindings trigger as soon as you enter the resize mode
+    bindsym h resize shrink width 1 px or 1 ppt
+    bindsym j resize grow height 1 px or 1 ppt
+    bindsym k resize shrink height 1 px or 1 ppt
+    bindsym l resize grow width 1 px or 1 ppt
+    # same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+    # back to low: Enter or Escape or $mod+r
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym r mode "default"
+    bindsym $mod+r mode "default"
+}
+
+# Power manager (Keyboard)
+set $mode_system select: lock(L) exit(E) reboot(R) poweroff(O) cancel(Esc)
+bindsym $mod+Shift+Escape mode "$mode_system"
+
+mode "$mode_system" {
+    bindsym l exec --no-startup-id swaylock -t -f -i /usr/share/backgrounds/default.png, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym o exec --no-startup-id systemctl poweroff, mode "default"
+    bindsym e exec --no-startup-id swaymsg exit, mode "default"
+    bindsym Escape mode "default"
+}
+
+# Power manager (Mouse)
+bindsym $mod+Escape exec swaynag -t warning -f "pango:DroidSansMono Nerd Font 10" \
+                       -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
+                       -B Reboot "systemctl reboot" -B Poweroff "systemctl poweroff" -B Exit "swaymsg exit" \
+                       -B Lock "swaylock -t -f -i /usr/share/backgrounds/default.png"
+
+# Interactive screenshot by pressing printscreen
+bindsym --release Print gnome-screenshot -i
+bindsym mod4+Print gnome-screenshot
+bindsym mod4+Shift+Print gnome-screenshot -a
+
+## Scratchpad:
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+# Enter exec command in i3
+# Rename workspace, focus window title
+bindsym $mod+Shift+i exec swaymsg $(rofi -dmenu -lines 0 -p 'Swaymsg command')
+bindsym $mod+Shift+w exec swaymsg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
+bindsym $mod+Shift+t exec swaymsg title_format $(rofi -dmenu -lines 0 -p 'New title name')
+
+# Toggle floating
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Focus follow
+focus_follows_mouse yes
+mouse_warping output
+
+# The middle button over a titlebar kills the window
+# The middle button and a modifer over any part of the window kills the window
+bindsym --release button2 kill
+bindsym --whole-window $mod+button2 kill
+
+# The right button toggles floating
+bindsym --release button3 floating toggle
+bindsym --border $mod+button3 floating toggle
+bindsym --whole-window $mod+Shift+button3 floating toggle
+
+# ======================================================================================
+# All i3 Bar Settings
+# ======================================================================================
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+# --------------------------------------------------------------------------------------
+# Setting - i3bar (With Top/Bottom Bars and Workspace Icons)
+# --------------------------------------------------------------------------------------
+bar {
+    # Basic
+    id bar
+    position top
+    binding_mode_indicator yes
+    # Font
+    font pango: DroidSansMono Nerd Font 12
+    # Workspace
+    #swaybar_command waybar
+    workspace_buttons Yes
+    # Tray icon
+    tray_output primary
+    tray_padding 0
+    # Bumblebee-status
+    status_command $HOME/.local/bin/bumblebee-status \
+    -m title network_traffic sensors cpu memory \
+    pasink pasource brightness \
+    time date \
+    caffeine battery dunst \
+    -p home.path=/home time.format="%H:%M" \
+    date.format="%a, %b/%d/%Y CW%V" memory.format='{percent:03.01f}%' \
+    disk.format='{percent:05.02f}%' \
+    pasink.percent_change=1 pasource.percent_change=1 \
+    brightness.step=1 \
+    -t iceberg-contrast
+}
+bindsym $mod+b bar mode toggle bar

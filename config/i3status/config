@@ -1,0 +1,86 @@
+general {
+        output_format = "i3bar"
+        markup = pango
+        colors = true
+        color_good = "#98971a"
+        color_bad = "#cc241d"
+        color_degraded = "#fabd2f"
+        interval = 2
+}
+
+order += "cpu_temperature 0"
+order += "cpu_usage"
+order += "memory"
+order += "disk /home"
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "volume master"
+order += "tztime local"
+order += "battery all"
+
+
+cpu_temperature 0 {
+        format = "<span background='#B8860B'> Temp %degrees °C </span>"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input"
+        max_threshold = 60
+        /*format_above_threshold = */
+}
+
+cpu_usage {
+        format = "<span background='#B8860B'> CPU %usage </span>"
+        max_threshold = 75
+        degraded_threshold = 25
+        /*format_above_threshold =*/
+        /*format_above_degraded_threshold =  */
+}
+
+memory {
+        format = "<span background='#B8860B'> MEM %percentage_used </span>"
+        threshold_degraded = "10%"
+        format_degraded = "MEMORY: %free"
+}
+
+disk "/home" {
+        format = "<span background='#556B2F'> HOME %percentage_used </span>"
+}
+
+disk "/" {
+        format = "<span background='#556B2F'> ROOT %percentage_used </span>"
+}
+
+wireless _first_ {
+        format_up = "<span background='#556B2F'> WIFI (%quality at %essid, %bitrate) %ip </span>"
+        format_down = "<span background='#556B2F'> WIFI Down </span>"
+}
+
+ethernet _first_ {
+        format_up = "<span background='#556B2F'> ETH (%speed) %ip </span>"
+        format_down = "<span background='#556B2F'> ETH Down </span>"
+}
+
+battery all {
+        format = "<span background='#CD5C5C'> BAT %status %percentage %remaining </span>"
+        format_down = ""
+        status_chr = "CHR"
+        status_bat = "BAT"
+        status_unk = "UNK"
+        status_full = "FULL"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 30
+        hide_seconds = false
+        integer_battery_capacity = true
+
+}
+
+tztime local {
+		format = "<span background='#CD5C5C'> %time </span>"
+		format_time = "%a %-d %b %H:%M"
+}
+
+volume master {
+        format = "<span background='#CD5C5C'> Vol %volume </span>"
+        format_muted = "<span background='#CD5C5C'> Vol Muted </span>"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}

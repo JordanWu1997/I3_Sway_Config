@@ -1,0 +1,42 @@
+# Install from python
+bumblebee-status
+i3-resurrect
+i3-workspace-swap
+i3-workspace-names-daemon
+
+# Install from repository
+arandr
+NetworkManager
+blueman
+numlockx
+ibus
+ibus-chewing
+gnome-power-manager
+parcellite
+variety
+dunst
+conky
+xcompmgr
+xbacklight
+rofi
+feh
+htop
+neofetch
+dolphin
+chromium-browser
+libreoffice
+mendeleydesktop
+okular
+vlc
+virtualbaox
+ranger
+spotify
+
+# Common in GNOME
+gnome-terminal
+gnome-screenshot
+nautilus
+
+# Complie from Github
+vis
+screenkey

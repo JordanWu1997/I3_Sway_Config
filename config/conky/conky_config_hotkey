@@ -1,0 +1,76 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+--[[
+Conky, a system monitor, based on torsmo
+Any original torsmo code is licensed under the BSD license
+All code written since the fork of torsmo is licensed under the GPL
+Please see COPYING for details
+Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+Copyright (c) 2005-2012 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+All rights reserved.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+conky.config = {
+	alignment = 'bottom_left',
+	background = false,
+	use_xft = true,
+	font = 'DroidSanMono Nerd Font:size=14',
+	color2 = '#2e9ef4',
+	default_color = '#FFFFFF',
+    default_outline_color = '#FFFFFF',
+    default_shade_color = '#000000',
+    draw_shades = true,
+    draw_borders = false,
+    draw_graph_borders = false,
+    draw_outline = false,
+	gap_x = 25,
+	gap_y = 25,
+	minimum_width = 200,
+	double_buffer = true,
+	no_buffers = true,
+	own_window = true,
+	own_window_type = 'override',
+	own_window_transparent = true,
+	wn_window_argb_visual = true,
+	own_window_argb_value = 255,
+}
+conky.text = [[
+${color2}default mod - ${color}<Super>
+${color2}system - ${color}mod+Shift+Esc
+${color2}toggle i3bar - ${color}mod+b
+${color2}lock i3 - ${color}Ctrl+Alt+l
+${color2}exit i3 - ${color}mod+Shift+e
+${color2}restart i3 - ${color}mod+Shift+r
+${color2}i3 command - ${color}mod+Shift+i
+${color2}dmenu (rofi) - ${color}mod+d
+${color2}window (rofi) - ${color}mod+Shift+d
+${color2}open new terminal - ${color}mod+Enter
+${color2}kill focused - ${color}mod+Shift+q / Alt+F4
+${color2}toggle split direction - ${color}mod+q
+${color2}switch to window tab mode - ${color}mod+w
+${color2}switch to window stack mode - ${color}mod+s
+${color2}switch to window tiling mode - ${color}mod+e
+${color2}switch to workspace 1-9 - ${color}mod+1-9
+${color2}send to workspace 1-9 - ${color}mod+Shift+1-9
+${color2}navigate in containers - ${color}mod+arrowkeys
+${color2}swap containers - ${color}mod+Shift+arrowkeys
+${color2}switch container resize mode - ${color}mod+r
+${color2}toggle floating - ${color}mod+Shift+Space
+${color2}toggle floating focus - ${color}mod+Space
+${color2}toggle fullscreen - ${color}mod+f
+${color2}focus parent container - ${color}mod+a
+${color2}focus children container - ${color}mod+Shift+a
+${color2}mark container - ${color}mod+m
+${color2}goto container - ${color}mod+g
+${color2}swap container - ${color}mod+p
+${color2}move to scratchpad - ${color}mod+-
+${color2}move to foreground - ${color}mod+=
+]]

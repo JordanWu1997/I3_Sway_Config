@@ -57,6 +57,15 @@
 # --------------------------------------------------------------------------------------
 
 # ======================================================================================
+# All Mod Key Settings
+# ======================================================================================
+# Setup mod (Prefix)
+#
+# Mod1: alt, Mod4: win
+set $mod Mod4
+set $mod1 Mod1
+
+# ======================================================================================
 # All Windows Settings
 # ======================================================================================
 # This is initial setup for all windows and floating windows in i3
@@ -104,8 +113,6 @@ popup_during_fullscreen smart
 # You can also use any non-zero value
 # if you'd like to have a border (or 'normal')
 # Windows frame width pixel (or 'normal')
-#for_window [class="^.*"] border normal
-#new_window normal
 for_window [class="^.*"] border pixel 5
 new_window pixel 5
 new_float normal
@@ -123,12 +130,31 @@ for_window [title=".* Copying.*"] title_format "File transfer in progress..."
 for_window [title=".* Moving.*"] title_format "File transfer in progress..."
 
 # ======================================================================================
-# This is to set all startup programs and their key bindings
+# All Wallpapers
+# ======================================================================================
+# Set wallpaper (From local wallpapers)
+# [Important]: Wallpaper directory (Add below lines in .profile)
+#              Please change to where you store wallpaper directory
+# --------------------------------------------------------------
+#export $wallpaper /home/jordankhwu/Pictures/WALLPAPERS
+#export wallpaper1=$wallpaper/i3WM
+#export wallpaper2=$wallpaper/FEDORA
+#export wallpaper3=$wallpaper/ALMA
+#export wallpaper4=$wallpaper/CATS
+# --------------------------------------------------------------
 
-# Setup mod (Prefix)
-# Mod1: alt, Mod4: win
-set $mod Mod4
-set $mod1 Mod1
+# Startup wallpaper
+exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
+
+# Mannually assign wallpaper
+bindsym $mod+y exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
+bindsym $mod+Shift+y exec feh --bg-fill $(find  $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
+bindsym $mod+u exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
+bindsym $mod+Shift+u exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper Respectively (ALMA)"
+
+# ======================================================================================
+# This is to set all startup programs and their key bindings
+# ======================================================================================
 
 # Setup terminal
 #set $terminal gnome-terminal
@@ -138,7 +164,7 @@ set $terminal kitty
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- Setting for my dorm Acer27'
-#exec_always --no-startup-id xrandr --output HDMI-1 --mode 1920x1080 --primary --right-of eDP-1
+exec_always --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec_always --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 # NetworkManager is the most popular way to manage wireless networks on Linux,
@@ -206,13 +232,6 @@ bindsym $mod+Shift+d exec --no-startup-id rofi -show run -terminal $terminal # -
 bindsym $mod1+d exec --no-startup-id rofi -show window -terminal $terminal # -theme $rofi_theme
 bindsym $mod1+Shift+d exec --no-startup-id rofi -show windowcd -terminal $terminal # -theme $rofi_theme
 bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal # -theme $rofi_theme
-#
-# Set wallpaper (From local wallpapers)
-#bindsym $mod+y exec feh --bg-fill $(find  $HOME/.config/i3/wallpapers/ -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper"
-#bindsym $mod+Shift+y exec feh --randomize --bg-fill $HOME/.config/i3/wallpapers/ && notify-send -u low "Shuffle Wallpaper Respectively"
-exec --no-startup-id feh --bg-fill $HOME/Pictures/WALLPAPERS/FEDORA/Shining_Fedora.png
-bindsym $mod+y exec feh --bg-fill $(find  $HOME/Pictures/WALLPAPERS/FEDORA/ -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
-bindsym $mod+Shift+y exec feh --bg-fill $(find  $HOME/.config/i3/wallpapers/ -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -220,7 +239,7 @@ bindsym $mod+Shift+y exec feh --bg-fill $(find  $HOME/.config/i3/wallpapers/ -na
 # screen before suspend. Use loginctl lock-session to lock your screen.
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $HOME/.config/i3/wallpapers/ -name "*.png" | shuf -n1) --nofork
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $HOME/Pictures/WALLPAPERS/FEDORA/ -name "*.png" | shuf -n1) --nofork
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/Gray_Fedora.png --nofork
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
 
 # ======================================================================================
 # All Bindkeys
@@ -281,8 +300,8 @@ bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+v split horizontal exec notify-send -u low "Split Horizontally On"
 bindsym $mod+Shift+v split vertical exec notify-send -u low "Split Horizontally Off"
-bindsym $mod1+v split horizontal exec notify-send -u low "Split Horizontally"
-bindsym $mod1+h split vertical exec notify-send -u low "Split Vertically"
+#bindsym $mod1+v split horizontal exec notify-send -u low "Split Horizontally"
+#bindsym $mod1+h split vertical exec notify-send -u low "Split Vertically"
 
 # Toggle fullscreen
 bindsym $mod+f fullscreen toggle
@@ -303,11 +322,16 @@ bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle split
 
-# Change border
-bindsym $mod+u border none
-bindsym $mod+Shift+u border pixel 10
-bindsym $mod1+n border normal
-bindsym $mod1+Shift+n border pixel 5
+# Change border width [single window]
+bindsym $mod1+n border none
+bindsym $mod1+Shift+n border normal
+bindsym $mod1+m border pixel 5
+bindsym $mod1+o border pixel 1
+bindsym $mod1+Shift+o border pixel 10
+
+# Change border width [all windows]
+bindsym $mod+Shift+b border toggle
+bindsym $mod1+Shift+b border toggle
 bindsym $mod+n [class="^.*"] border normal; exec notify-send -u low "Restore All Title-bars"
 bindsym $mod+Shift+n [class="^.*"] border pixel 5; exec notify-send -u low "Remove All Title-bars"
 
@@ -421,14 +445,11 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -f 'pango:DroidSansMono Nerd Fon
                            -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' \
                            -B 'Yes, exit i3' 'i3-msg exit'"
 
-# i3lock
-bindsym Ctrl+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
-
-mode "i3lock: Return to lock/Escape to Cancel" {
-    #bindsym Return mode "default" exec i3lock -t -f -i $(find  $HOME/.config/i3/wallpapers/ -name "*.png" | shuf -n1)
-    bindsym Return mode "default" exec i3lock -t -f -i /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/Gray_Fedora.png
-    bindsym Escape mode "default"
-}
+# Resize window with hotkey
+bindsym $mod1+h resize shrink width 5 px or 5 ppt
+bindsym $mod1+j resize grow height 5 px or 5 ppt
+bindsym $mod1+k resize shrink height 5 px or 5 ppt
+bindsym $mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
@@ -455,13 +476,19 @@ mode "resize" {
     bindsym $mod+r mode "default"
 }
 
+#bindsym $mod+Shift+u exec feh --randomize --bg-fill $wallpaper3 && notify-send -u low "Shuffle Wallpaper Respectively (ALMA)"
+# i3lock
+bindsym Ctrl+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
+mode "i3lock: Return to lock/Escape to Cancel" {
+    bindsym Return mode "default" exec i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1)
+    bindsym Escape mode "default"
+}
+
 # Power manager (Keyboard)
 set $mode_system select: lock(L) exit(E) reboot(R) poweroff(O) cancel(Esc)
 bindsym $mod+Shift+Escape mode "$mode_system"
-
 mode "$mode_system" {
-    #bindsym l exec --no-startup-id i3lock -t -f -i $(find  $HOME/.config/i3/wallpapers/ -name "*.png" | shuf -n1), mode "default"
-    bindsym l exec --no-startup-id i3lock -t -f -i /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/Gray_Fedora.png, mode "default"
+    bindsym l exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym o exec --no-startup-id systemctl poweroff, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -472,8 +499,7 @@ mode "$mode_system" {
 bindsym $mod+Escape exec i3-nagbar -t warning -f "pango:DroidSansMono Nerd Font 10" \
                        -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
                        -B Reboot "systemctl reboot" -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
-                       -B Lock "i3lock -t -f -i /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/Tilted_Fedora.png"
-                       #-B Lock "i3lock -t -f -i $(find  $HOME/.config/i3/wallpapers/ -name '*.png' | shuf -n1)"
+                       -B Lock "i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)"
 
 # Interactive screenshot by pressing printscreen
 bindsym --release Print exec notify-send -u low "Interactive Screenshot" && gnome-screenshot -i
@@ -523,7 +549,7 @@ bindsym --border button8 move right
 
 ## Press $mod+o followed by [key], otherwise, Escape or Return to launch
 #set $mode_launcher Launch: [a]randr [b]luetooth [c]hromium [d]olphin [e]qualizer [g]oogle-chrome [h]top [l]ibreoffice [m]endeley [n]autilus [o]kular [p]layer [r]anger [s]potify [v]irtualbox [w]eb-browser
-#bindsym $mod+o mode "$mode_launcher"
+#bindsym $mod1+a mode "$mode_launcher"
 
 ## Key "f", "z" can't well function
 #mode "$mode_launcher" {
@@ -631,9 +657,3 @@ bar {
 }
 # Status bar toggle, hide or show
 bindsym $mod+b bar mode toggle
-
-# --------------------------------------------------------------------------------------
-# Setting 3 polybar
-# --------------------------------------------------------------------------------------
-#https://github.com/AriosJentu/i3-polybar-config
-#exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh suspend

@@ -308,6 +308,12 @@ mode "swaylock: Return to lock/Escape to Cancel" {
     bindsym Escape mode "default"
 }
 
+# Resize window with hotkey
+bindsym $mod1+h resize shrink width 5 px or 5 ppt
+bindsym $mod1+j resize grow height 5 px or 5 ppt
+bindsym $mod1+k resize shrink height 5 px or 5 ppt
+bindsym $mod1+l resize grow width 5 px or 5 ppt
+
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 
@@ -355,6 +361,7 @@ bindsym mod4+Shift+Print gnome-screenshot -a
 ## Scratchpad:
 bindsym $mod+minus move scratchpad
 bindsym $mod+Shift+minus scratchpad show
+bindsym $mod+equal [floating] move scratchpad
 
 # Enter exec command in i3
 # Rename workspace, focus window title

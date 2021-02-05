@@ -11,7 +11,7 @@
 # ======================================================================================
 # keyboard and Trackpad Setup
 # ======================================================================================
-# Command to check current output/input devices
+# In terminal, use below commands to check current output/input devices
 # swaymsg -t get_outputs
 # swaymsg -t get_inputs
 
@@ -32,7 +32,7 @@ input "type:touchpad" {
 # This is initial setup for all windows and floating windows in i3
 
 # Enable Xwayland support
-#xwayland enable
+xwayland enable
 
 # Colour of border, background, text, indicator, and child_border
 # Default theme
@@ -86,15 +86,14 @@ for_window [class=".*"] title_format "%title"
 for_window [title=".* Copying.*"] title_format "File transfer in progress..."
 for_window [title=".* Moving.*"] title_format "File transfer in progress..."
 
-# Monitor
+# Monitor [Need to comment for rofi display on laptop monitor]
 output eDP-1  scale 1.0
 output HDMI-A-1 scale 1.0
 #output eDP-1 position -1920 0 res 1920x1080
 #output HDMI-A-1 position 0 0 res 1920x1080
-## Set wallpaper (From local wallpapers)
-#output * bg /usr/share/backgrounds/default.png fill
-#output * bg  $(find  $HOME/Pictures/WALLPAPERS/FEDORA/ -name "*.jpg" | shuf -n1) fill
-output * bg  $(find  /home/jordankhwu/Pictures/VARIETY_SAVED/ -name "*.jpg" | shuf -n1) fill
+
+# Set wallpaper (From local wallpapers)
+output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
 # ======================================================================================
 # This is to set all startup programs and their key bindings
@@ -140,11 +139,11 @@ bindsym --locked XF86MonBrightnessDown exec --no-startup-id light -U 10
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d exec --no-startup-id rofi -show drun -terminal $terminal # -theme $rofi_theme
-bindsym $mod+Shift+d exec --no-startup-id rofi -show run -terminal $terminal # -theme $rofi_theme
-bindsym $mod1+d exec --no-startup-id rofi -show window -terminal $terminal # -theme $rofi_theme
-bindsym $mod1+Shift+d exec --no-startup-id rofi -show windowcd -terminal $terminal # -theme $rofi_theme
-bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal # -theme $rofi_theme
+bindsym $mod+d exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d exec --no-startup-id rofi -show run -terminal $terminal
+bindsym $mod1+d exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod1+Shift+d exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
 
 # ======================================================================================
 # All Bindkeys
@@ -288,10 +287,10 @@ bindsym $mod+Shift+F8 move container to workspace number $ws18
 bindsym $mod+Shift+F9 move container to workspace number $ws19
 bindsym $mod+Shift+F10 move container to workspace number $ws20
 
-# Assign wallpaper
-bindsym $mod+y output * bg  $(find  /home/jordankhwu/Pictures/VARIETY_SAVED/ -name "*.jpg" | shuf -n1) fill
-bindsym $mod+u output * bg  $(find  /home/jordankhwu/Pictures/WALLPAPERS/CATS/ "*.jpg" | shuf -n1) fill
-bindsym $mod+i output * bg  $(find  /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/ "*.png" | shuf -n1) fill
+# Assign wallpaper mannually
+#bindsym $mod+y output * bg  $(find  /home/jordankhwu/Pictures/VARIETY_SAVED/ -name "*.jpg" | shuf -n1) fill
+#bindsym $mod+u output * bg  $(find  /home/jordankhwu/Pictures/WALLPAPERS/CATS/ "*.jpg" | shuf -n1) fill
+#bindsym $mod+i output * bg  $(find  /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/ "*.png" | shuf -n1) fill
 
 # Reload the configuration file
 bindsym $mod+Shift+r reload
@@ -302,14 +301,13 @@ bindsym $mod+Shift+e exec swaynag -t warning -f 'pango:DroidSansMono Nerd Font 1
 
 # Swaylock
 bindsym Ctrl+$mod1+l mode "swaylock: Return to lock/Escape to Cancel"
-
 mode "swaylock: Return to lock/Escape to Cancel" {
-    bindsym Return exec swaylock -t -f -i /usr/share/backgrounds/default.png, mode default
+    bindsym Return exec swaylock -t -f -i /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png, mode default
     bindsym Escape mode "default"
 }
 
 # Resize window with hotkey
-bindsym $mod1+h resize shrink width 5 px or 5 ppt
+bindsym $mod1+h resize shrink width 5 px or 1 ppt
 bindsym $mod1+j resize grow height 5 px or 5 ppt
 bindsym $mod1+k resize shrink height 5 px or 5 ppt
 bindsym $mod1+l resize grow width 5 px or 5 ppt
@@ -338,9 +336,8 @@ mode "resize" {
 # Power manager (Keyboard)
 set $mode_system select: lock(L) exit(E) reboot(R) poweroff(O) cancel(Esc)
 bindsym $mod+Shift+Escape mode "$mode_system"
-
 mode "$mode_system" {
-    bindsym l exec --no-startup-id swaylock -t -f -i /usr/share/backgrounds/default.png, mode "default"
+    bindsym l exec --no-startup-id swaylock -t -f -i /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym o exec --no-startup-id systemctl poweroff, mode "default"
     bindsym e exec --no-startup-id swaymsg exit, mode "default"
@@ -351,12 +348,13 @@ mode "$mode_system" {
 bindsym $mod+Escape exec swaynag -t warning -f "pango:DroidSansMono Nerd Font 10" \
                        -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
                        -B Reboot "systemctl reboot" -B Poweroff "systemctl poweroff" -B Exit "swaymsg exit" \
-                       -B Lock "swaylock -t -f -i /usr/share/backgrounds/default.png"
+                       -B Lock "swaylock -t -f -i /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png"
 
-# Interactive screenshot by pressing printscreen
-bindsym --release Print gnome-screenshot -i
-bindsym mod4+Print gnome-screenshot
-bindsym mod4+Shift+Print gnome-screenshot -a
+# Interactive screenshot by pressing printscreen [Not working for now]
+# grim, slurp must be pre-installed
+bindsym --release Print exec --no-startup-id sway_grim.sh
+bindsym mod4+Print grim
+bindsym mod4+Shift+Print exec --no-startup-id sway_grim.sh
 
 ## Scratchpad:
 bindsym $mod+minus move scratchpad

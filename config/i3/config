@@ -178,28 +178,29 @@ exec_always --no-startup-id blueman-applet
 # Default numlock on (sudo dnf install numlockx)
 exec_always --no-startup-id numlockx on
 # Gnome authentication
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
+exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
 # Ibus input method
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id ibus-daemon --xim -d -r
+exec_always --no-startup-id export GTK_IM_MODULE=ibus
+exec_always --no-startup-id ibus-daemon --xim -d -r
 # Gnome power-manager
-exec --no-startup-id gnome-power-manager
+exec_always--no-startup-id gnome-power-manager
 # Parcellite (clipboard)
-exec --no-startup-id parcellite
-# Variety (wallpaper manager)
-#exec --no-startup-id variety
-# Set transparent terminal
-exec --no-startup-id xcompmgr -c -f -n
+exec_always --no-startup-id parcellite
+# Transparency support
+exec_always --no-startup-id xcompmgr -c -f -n
 # Dunst (notification)
-exec --no-startup-id dunst
+exec_always --no-startup-id dunst
+# Battery warning [https://github.com/rjekker/i3-battery-popup]
+exec_always --no-startup-id i3-battery-popup -N -L 40
+# Automark windows [https://github.com/lincheney/i3-automark]
+exec_always --no-startup-id i3-automark.py
 # Conky
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
-# Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id i3-battery-popup -N -L 40
-# Automark windows [https://github.com/lincheney/i3-automark]
-exec --no-startup-id i3-automark.py
+# Variety (wallpaper manager)
+#exec --no-startup-id variety
 
+# Set transparent terminal
 # Use pactl to adjust volume in PulseAudio.
 # Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
 set $refresh_i3status 'killall -SIGUSR1 i3status'
@@ -249,6 +250,7 @@ exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find
 gaps inner 10
 gaps outer 10
 #smart_gaps on
+#smart_gaps inverse_outer
 
 # Gap manager
 bindsym $mod+z gaps outer current plus 5
@@ -259,6 +261,130 @@ bindsym $mod1+z gaps inner current set 0 exec notify-send -u low "Disable inner 
 bindsym $mod1+x gaps outer current set 0 exec notify-send -u low "Disable outer gaps (Current)"
 bindsym $mod1+Shift+z gaps inner all set 10 exec notify-send -u low "Enable inner gaps (All)"
 bindsym $mod1+Shift+x gaps outer all set 10 exec notify-send -u low "Enable outer gaps (All)"
+
+# i3-gap [modify in mode]
+# https://github.com/Airblader/i3/wiki/Example-Configuration
+
+set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_verti Vertical Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_top Top Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_right Right Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_bottom Bottom Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_left Left Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym h      mode "$mode_gaps_horiz"
+        bindsym v      mode "$mode_gaps_verti"
+        bindsym t      mode "$mode_gaps_top"
+        bindsym r      mode "$mode_gaps_right"
+        bindsym b      mode "$mode_gaps_bottom"
+        bindsym l      mode "$mode_gaps_left"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_horiz" {
+        bindsym plus  gaps horizontal current plus 5
+        bindsym minus gaps horizontal current minus 5
+        bindsym 0     gaps horizontal current set 0
+
+        bindsym Shift+plus  gaps horizontal all plus 5
+        bindsym Shift+minus gaps horizontal all minus 5
+        bindsym Shift+0     gaps horizontal all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_verti" {
+        bindsym plus  gaps vertical current plus 5
+        bindsym minus gaps vertical current minus 5
+        bindsym 0     gaps vertical current set 0
+
+        bindsym Shift+plus  gaps vertical all plus 5
+        bindsym Shift+minus gaps vertical all minus 5
+        bindsym Shift+0     gaps vertical all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_top" {
+        bindsym plus  gaps top current plus 5
+        bindsym minus gaps top current minus 5
+        bindsym 0     gaps top current set 0
+
+        bindsym Shift+plus  gaps top all plus 5
+        bindsym Shift+minus gaps top all minus 5
+        bindsym Shift+0     gaps top all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_right" {
+        bindsym plus  gaps right current plus 5
+        bindsym minus gaps right current minus 5
+        bindsym 0     gaps right current set 0
+
+        bindsym Shift+plus  gaps right all plus 5
+        bindsym Shift+minus gaps right all minus 5
+        bindsym Shift+0     gaps right all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_bottom" {
+        bindsym plus  gaps bottom current plus 5
+        bindsym minus gaps bottom current minus 5
+        bindsym 0     gaps bottom current set 0
+
+        bindsym Shift+plus  gaps bottom all plus 5
+        bindsym Shift+minus gaps bottom all minus 5
+        bindsym Shift+0     gaps bottom all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_left" {
+        bindsym plus  gaps left current plus 5
+        bindsym minus gaps left current minus 5
+        bindsym 0     gaps left current set 0
+
+        bindsym Shift+plus  gaps left all plus 5
+        bindsym Shift+minus gaps left all minus 5
+        bindsym Shift+0     gaps left all set 0
+
+        bindsym Return mode "$mode_gaps"
+        bindsym Escape mode "default"
+}
 
 # ======================================================================================
 # All Bindkeys
@@ -454,6 +580,13 @@ bindsym $mod+Shift+F10 move container to workspace number $ws20
 # https://pypi.org/project/i3-workspace-swap/
 # pip install i3-workspace-swap
 
+# Automatic rename workspace with icons
+# i3-workspace-names-daemon
+# - https://github.com/cboddy/i3-workspace-names-daemon
+# Font awesome icons
+# - https://origin.fontawesome.com/icons?d=gallery
+#exec_always --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json
+
 # Reload the configuration file
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # Exit i3 (logs you out of your X session)
@@ -569,17 +702,18 @@ bindsym --border button8 move right
 # finds out, if available)
 
 # --------------------------------------------------------------------------------------
-# Setting 1 i3bar (With Top Bar and Workspace number)
+# Setting i3bar
 # --------------------------------------------------------------------------------------
 # All monitor
 bar {
-    # Hide Bar
+    # Basic bar
     #mode hide
     #hidden_state hide
-    # Basic
     id bar
     position top
     binding_mode_indicator yes
+    # Height in pixels [Only for i3-gap]
+    height 25
     # Font
     font pango: DroidSansMono Nerd Font 12
     # Workspace
@@ -587,7 +721,8 @@ bar {
     workspace_min_width 20
     # Tray icon
     tray_output primary
-    tray_padding 0
+    tray_padding 2
+
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
@@ -604,44 +739,5 @@ bar {
 # Status bar toggle, hide or show
 bindsym $mod+b bar mode toggle
 
-# --------------------------------------------------------------------------------------
-# Setting 2 i3bar (With Top/Bottom Bars and Workspace Icons)
-# --------------------------------------------------------------------------------------
-## All monitor
-#bar {
-    #id top-bar
-    #font pango:Inconsolata 11
-    #position top
-    #tray_output primary
-    #workspace_buttons yes
-
-    #status_command $HOME/.local/bin/bumblebee-status \
-    #-m dunst caffeine pasink pasource brightness battery \
-    #-t iceberg-contrast
-#}
-## Primary monitor
-#bar {
-    #id bottom-bar
-    #font pango:Inconsolata 11
-    #position bottom
-    #workspace_buttons no
-    #tray_output no
-    #output primary
-    #binding_mode_indicator no
-
-    #status_command $HOME/.local/bin/bumblebee-status \
-    #-m title network_traffic cpu memory date time dnf \
-    #-p home.path=/home time.format="%H:%M" \
-    #date.format="%a, %b/%d/%Y CW%V" memory.format='{percent:03.01f}%' \
-    #disk.format='{percent:05.02f}%' \
-    #-t iceberg-contrast
-#}
-## Status bar toggle, hide or show
-#bindsym $mod+b bar mode toggle bottom-bar
-#bindsym $mod+Shift+b bar mode toggle top-bar
-## Automatic rename workspace with icons
-## i3-workspace-names-daemon
-## - https://github.com/cboddy/i3-workspace-names-daemon
-## font awesome icons
-## - https://origin.fontawesome.com/icons?d=gallery
-#exec_always --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json
+# Polybar [Not used for now]
+#exec_always --no-startup-id $HOME/.config/polybar/launch.sh

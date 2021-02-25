@@ -75,13 +75,13 @@ ${alignr}${color2}CPU2: ${alignr}${color}${cpu cpu2}% ${alignr}${exec awk '/cpu 
 ${alignr}${color2}CPU3: ${alignr}${color}${cpu cpu3}% ${alignr}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${cpubar cpu3 8,60}
 ${alignr}${color2}CPU4: ${alignr}${color}${cpu cpu4}% ${alignr}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${cpubar cpu4 8,60}
 ${color}Processes ${hr 2}${color}
-${alignr}${color2}Processes						${alignr}${color}MEM		${alignr}CPU
-${alignr}${color2}${top name 1} ${alignr}${color}${top mem 1} ${alignr}${top cpu 1}
-${alignr}${color2}${top name 2} ${alignr}${color}${top mem 2} ${alignr}${top cpu 2}
-${alignr}${color2}${top name 3} ${alignr}${color}${top mem 3} ${alignr}${top cpu 3}
-${alignr}${color2}${top name 4} ${alignr}${color}${top mem 4} ${alignr}${top cpu 4}
-${alignr}${color2}${top name 5} ${alignr}${color}${top mem 5} ${alignr}${top cpu 5}
-${alignr}${color2}${top name 6} ${alignr}${color}${top mem 6} ${alignr}${top cpu 6}
+${alignr}${color2}Processes						${alignr}${color}CPU		${alignr}MEM
+${alignr}${color2}${top name 1} ${alignr}${color}${top cpu 1} ${alignr}${top mem 1}
+${alignr}${color2}${top name 2} ${alignr}${color}${top cpu 2} ${alignr}${top mem 2}
+${alignr}${color2}${top name 3} ${alignr}${color}${top cpu 3} ${alignr}${top mem 3}
+${alignr}${color2}${top name 4} ${alignr}${color}${top cpu 4} ${alignr}${top mem 4}
+${alignr}${color2}${top name 5} ${alignr}${color}${top cpu 5} ${alignr}${top mem 5}
+${alignr}${color2}${top name 6} ${alignr}${color}${top cpu 6} ${alignr}${top mem 6}
 ${color}Running ${hr 2}${color}
 ${alignr}${color2}Processes: ${color}${processes}
 ${alignr}${color2}Running: ${color}${running_processes}

@@ -13,9 +13,7 @@
 #
 # --------------------------------------------------------------------------------------
 # Edited by Jordan Wu on 2020/11/22
-# --------------------------------------------------------------------------------------
-# This modified configuration file is highly refered to link below
-# Reference
+# -------------------------------------------------------------------------------------- # This modified configuration file is highly refered to link below # Reference
 #    - https://i3wm.org/docs/userguide.html
 #    - https://github.com/levinit/i3wm-config
 #    - https://www.itread01.com/p/142448.html
@@ -65,7 +63,7 @@
 # Setup mod (Prefix)
 #
 # Mod1: alt, Mod4: win
-set $mod Mod4
+set $mod  Mod4
 set $mod1 Mod1
 
 # ======================================================================================
@@ -138,22 +136,26 @@ for_window [title=".* Moving.*"] title_format "File transfer in progress..."
 # Set wallpaper (From local wallpapers)
 # [Important]: Wallpaper directory (Add below lines in .profile)
 #              Please change to where you store wallpaper directory
-# --------------------------------------------------------------
-#export $wallpaper /home/jordankhwu/Pictures/WALLPAPERS
-#export wallpaper1=$wallpaper/i3WM
-#export wallpaper2=$wallpaper/FEDORA
-#export wallpaper3=$wallpaper/ALMA
-#export wallpaper4=$wallpaper/CATS
-# --------------------------------------------------------------
+# --------------------------------------------------------------------------------------
+#export wallpaperv="/home/jordankhwu/Pictures/VARIETY_SAVED"
+#export wallpaperd="/home/jordankhwu/Pictures/WALLPAPERS"
+#export wallpaper1="$wallpaperd/i3WM"
+#export wallpaper2="$wallpaperd/FEDORA"
+#export wallpaper3="$wallpaperd/ALMA"
+#export wallpaper4="$wallpaperd/CATS"
+# --------------------------------------------------------------------------------------
 
 # Startup wallpaper
+#exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
 # Mannually assign wallpaper
-bindsym $mod+y exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
-bindsym $mod+Shift+y exec feh --bg-fill $(find  $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
-bindsym $mod+u exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
-bindsym $mod+Shift+u exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper Respectively (ALMA)"
+bindsym $mod+y       exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
+bindsym $mod+Shift+y exec feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
+bindsym $mod+u       exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
+bindsym $mod+Shift+u exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
+# Mannually assign wallpaper (from saved variety wallpaper)
+bindsym $mod+i       exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
 
 # ======================================================================================
 # This is to set all startup programs and their key bindings
@@ -170,6 +172,7 @@ set $terminal kitty
 #exec_always --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec_always --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
 exec_always --no-startup-id nm-applet
@@ -198,7 +201,7 @@ exec_always --no-startup-id i3-automark.py
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 # Variety (wallpaper manager)
-#exec --no-startup-id variety
+#exec_always --no-startup-id variety
 
 # Set transparent terminal
 # Use pactl to adjust volume in PulseAudio.
@@ -206,33 +209,33 @@ exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 set $refresh_i3status 'killall -SIGUSR1 i3status'
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Media player controls
-bindsym XF86AudioPlay exec playerctl play
+bindsym XF86AudioPlay  exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioNext  exec playerctl next
+bindsym XF86AudioPrev  exec playerctl previous
 
 # Keyboard backlight control [Not working now]
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
 bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod1+f exec --no-startup-id i3-dmenu-desktop
+bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d exec --no-startup-id rofi -show run -terminal $terminal
-bindsym $mod1+d exec --no-startup-id rofi -show window -terminal $terminal
-bindsym $mod1+Shift+d exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
+bindsym $mod1+d         exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod1+Shift+d   exec --no-startup-id rofi -show windowcd -terminal $terminal
 bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -253,12 +256,12 @@ gaps outer 10
 #smart_gaps inverse_outer
 
 # Gap manager
-bindsym $mod+z gaps outer current plus 5
-bindsym $mod+Shift+z gaps outer current minus 5
-bindsym $mod+x gaps inner current plus 5
-bindsym $mod+Shift+x gaps inner current minus 5
-bindsym $mod1+z gaps inner current set 0 exec notify-send -u low "Disable inner gaps (Current)"
-bindsym $mod1+x gaps outer current set 0 exec notify-send -u low "Disable outer gaps (Current)"
+bindsym $mod+z        gaps inner current plus 5
+bindsym $mod+Shift+z  gaps inner current minus 5
+bindsym $mod+x        gaps outer current plus 5
+bindsym $mod+Shift+x  gaps outer current minus 5
+bindsym $mod1+z       gaps inner current set 0 exec notify-send -u low "Disable inner gaps (Current)"
+bindsym $mod1+x       gaps outer current set 0 exec notify-send -u low "Disable outer gaps (Current)"
 bindsym $mod1+Shift+z gaps inner all set 10 exec notify-send -u low "Enable inner gaps (All)"
 bindsym $mod1+Shift+x gaps outer all set 10 exec notify-send -u low "Enable outer gaps (All)"
 
@@ -396,22 +399,24 @@ mode "$mode_gaps_left" {
 bindsym $mod+Return exec $terminal
 
 # Close (Kill) window
-bindsym $mod+Shift+c kill
+#bindsym $mod+Shift+c kill
 
 # Kill focus window
-bindsym $mod1+F4 kill
+bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
 
 # Kill focus window with confirmation
 set $close "Close the window? (q/y/n)"
 bindsym $mod1+Shift+q mode $close
+bindsym $mod+shift+c  mode $close
 mode $close {
-    bindsym y kill; mode default
-    bindsym q kill; mode default
+    bindsym y             kill; mode default
+    bindsym q             kill; mode default
     bindsym $mod1+Shift+q kill; mode default
-    bindsym Return kill; mode default
-    bindsym n mode default
-    bindsym Escape mode default
+    bindsym $mod+Shift+c  kill; mode default
+    bindsym Return        kill; mode default
+    bindsym n             mode default
+    bindsym Escape        mode default
 }
 
 # Change focus
@@ -421,9 +426,9 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # Alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
 bindsym $mod+Right focus right
 
 # Move focused window
@@ -433,33 +438,33 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # Alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
 bindsym $mod+Shift+Right move right
 
 # Split in horizontal orientation
 # Split in vertical orientation
-bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
-bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
-bindsym $mod+v split horizontal exec notify-send -u low "Split Horizontally On"
+bindsym $mod+c       split toggle exec notify-send -u low "Toggled Split Direction"
+bindsym $mod+q       split toggle exec notify-send -u low "Toggled Split Direction"
+bindsym $mod+v       split horizontal exec notify-send -u low "Split Horizontally On"
 bindsym $mod+Shift+v split vertical exec notify-send -u low "Split Horizontally Off"
-#bindsym $mod1+v split horizontal exec notify-send -u low "Split Horizontally"
-#bindsym $mod1+h split vertical exec notify-send -u low "Split Vertically"
+#bindsym $mod1+v     split horizontal exec notify-send -u low "Split Horizontally"
+#bindsym $mod1+h     split vertical exec notify-send -u low "Split Vertically"
 
 # Toggle fullscreen
-bindsym $mod+f fullscreen toggle
+bindsym $mod+f       fullscreen toggle
 bindsym $mod+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
-bindsym $mod+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod+Shift+space  floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod1+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+space focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod1+space focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+t floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod1+t floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+Shift+s sticky toggle exec notify-send -u low "Toggle Sticky [For Floating]"
+bindsym $mod+space        focus mode_toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod1+space       focus mode_toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod+t            floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod1+t           floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod+Shift+s      sticky toggle exec notify-send -u low "Toggle Sticky [For Floating]"
 
 # Change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
@@ -467,20 +472,20 @@ bindsym $mod+w layout tabbed exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle split
 
 # Change border width [single window]
-bindsym $mod1+n border none
+bindsym $mod1+n       border none
 bindsym $mod1+Shift+n border normal
-bindsym $mod1+o border pixel 1
-bindsym $mod1+i border pixel 5
+bindsym $mod1+o       border pixel 1
+bindsym $mod1+i       border pixel 5
 bindsym $mod1+Shift+o border pixel 10
 
 # Change border width [all windows]
-bindsym $mod+Shift+b border toggle
+bindsym $mod+Shift+b  border toggle
 bindsym $mod1+Shift+b border toggle
-bindsym $mod+n [class="^.*"] border normal; exec notify-send -u low "Restore All Title-bars"
-bindsym $mod+Shift+n [class="^.*"] border pixel 5; exec notify-send -u low "Remove All Title-bars"
+bindsym $mod+n        [class="^.*"] border normal; exec notify-send -u low "Restore All Title-bars"
+bindsym $mod+Shift+n  [class="^.*"] border pixel 5; exec notify-send -u low "Remove All Title-bars"
 
 # Focus the parent/child container
-bindsym $mod+a focus parent
+bindsym $mod+a       focus parent
 bindsym $mod+Shift+a focus child
 
 # Marks on titlebar
@@ -524,52 +529,52 @@ set $ws20 "20"
 workspace_auto_back_and_forth no
 
 # Switch to near workspace
-bindsym $mod+Tab workspace next
+bindsym $mod+Tab       workspace next
 bindsym $mod+Shift+Tab workspace prev
 bindsym Ctrl+$mod1+Tab workspace back_and_forth
 
 # Switch to workspace
-bindsym $mod+1 workspace number $ws1
-bindsym $mod+2 workspace number $ws2
-bindsym $mod+3 workspace number $ws3
-bindsym $mod+4 workspace number $ws4
-bindsym $mod+5 workspace number $ws5
-bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
-bindsym $mod+F1 workspace number $ws11
-bindsym $mod+F2 workspace number $ws12
-bindsym $mod+F3 workspace number $ws13
-bindsym $mod+F4 workspace number $ws14
-bindsym $mod+F5 workspace number $ws15
-bindsym $mod+F6 workspace number $ws16
-bindsym $mod+F7 workspace number $ws17
-bindsym $mod+F8 workspace number $ws18
-bindsym $mod+F9 workspace number $ws19
+bindsym $mod+1   workspace number $ws1
+bindsym $mod+2   workspace number $ws2
+bindsym $mod+3   workspace number $ws3
+bindsym $mod+4   workspace number $ws4
+bindsym $mod+5   workspace number $ws5
+bindsym $mod+6   workspace number $ws6
+bindsym $mod+7   workspace number $ws7
+bindsym $mod+8   workspace number $ws8
+bindsym $mod+9   workspace number $ws9
+bindsym $mod+0   workspace number $ws10
+bindsym $mod+F1  workspace number $ws11
+bindsym $mod+F2  workspace number $ws12
+bindsym $mod+F3  workspace number $ws13
+bindsym $mod+F4  workspace number $ws14
+bindsym $mod+F5  workspace number $ws15
+bindsym $mod+F6  workspace number $ws16
+bindsym $mod+F7  workspace number $ws17
+bindsym $mod+F8  workspace number $ws18
+bindsym $mod+F9  workspace number $ws19
 bindsym $mod+F10 workspace number $ws20
 
 # Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number $ws1
-bindsym $mod+Shift+2 move container to workspace number $ws2
-bindsym $mod+Shift+3 move container to workspace number $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
-bindsym $mod+Shift+F1 move container to workspace number $ws11
-bindsym $mod+Shift+F2 move container to workspace number $ws12
-bindsym $mod+Shift+F3 move container to workspace number $ws13
-bindsym $mod+Shift+F4 move container to workspace number $ws14
-bindsym $mod+Shift+F5 move container to workspace number $ws15
-bindsym $mod+Shift+F6 move container to workspace number $ws16
-bindsym $mod+Shift+F7 move container to workspace number $ws17
-bindsym $mod+Shift+F8 move container to workspace number $ws18
-bindsym $mod+Shift+F9 move container to workspace number $ws19
+bindsym $mod+Shift+1   move container to workspace number $ws1
+bindsym $mod+Shift+2   move container to workspace number $ws2
+bindsym $mod+Shift+3   move container to workspace number $ws3
+bindsym $mod+Shift+4   move container to workspace number $ws4
+bindsym $mod+Shift+5   move container to workspace number $ws5
+bindsym $mod+Shift+6   move container to workspace number $ws6
+bindsym $mod+Shift+7   move container to workspace number $ws7
+bindsym $mod+Shift+8   move container to workspace number $ws8
+bindsym $mod+Shift+9   move container to workspace number $ws9
+bindsym $mod+Shift+0   move container to workspace number $ws10
+bindsym $mod+Shift+F1  move container to workspace number $ws11
+bindsym $mod+Shift+F2  move container to workspace number $ws12
+bindsym $mod+Shift+F3  move container to workspace number $ws13
+bindsym $mod+Shift+F4  move container to workspace number $ws14
+bindsym $mod+Shift+F5  move container to workspace number $ws15
+bindsym $mod+Shift+F6  move container to workspace number $ws16
+bindsym $mod+Shift+F7  move container to workspace number $ws17
+bindsym $mod+Shift+F8  move container to workspace number $ws18
+bindsym $mod+Shift+F9  move container to workspace number $ws19
 bindsym $mod+Shift+F10 move container to workspace number $ws20
 
 # Save workspace layout (Must be modified in dot rc file)
@@ -590,9 +595,9 @@ bindsym $mod+Shift+F10 move container to workspace number $ws20
 # Reload the configuration file
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 # Exit i3 (logs you out of your X session)
-#bindsym $mod+Shift+z reload
-bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -f 'pango:DroidSansMono Nerd Font 10' \
+bindsym $mod1+r       reload
+bindsym $mod1+Shift+r restart
+bindsym $mod+Shift+e  exec "i3-nagbar -t warning -f 'pango:DroidSansMono Nerd Font 10' \
                            -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' \
                            -B 'Yes, exit i3' 'i3-msg exit'"
 
@@ -614,22 +619,45 @@ mode "resize" {
     bindsym j resize grow height 1 px or 1 ppt
     bindsym k resize shrink height 1 px or 1 ppt
     bindsym l resize grow width 1 px or 1 ppt
+
     # same bindings, but for the arrow keys
-    bindsym Left resize shrink width 10 px or 10 ppt
-    bindsym Down resize grow height 10 px or 10 ppt
-    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Left  resize shrink width 10 px or 10 ppt
+    bindsym Down  resize grow height 10 px or 10 ppt
+    bindsym Up    resize shrink height 10 px or 10 ppt
     bindsym Right resize grow width 10 px or 10 ppt
+
     # back to low: Enter or Escape or $mod+r
     bindsym Return mode "default"
     bindsym Escape mode "default"
-    bindsym r mode "default"
+    bindsym r      mode "default"
     bindsym $mod+r mode "default"
 }
+
+# Redshift mode
+# - https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
+bindsym $mod+Shift+r mode "$mode_redshift"
+set $mode_redshift Set colour temperature: (a)uto, (r)eset, (1)500K, (2)500K, (3)000K, (4)000K, (5)000K, (6)000K
+set $kill_redshift pkill -9 redshift;
+mode "$mode_redshift" {
+    bindsym a      exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
+    bindsym r      exec --no-startup-id "$kill_redshift redshift -x", mode "default"
+    bindsym 1      exec --no-startup-id "$kill_redshift redshift -P -O 1500", mode "default"
+    bindsym 2      exec --no-startup-id "$kill_redshift redshift -P -O 2500", mode "default"
+    bindsym 3      exec --no-startup-id "$kill_redshift redshift -P -O 3000", mode "default"
+    bindsym 4      exec --no-startup-id "$kill_redshift redshift -P -O 4000", mode "default"
+    bindsym 5      exec --no-startup-id "$kill_redshift redshift -P -O 5000", mode "default"
+    bindsym 6      exec --no-startup-id "$kill_redshift redshift -P -O 6000", mode "default"
+
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 
 # i3lock
 bindsym Ctrl+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    bindsym Return mode "default" exec i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1)
+    bindsym Return mode "default" exec i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)
     bindsym Escape mode "default"
 }
 
@@ -637,10 +665,10 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 set $mode_system select: lock(L) exit(E) reboot(R) poweroff(O) cancel(Esc)
 bindsym $mod+Shift+Escape mode "$mode_system"
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym o exec --no-startup-id systemctl poweroff, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym l      exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
+    bindsym r      exec --no-startup-id systemctl reboot, mode "default"
+    bindsym o      exec --no-startup-id systemctl poweroff, mode "default"
+    bindsym e      exec --no-startup-id i3-msg exit, mode "default"
     bindsym Escape mode "default"
 }
 
@@ -651,25 +679,25 @@ bindsym $mod+Escape exec i3-nagbar -t warning -f "pango:DroidSansMono Nerd Font 
                        -B Lock "i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)"
 
 # Interactive screenshot by pressing printscreen
-bindsym --release Print exec notify-send -u low "Interactive Screenshot" && gnome-screenshot -i
-bindsym mod4+Print exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
+bindsym --release Print  exec notify-send -u low "Interactive Screenshot" && gnome-screenshot -i
+bindsym mod4+Print       exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
 bindsym mod4+Shift+Print exec notify-send -u low "Take Selected Area Screenshot" && gnome-screenshot -a
 
 # Scratchpad: hide | show window(minus is "-" and plus is "+".)
-bindsym $mod+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
+bindsym $mod+minus  move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
 bindsym $mod1+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
-bindsym $mod+plus scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
-bindsym $mod1+plus scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
+bindsym $mod+plus   scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
+bindsym $mod1+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
 
 # Move all floating windows to the scratchpad and vice versa
 bindsym $mod+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
-bindsym $mod+Shift+plus [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
+bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
 
 # Enter exec command in i3
 # Rename workspace, focus window title
-bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
-bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
-bindsym $mod+Shift+t exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
+bindsym $mod+Shift+i  exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
+bindsym $mod+Shift+w  exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
+bindsym $mod+Shift+t  exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
 bindsym $mod1+Shift+i exec i3-input -F "%s" -P 'i3 Command: '
 bindsym $mod1+Shift+w exec i3-input -F 'rename workspace to "%s"' -P 'New Workspace Name: '
 bindsym $mod1+Shift+t exec i3-input -F 'title_format "%s"' -P 'New Window Title Name: '
@@ -683,12 +711,12 @@ mouse_warping output
 
 # The middle button over a titlebar kills the window
 # The middle button and a modifer over any part of the window kills the window
-bindsym --release button2 kill
+bindsym --release button2           kill
 bindsym --whole-window $mod+button2 kill
 
 # The right button toggles floating
-bindsym --release button3 floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym --border $mod+button3 floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym --release button3                 floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym --border $mod+button3             floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u low "Toggle Window Floating"
 
 # The side button move the window arround
@@ -713,7 +741,7 @@ bar {
     position top
     binding_mode_indicator yes
     # Height in pixels [Only for i3-gap]
-    height 25
+    #height 25
     # Font
     font pango: DroidSansMono Nerd Font 12
     # Workspace
@@ -721,7 +749,7 @@ bar {
     workspace_min_width 20
     # Tray icon
     tray_output primary
-    tray_padding 2
+    tray_padding 5
 
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \

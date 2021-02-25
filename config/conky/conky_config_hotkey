@@ -41,6 +41,7 @@ conky.config = {
 	own_window_transparent = true,
 	wn_window_argb_visual = true,
 	own_window_argb_value = 255,
+    update_interval = 0.01,
 }
 conky.text = [[
 ${color2}default mod - ${color}<Super>
@@ -48,7 +49,9 @@ ${color2}system - ${color}mod+Shift+Esc
 ${color2}toggle i3bar - ${color}mod+b
 ${color2}lock i3 - ${color}Ctrl+Alt+l
 ${color2}exit i3 - ${color}mod+Shift+e
-${color2}restart i3 - ${color}mod+Shift+r
+${color2}reload i3 - ${color}Alt+r
+${color2}restart i3 - ${color}Alt+Shift+r
+${color2}redshift - ${color}mod+Shift+r
 ${color2}i3 command - ${color}mod+Shift+i
 ${color2}dmenu (rofi) - ${color}mod+d
 ${color2}window (rofi) - ${color}mod+Shift+d
@@ -61,8 +64,10 @@ ${color2}switch to window tiling mode - ${color}mod+e
 ${color2}switch to workspace 1-9 - ${color}mod+1-9
 ${color2}send to workspace 1-9 - ${color}mod+Shift+1-9
 ${color2}navigate in containers - ${color}mod+arrowkeys
+${color2}resize containers - ${color}Alt+arrowkeys
 ${color2}swap containers - ${color}mod+Shift+arrowkeys
-${color2}switch container resize mode - ${color}mod+r
+${color2}container resize mode - ${color}mod+r
+${color2}i3-gap gap resize mode - ${color}mod+Shift+g
 ${color2}toggle floating - ${color}mod+Shift+Space
 ${color2}toggle floating focus - ${color}mod+Space
 ${color2}toggle fullscreen - ${color}mod+f

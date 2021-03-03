@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 conky.config = {
 	alignment = 'bottom_left',
-	background = false,
+	background = true,
 	use_xft = true,
 	font = 'DroidSanMono Nerd Font:size=14',
 	color2 = '#2e9ef4',
@@ -44,38 +44,33 @@ conky.config = {
     update_interval = 0.01,
 }
 conky.text = [[
-${color2}default mod - ${color}<Super>
-${color2}system - ${color}mod+Shift+Esc
-${color2}toggle i3bar - ${color}mod+b
-${color2}lock i3 - ${color}Ctrl+Alt+l
-${color2}exit i3 - ${color}mod+Shift+e
-${color2}reload i3 - ${color}Alt+r
-${color2}restart i3 - ${color}Alt+Shift+r
-${color2}redshift - ${color}mod+Shift+r
-${color2}i3 command - ${color}mod+Shift+i
-${color2}dmenu (rofi) - ${color}mod+d
-${color2}window (rofi) - ${color}mod+Shift+d
-${color2}open new terminal - ${color}mod+Enter
-${color2}kill focused - ${color}mod+Shift+q / Alt+F4
-${color2}toggle split direction - ${color}mod+q
-${color2}switch to window tab mode - ${color}mod+w
-${color2}switch to window stack mode - ${color}mod+s
-${color2}switch to window tiling mode - ${color}mod+e
-${color2}switch to workspace 1-9 - ${color}mod+1-9
-${color2}send to workspace 1-9 - ${color}mod+Shift+1-9
-${color2}navigate in containers - ${color}mod+arrowkeys
-${color2}resize containers - ${color}Alt+arrowkeys
-${color2}swap containers - ${color}mod+Shift+arrowkeys
-${color2}container resize mode - ${color}mod+r
-${color2}i3-gap gap resize mode - ${color}mod+Shift+g
-${color2}toggle floating - ${color}mod+Shift+Space
-${color2}toggle floating focus - ${color}mod+Space
-${color2}toggle fullscreen - ${color}mod+f
-${color2}focus parent container - ${color}mod+a
-${color2}focus children container - ${color}mod+Shift+a
-${color2}mark container - ${color}mod+m
-${color2}goto container - ${color}mod+g
-${color2}swap container - ${color}mod+p
-${color2}move to scratchpad - ${color}mod+-
-${color2}move to foreground - ${color}mod+=
+${color}[System / Function] ${hr 2}
+${color2}modkey (prefix) ${color}[S]uper
+${color2}system ${color}[S]+Shift+Esc
+${color2}exit i3 ${color}[S]+Shift+e
+${color2}restart i3 ${color}[Alt]+Shift+r
+${color2}dmenu (rofi) ${color}[S]+d
+${color2}window (rofi) ${color}[S]+Shift+d
+${color2}open terminal ${color}[S]+Enter
+${color2}redshift ${color}[S]+Shift+r
+${color2}gap resize ${color}[S]+Shift+g
+${color}[Workspace / Container] ${hr 2}
+${color2}navigate to WP ${color}[S]+[num]
+${color2}send focus to WP ${color}[S]+Shift+[num]
+${color2}kill focused ${color}[S]+Shift+q
+${color2}split direction toggle ${color}[S]+q
+${color2}tab mode toggle ${color}[S]+w
+${color2}stack mode toggle ${color}[S]+s
+${color2}tiling mode toggle ${color}[S]+e
+${color2}fullscreen toggle ${color}[S]+f
+${color2}navigate to ${color}[S]+[vim-key]
+${color2}swap to ${color}[S]+Shift+[vim-key]
+${color2}focus parent ${color}[S]+a
+${color2}focus children ${color}[S]+Shift+a
+${color2}resize container ${color}[S]+r
+${color}[Floating / Scratchpad] ${hr 2}
+${color2}floating toggle ${color}[S]+Shift+Space
+${color2}focus toggle ${color}[S}]+Space
+${color2}move to scratchpad ${color}[S]+-
+${color2}move to foreground ${color}[S]+=
 ]]

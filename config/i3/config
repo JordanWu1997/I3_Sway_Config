@@ -122,7 +122,8 @@ hide_edge_borders none
 #hide_edge_borders smart
 
 # Set windows titlebar fontsize
-# As for detailed theme and font setup
+# As for detailed theme and font Setup
+# This is for GTK software appearance
 # sudo dnf install lxappearance
 #font pango:Inconsolata 10
 font pango: DroidSansMono Nerd Font 12
@@ -153,21 +154,37 @@ default_orientation horizontal
 #exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
+# Wallpaper hotkey
 # Mannually assign wallpaper
 bindsym $mod+y       exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
 bindsym $mod+Shift+y exec feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
 bindsym $mod+u       exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
 bindsym $mod+Shift+u exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
-
 # Mannually assign wallpaper (from saved variety wallpaper)
 bindsym $mod+i       exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
 
+# Wallpaper mode
+set $mode_wallpaper Change Wallpaper (1)I3WM (2)Fedora (3)ALMA (4)Cats (V)ariety
+bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
+bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
+mode "$mode_wallpaper" {
+    bindsym 1 exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
+    bindsym 2 exec feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
+    bindsym 3 exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
+    bindsym 4 exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
+    bindsym v exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
+    # Exit
+    bindsym q      mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 # Variety [wallpaper manager]
-bindsym mod1+Right exec --no-startup-id variety -p && notify-send -u low "Next Wallpaper (Variety)"
-bindsym mod1+Left exec --no-startup-id variety -n && notify-send -u low "Previous Wallaper (Variety)"
-bindsym mod1+Up exec --no-startup-id variety --pause && notify-send -u low "Variety Paused"
-bindsym mod1+Down exec --no-startup-id variety --resume && notify-send -u low "Variety Resumed"
-bindsym mod1+f exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
+bindsym mod1+Right  exec --no-startup-id variety -p && notify-send -u low "Next Wallpaper (Variety)"
+bindsym mod1+Left   exec --no-startup-id variety -n && notify-send -u low "Previous Wallaper (Variety)"
+bindsym mod1+Up     exec --no-startup-id variety --pause && notify-send -u low "Variety Paused"
+bindsym mod1+Down   exec --no-startup-id variety --resume && notify-send -u low "Variety Resumed"
+bindsym mod1+Return exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
 
 # ======================================================================================
 # This is to set all startup programs and their key bindings
@@ -184,6 +201,8 @@ set $terminal kitty
 #exec_always --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec_always --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+
+# Arandr (GUI Display Manager)
 exec_always --no-startup-id arandr
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
@@ -194,7 +213,7 @@ exec_always --no-startup-id nm-applet
 exec_always --no-startup-id blueman-applet
 
 # Default numlock on (sudo dnf install numlockx)
-exec_always --no-startup-id numlockx on
+exec_always --no-startup-id numlockx on &
 
 # Gnome authentication
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
@@ -258,10 +277,10 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
-#bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
+bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
+bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
@@ -430,6 +449,7 @@ mode "$mode_gaps_left" {
 # Start a terminal
 #bindsym Ctrl+Return exec $terminal
 bindsym $mod+Return exec $terminal
+bindsym $mod+KP_Enter exec $terminal
 
 # Close (Kill) window
 #bindsym $mod+Shift+c kill

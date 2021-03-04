@@ -180,8 +180,8 @@ mode "$mode_wallpaper" {
 }
 
 # Variety [wallpaper manager]
-bindsym mod1+Right  exec --no-startup-id variety -p && notify-send -u low "Next Wallpaper (Variety)"
-bindsym mod1+Left   exec --no-startup-id variety -n && notify-send -u low "Previous Wallaper (Variety)"
+bindsym mod1+Right  exec --no-startup-id variety -n && notify-send -u low "Next Wallpaper (Variety)"
+bindsym mod1+Left   exec --no-startup-id variety -p && notify-send -u low "Previous Wallaper (Variety)"
 bindsym mod1+Up     exec --no-startup-id variety --pause && notify-send -u low "Variety Paused"
 bindsym mod1+Down   exec --no-startup-id variety --resume && notify-send -u low "Variety Resumed"
 bindsym mod1+Return exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
@@ -244,10 +244,10 @@ exec_always --no-startup-id i3-automark.py
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
-# Autotiling
+# Autotiling [H -> V -> H -> V ...]
 # https://github.com/nwg-piotr/autotiling
 # Installation: pip install autotiling
-exec_always --no-startup-id $HOME/anaconda3/bin/autotiling &
+#exec_always --no-startup-id $HOME/anaconda3/bin/autotiling &
 
 # Mailspring (Email manager) in background
 exec_always --no-startup-id mailspring --background
@@ -647,8 +647,8 @@ bindsym $mod+Shift+F10 move container to workspace number $ws20
 
 # Reload the configuration file
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod1+r       reload
-bindsym $mod1+Shift+r restart
+bindsym $mod1+Shift+r reload
+bindsym $mod+Shift+r  restart
 
 # Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e  \
@@ -691,7 +691,7 @@ mode "resize" {
 
 # Redshift mode
 # - https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
-bindsym $mod+Shift+r mode "$mode_redshift"
+bindsym $mod1+r mode "$mode_redshift"
 set $mode_redshift Set colour temperature: (a)uto, (r)eset, (1)500K, (2)500K, (3)000K, (4)000K, (5)000K, (6)000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
@@ -716,9 +716,9 @@ mode "i3lock: Return to lock/Escape to Cancel" {
     bindsym Escape mode "default"
 }
 
-# Power manager (Keyboard)
+# System manager (Keyboard)
 set $mode_system select: lock(L) exit(E) reboot(R) poweroff(O) cancel(Esc)
-bindsym $mod+Shift+Escape mode "$mode_system"
+bindsym $mod+Escape mode "$mode_system"
 mode "$mode_system" {
     bindsym l      exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
     bindsym r      exec --no-startup-id systemctl reboot, mode "default"
@@ -727,8 +727,8 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-# Power manager (Mouse)
-bindsym $mod+Escape \
+# System manager (Mouse)
+bindsym $mod+Shift+Escape \
     exec i3-nagbar \
     -t warning -f "pango:DroidSansMono Nerd Font 10" \
     -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
@@ -780,6 +780,54 @@ bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u lo
 # The side button move the window arround
 bindsym --border button9 move left
 bindsym --border button8 move right
+
+# ======================================================================================
+# Mouse Emulation
+# ======================================================================================
+# https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
+# xdotool must be installed
+
+# Mouse emulation by keyboard mapping
+set $mode_mouse mouse emulator
+bindsym $mod+Shift+m mode "$mode_mouse"
+bindsym Ctrl+$mod1+m mode "$mode_mouse"
+mode "$mode_mouse" {
+    # left up down right --smaller steps
+    bindsym h exec "xdotool mousemove_relative -- -2 0"
+    bindsym j exec "xdotool mousemove_relative 0 2"
+    bindsym k exec "xdotool mousemove_relative -- 0 -2"
+    bindsym l exec "xdotool mousemove_relative 2 0"
+
+    # left up down right
+    bindsym Ctrl+h exec "xdotool mousemove_relative -- -20 0"
+    bindsym Ctrl+j exec "xdotool mousemove_relative 0 20"
+    bindsym Ctrl+k exec "xdotool mousemove_relative -- 0 -20"
+    bindsym Ctrl+l exec "xdotool mousemove_relative 20 0"
+
+    # left up down right -- bigger steps
+    bindsym Shift+h exec "xdotool mousemove_relative -- -100 0"
+    bindsym Shift+j exec "xdotool mousemove_relative 0 100"
+    bindsym Shift+k exec "xdotool mousemove_relative -- 0 -100"
+    bindsym Shift+l exec "xdotool mousemove_relative 100 0"
+
+    # left up down right -- bigger steps
+    bindsym Ctrl+Shift+h exec "xdotool mousemove_relative -- -500 0"
+    bindsym Ctrl+Shift+j exec "xdotool mousemove_relative 0 500"
+    bindsym Ctrl+Shift+k exec "xdotool mousemove_relative -- 0 -500"
+    bindsym Ctrl+Shift+l exec "xdotool mousemove_relative 500 0"
+
+    # click: left mid right
+    bindsym u exec "xdotool click 1"
+    bindsym i exec "xdotool click 2"
+    bindsym o exec "xdotool click 3"
+
+    # redefine kill window in mouse mode
+    bindsym $mod+Shift+q kill
+
+    # exit mouse mode
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
 
 # ======================================================================================
 # All i3 Bar Settings

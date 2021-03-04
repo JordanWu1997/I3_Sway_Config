@@ -48,11 +48,11 @@ ${color}[System / Function] ${hr 2}
 ${color2}modkey (prefix) ${color}[S]uper
 ${color2}system ${color}[S]+Shift+Esc
 ${color2}exit i3 ${color}[S]+Shift+e
-${color2}restart i3 ${color}[Alt]+Shift+r
+${color2}restart i3 ${color}[S]+Shift+r
 ${color2}dmenu (rofi) ${color}[S]+d
 ${color2}window (rofi) ${color}[S]+Shift+d
 ${color2}open terminal ${color}[S]+Enter
-${color2}redshift ${color}[S]+Shift+r
+${color2}redshift ${color}[Alt]+r
 ${color2}gap resize ${color}[S]+Shift+g
 ${color}[Workspace / Container] ${hr 2}
 ${color2}navigate to WP ${color}[S]+[num]

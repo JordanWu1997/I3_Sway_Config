@@ -31,6 +31,10 @@ vlc
 virtualbaox
 ranger
 spotify
+redshift
+tlp
+mailspring
+kitty
 
 # Common in GNOME
 gnome-terminal

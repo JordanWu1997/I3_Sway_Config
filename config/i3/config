@@ -115,6 +115,7 @@ popup_during_fullscreen smart
 # You can also use any non-zero value
 # if you'd like to have a border (or 'normal')
 # Windows frame width pixel (or 'normal')
+# Comment out below lines for display title as default
 for_window [class="^.*"] border pixel 5
 new_window pixel 5
 new_float normal
@@ -235,12 +236,12 @@ exec_always --no-startup-id xcompmgr -c -f -n
 exec_always --no-startup-id dunst
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec_always --no-startup-id i3-battery-popup -N -L 40 &
+exec_always --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 40 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 exec_always --no-startup-id i3-automark.py
 
-# Conky
+# Conky (system overview and hotkey)
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
@@ -280,7 +281,7 @@ bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh
 bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
+bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop #-fn 'pango:DroidSansMono Nerd Font 16'
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
@@ -308,14 +309,14 @@ gaps outer 10
 #smart_gaps inverse_outer
 
 # Gap manager
-bindsym $mod+z        gaps inner current plus 5
-bindsym $mod+Shift+z  gaps inner current minus 5
-bindsym $mod+x        gaps outer current plus 5
-bindsym $mod+Shift+x  gaps outer current minus 5
-bindsym $mod1+z       gaps inner current set 0 exec notify-send -u low "Disable inner gaps (Current)"
-bindsym $mod1+x       gaps outer current set 0 exec notify-send -u low "Disable outer gaps (Current)"
-bindsym $mod1+Shift+z gaps inner all set 10 exec notify-send -u low "Enable inner gaps (All)"
-bindsym $mod1+Shift+x gaps outer all set 10 exec notify-send -u low "Enable outer gaps (All)"
+bindsym $mod+z        gaps inner all set 0 exec notify-send -u low "Disable inner gaps (All)"
+bindsym $mod+x        gaps outer all set 0 exec notify-send -u low "Disable outer gaps (All)"
+bindsym $mod+Shift+z  gaps inner all set 10 exec notify-send -u low "Enable inner gaps (All)"
+bindsym $mod+Shift+x  gaps outer all set 10 exec notify-send -u low "Enable outer gaps (All)"
+#bindsym $mod1+z       gaps inner current set 0 exec notify-send -u low "Disable inner gaps (Current)"
+#bindsym $mod1+x       gaps outer current set 0 exec notify-send -u low "Disable outer gaps (Current)"
+#bindsym $mod1+Shift+z gaps inner current set 10 exec notify-send -u low "Enable inner gaps (Current)"
+#bindsym $mod1+Shift+x gaps outer current set 10 exec notify-send -u low "Enable outer gaps (Current)"
 
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration
@@ -356,6 +357,7 @@ mode "$mode_gaps_outer" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_inner" {
     bindsym plus  gaps inner current plus 5
     bindsym minus gaps inner current minus 5
@@ -368,6 +370,7 @@ mode "$mode_gaps_inner" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_horiz" {
     bindsym plus  gaps horizontal current plus 5
     bindsym minus gaps horizontal current minus 5
@@ -380,6 +383,7 @@ mode "$mode_gaps_horiz" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_verti" {
     bindsym plus  gaps vertical current plus 5
     bindsym minus gaps vertical current minus 5
@@ -392,6 +396,7 @@ mode "$mode_gaps_verti" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_top" {
     bindsym plus  gaps top current plus 5
     bindsym minus gaps top current minus 5
@@ -404,6 +409,7 @@ mode "$mode_gaps_top" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_right" {
     bindsym plus  gaps right current plus 5
     bindsym minus gaps right current minus 5
@@ -416,6 +422,7 @@ mode "$mode_gaps_right" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_bottom" {
     bindsym plus  gaps bottom current plus 5
     bindsym minus gaps bottom current minus 5
@@ -428,6 +435,7 @@ mode "$mode_gaps_bottom" {
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
+
 mode "$mode_gaps_left" {
     bindsym plus  gaps left current plus 5
     bindsym minus gaps left current minus 5
@@ -451,12 +459,10 @@ mode "$mode_gaps_left" {
 bindsym $mod+Return exec $terminal
 bindsym $mod+KP_Enter exec $terminal
 
-# Close (Kill) window
-#bindsym $mod+Shift+c kill
-
 # Kill focus window
 bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
+#bindsym $mod+Shift+c kill
 
 # Kill focus window with confirmation
 set $close "Close the window? (q/y/n)"
@@ -502,8 +508,6 @@ bindsym $mod+c       split toggle exec notify-send -u low "Toggled Split Directi
 bindsym $mod+q       split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+v       split horizontal exec notify-send -u low "Split Horizontally On"
 bindsym $mod+Shift+v split vertical exec notify-send -u low "Split Horizontally Off"
-#bindsym $mod1+v     split horizontal exec notify-send -u low "Split Horizontally"
-#bindsym $mod1+h     split vertical exec notify-send -u low "Split Vertically"
 
 # Toggle fullscreen
 bindsym $mod+f       fullscreen toggle
@@ -532,8 +536,8 @@ bindsym $mod1+i       border pixel 5
 bindsym $mod1+Shift+o border pixel 10
 
 # Change border width [all windows]
-bindsym $mod+Shift+b  border toggle
-bindsym $mod1+Shift+b border toggle
+bindsym $mod+b  border toggle
+bindsym $mod1+b border toggle
 bindsym $mod+n        [class="^.*"] border normal; exec notify-send -u low "Restore All Title-bars"
 bindsym $mod+Shift+n  [class="^.*"] border pixel 5; exec notify-send -u low "Remove All Title-bars"
 
@@ -764,6 +768,7 @@ bindsym $mod1+Shift+t exec i3-input -F 'title_format "%s"' -P 'New Window Title 
 floating_modifier $mod
 
 # Focus follow
+#focus_follows_mouse no
 focus_follows_mouse yes
 mouse_warping output
 
@@ -870,4 +875,4 @@ bar {
     -t iceberg-contrast
 }
 # Status bar toggle, hide or show
-bindsym $mod+b bar mode toggle
+bindsym $mod+Shift+b bar mode toggle

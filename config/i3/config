@@ -47,7 +47,7 @@
 # Section "InputClass"
 #       Identifier "system-keyboard"
 #       MatchIsKeyboard "on"
-#       Option "XkbLayout" "us"
+#       Optirn "XkbLayout" "us"
 #       Option "XkbOptions" "caps:super"
 #       #Option "XkbOptions" "ctrl:nocaps"
 #       EndSection
@@ -129,6 +129,7 @@ hide_edge_borders none
 #font pango:Inconsolata 10
 font pango: DroidSansMono Nerd Font 12
 title_align center
+show_marks yes # Marks on titlebar
 for_window [class=".*"] title_format "%title"
 for_window [title=".* Copying.*"] title_format "File transfer in progress..."
 for_window [title=".* Moving.*"] title_format "File transfer in progress..."
@@ -155,14 +156,14 @@ default_orientation horizontal
 #exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
-# Wallpaper hotkey
+# Wallpaper hotkey [Not used]
 # Mannually assign wallpaper
-bindsym $mod+y       exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
-bindsym $mod+Shift+y exec feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
-bindsym $mod+u       exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
-bindsym $mod+Shift+u exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
-# Mannually assign wallpaper (from saved variety wallpaper)
-bindsym $mod+i       exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
+#bindsym $mod+y       exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
+#bindsym $mod+Shift+y exec feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
+#bindsym $mod+u       exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
+#bindsym $mod+Shift+u exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
+## Mannually assign wallpaper (from saved variety wallpaper)
+#bindsym $mod+i       exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
 
 # Wallpaper mode
 set $mode_wallpaper Change Wallpaper (1)I3WM (2)Fedora (3)ALMA (4)Cats (V)ariety
@@ -181,11 +182,26 @@ mode "$mode_wallpaper" {
 }
 
 # Variety [wallpaper manager]
-bindsym mod1+Right  exec --no-startup-id variety -n && notify-send -u low "Next Wallpaper (Variety)"
-bindsym mod1+Left   exec --no-startup-id variety -p && notify-send -u low "Previous Wallaper (Variety)"
-bindsym mod1+Up     exec --no-startup-id variety --pause && notify-send -u low "Variety Paused"
-bindsym mod1+Down   exec --no-startup-id variety --resume && notify-send -u low "Variety Resumed"
-bindsym mod1+Return exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
+#bindsym mod1+Right  exec --no-startup-id variety -n && notify-send -u low "Next Wallpaper (Variety)"
+#bindsym mod1+Left   exec --no-startup-id variety -p && notify-send -u low "Previous Wallaper (Variety)"
+#bindsym mod1+Up     exec --no-startup-id variety --pause && notify-send -u low "Variety Paused"
+#bindsym mod1+Down   exec --no-startup-id variety --resume && notify-send -u low "Variety Resumed"
+#bindsym mod1+Return exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
+
+# Variety mode
+set $mode_variety Variety: [n]ext [p]revious [P]ause [R]esume [F]avorite
+bindsym Ctrl+$mod1+v mode "$mode_variety"
+mode "$mode_variety" {
+    bindsym n       exec --no-startup-id variety -n && notify-send -u low "Next Wallpaper (Variety)"
+    bindsym p       exec --no-startup-id variety -p && notify-send -u low "Previous Wallaper (Variety)"
+    bindsym Shift+p exec --no-startup-id variety --pause && notify-send -u low "Variety paused"
+    bindsym Shift+r exec --no-startup-id variety --resume && notify-send -u low "Variety resumed"
+    bindsym Shift+a exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
+    # Exit
+    bindsym q      mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
 # ======================================================================================
 # This is to set all startup programs and their key bindings
@@ -198,13 +214,15 @@ set $terminal kitty
 # Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
+# -- General setting
+#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
-#exec_always --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
+#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
-#exec_always --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+#exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
 # Arandr (GUI Display Manager)
-exec_always --no-startup-id arandr
+exec --no-startup-id arandr
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
@@ -235,6 +253,12 @@ exec_always --no-startup-id xcompmgr -c -f -n
 # Dunst (notification)
 exec_always --no-startup-id dunst
 
+# Mailspring (Email manager) in background
+exec --no-startup-id mailspring --background
+
+# Variety (wallpaper manager)
+#exec_always --no-startup-id variety
+
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec_always --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 40 &
 
@@ -249,12 +273,6 @@ exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 # https://github.com/nwg-piotr/autotiling
 # Installation: pip install autotiling
 #exec_always --no-startup-id $HOME/anaconda3/bin/autotiling &
-
-# Mailspring (Email manager) in background
-exec_always --no-startup-id mailspring --background
-
-# Variety (wallpaper manager)
-#exec_always --no-startup-id variety
 
 # Set transparent terminal
 # Use pactl to adjust volume in PulseAudio.
@@ -278,10 +296,10 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
-bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
+#bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop #-fn 'pango:DroidSansMono Nerd Font 16'
+#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop #-fn 'pango:DroidSansMono Nerd Font 16'
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
@@ -309,10 +327,10 @@ gaps outer 10
 #smart_gaps inverse_outer
 
 # Gap manager
-bindsym $mod+z        gaps inner all set 0 exec notify-send -u low "Disable inner gaps (All)"
-bindsym $mod+x        gaps outer all set 0 exec notify-send -u low "Disable outer gaps (All)"
-bindsym $mod+Shift+z  gaps inner all set 10 exec notify-send -u low "Enable inner gaps (All)"
-bindsym $mod+Shift+x  gaps outer all set 10 exec notify-send -u low "Enable outer gaps (All)"
+#bindsym $mod+z        gaps inner all set 0 exec notify-send -u low "Disable inner gaps (All)"
+#bindsym $mod+x        gaps outer all set 0 exec notify-send -u low "Disable outer gaps (All)"
+#bindsym $mod+Shift+z  gaps inner all set 10 exec notify-send -u low "Enable inner gaps (All)"
+#bindsym $mod+Shift+x  gaps outer all set 10 exec notify-send -u low "Enable outer gaps (All)"
 #bindsym $mod1+z       gaps inner current set 0 exec notify-send -u low "Disable inner gaps (Current)"
 #bindsym $mod1+x       gaps outer current set 0 exec notify-send -u low "Disable outer gaps (Current)"
 #bindsym $mod1+Shift+z gaps inner current set 10 exec notify-send -u low "Enable inner gaps (Current)"
@@ -322,8 +340,8 @@ bindsym $mod+Shift+x  gaps outer all set 10 exec notify-send -u low "Enable oute
 # https://github.com/Airblader/i3/wiki/Example-Configuration
 
 set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
-set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_outer Outer Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
+set $mode_gaps_inner Inner Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
 set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
 set $mode_gaps_verti Vertical Gaps: +|-|0 (local), Shift + +|-|0 (global)
 set $mode_gaps_top Top Gaps: +|-|0 (local), Shift + +|-|0 (global)
@@ -346,105 +364,117 @@ mode "$mode_gaps" {
 }
 
 mode "$mode_gaps_outer" {
+    # local
     bindsym plus  gaps outer current plus 5
     bindsym minus gaps outer current minus 5
     bindsym 0     gaps outer current set 0
-
+    bindsym d     gaps outer current set 10
+    # global
     bindsym Shift+plus  gaps outer all plus 5
     bindsym Shift+minus gaps outer all minus 5
     bindsym Shift+0     gaps outer all set 0
-
+    bindsym Shift+d     gaps outer all set 10
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_inner" {
+    # local
     bindsym plus  gaps inner current plus 5
     bindsym minus gaps inner current minus 5
     bindsym 0     gaps inner current set 0
-
+    bindsym d     gaps inner current set 10
+    # global
     bindsym Shift+plus  gaps inner all plus 5
     bindsym Shift+minus gaps inner all minus 5
     bindsym Shift+0     gaps inner all set 0
-
+    bindsym Shift+d     gaps inner all set 10
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_horiz" {
+    # local
     bindsym plus  gaps horizontal current plus 5
     bindsym minus gaps horizontal current minus 5
     bindsym 0     gaps horizontal current set 0
-
+    # global
     bindsym Shift+plus  gaps horizontal all plus 5
     bindsym Shift+minus gaps horizontal all minus 5
     bindsym Shift+0     gaps horizontal all set 0
-
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_verti" {
+    # local
     bindsym plus  gaps vertical current plus 5
     bindsym minus gaps vertical current minus 5
     bindsym 0     gaps vertical current set 0
-
+    # global
     bindsym Shift+plus  gaps vertical all plus 5
     bindsym Shift+minus gaps vertical all minus 5
     bindsym Shift+0     gaps vertical all set 0
-
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_top" {
+    # local
     bindsym plus  gaps top current plus 5
     bindsym minus gaps top current minus 5
     bindsym 0     gaps top current set 0
-
+    # global
     bindsym Shift+plus  gaps top all plus 5
     bindsym Shift+minus gaps top all minus 5
     bindsym Shift+0     gaps top all set 0
-
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_right" {
+    # local
     bindsym plus  gaps right current plus 5
     bindsym minus gaps right current minus 5
     bindsym 0     gaps right current set 0
-
+    # global
     bindsym Shift+plus  gaps right all plus 5
     bindsym Shift+minus gaps right all minus 5
     bindsym Shift+0     gaps right all set 0
-
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_bottom" {
+    # local
     bindsym plus  gaps bottom current plus 5
     bindsym minus gaps bottom current minus 5
     bindsym 0     gaps bottom current set 0
-
+    # global
     bindsym Shift+plus  gaps bottom all plus 5
     bindsym Shift+minus gaps bottom all minus 5
     bindsym Shift+0     gaps bottom all set 0
-
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_gaps_left" {
+    # local
     bindsym plus  gaps left current plus 5
     bindsym minus gaps left current minus 5
     bindsym 0     gaps left current set 0
-
+    # global
     bindsym Shift+plus  gaps left all plus 5
     bindsym Shift+minus gaps left all minus 5
     bindsym Shift+0     gaps left all set 0
-
+    # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
@@ -477,6 +507,10 @@ mode $close {
     bindsym n             mode default
     bindsym Escape        mode default
 }
+
+# Focus the parent/child container
+bindsym $mod+a       focus parent
+bindsym $mod+Shift+a focus child
 
 # Change focus
 bindsym $mod+h focus left
@@ -515,12 +549,12 @@ bindsym $mod+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
-bindsym $mod+Shift+space  floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod1+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod+space        focus mode_toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod1+space       focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+t            floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod1+t           floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod+Shift+space  floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym $mod1+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
+#bindsym $mod+t            floating toggle exec notify-send -u low "Toggle Window Floating"
+#bindsym $mod1+t           floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod+Shift+s      sticky toggle exec notify-send -u low "Toggle Sticky [For Floating]"
 
 # Change container layout (stacked, tabbed, toggle split)
@@ -528,36 +562,81 @@ bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle split
 
+# Titlebar and border
 # Change border width [single window]
-bindsym $mod1+n       border none
-bindsym $mod1+Shift+n border normal
-bindsym $mod1+o       border pixel 1
-bindsym $mod1+i       border pixel 5
-bindsym $mod1+Shift+o border pixel 10
-
+#bindsym $mod1+n       border none
+#bindsym $mod1+Shift+n border normal
+#bindsym $mod1+o       border pixel 1
+#bindsym $mod1+i       border pixel 5
+#bindsym $mod1+Shift+o border pixel 10
 # Change border width [all windows]
-bindsym $mod+b  border toggle
-bindsym $mod1+b border toggle
-bindsym $mod+n        [class="^.*"] border normal; exec notify-send -u low "Restore All Title-bars"
-bindsym $mod+Shift+n  [class="^.*"] border pixel 5; exec notify-send -u low "Remove All Title-bars"
+#bindsym $mod+b        border toggle
+#bindsym $mod1+b       border toggle
+# Titlebar name
+#bindsym $mod+n        [class="^.*"] border normal; exec notify-send -u low "Restore All Title-bars"
+#bindsym $mod+Shift+n  [class="^.*"] border pixel 5; exec notify-send -u low "Remove All Title-bars"
+#bindsym $mod1+Shift+t exec i3-input -F 'title_format "%s"' -P 'New Window Title Name: '
+#bindsym $mod+Shift+t  exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
+#bindsym $mod1+Shift+t title_format "%title"
 
-# Focus the parent/child container
-bindsym $mod+a       focus parent
-bindsym $mod+Shift+a focus child
+# Titlebar mode
+bindsym $mod+Shift+t mode "$mode_titlebar"
+set $mode_titlebar Titlebar: [r]estore [n]ew_name [d]efault_name [h]ide
+mode "$mode_titlebar" {
+    bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
+    bindsym d title_format "%title"; exec notify-send -u low "Default title name"
+    bindsym s [class="^.*"] border normal; exec notify-send -u low "Show All Title-bars"
+    bindsym h [class="^.*"] border pixel 5; exec notify-send -u low "Hide All Title-bars"
+    bindsym b mode "$mode_border"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 
-# Marks on titlebar
-show_marks yes
-# read "1" character and mark the current window with this character
-# read "1" character and go to the window with the character
-# read "1" character and swap the current window to the window with the character
-# Use i3-msg as input
-bindsym $mod1+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
-bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
-bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
+set $mode_border Border: [0]_pixel [5]_pixels [1]0_pixels [n]ormal [t]oggle
+mode "$mode_border" {
+    bindsym 0 border none; mode "mode mode_titlebar"
+    bindsym 5 border pixel 5; mode "mode_titlebar"
+    bindsym 1 border pixel 10; mode "mode_titlebar"
+    bindsym n border normal; mode "mode_titlebar"
+    bindsym t border toggle
+    bindsym Return mode "mode_titlebar"
+    bindsym Escape mode "default"
+}
+
+# Use i3-msg as input [Not used]
+# -- read "1" character and mark the current window with this character
+# -- read "1" character and go to the window with the character
+# -- read "1" character and swap the current window to the window with the character
+#bindsym $mod1+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+#bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+#bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
 # Use rofi as input
-bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
-bindsym $mod+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-bindsym $mod+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+#bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
+#bindsym $mod+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
+#bindsym $mod+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+# Mark mode
+bindsym $mod+Shift+m mode "$mode_mark"
+set $mode_mark Mark: [m]ark [g]oto swa[p]
+mode "$mode_mark" {
+    bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
+    bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
+    bindsym p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Move all floating windows to the scratchpad and vice versa
+bindsym $mod+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
+bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
+
+# Enter exec command in i3
+# Rename workspace, focus window title
+bindsym $mod+Shift+i  exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
+bindsym $mod+Shift+w  exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
+#bindsym $mod1+Shift+i exec i3-input -F "%s" -P 'i3 Command: '
+#bindsym $mod1+Shift+w exec i3-input -F 'rename workspace to "%s"' -P 'New Workspace Name: '
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -668,8 +747,9 @@ bindsym $mod1+k resize shrink height 5 px or 5 ppt
 bindsym $mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
-bindsym $mod+r mode "resize"
-mode "resize" {
+bindsym $mod+r mode "$mode_resize"
+set $mode_resize resize
+mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
     # Pressing left will shrink the window’s width.
     # Pressing right will grow the window’s width.
@@ -679,13 +759,11 @@ mode "resize" {
     bindsym j resize grow height 1 px or 1 ppt
     bindsym k resize shrink height 1 px or 1 ppt
     bindsym l resize grow width 1 px or 1 ppt
-
     # same bindings, but for the arrow keys
     bindsym Left  resize shrink width 10 px or 10 ppt
     bindsym Down  resize grow height 10 px or 10 ppt
     bindsym Up    resize shrink height 10 px or 10 ppt
     bindsym Right resize grow width 10 px or 10 ppt
-
     # back to low: Enter or Escape or $mod+r
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -695,8 +773,8 @@ mode "resize" {
 
 # Redshift mode
 # - https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
-bindsym $mod1+r mode "$mode_redshift"
-set $mode_redshift Set colour temperature: (a)uto, (r)eset, (1)500K, (2)500K, (3)000K, (4)000K, (5)000K, (6)000K
+bindsym $mod+z mode "$mode_redshift"
+set $mode_redshift Set colour temperature: [a]uto, [r]eset, [1]500K, [2]500K, [3]000K, [4]000K, [5]000K, [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
     bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
@@ -721,7 +799,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 }
 
 # System manager (Keyboard)
-set $mode_system select: lock(L) exit(E) reboot(R) poweroff(O) cancel(Esc)
+set $mode_system System: [l]ock [e]xit [r]eboot power[o]ff
 bindsym $mod+Escape mode "$mode_system"
 mode "$mode_system" {
     bindsym l      exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
@@ -747,22 +825,9 @@ bindsym mod4+Shift+Print exec notify-send -u low "Take Selected Area Screenshot"
 
 # Scratchpad: hide | show window(minus is "-" and plus is "+".)
 bindsym $mod+minus  move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
-bindsym $mod1+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
 bindsym $mod+plus   scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
-bindsym $mod1+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
-
-# Move all floating windows to the scratchpad and vice versa
-bindsym $mod+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
-bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
-
-# Enter exec command in i3
-# Rename workspace, focus window title
-bindsym $mod+Shift+i  exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
-bindsym $mod+Shift+w  exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
-bindsym $mod+Shift+t  exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
-bindsym $mod1+Shift+i exec i3-input -F "%s" -P 'i3 Command: '
-bindsym $mod1+Shift+w exec i3-input -F 'rename workspace to "%s"' -P 'New Workspace Name: '
-bindsym $mod1+Shift+t exec i3-input -F 'title_format "%s"' -P 'New Window Title Name: '
+#bindsym $mod1+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
+#bindsym $mod1+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -794,7 +859,7 @@ bindsym --border button8 move right
 
 # Mouse emulation by keyboard mapping
 set $mode_mouse mouse emulator
-bindsym $mod+Shift+m mode "$mode_mouse"
+#bindsym $mod+Shift+m mode "$mode_mouse"
 bindsym Ctrl+$mod1+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
@@ -802,36 +867,32 @@ mode "$mode_mouse" {
     bindsym j exec "xdotool mousemove_relative 0 2"
     bindsym k exec "xdotool mousemove_relative -- 0 -2"
     bindsym l exec "xdotool mousemove_relative 2 0"
-
     # left up down right
     bindsym Ctrl+h exec "xdotool mousemove_relative -- -20 0"
     bindsym Ctrl+j exec "xdotool mousemove_relative 0 20"
     bindsym Ctrl+k exec "xdotool mousemove_relative -- 0 -20"
     bindsym Ctrl+l exec "xdotool mousemove_relative 20 0"
-
     # left up down right -- bigger steps
     bindsym Shift+h exec "xdotool mousemove_relative -- -100 0"
     bindsym Shift+j exec "xdotool mousemove_relative 0 100"
     bindsym Shift+k exec "xdotool mousemove_relative -- 0 -100"
     bindsym Shift+l exec "xdotool mousemove_relative 100 0"
-
     # left up down right -- bigger steps
     bindsym Ctrl+Shift+h exec "xdotool mousemove_relative -- -500 0"
     bindsym Ctrl+Shift+j exec "xdotool mousemove_relative 0 500"
     bindsym Ctrl+Shift+k exec "xdotool mousemove_relative -- 0 -500"
     bindsym Ctrl+Shift+l exec "xdotool mousemove_relative 500 0"
-
     # click: left mid right
     bindsym u exec "xdotool click 1"
     bindsym i exec "xdotool click 2"
     bindsym o exec "xdotool click 3"
-
     # redefine kill window in mouse mode
     bindsym $mod+Shift+q kill
-
     # exit mouse mode
-    bindsym Escape mode "default"
-    bindsym Return mode "default"
+    bindsym m            mode "default"
+    bindsym $mod+Shift+m mode "default"
+    bindsym Escape       mode "default"
+    bindsym Return       mode "default"
 }
 
 # ======================================================================================

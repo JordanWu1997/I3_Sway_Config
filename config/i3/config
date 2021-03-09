@@ -61,8 +61,7 @@
 # ======================================================================================
 # All Mod Key Settings
 # ======================================================================================
-# Setup mod (Prefix)
-#
+# Setup mod (Prefix)#
 # Mod1: alt, Mod4: win
 set $mod  Mod4
 set $mod1 Mod1
@@ -119,14 +118,17 @@ popup_during_fullscreen smart
 for_window [class="^.*"] border pixel 5
 new_window pixel 5
 new_float normal
-hide_edge_borders none
-#hide_edge_borders smart
+
+# Hide edge border if there's only one window
+hide_edge_borders smart
+#hide_edge_borders none
+
+# Theme configuration
+# As for detailed theme and font Setup
+# -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
+# sudo dnf install lxappearance gtk-chtheme qt-config
 
 # Set windows titlebar fontsize
-# As for detailed theme and font Setup
-# This is for GTK software appearance
-# sudo dnf install lxappearance
-#font pango:Inconsolata 10
 font pango: DroidSansMono Nerd Font 12
 title_align center
 show_marks yes # Marks on titlebar
@@ -166,7 +168,7 @@ exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 #bindsym $mod+i       exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
 
 # Wallpaper mode
-set $mode_wallpaper Change Wallpaper (1)I3WM (2)Fedora (3)ALMA (4)Cats (V)ariety
+set $mode_wallpaper Change Wallpaper (1)I3WM (2)Fedora (3)ALMA (4)Cats (v)ariety
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
@@ -196,7 +198,7 @@ mode "$mode_variety" {
     bindsym p       exec --no-startup-id variety -p && notify-send -u low "Previous Wallaper (Variety)"
     bindsym Shift+p exec --no-startup-id variety --pause && notify-send -u low "Variety paused"
     bindsym Shift+r exec --no-startup-id variety --resume && notify-send -u low "Variety resumed"
-    bindsym Shift+a exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
+    bindsym Shift+f exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
     # Exit
     bindsym q      mode "default"
     bindsym Return mode "default"
@@ -222,7 +224,7 @@ set $terminal kitty
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
 # Arandr (GUI Display Manager)
-exec --no-startup-id arandr
+#exec --no-startup-id arandr
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
@@ -255,6 +257,10 @@ exec_always --no-startup-id dunst
 
 # Mailspring (Email manager) in background
 exec --no-startup-id mailspring --background
+
+# KDE Connet (Connect to phone) in background
+exec --no-startup-id /usr/libexec/kdeconnectd &
+exec --no-startup-id kdeconnect-indicator &
 
 # Variety (wallpaper manager)
 #exec_always --no-startup-id variety
@@ -296,12 +302,12 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
-#bindsym $mod1+Shift+f exec --no-startup-id dmenu_run #-fn 'pango:DroidSansMono Nerd Font 16' -l 5
+bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 20 -p 'dmenu (program launcher)'
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop #-fn 'pango:DroidSansMono Nerd Font 16'
+#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
 
-# Rofi menu (program launcher, window manager)
+## Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
 bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
@@ -324,7 +330,7 @@ exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find
 gaps inner 10
 gaps outer 10
 #smart_gaps on
-#smart_gaps inverse_outer
+smart_gaps inverse_outer
 
 # Gap manager
 #bindsym $mod+z        gaps inner all set 0 exec notify-send -u low "Disable inner gaps (All)"
@@ -338,7 +344,6 @@ gaps outer 10
 
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration
-
 set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
 set $mode_gaps_outer Outer Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
 set $mode_gaps_inner Inner Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
@@ -581,26 +586,28 @@ bindsym $mod+e layout toggle split
 
 # Titlebar mode
 bindsym $mod+Shift+t mode "$mode_titlebar"
-set $mode_titlebar Titlebar: [r]estore [n]ew_name [d]efault_name [h]ide
+set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title [b]order [m]ark_mode
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
     bindsym s [class="^.*"] border normal; exec notify-send -u low "Show All Title-bars"
     bindsym h [class="^.*"] border pixel 5; exec notify-send -u low "Hide All Title-bars"
     bindsym b mode "$mode_border"
+    bindsym m mode "$mode_mark"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-set $mode_border Border: [0]_pixel [5]_pixels [1]0_pixels [n]ormal [t]oggle
+set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [t]oggle
 mode "$mode_border" {
-    bindsym 0 border none; mode "mode mode_titlebar"
-    bindsym 5 border pixel 5; mode "mode_titlebar"
-    bindsym 1 border pixel 10; mode "mode_titlebar"
-    bindsym n border normal; mode "mode_titlebar"
+    bindsym 0 border none
+    bindsym 2 border pixel 2
+    bindsym 5 border pixel 5
+    bindsym 1 border pixel 10
+    bindsym n border normal
     bindsym t border toggle
-    bindsym Return mode "mode_titlebar"
+    bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
 }
 
@@ -612,16 +619,16 @@ mode "$mode_border" {
 #bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
 #bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
 # Use rofi as input
-#bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
-#bindsym $mod+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-#bindsym $mod+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
+bindsym $mod+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
+bindsym $mod+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
 # Mark mode
 bindsym $mod+Shift+m mode "$mode_mark"
-set $mode_mark Mark: [m]ark [g]oto swa[p]
+set $mode_mark Mark: [m]ark [g]oto [s]wap
 mode "$mode_mark" {
     bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
     bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-    bindsym p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+    bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -748,7 +755,7 @@ bindsym $mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "$mode_resize"
-set $mode_resize resize
+set $mode_resize resize (vim-like key)
 mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
     # Pressing left will shrink the window’s width.
@@ -773,7 +780,7 @@ mode "$mode_resize" {
 
 # Redshift mode
 # - https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
-bindsym $mod+z mode "$mode_redshift"
+bindsym $mod+Shift+z mode "$mode_redshift"
 set $mode_redshift Set colour temperature: [a]uto, [r]eset, [1]500K, [2]500K, [3]000K, [4]000K, [5]000K, [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
@@ -790,8 +797,7 @@ mode "$mode_redshift" {
     bindsym Escape mode "default"
 }
 
-
-# i3lock
+# Lock mode -- i3lock
 bindsym Ctrl+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
     bindsym Return mode "default" exec i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)
@@ -858,7 +864,7 @@ bindsym --border button8 move right
 # xdotool must be installed
 
 # Mouse emulation by keyboard mapping
-set $mode_mouse mouse emulator
+set $mode_mouse mouse emulator (vim-like key)
 #bindsym $mod+Shift+m mode "$mode_mouse"
 bindsym Ctrl+$mod1+m mode "$mode_mouse"
 mode "$mode_mouse" {
@@ -906,14 +912,17 @@ mode "$mode_mouse" {
 # --------------------------------------------------------------------------------------
 # All monitor
 bar {
+    id top-bar
     # Basic bar
-    #mode hide
-    #hidden_state hide
-    id bar
     position top
-    binding_mode_indicator yes
+    mode dock #hide
+    #hidden_state hide
+    # Modifier
+    modifier none
+    # Mode indicator
+    binding_mode_indicator no
     # Height in pixels [Only for i3-gap]
-    #height 25
+    #height 20
     # Font
     font pango: DroidSansMono Nerd Font 12
     # Workspace
@@ -935,5 +944,18 @@ bar {
     brightness.step=1 \
     -t iceberg-contrast
 }
+
+bar{
+    id top-bar-overlay
+    position top
+    mode hide
+    modifier none
+    binding_mode_indicator yes
+    font pango: DroidSansMono Nerd Font 12
+    workspace_buttons No
+    tray_output none
+}
+
 # Status bar toggle, hide or show
-bindsym $mod+Shift+b bar mode toggle
+bindsym $mod+Shift+b bar mode toggle top-bar
+bindsym $mod+b       bar mode toggle top-bar-overlay

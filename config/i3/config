@@ -586,10 +586,7 @@ bindsym $mod+e layout toggle split
 
 # Titlebar mode
 bindsym $mod+Shift+t mode "$mode_titlebar"
-<<<<<<< HEAD
 bindsym Ctrl+$mod1+t mode "$mode_titlebar"
-=======
->>>>>>> 5dc2c70058af205363655847396fb428911aea3a
 set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title [b]order [m]ark_mode
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')

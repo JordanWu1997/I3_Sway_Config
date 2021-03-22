@@ -40,6 +40,7 @@
 #       Driver "libinput"
 #       Option "NaturalScrolling" "True"
 #       Option "Tapping" "On"
+# EndSection
 #
 # Remap Capslock to Win
 # In /etc/X11/xorg.conf.d/00-keyboard.conf, add the following
@@ -50,7 +51,7 @@
 #       Optirn "XkbLayout" "us"
 #       Option "XkbOptions" "caps:super"
 #       #Option "XkbOptions" "ctrl:nocaps"
-#       EndSection
+#EndSection
 #
 # Reference
 #   - https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
@@ -230,6 +231,9 @@ exec_always --no-startup-id blueman-applet
 
 # Default numlock on (sudo dnf install numlockx)
 exec_always --no-startup-id numlockx on &
+
+# Imwheel (Mouse wheel speed)
+#exec_always --no-startup-id imwheel &
 
 # Gnome authentication
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
@@ -849,15 +853,15 @@ set $mode_mouse mouse emulator (vim-like key)
 bindsym Ctrl+$mod1+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
-    bindsym h exec "xdotool mousemove_relative -- -2 0"
-    bindsym j exec "xdotool mousemove_relative 0 2"
-    bindsym k exec "xdotool mousemove_relative -- 0 -2"
-    bindsym l exec "xdotool mousemove_relative 2 0"
+    bindsym Ctrl+h exec "xdotool mousemove_relative -- -2 0"
+    bindsym Ctrl+j exec "xdotool mousemove_relative 0 2"
+    bindsym Ctrl+k exec "xdotool mousemove_relative -- 0 -2"
+    bindsym Ctrl+l exec "xdotool mousemove_relative 2 0"
     # left up down right
-    bindsym Ctrl+h exec "xdotool mousemove_relative -- -20 0"
-    bindsym Ctrl+j exec "xdotool mousemove_relative 0 20"
-    bindsym Ctrl+k exec "xdotool mousemove_relative -- 0 -20"
-    bindsym Ctrl+l exec "xdotool mousemove_relative 20 0"
+    bindsym h exec "xdotool mousemove_relative -- -20 0"
+    bindsym j exec "xdotool mousemove_relative 0 20"
+    bindsym k exec "xdotool mousemove_relative -- 0 -20"
+    bindsym l exec "xdotool mousemove_relative 20 0"
     # left up down right -- bigger steps
     bindsym Shift+h exec "xdotool mousemove_relative -- -100 0"
     bindsym Shift+j exec "xdotool mousemove_relative 0 100"

@@ -46,35 +46,35 @@ conky.config = {
 conky.text = [[
 ${color}[System Command] ${hr 2}
 ${color2}modkey (prefix) ${color}[S]uper
-${color2}exit i3 ${color}[S]+[Shift]+e
-${color2}restart i3 ${color}[S]+[Shift]+r
-${color2}dmenu (rofi) ${color}[S]+d
-${color2}window (rofi) ${color}[Alt]+d
+${color2}exit i3 ${color}[S]+[Shift]+[e]
+${color2}restart i3 ${color}[S]+[Shift]+[r]
+${color2}dmenu (rofi) ${color}[S]+[d]
+${color2}window (rofi) ${color}[Alt]+[d]
 ${color2}open terminal ${color}[S]+[Enter]
 ${color}[Workspace / Container] ${hr 2}
 ${color2}navigate to WP ${color}[S]+[\#]
 ${color2}send focus to WP ${color}[S]+[Shift]+[\#]
-${color2}kill focused ${color}[S]+[Shift]+q
-${color2}split direction toggle ${color}[S]+q
-${color2}tab mode toggle ${color}[S]+w
-${color2}stack mode toggle ${color}[S]+s
-${color2}tiling mode toggle ${color}[S]+e
-${color2}fullscreen toggle ${color}[S]+f
+${color2}kill focused ${color}[S]+[Shift]+[q]
+${color2}split direction toggle ${color}[S]+[q]
+${color2}tab mode toggle ${color}[S]+[w]
+${color2}stack mode toggle ${color}[S]+[s]
+${color2}tiling mode toggle ${color}[S]+[e]
+${color2}fullscreen toggle ${color}[S]+[f]
 ${color2}navigate to ${color}[S]+[vim-key]
 ${color2}swap to ${color}[S]+[Shift]+[vim-key]
-${color2}focus parent ${color}[S]+a
-${color2}focus children ${color}[S]+[Shift]+a
+${color2}focus parent ${color}[S]+[a]
+${color2}focus children ${color}[S]+[Shift]+[a]
 ${color}[Floating / Scratchpad] ${hr 2}
 ${color2}floating toggle ${color}[S]+[Shift]+[Space]
 ${color2}focus toggle ${color}[S}]+[Space]
-${color2}move to scratchpad ${color}[S]+-
-${color2}move to foreground ${color}[S]+=
+${color2}move to scratchpad ${color}[S]+[-]
+${color2}move to foreground ${color}[S]+[=]
 ${color}[Function / Mode] ${hr 2}
 ${color2}system mode ${color}[S]+[Shift]+[Esc]
-${color2}gap mode ${color}[S]+[Shift]+g
-${color2}resize mode ${color}[S]+r
-${color2}title mode ${color}[S]+[Shift]+t
-${color2}mark mode ${color}[S]+[Shift]+m
-${color2}redshift mode ${color}[S]+[Shift]+z
-${color2}mouse mode ${color}[C]+[Alt]+m
+${color2}gap mode ${color}[S]+[Shift]+[g]
+${color2}resize mode ${color}[S]+[r]
+${color2}title mode ${color}[S]+[Shift]+[t]
+${color2}mark mode ${color}[S]+[Shift]+[m]
+${color2}redshift mode ${color}[S]+[Shift]+[z]
+${color2}mouse mode ${color}[Ctrl]+[Alt]+[m]
 ]]

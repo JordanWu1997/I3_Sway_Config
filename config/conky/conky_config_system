@@ -58,10 +58,9 @@ conky.config = {
 }
 conky.text = [[
 ${alignr}${image ~/Pictures/ICONS/fedora_logo_darkbackground.png -p 60,0 -s 270x120} ${color}
-${color}
 
-${color}
-${color}
+
+
 ${color}Information ${hr 2}${color}
 ${alignr}${color2}Kernel: ${alignr}${color}${kernel}
 ${alignr}${color2}Local Hostname: ${alignr}${color}${nodename}

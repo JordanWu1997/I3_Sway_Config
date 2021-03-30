@@ -12,8 +12,11 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 #
 # --------------------------------------------------------------------------------------
-# Edited by Jordan Wu on 2020/11/22
+# Author: i3-config-wizard, Jordan Wu
+# Email: jordankhwu@mgmail.com
+# Date: 2020/11/22
 # --------------------------------------------------------------------------------------
+#
 # # This modified configuration file is highly refered to link below # Reference
 #    - https://i3wm.org/docs/userguide.html
 #    - https://github.com/levinit/i3wm-config
@@ -28,7 +31,19 @@
 # sudo dnf install i3-gaps
 #
 # ======================================================================================
-# keyboard and Trackpad Setup
+# GUI Theme Configuration
+# ======================================================================================
+# Theme configuration
+# As for detailed theme and font Setup
+# -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
+#   -- for lxde: sudo dnf install lxappearance
+#   -- for gtk : sudo dnf install gtk-chtheme
+#   -- for kde : sudo dnf install kvantum
+#       -- for qt4 : sudo dnf install qt-config
+#       -- for qt5 : sudo dnf install qt5ct qt5-qtstyleplugins
+#
+# ======================================================================================
+# Keyboard and Trackpad Setup
 # ======================================================================================
 # Setup trackpad natural scrolling in i3 && Setup trackpad tap in i3
 # In /usr/share/X11/xorg.conf.d/40-libinput.conf, add the following
@@ -73,6 +88,7 @@ set $mod1 Mod1
 # This is initial setup for all windows and floating windows in i3
 
 # Colour of border, background, text, indicator, and child_border
+# Online color palette https://thomashunter.name/i3-configurator/
 # Default theme
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
@@ -124,11 +140,6 @@ new_float normal
 # Hide edge border if there's only one window
 hide_edge_borders smart
 
-# Theme configuration
-# As for detailed theme and font Setup
-# -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
-# sudo dnf install lxappearance gtk-chtheme qt-config
-
 # Set windows titlebar fontsize
 font pango: DroidSansMono Nerd Font 12
 title_align center
@@ -154,6 +165,8 @@ default_orientation horizontal
 #export wallpaper3="$wallpaperd/ALMA"
 #export wallpaper4="$wallpaperd/CATS"
 #export wallpaper5="$wallpaperd/LINUX"
+#export wallpaper6="$wallpaperd/LULIN/"
+#export wallpaper7="$wallpaperd/RUSTY SPOTTED CAT"
 # --------------------------------------------------------------------------------------
 
 # Startup wallpaper
@@ -161,7 +174,7 @@ default_orientation horizontal
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
 # Wallpaper mode
-set $mode_wallpaper Change Wallpaper (1)I3WM (2)Fedora (3)ALMA (4)Cats (5)Linux (v)ariety
+set $mode_wallpaper Wallpaper [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Lulin [7]RS Cat [v]ariety
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
@@ -170,6 +183,8 @@ mode "$mode_wallpaper" {
     bindsym 3 exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
     bindsym 4 exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
     bindsym 5 exec feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (LINUX)"
+    bindsym 6 exec feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (LULIN)"
+    bindsym 7 exec feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (RS CAT)"
     bindsym v exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
     # Exit
     bindsym q      mode "default"
@@ -195,11 +210,13 @@ mode "$mode_variety" {
 # ======================================================================================
 # This is to set all startup programs and their key bindings
 # ======================================================================================
-
 # Setup terminal
 #set $terminal gnome-terminal
 set $terminal kitty
 
+# --------------------------------------------------------------------------------------
+# Startup Applications
+# --------------------------------------------------------------------------------------
 # Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
@@ -221,39 +238,39 @@ exec_always --no-startup-id nm-applet
 exec_always --no-startup-id blueman-applet
 
 # Default numlock on (sudo dnf install numlockx)
-exec_always --no-startup-id numlockx on &
+#exec_always --no-startup-id numlockx on &
 
 # Imwheel (Mouse wheel speed)
 #exec_always --no-startup-id imwheel &
 
-# Gnome authentication
+# Gnome authentication [For gnome software usage]
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
 # Gnome settings daemon
 exec_always --no-startup-id gnome-settings-daemon
 
+## Gnome power-manager
+#exec_always --no-startup-id gnome-power-manager &
+
 # Ibus input method
 exec_always --no-startup-id export GTK_IM_MODULE=ibus
 exec_always --no-startup-id ibus-daemon --xim -d -r
 
-# Gnome power-manager
-exec_always --no-startup-id gnome-power-manager &
-
 # Parcellite (clipboard)
 exec_always --no-startup-id parcellite
 
-# Transparency support
+# Set transparent terminal (transparency support)
 exec_always --no-startup-id xcompmgr -c -f -n
 
 # Dunst (notification)
 exec_always --no-startup-id dunst
 
-# Mailspring (Email manager) in background
-exec --no-startup-id mailspring --background
-
-# KDE Connet (Connect to phone) in background
+# KDE Connet (Connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &
 exec --no-startup-id kdeconnect-indicator &
+
+# Mailspring (Email manager) in background
+#exec --no-startup-id mailspring --background
 
 # Variety (wallpaper manager)
 #exec_always --no-startup-id variety
@@ -270,10 +287,18 @@ exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
 # Autotiling [H -> V -> H -> V ...]
 # https://github.com/nwg-piotr/autotiling
-# Installation: pip install autotiling
-#exec_always --no-startup-id $HOME/anaconda3/bin/autotiling &
+# installation: pip install autotiling
+exec_always --no-startup-id $HOME/anaconda3/bin/autotiling &
 
-# Set transparent terminal
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
+
+# --------------------------------------------------------------------------------------
+# System Keybindings
+# --------------------------------------------------------------------------------------
 # Use pactl to adjust volume in PulseAudio.
 # Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
 set $refresh_i3status 'killall -SIGUSR1 i3status'
@@ -308,12 +333,6 @@ bindsym $mod1+d         exec --no-startup-id rofi -show window -terminal $termin
 bindsym $mod1+Shift+d   exec --no-startup-id rofi -show windowcd -terminal $terminal
 bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
 
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
-
 # ======================================================================================
 # All about i3-gap
 # ======================================================================================
@@ -322,12 +341,11 @@ exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find
 # Gaps
 gaps inner 10
 gaps outer 10
-#smart_gaps on
 smart_gaps inverse_outer
 
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration
-set $mode_gaps Gaps: (o)uter, (i)nner, (h)orizontal, (v)ertical, (t)op, (r)ight, (b)ottom, (l)eft
+set $mode_gaps Gaps: [o]uter, [i]nner, [h]orizontal, [v]ertical, [t]op, [r]ight, [b]ottom, [l]eft
 set $mode_gaps_outer Outer Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
 set $mode_gaps_inner Inner Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
 set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local), Shift + +|-|0 (global)
@@ -480,7 +498,6 @@ bindsym $mod+KP_Enter exec $terminal
 # Kill focus window
 bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
-#bindsym $mod+Shift+c kill
 
 # Kill focus window with confirmation
 set $close "Close the window? (q/y/n)"
@@ -716,7 +733,7 @@ bindsym $mod+Shift+r  restart
 # Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e  \
     exec "i3-nagbar -t warning \
-    -f 'pango:DroidSansMono Nerd Font 10' \
+    -f 'pango:DroidSansMono Nerd Font 12' \
     -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' \
     -B 'Yes, exit i3' 'i3-msg exit'"
 
@@ -728,7 +745,7 @@ bindsym Ctrl+$mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "$mode_resize"
-set $mode_resize resize (vim-like key)
+set $mode_resize Resize mode [(vim-key)]:small step, [(arrow-key)]:big step
 mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
     # Pressing left will shrink the window’s width.
@@ -796,7 +813,7 @@ mode "$mode_system" {
 # System manager (Mouse)
 bindsym $mod+Shift+Escape \
     exec i3-nagbar \
-    -t warning -f "pango:DroidSansMono Nerd Font 10" \
+    -t warning -f "pango:DroidSansMono Nerd Font 12" \
     -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
     -B Reboot "systemctl reboot" \
     -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
@@ -839,7 +856,7 @@ bindsym --border button8 move right
 # xdotool must be installed
 
 # Mouse emulation by keyboard mapping
-set $mode_mouse mouse emulator (vim-like key)
+set $mode_mouse Mouse emulator [ctrl+(vim-key)]:small, [(vim-key)]:medium; [shift+(vim-key)]:large, [u]:left, [i]:middle, [o]:right
 #bindsym $mod+Shift+m mode "$mode_mouse"
 bindsym Ctrl+$mod1+m mode "$mode_mouse"
 mode "$mode_mouse" {
@@ -881,7 +898,9 @@ mode "$mode_mouse" {
 # ======================================================================================
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-
+# For i3bar theme configuration, check online color palette configurator
+# -- https://thomashunter.name/i3-configurator/
+#
 # --------------------------------------------------------------------------------------
 # Setting i3bar
 # --------------------------------------------------------------------------------------
@@ -896,8 +915,6 @@ bar {
     modifier none
     # Mode indicator
     binding_mode_indicator no
-    # Height in pixels [Only for i3-gap]
-    #height 20
     # Font
     font pango: DroidSansMono Nerd Font 12
     # Workspace
@@ -909,9 +926,8 @@ bar {
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
-    pasink pasource brightness \
-    time date \
-    caffeine battery dunst \
+    pasink pasource brightness caffeine \
+    time dunst date battery \
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format='{percent:03.01f}%' \
     disk.format='{percent:05.02f}%' \
@@ -920,7 +936,7 @@ bar {
     -t iceberg-contrast
     # Bar color
     colors{
-        background #000000
+        background #161821
         statusline #FFFFFF
         separator  #666666
         # item             # border # bg    # text
@@ -942,14 +958,13 @@ bar{
     tray_output none
     # Bar color
     colors{
-        background #000000
+        background #161821
         statusline #FFFFFF
-        separator  #666666
+        separator  #161821
         # item             # border # bg    # text
-        binding_mode       #2F343A  #285577 #FFFFFF
+        binding_mode       #161821  #161821 #FFFFFF
     }
 }
-
 # Status bar toggle, hide or show
 bindsym $mod+Shift+b bar mode toggle top-bar
 bindsym $mod+b       bar mode toggle top-bar-overlay

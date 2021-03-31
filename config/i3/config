@@ -276,7 +276,7 @@ exec --no-startup-id kdeconnect-indicator &
 #exec_always --no-startup-id variety
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec_always --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 40 &
+exec_always --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 30 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 exec_always --no-startup-id i3-automark.py
@@ -320,7 +320,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
-bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 20 -p 'dmenu (program launcher)'
+bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'dmenu (program launcher)'
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop

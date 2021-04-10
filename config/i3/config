@@ -30,6 +30,20 @@
 # sudo dnf copr enable fuhrmann/i3-gaps
 # sudo dnf install i3-gaps
 #
+# Note: Save workspace layout (Must be modified in dot rc file)
+# https://pypi.org/project/i3-resurrect/
+# pip install i3-resurrect
+
+# Note: Swap workspace (Must be modified in dot rc file)
+# https://pypi.org/project/i3-workspace-swap/
+# pip install i3-workspace-swap
+
+# Note: Automatic rename workspace with icons [conflict with save workspace]
+# i3-workspace-names-daemon
+# - https://github.com/cboddy/i3-workspace-names-daemon
+# Font awesome icons
+# - https://origin.fontawesome.com/icons?d=gallery
+
 # ======================================================================================
 # GUI Theme Configuration
 # ======================================================================================
@@ -66,13 +80,12 @@
 #       Optirn "XkbLayout" "us"
 #       Option "XkbOptions" "caps:super"
 #       #Option "XkbOptions" "ctrl:nocaps"
-#EndSection
+# EndSection
 #
 # Reference
 #   - https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
 #   - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 #   - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
-# --------------------------------------------------------------------------------------
 
 # ======================================================================================
 # All Mod Key Settings
@@ -141,7 +154,7 @@ new_float normal
 hide_edge_borders smart
 
 # Set windows titlebar fontsize
-font pango: DroidSansMono Nerd Font 12
+font pango: DroidSansMono Nerd Font 12 
 title_align center
 show_marks yes # Marks on titlebar
 for_window [class=".*"] title_format "%title"
@@ -165,8 +178,9 @@ default_orientation horizontal
 #export wallpaper3="$wallpaperd/ALMA"
 #export wallpaper4="$wallpaperd/CATS"
 #export wallpaper5="$wallpaperd/LINUX"
-#export wallpaper6="$wallpaperd/LULIN/"
+#export wallpaper6="$wallpaperd/LULIN"
 #export wallpaper7="$wallpaperd/RUSTY SPOTTED CAT"
+#export wallpaper8="$wallpaperd/THINKPAD"
 # --------------------------------------------------------------------------------------
 
 # Startup wallpaper
@@ -174,7 +188,7 @@ default_orientation horizontal
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
 # Wallpaper mode
-set $mode_wallpaper Wallpaper [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Lulin [7]RS Cat [v]ariety
+set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [v]ariety
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
@@ -185,6 +199,7 @@ mode "$mode_wallpaper" {
     bindsym 5 exec feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (LINUX)"
     bindsym 6 exec feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (LULIN)"
     bindsym 7 exec feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (RS CAT)"
+    bindsym 8 exec feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (THINKPAD)"
     bindsym v exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
     # Exit
     bindsym q      mode "default"
@@ -230,40 +245,41 @@ set $terminal kitty
 # Arandr (GUI Display Manager)
 #exec --no-startup-id arandr
 
+# Lxsession agent (Not work well for now)
+#exec --no-startup-id lxsession
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
-exec_always --no-startup-id nm-applet
+exec --no-startup-id nm-applet
 
 # Bluetooth Manager system tray GUI
-exec_always --no-startup-id blueman-applet
+exec --no-startup-id blueman-applet
 
 # Default numlock on (sudo dnf install numlockx)
-#exec_always --no-startup-id numlockx on &
+#exec --no-startup-id numlockx on &
 
 # Imwheel (Mouse wheel speed)
-#exec_always --no-startup-id imwheel &
+#exec --no-startup-id imwheel &
 
 # Gnome authentication [For gnome software usage]
-exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
-
-# Gnome settings daemon
-exec_always --no-startup-id gnome-settings-daemon
-
-## Gnome power-manager
-#exec_always --no-startup-id gnome-power-manager &
+exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
 # Ibus input method
-exec_always --no-startup-id export GTK_IM_MODULE=ibus
-exec_always --no-startup-id ibus-daemon --xim -d -r
+exec --no-startup-id export GTK_IM_MODULE=ibus
+exec --no-startup-id export XMODIFIER="@im=ibus"
+exec --no-startup-id export GTK_IM_MODULE=ibus
+exec --no-startup-id export QT_IM_MODULE=ibus
+exec --no-startup-id export DefaultIMModule=ibus
+exec --no-startup-id ibus-daemon --xim -d -r
 
 # Parcellite (clipboard)
-exec_always --no-startup-id parcellite
+exec --no-startup-id parcellite
 
 # Set transparent terminal (transparency support)
-exec_always --no-startup-id xcompmgr -c -f -n
+exec --no-startup-id xcompmgr -c -f -n
 
 # Dunst (notification)
-exec_always --no-startup-id dunst
+exec --no-startup-id dunst
 
 # KDE Connet (Connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &
@@ -273,22 +289,25 @@ exec --no-startup-id kdeconnect-indicator &
 #exec --no-startup-id mailspring --background
 
 # Variety (wallpaper manager)
-#exec_always --no-startup-id variety
-
-# Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec_always --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 30 &
-
-# Automark windows [https://github.com/lincheney/i3-automark]
-exec_always --no-startup-id i3-automark.py
+#exec --no-startup-id variety
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+
+# Battery warning [https://github.com/rjekker/i3-battery-popup]
+exec --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 30 &
+
+# Automark windows [https://github.com/lincheney/i3-automark]
+exec --no-startup-id i3-automark.py
 
 # Autotiling [H -> V -> H -> V ...]
 # https://github.com/nwg-piotr/autotiling
 # installation: pip install autotiling
-exec_always --no-startup-id $HOME/anaconda3/bin/autotiling &
+exec --no-startup-id $HOME/anaconda3/bin/autotiling &
+
+# Autoname workspace name with fancy symbols
+#exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -325,7 +344,7 @@ bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono ne
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
 
-## Rofi menu (program launcher, window manager)
+# Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
 bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
@@ -500,13 +519,11 @@ bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
 
 # Kill focus window with confirmation
-set $close "Close the window? (q/y/n)"
-bindsym $mod1+Shift+q mode $close
+set $close "Close the selected window? [c/y/n]"
 bindsym $mod+shift+c  mode $close
 mode $close {
     bindsym y             kill; mode default
-    bindsym q             kill; mode default
-    bindsym $mod1+Shift+q kill; mode default
+    bindsym c             kill; mode default
     bindsym $mod+Shift+c  kill; mode default
     bindsym Return        kill; mode default
     bindsym n             mode default
@@ -555,9 +572,9 @@ bindsym $mod+Shift+f fullscreen toggle global
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
 bindsym $mod+space        focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod1+space       focus mode_toggle exec notify-send -u low "Toggle Window Floating"
+#bindsym $mod1+space       focus mode_toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod+Shift+space  floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod1+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
+#bindsym $mod1+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
 #bindsym $mod+t            floating toggle exec notify-send -u low "Toggle Window Floating"
 #bindsym $mod1+t           floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod+Shift+s      sticky toggle exec notify-send -u low "Toggle Sticky [For Floating]"
@@ -610,10 +627,12 @@ mode "$mode_border" {
 bindsym $mod1+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
 bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
 bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
+
 # Use rofi as input
 bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
 bindsym $mod+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
 bindsym $mod+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+
 # Mark mode
 bindsym $mod+Shift+m mode "$mode_mark"
 set $mode_mark Mark: [m]ark [g]oto [s]wap
@@ -632,8 +651,8 @@ bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 
 # Enter exec command in i3
 # Rename workspace, focus window title
-bindsym $mod+Shift+i  exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
-bindsym $mod+Shift+w  exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
+bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
+bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -710,21 +729,6 @@ bindsym $mod+Shift+F8  move container to workspace number $ws18
 bindsym $mod+Shift+F9  move container to workspace number $ws19
 bindsym $mod+Shift+F10 move container to workspace number $ws20
 
-# Save workspace layout (Must be modified in dot rc file)
-# https://pypi.org/project/i3-resurrect/
-# pip install i3-resurrect
-
-# Swap workspace (Must be modified in dot rc file)
-# https://pypi.org/project/i3-workspace-swap/
-# pip install i3-workspace-swap
-
-# Automatic rename workspace with icons
-# i3-workspace-names-daemon
-# - https://github.com/cboddy/i3-workspace-names-daemon
-# Font awesome icons
-# - https://origin.fontawesome.com/icons?d=gallery
-#exec_always --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json
-
 # Reload the configuration file
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod1+Shift+r reload
@@ -790,9 +794,8 @@ mode "$mode_redshift" {
 # Lock mode -- i3lock
 bindsym Ctrl+Shift+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    #bindsym Return mode "default" exec i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)
-    bindsym Return mode "default" exec i3lock -t -f -i /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/Thinkpad_Fedora.png
-    #bindsym Return mode "default" exec i3lock -t -f -i /home/jordankhwu/Pictures/WALLPAPERS/FEDORA/Thinkpad_Redhat.png
+    bindsym Return exec --no-startup-id i3lock -t -f -i $(find  $wallpaper8 -name "*.png" | shuf -n1), mode "default"
+    # exit mode
     bindsym Escape mode "default"
 }
 
@@ -800,7 +803,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 set $mode_system System: [l]ock, [e]xit, [s]uspend, [h]ibernate, [r]eboot, power[o]ff
 bindsym $mod+Escape mode "$mode_system"
 mode "$mode_system" {
-    bindsym l      exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
+    bindsym l exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym o exec --no-startup-id systemctl poweroff, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -849,13 +852,9 @@ bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u lo
 bindsym --border button9 move left
 bindsym --border button8 move right
 
-# ======================================================================================
-# Mouse Emulation
-# ======================================================================================
-# https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
-# xdotool must be installed
-
 # Mouse emulation by keyboard mapping
+# -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
+# -- xdotool must be installed
 set $mode_mouse Mouse emulator [ctrl+(vim-key)]:small, [(vim-key)]:medium; [shift+(vim-key)]:large, [u]:left, [i]:middle, [o]:right
 #bindsym $mod+Shift+m mode "$mode_mouse"
 bindsym Ctrl+$mod1+m mode "$mode_mouse"
@@ -946,7 +945,6 @@ bar {
         urgent_workspace   #2F343A  #900000 #FFFFFF
     }
 }
-
 bar{
     id top-bar-overlay
     position top

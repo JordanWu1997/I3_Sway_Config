@@ -15,7 +15,9 @@ cp ~/Desktop/Multiplexer_Configs/dunstrc ~/.config/dunst/
 cp ~/Desktop/Multiplexer_Configs/conky.conf ~/.config/conky/
 
 # Applications
-dnf install dolphin ranger google-chrome
+dnf install ranger google-chrome redshift dunst
+dnf install kitty nautilus gnome-screenshot tlp
+dnf install parcellite variety NetworkManager
 
 # I3 python package
 dnf install xdotool
@@ -26,7 +28,8 @@ pip install bumblebee-status --user
 dnf install xbacklight brightnessctl light
 
 # Bluetooth
-dnf install bluez blueman broadcom-bt-firmware.noarch bluez-libs-devel.x86_64 hidapi bluez-tools bluez-hcidump.x86_64
+dnf install bluez blueman broadcom-bt-firmware.noarch 
+dnf install bluez-libs-devel.x86_64 hidapi bluez-tools bluez-hcidump.x86_64
 
 # Sound control
 dnf install alsa-plugins-pulseaudio pavucontrol

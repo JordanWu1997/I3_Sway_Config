@@ -88,15 +88,19 @@
 #   - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 
 # ======================================================================================
-# All Mod Key Settings
+# All About Mod Key Settings And I3 Varaibles
 # ======================================================================================
 # Setup mod (Prefix)#
 # Mod1: alt, Mod4: win
 set $mod  Mod4
 set $mod1 Mod1
 
+# Setup terminal
+#set $terminal gnome-terminal
+set $terminal kitty
+
 # ======================================================================================
-# All Windows Settings
+# All About Windows Settings
 # ======================================================================================
 # This is initial setup for all windows and floating windows in i3
 
@@ -165,7 +169,7 @@ for_window [title=".* Moving.*"] title_format "File transfer in progress..."
 default_orientation horizontal
 
 # ======================================================================================
-# All Wallpapers
+# All About Wallpapers
 # ======================================================================================
 # Set wallpaper (From local wallpapers)
 # [Important]: Wallpaper directory (Add below lines in .profile)
@@ -183,12 +187,8 @@ default_orientation horizontal
 #export wallpaper8="$wallpaperd/THINKPAD"
 # --------------------------------------------------------------------------------------
 
-# Startup wallpaper
-#exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
-exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
-
 # Wallpaper mode
-set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [v]ariety
+set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [v]Variety_Favorite
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
@@ -223,137 +223,7 @@ mode "$mode_variety" {
 }
 
 # ======================================================================================
-# This is to set all startup programs and their key bindings
-# ======================================================================================
-# Setup terminal
-#set $terminal gnome-terminal
-set $terminal kitty
-
-# --------------------------------------------------------------------------------------
-# Startup Applications
-# --------------------------------------------------------------------------------------
-# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
-# label: --same-as   for mirror mode
-#        --right_of  for extend mode
-# -- General setting
-#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
-# -- Setting for my dorm Acer27'
-#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
-# -- Setting for IOA monitor
-#exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
-
-# Arandr (GUI Display Manager)
-#exec --no-startup-id arandr
-
-# Lxsession agent (Not work well for now)
-#exec --no-startup-id lxsession
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-indjependent system tray GUI for it.
-exec --no-startup-id nm-applet
-
-# Bluetooth Manager system tray GUI
-exec --no-startup-id blueman-applet
-
-# Default numlock on (sudo dnf install numlockx)
-#exec --no-startup-id numlockx on &
-
-# Imwheel (Mouse wheel speed)
-#exec --no-startup-id imwheel &
-
-# Gnome authentication [For gnome software usage]
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
-
-# Ibus input method
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id export XMODIFIER="@im=ibus"
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id export QT_IM_MODULE=ibus
-exec --no-startup-id export DefaultIMModule=ibus
-exec --no-startup-id ibus-daemon --xim -d -r
-
-# Parcellite (clipboard)
-exec --no-startup-id parcellite
-
-# Set transparent terminal (transparency support)
-exec --no-startup-id xcompmgr -c -f -n
-
-# Dunst (notification)
-exec --no-startup-id dunst
-
-# KDE Connet (Connect to android smartphone) in background
-exec --no-startup-id /usr/libexec/kdeconnectd &
-exec --no-startup-id kdeconnect-indicator &
-
-# Mailspring (Email manager) in background
-#exec --no-startup-id mailspring --background
-
-# Variety (wallpaper manager)
-#exec --no-startup-id variety
-
-# Conky (system overview and hotkey)
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
-
-# Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 30 &
-
-# Automark windows [https://github.com/lincheney/i3-automark]
-exec --no-startup-id i3-automark.py
-
-# Autotiling [H -> V -> H -> V ...]
-# https://github.com/nwg-piotr/autotiling
-# installation: pip install autotiling
-exec --no-startup-id $HOME/anaconda3/bin/autotiling &
-
-# Autoname workspace name with fancy symbols
-#exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
-
-# --------------------------------------------------------------------------------------
-# System Keybindings
-# --------------------------------------------------------------------------------------
-# Use pactl to adjust volume in PulseAudio.
-# Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
-set $refresh_i3status 'killall -SIGUSR1 i3status'
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-# Media player controls
-bindsym XF86AudioPlay  exec playerctl play
-bindsym XF86AudioPause exec playerctl pause
-bindsym XF86AudioNext  exec playerctl next
-bindsym XF86AudioPrev  exec playerctl previous
-
-# Keyboard backlight control [Not working now]
-# Check https://github.com/alberto-santini/i3-configuration-x1
-# Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
-bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
-
-# Start dmenu (a program launcher)
-bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'dmenu (program launcher)'
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
-
-# Rofi menu (program launcher, window manager)
-# Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
-bindsym $mod1+d         exec --no-startup-id rofi -show window -terminal $terminal
-bindsym $mod1+Shift+d   exec --no-startup-id rofi -show windowcd -terminal $terminal
-bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
-
-# ======================================================================================
-# All about i3-gap
+# All About i3-gap Gap Setting
 # ======================================================================================
 # Comment out this session if you are using original i3
 
@@ -505,9 +375,43 @@ mode "$mode_gaps_left" {
 }
 
 # ======================================================================================
-# All Bindkeys
+# All About Bindkeys
 # ======================================================================================
 # This is to save all bindkeys of modes and programs
+
+# Use pactl to adjust volume in PulseAudio.
+# Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
+set $refresh_i3status 'killall -SIGUSR1 i3status'
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Media player controls
+bindsym XF86AudioPlay  exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext  exec playerctl next
+bindsym XF86AudioPrev  exec playerctl previous
+
+# Keyboard backlight control [Not working now]
+# Check https://github.com/alberto-santini/i3-configuration-x1
+# Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
+
+# Start dmenu (a program launcher)
+bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'dmenu (program launcher)'
+# There also is the (new) i3-dmenu-desktop which only displays applications
+# shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
+#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
+
+# Rofi menu (program launcher, window manager)
+# Configure Rofi in $HOME/.config/rofi/.config
+bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
+bindsym $mod1+d         exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod1+Shift+d   exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
 
 # Start a terminal
 #bindsym Ctrl+Return exec $terminal
@@ -563,6 +467,7 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+z split horizontal exec notify-send -u low "Split Horizontally"
+bindsym $mod+x split horizontal exec notify-send -u low "Split Horizontally"
 bindsym $mod+v split vertical exec notify-send -u low "Split Vertically"
 
 # Toggle fullscreen
@@ -572,11 +477,7 @@ bindsym $mod+Shift+f fullscreen toggle global
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
 bindsym $mod+space        focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-#bindsym $mod1+space       focus mode_toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod+Shift+space  floating toggle exec notify-send -u low "Toggle Window Floating"
-#bindsym $mod1+Shift+space floating toggle exec notify-send -u low "Toggle Window Floating"
-#bindsym $mod+t            floating toggle exec notify-send -u low "Toggle Window Floating"
-#bindsym $mod1+t           floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym $mod+Shift+s      sticky toggle exec notify-send -u low "Toggle Sticky [For Floating]"
 
 # Change container layout (stacked, tabbed, toggle split)
@@ -800,12 +701,12 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 }
 
 # System manager (Keyboard)
-set $mode_system System: [l]ock, [e]xit, [s]uspend, [h]ibernate, [r]eboot, power[o]ff
+set $mode_system System: [l]ock, [e]xit, [s]uspend, [h]ibernate, [r]eboot, [p]oweroff
 bindsym $mod+Escape mode "$mode_system"
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym o exec --no-startup-id systemctl poweroff, mode "default"
+    bindsym p exec --no-startup-id systemctl poweroff, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id i3-msg suspend, mode "default"
     bindsym h exec --no-startup-id i3-msg hibernate, mode "default"
@@ -834,7 +735,6 @@ bindsym $mod+plus   scratchpad show exec notify-send -u low "Bring Scratchpad Wi
 floating_modifier $mod
 
 # Focus follow
-#focus_follows_mouse no
 focus_follows_mouse yes
 mouse_warping output
 
@@ -893,17 +793,14 @@ mode "$mode_mouse" {
 }
 
 # ======================================================================================
-# All i3 Bar Settings
+# All About I3 Bar Settings
 # ======================================================================================
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # For i3bar theme configuration, check online color palette configurator
 # -- https://thomashunter.name/i3-configurator/
-#
-# --------------------------------------------------------------------------------------
-# Setting i3bar
-# --------------------------------------------------------------------------------------
-# All monitor
+
+# Status bar for general purposes
 bar {
     id top-bar
     # Basic bar
@@ -945,6 +842,8 @@ bar {
         urgent_workspace   #2F343A  #900000 #FFFFFF
     }
 }
+
+# Status bar for mode indication
 bar{
     id top-bar-overlay
     position top
@@ -963,6 +862,99 @@ bar{
         binding_mode       #161821  #161821 #FFFFFF
     }
 }
+
 # Status bar toggle, hide or show
 bindsym $mod+Shift+b bar mode toggle top-bar
 bindsym $mod+b       bar mode toggle top-bar-overlay
+
+# ======================================================================================
+# All About I3 Startup Commands/Programs
+# ======================================================================================
+# Following commands/programs will run after I3 starts
+#
+# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
+# label: --same-as   for mirror mode
+#        --right_of  for extend mode
+# -- General setting
+#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+# -- Setting for my dorm Acer27'
+#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
+# -- Setting for IOA monitor
+#exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+
+# Startup wallpaper
+#exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
+exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
+
+# Arandr (GUI Display Manager)
+#exec --no-startup-id arandr
+
+# Lxsession agent (Not work well for now)
+#exec --no-startup-id lxsession
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-indjependent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Bluetooth Manager system tray GUI
+exec --no-startup-id blueman-applet
+
+# Default numlock on (sudo dnf install numlockx)
+exec --no-startup-id numlockx on &
+
+# Imwheel (Mouse wheel speed)
+#exec --no-startup-id imwheel &
+
+# Gnome authentication [For gnome software usage]
+exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
+
+# Ibus input method
+exec --no-startup-id export GTK_IM_MODULE=ibus
+exec --no-startup-id export XMODIFIER="@im=ibus"
+exec --no-startup-id export GTK_IM_MODULE=ibus
+exec --no-startup-id export QT_IM_MODULE=ibus
+exec --no-startup-id export DefaultIMModule=ibus
+exec --no-startup-id ibus-daemon --xim -d -r
+
+# Parcellite (clipboard)
+exec --no-startup-id parcellite
+
+# Set transparent terminal (transparency support)
+exec --no-startup-id xcompmgr -c -f -n
+
+# Dunst (notification)
+exec --no-startup-id dunst
+
+# KDE Connet (Connect to android smartphone) in background
+exec --no-startup-id /usr/libexec/kdeconnectd &
+exec --no-startup-id kdeconnect-indicator &
+
+# Mailspring (Email manager) in background
+#exec --no-startup-id mailspring --background
+
+# Variety (wallpaper manager)
+#exec --no-startup-id variety
+
+# Conky (system overview and hotkey)
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+
+# Battery warning [https://github.com/rjekker/i3-battery-popup]
+exec --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 30 &
+
+# Automark windows [https://github.com/lincheney/i3-automark]
+exec --no-startup-id i3-automark.py
+
+# Autotiling [H -> V -> H -> V ...]
+# https://github.com/nwg-piotr/autotiling
+# installation: pip install autotiling
+exec --no-startup-id $HOME/anaconda3/bin/autotiling &
+
+# Autoname workspace name with fancy symbols
+#exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork

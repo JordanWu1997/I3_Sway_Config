@@ -1,10 +1,19 @@
-sudo pacman -S i3-gaps i3blocks i3lock
+#sudo pacman -S lightdm lightdm-gtk-greeter --needed
+sudo pacman -S xorg xorg-xinit xterm
+sudo pacman -S acpi acpid
+sudo pacman -S virtualbox-guest-utils
+sudo pacman -S xf86-video-intel mesa
+sudo pacman -S xf86-video-intel xf86-intel-vmware xorg-twm
+sudo pacman -S ttf-dejavu
+sudo pacman -S i3-gaps i3blocks i3lock i3status xss-lock --needed
+sudo pacman -S alsa-utils
 sudo pacman -S arandr kitty dunst conky rofi
 sudo pacman -S nm-applet blueman-applet numlockx
 sudo pacman -S parcellite xcompmgr lxappearance
 sudo pacman -S ibus ibus-chewing
 
-pip install ranger bumblebee-status i3-resurrect i3-workspace-swap
+python -m pip install ranger bumblebee-status 
+python -m pip install i3-resurrect i3-workspace-swap
 
 cd ~/.config/
 ln -s ~/Desktop/I3_Sway_Config/config/kitty ./

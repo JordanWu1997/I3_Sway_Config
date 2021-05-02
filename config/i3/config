@@ -158,7 +158,7 @@ new_float normal
 hide_edge_borders smart
 
 # Set windows titlebar fontsize
-font pango: DroidSansMono Nerd Font 12 
+font pango: DroidSansMono Nerd Font 12
 title_align center
 show_marks yes # Marks on titlebar
 for_window [class=".*"] title_format "%title"
@@ -393,7 +393,7 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
-# Keyboard backlight control [Not working now]
+# Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
@@ -525,9 +525,9 @@ mode "$mode_border" {
 # -- read "1" character and mark the current window with this character
 # -- read "1" character and go to the window with the character
 # -- read "1" character and swap the current window to the window with the character
-bindsym $mod1+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
-bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
-bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
+# bindsym $mod1+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+# bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+# bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
 
 # Use rofi as input
 bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
@@ -887,7 +887,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
 # Arandr (GUI Display Manager)
-#exec --no-startup-id arandr
+exec --no-startup-id arandr
 
 # Lxsession agent (Not work well for now)
 #exec --no-startup-id lxsession
@@ -947,7 +947,7 @@ exec --no-startup-id i3-automark.py
 
 # Autotiling [H -> V -> H -> V ...]
 # https://github.com/nwg-piotr/autotiling
-# installation: pip install autotiling
+# Installation: pip install autotiling
 exec --no-startup-id $HOME/anaconda3/bin/autotiling &
 
 # Autoname workspace name with fancy symbols

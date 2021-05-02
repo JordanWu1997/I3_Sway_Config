@@ -42,7 +42,7 @@ conky.config = {
 	own_window_transparent = true,
 	wn_window_argb_visual = true,
 	own_window_argb_value = 255,
-    update_interval = 1.0,
+    update_interval = 0.001,
 }
 conky.text = [[
 ${color}[System Command] ${hr 2}

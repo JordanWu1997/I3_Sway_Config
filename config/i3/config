@@ -17,14 +17,14 @@
 # Date: 2020/11/22
 # --------------------------------------------------------------------------------------
 #
-# # This modified configuration file is highly refered to link below # Reference
-#    - https://i3wm.org/docs/userguide.html
-#    - https://github.com/levinit/i3wm-config
-#    - https://www.itread01.com/p/142448.html
-#    - https://medium.com/@mudrii/archlinux-tutorial-part-3-i3-configuration-and-operation-9cd6dc90e524
-#    - https://github.com/alberto-santini/i3-configuration-x1
-#    - https://segmentfault.com/a/1190000022083424
-#    - https://github.com/Airblader/i3 (i3-gap)
+# This modified configuration file is highly refered to link below # Reference
+# -- https://i3wm.org/docs/userguide.html
+# -- https://github.com/levinit/i3wm-config
+# -- https://www.itread01.com/p/142448.html
+# -- https://medium.com/@mudrii/archlinux-tutorial-part-3-i3-configuration-and-operation-9cd6dc90e524
+# -- https://github.com/alberto-santini/i3-configuration-x1
+# -- https://segmentfault.com/a/1190000022083424
+# -- https://github.com/Airblader/i3 (i3-gap)
 #
 # Note: Install i3-gaps in Fedora 33
 # sudo dnf copr enable fuhrmann/i3-gaps
@@ -40,9 +40,9 @@
 
 # Note: Automatic rename workspace with icons [conflict with save workspace]
 # i3-workspace-names-daemon
-# - https://github.com/cboddy/i3-workspace-names-daemon
+# -- https://github.com/cboddy/i3-workspace-names-daemon
 # Font awesome icons
-# - https://origin.fontawesome.com/icons?d=gallery
+# -- https://origin.fontawesome.com/icons?d=gallery
 
 # ======================================================================================
 # GUI Theme Configuration
@@ -83,9 +83,9 @@
 # EndSection
 #
 # Reference
-#   - https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
-#   - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
-#   - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
+# -- https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
+# -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
+# -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 
 # ======================================================================================
 # All About Mod Key Settings And I3 Varaibles
@@ -400,7 +400,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
-bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'dmenu (program launcher)'
+#bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'dmenu (program launcher)'
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
@@ -414,7 +414,6 @@ bindsym $mod1+Shift+d   exec --no-startup-id rofi -show windowcd -terminal $term
 bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
 
 # Start a terminal
-#bindsym Ctrl+Return exec $terminal
 bindsym $mod+Return exec $terminal
 bindsym $mod+KP_Enter exec $terminal
 
@@ -676,7 +675,7 @@ mode "$mode_resize" {
 # Redshift mode
 # - https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
 bindsym $mod+Shift+z mode "$mode_redshift"
-set $mode_redshift Set colour temperature: [a]uto, [r]eset, [1]500K, [2]500K, [3]000K, [4]000K, [5]000K, [6]000K
+set $mode_redshift Set color temperature: [a]uto, [r]eset, [1]500K, [2]500K, [3]000K, [4]000K, [5]000K, [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
     bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
@@ -692,7 +691,7 @@ mode "$mode_redshift" {
     bindsym Escape mode "default"
 }
 
-# Lock mode -- i3lock
+# Lock mode -- i3lock (User defined)
 bindsym Ctrl+Shift+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
     bindsym Return exec --no-startup-id i3lock -t -f -i $(find  $wallpaper8 -name "*.png" | shuf -n1), mode "default"
@@ -704,7 +703,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 set $mode_system System: [l]ock, [e]xit, [s]uspend, [h]ibernate, [r]eboot, [p]oweroff
 bindsym $mod+Escape mode "$mode_system"
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1), mode "default"
+    bindsym l exec --no-startup-id loginctl lock-session, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym p exec --no-startup-id systemctl poweroff, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"

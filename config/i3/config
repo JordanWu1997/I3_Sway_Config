@@ -150,8 +150,8 @@ popup_during_fullscreen smart
 # if you'd like to have a border (or 'normal')
 # Windows frame width pixel (or 'normal')
 # Comment out below lines for display title as default
-for_window [class="^.*"] border pixel 5
-new_window pixel 5
+for_window [class="^.*"] border pixel 2
+new_window pixel 2
 new_float normal
 
 # Hide edge border if there's only one window
@@ -232,8 +232,8 @@ mode "$mode_variety" {
 # Gaps
 gaps inner 10
 gaps outer 10
-smart_gaps on
-#smart_gaps inverse_outer
+#smart_gaps on
+smart_gaps inverse_outer
 
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration

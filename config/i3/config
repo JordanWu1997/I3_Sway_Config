@@ -185,22 +185,24 @@ default_orientation horizontal
 #export wallpaper6="$wallpaperd/LULIN"
 #export wallpaper7="$wallpaperd/RUSTY SPOTTED CAT"
 #export wallpaper8="$wallpaperd/THINKPAD"
+#export wallpaper9="$wallpaperd/DT_WALLPAPERS"
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode
-set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [v]Variety_Favorite
+set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [v]Variety_Favorite
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
-    bindsym 1 exec feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (I3WM)"
-    bindsym 2 exec feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (FEDORA)"
-    bindsym 3 exec feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (ALMA)"
-    bindsym 4 exec feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (CATS)"
-    bindsym 5 exec feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (LINUX)"
-    bindsym 6 exec feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (LULIN)"
-    bindsym 7 exec feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (RS CAT)"
-    bindsym 8 exec feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (THINKPAD)"
-    bindsym v exec feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1) && notify-send -u low "Shuffle Wallpaper (VARIETY)"
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1)
+    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name "*.jpg" | shuf -n1)
+    bindsym v exec notify-send -u low "Shuffle Wallpaper (VARIETY)"  && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
     # Exit
     bindsym q      mode "default"
     bindsym Return mode "default"
@@ -211,11 +213,11 @@ mode "$mode_wallpaper" {
 set $mode_variety Variety: [n]ext [p]revious [P]ause [R]esume [F]avorite
 bindsym Ctrl+$mod1+v mode "$mode_variety"
 mode "$mode_variety" {
-    bindsym n       exec --no-startup-id variety -n && notify-send -u low "Next Wallpaper (Variety)"
-    bindsym p       exec --no-startup-id variety -p && notify-send -u low "Previous Wallaper (Variety)"
-    bindsym Shift+p exec --no-startup-id variety --pause && notify-send -u low "Variety paused"
-    bindsym Shift+r exec --no-startup-id variety --resume && notify-send -u low "Variety resumed"
-    bindsym Shift+f exec --no-startup-id variety -f && notify-send -u low "Favorite Added (Variety)"
+    bindsym n       exec notify-send -u low "Next Wallpaper (Variety)"    && variety -n
+    bindsym p       exec notify-send -u low "Previous Wallaper (Variety)" && variety -p
+    bindsym Shift+p exec notify-send -u low "Variety paused"              && variety --pause
+    bindsym Shift+r exec notify-send -u low "Variety resumed"             && variety --resume
+    bindsym Shift+f exec notify-send -u low "Favorite Added (Variety)"    && variety -f
     # Exit
     bindsym q      mode "default"
     bindsym Return mode "default"
@@ -230,7 +232,8 @@ mode "$mode_variety" {
 # Gaps
 gaps inner 10
 gaps outer 10
-smart_gaps inverse_outer
+smart_gaps on
+#smart_gaps inverse_outer
 
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration
@@ -407,11 +410,12 @@ bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
-bindsym $mod1+d         exec --no-startup-id rofi -show window -terminal $terminal
-bindsym $mod1+Shift+d   exec --no-startup-id rofi -show windowcd -terminal $terminal
-bindsym Control+$mod1+d exec --no-startup-id rofi -show keys -terminal $terminal
+bindsym $mod+Shift+Return exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
+bindsym $mod1+d           exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod1+Shift+d     exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym Control+$mod1+d   exec --no-startup-id rofi -show keys -terminal $terminal
 
 # Start a terminal
 bindsym $mod+Return exec $terminal
@@ -463,11 +467,11 @@ bindsym $mod+Shift+Right move right
 
 # Split in horizontal orientation
 # Split in vertical orientation
-bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
-bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
+bindsym $mod+c split toggle     exec notify-send -u low "Toggled Split Direction"
+bindsym $mod+q split toggle     exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+z split horizontal exec notify-send -u low "Split Horizontally"
 bindsym $mod+x split horizontal exec notify-send -u low "Split Horizontally"
-bindsym $mod+v split vertical exec notify-send -u low "Split Vertically"
+bindsym $mod+v split vertical   exec notify-send -u low "Split Vertically"
 
 # Toggle fullscreen
 bindsym $mod+f       fullscreen toggle
@@ -476,12 +480,12 @@ bindsym $mod+Shift+f fullscreen toggle global
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
 bindsym $mod+space        focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+Shift+space  floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+Shift+s      sticky toggle exec notify-send -u low "Toggle Sticky [For Floating]"
+bindsym $mod+Shift+space  floating toggle   exec notify-send -u low "Toggle Window Floating"
+bindsym $mod+Shift+s      sticky toggle     exec notify-send -u low "Toggle Sticky [For Floating]"
 
 # Change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
-bindsym $mod+w layout tabbed exec notify-send -u low "Tabbed Mode On"
+bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle split
 
 # Titlebar mode
@@ -492,7 +496,7 @@ set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
-    bindsym s [class="^.*"] border normal; exec notify-send -u low "Show All Title-bars"
+    bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Title-bars"
     bindsym h [class="^.*"] border pixel 5; exec notify-send -u low "Hide All Title-bars"
     bindsym b mode "$mode_border"
     bindsym m mode "$mode_mark"
@@ -723,7 +727,7 @@ bindsym $mod+Shift+Escape \
     -B Lock "i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)"
 
 # Interactive screenshot by pressing printscreen
-bindsym --release Print  exec notify-send -u low "Interactive Screenshot" && gnome-screenshot -i
+bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
 bindsym mod4+Print       exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
 bindsym mod4+Shift+Print exec notify-send -u low "Take Selected Area Screenshot" && gnome-screenshot -a
 
@@ -886,7 +890,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
 
 # Arandr (GUI Display Manager)
-exec --no-startup-id arandr
+#exec --no-startup-id arandr
 
 # Lxsession agent (Not work well for now)
 #exec --no-startup-id lxsession
@@ -921,6 +925,10 @@ exec --no-startup-id parcellite
 # Set transparent terminal (transparency support)
 exec --no-startup-id xcompmgr -c -f -n
 
+# Set blur terminal (need heavy computation needed)
+# https://man.archlinux.org/man/picom.1.en
+# exec --no-startup-id picom --blur-method kernel
+
 # Dunst (notification)
 exec --no-startup-id dunst
 
@@ -947,7 +955,7 @@ exec --no-startup-id i3-automark.py
 # Autotiling [H -> V -> H -> V ...]
 # https://github.com/nwg-piotr/autotiling
 # Installation: pip install autotiling
-exec --no-startup-id $HOME/anaconda3/bin/autotiling &
+#exec --no-startup-id $HOME/anaconda3/bin/autotiling &
 
 # Autoname workspace name with fancy symbols
 #exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/app-icons.json

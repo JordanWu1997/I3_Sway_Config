@@ -174,6 +174,7 @@ default_orientation horizontal
 # Set wallpaper (From local wallpapers)
 # [Important]: Wallpaper directory (Add below lines in .profile)
 #              Please change to where you store wallpaper directory
+#              Feel free to modify these wallpaper directories as you want
 # --------------------------------------------------------------------------------------
 #export wallpaperv="/home/jordankhwu/Pictures/VARIETY_SAVED"
 #export wallpaperd="/home/jordankhwu/Pictures/WALLPAPERS"
@@ -698,7 +699,7 @@ mode "$mode_redshift" {
 # Lock mode -- i3lock (User defined)
 bindsym Ctrl+Shift+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    bindsym Return exec --no-startup-id i3lock -t -f -i $(find  $wallpaper8 -name "*.png" | shuf -n1), mode "default"
+    bindsym Return exec --no-startup-id i3lock -t -f -i $(find wallpaper8 -name "*.png" | shuf -n1), mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -724,7 +725,7 @@ bindsym $mod+Shift+Escape \
     -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
     -B Reboot "systemctl reboot" \
     -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
-    -B Lock "i3lock -t -f -i $(find  ${wallpaper2} -name "*.png" | shuf -n1)"
+    -B Lock "i3lock -t -f -i $(find ${wallpaper2} -name "*.png" | shuf -n1)"
 
 # Interactive screenshot by pressing printscreen
 bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
@@ -861,8 +862,8 @@ bar{
         background #161821
         statusline #FFFFFF
         separator  #161821
-        # item             # border # bg    # text
-        binding_mode       #161821  #161821 #FFFFFF
+        # item       # border # bg    # text
+        binding_mode #161821  #161821 #FFFFFF
     }
 }
 
@@ -887,7 +888,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 
 # Startup wallpaper
 #exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
-exec --no-startup-id feh --bg-fill $wallpaper1/I3WM_Blue_Hex.png
+exec --no-startup-id feh --bg-fill $HOME/.config/i3/default.png
 
 # Arandr (GUI Display Manager)
 #exec --no-startup-id arandr
@@ -925,7 +926,7 @@ exec --no-startup-id parcellite
 # Set transparent terminal (transparency support)
 exec --no-startup-id xcompmgr -c -f -n
 
-# Set blur terminal (need heavy computation needed)
+# Set blur terminal (heavy computation needed, abandoned for now)
 # https://man.archlinux.org/man/picom.1.en
 # exec --no-startup-id picom --blur-method kernel
 

@@ -12,5 +12,6 @@ Backup for my I3WM (Xorg) and Sway (Xwayland) configuration
 ## Mode Usage (Tips)
 
 ## TL;DR
+- Wallpaper Resources
 
 ## Reference

@@ -25,11 +25,11 @@
 # -- https://github.com/alberto-santini/i3-configuration-x1
 # -- https://segmentfault.com/a/1190000022083424
 # -- https://github.com/Airblader/i3 (i3-gap)
-#
+
 # Note: Install i3-gaps in Fedora 33
 # sudo dnf copr enable fuhrmann/i3-gaps
 # sudo dnf install i3-gaps
-#
+
 # Note: Save workspace layout (Must be modified in dot rc file)
 # https://pypi.org/project/i3-resurrect/
 # pip install i3-resurrect
@@ -55,13 +55,13 @@
 #   -- for kde : sudo dnf install kvantum
 #       -- for qt4 : sudo dnf install qt-config
 #       -- for qt5 : sudo dnf install qt5ct qt5-qtstyleplugins
-#
+
 # ======================================================================================
 # Keyboard and Trackpad Setup
 # ======================================================================================
 # Setup trackpad natural scrolling in i3 && Setup trackpad tap in i3
 # In /usr/share/X11/xorg.conf.d/40-libinput.conf, add the following
-#
+
 # Section "InputClass"
 #       Identifier "libinput touchpad catchall"
 #       MatchIsTouchpad "on"
@@ -70,7 +70,7 @@
 #       Option "NaturalScrolling" "True"
 #       Option "Tapping" "On"
 # EndSection
-#
+
 # Remap Capslock to Win
 # In /etc/X11/xorg.conf.d/00-keyboard.conf, add the following
 #
@@ -81,7 +81,7 @@
 #       Option "XkbOptions" "caps:super"
 #       #Option "XkbOptions" "ctrl:nocaps"
 # EndSection
-#
+
 # Reference
 # -- https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
 # -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
@@ -154,7 +154,7 @@ for_window [class="^.*"] border pixel 2
 new_window pixel 2
 new_float normal
 
-# Hide edge border if there's only one window
+# Hide edge border if there is only one window
 hide_edge_borders smart
 
 # Set windows titlebar fontsize
@@ -204,7 +204,7 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name "*.jpg" | shuf -n1)
     bindsym v exec notify-send -u low "Shuffle Wallpaper (VARIETY)"  && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
-    # Exit
+    # exit
     bindsym q      mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -219,7 +219,7 @@ mode "$mode_variety" {
     bindsym Shift+p exec notify-send -u low "Variety paused"              && variety --pause
     bindsym Shift+r exec notify-send -u low "Variety resumed"             && variety --resume
     bindsym Shift+f exec notify-send -u low "Favorite Added (Variety)"    && variety -f
-    # Exit
+    # exit
     bindsym q      mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -385,7 +385,7 @@ mode "$mode_gaps_left" {
 
 # Use pactl to adjust volume in PulseAudio.
 # Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
-set $refresh_i3status 'killall -SIGUSR1 i3status'
+set $refresh_i3status "killall -SIGUSR1 i3status"
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
@@ -404,7 +404,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher)
-#bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'dmenu (program launcher)'
+#bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono nerd font 16" -l 10 -p "dmenu (program launcher)"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
@@ -490,15 +490,13 @@ bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle split
 
 # Titlebar mode
-bindsym $mod+t       mode "$mode_titlebar"
-bindsym $mod+Shift+t mode "$mode_titlebar"
 bindsym Ctrl+$mod1+t mode "$mode_titlebar"
 set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title [b]order_mode [m]ark_mode
 mode "$mode_titlebar" {
-    bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p 'New title name')
+    bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
     bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Title-bars"
-    bindsym h [class="^.*"] border pixel 5; exec notify-send -u low "Hide All Title-bars"
+    bindsym h [class="^.*"] border pixel 2; exec notify-send -u low "Hide All Title-bars"
     bindsym b mode "$mode_border"
     bindsym m mode "$mode_mark"
     # exit mode: "Enter" or "Escape"
@@ -506,6 +504,10 @@ mode "$mode_titlebar" {
     bindsym Escape mode "default"
 }
 
+# Toggle title bar
+bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Title-bars"
+
+# Titlebar mode (Borders)
 set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [t]oggle
 mode "$mode_border" {
     bindsym 0 border none
@@ -517,7 +519,7 @@ mode "$mode_border" {
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
-    # motion ()change focus)
+    # motion (change focus)
     bindsym $mod+h     focus left
     bindsym $mod+j     focus down
     bindsym $mod+k     focus up
@@ -525,26 +527,26 @@ mode "$mode_border" {
     bindsym $mod+space focus mode_toggle
 }
 
-# Use i3-msg as input [Not used]
+# Mark mode [use i3-msg as input]
 # -- read "1" character and mark the current window with this character
 # -- read "1" character and go to the window with the character
 # -- read "1" character and swap the current window to the window with the character
-# bindsym $mod1+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
-# bindsym $mod1+g exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
-# bindsym $mod1+p exec i3-input -F 'swap container with mark %s' -l 1 -P 'Swapto: '
+bindsym $mod+m exec i3-input -F "mark %s" -l 1 -P "Mark: "
+bindsym $mod+g exec i3-input -F "[con_mark="%s"] focus" -l 1 -P "Goto: "
+bindsym $mod+p exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
 
-# Use rofi as input
-bindsym $mod+m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
-bindsym $mod+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-bindsym $mod+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+# Mark mode [use rofi as input] [Not used]
+#bindsym $mod1+m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
+#bindsym $mod1+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
+#bindsym $mod1+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
 
-# Mark mode
+# Mark mode [use rofi as input]
 bindsym $mod+Shift+m mode "$mode_mark"
 set $mode_mark Mark: [m]ark [g]oto [s]wap
 mode "$mode_mark" {
-    bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p 'Mark')
+    bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
     bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-    bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p 'Swapto [Mark]')
+    bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -556,8 +558,8 @@ bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 
 # Enter exec command in i3
 # Rename workspace, focus window title
-bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p 'i3 Command')
-bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p 'New workspace name')
+bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 Command")
+bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p "New workspace name")
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -634,15 +636,24 @@ bindsym $mod+Shift+F8  move container to workspace number $ws18
 bindsym $mod+Shift+F9  move container to workspace number $ws19
 bindsym $mod+Shift+F10 move container to workspace number $ws20
 
-# Reload the configuration file
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod1+Shift+r reload
-bindsym $mod+Shift+r  restart
+# Reload the configuration file (Keyboard)
+# Restart i3 inplace (preserves your layout/session, can be used to update i3)
+bindsym $mod+r             reload
+bindsym Ctrl+$mod1+Shift+r restart
+
+# Reload the configuration file (Mouse)
+bindsym $mod+Shift+r \
+    exec i3-nagbar \
+    -t warning -f "pango:DroidSansMono Nerd Font 12" \
+    -m "You pressed the restart/reload shortcut. Choose one of the following options to operate." \
+    -B "Restart i3" "i3-msg restart" \
+    -B "Reload i3" "i3-msg reload"
 
 # Exit i3 (logs you out of your X session)
+# Note: Wrapped double quotation is needed here
 bindsym $mod+Shift+e  \
-    exec "i3-nagbar -t warning \
-    -f 'pango:DroidSansMono Nerd Font 12' \
+    exec "i3-nagbar \
+    -t warning -f 'pango:DroidSansMono Nerd Font 12' \
     -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' \
     -B 'Yes, exit i3' 'i3-msg exit'"
 
@@ -653,7 +664,7 @@ bindsym Ctrl+$mod1+k resize shrink height 5 px or 5 ppt
 bindsym Ctrl+$mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
-bindsym $mod+r mode "$mode_resize"
+bindsym Ctrl+$mod1+r mode "$mode_resize"
 set $mode_resize Resize mode [(vim-key)]:small step, [(arrow-key)]:big step
 mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
@@ -697,9 +708,9 @@ mode "$mode_redshift" {
 }
 
 # Lock mode -- i3lock (User defined)
-bindsym Ctrl+Shift+$mod1+l mode "i3lock: Return to lock/Escape to Cancel"
+bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    bindsym Return exec --no-startup-id i3lock -t -f -i $(find wallpaper8 -name "*.png" | shuf -n1), mode "default"
+    bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name "*.png" | shuf -n1), mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -729,8 +740,8 @@ bindsym $mod+Shift+Escape \
 
 # Interactive screenshot by pressing printscreen
 bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
-bindsym mod4+Print       exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
-bindsym mod4+Shift+Print exec notify-send -u low "Take Selected Area Screenshot" && gnome-screenshot -a
+bindsym $mod+Print       exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
+bindsym $mod+Shift+Print exec notify-send -u low "Take Selected Area Screenshot" && gnome-screenshot -a
 
 # Scratchpad: hide | show window(minus is "-" and plus is "+".)
 bindsym $mod+minus  move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
@@ -829,8 +840,8 @@ bar {
     pasink pasource brightness caffeine \
     time dunst date battery \
     -p home.path=/home time.format="%H:%M" \
-    date.format="%a, %b/%d/%Y CW%V" memory.format='{percent:03.01f}%' \
-    disk.format='{percent:05.02f}%' \
+    date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
+    disk.format="{percent:05.02f}%" \
     pasink.percent_change=1 pasource.percent_change=1 \
     brightness.step=1 \
     -t iceberg-contrast
@@ -948,13 +959,14 @@ exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id /home/jordankhwu/System_Setup/i3-battery-popup.sh -N -L 30 &
+exec --no-startup-id $HOME/System_Setup/i3-battery-popup.sh -N -L 30 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
-exec --no-startup-id i3-automark.py
+# Modified to mark all windows with lowercase instead of original uppercase
+exec --no-startup-id $HOME/System_Setup/i3-automark.py &
 
-# Autotiling [H -> V -> H -> V ...]
-# https://github.com/nwg-piotr/autotiling
+# Autotiling [https://github.com/nwg-piotr/autotiling]
+# Tiling direction sequence: H -> V -> H -> V ...
 # Installation: pip install autotiling
 #exec --no-startup-id $HOME/anaconda3/bin/autotiling &
 

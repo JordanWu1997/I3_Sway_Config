@@ -31,15 +31,16 @@
 # sudo dnf install i3-gaps
 
 # Note: I3 working environment
-# Below command must be added to shell dotfile
+# Below commands must be added to shell dotfile
 # export PATH="$PATH:$HOME/.config/i3/bin"
+# export I3_BIN="$HOME/.config/i3/bin"
 
 # Note: Save workspace layout
-# https://pypi.org/project/i3-resurrect/
+# -- https://pypi.org/project/i3-resurrect/
 # pip install i3-resurrect
 
 # Note: Swap workspace
-# https://pypi.org/project/i3-workspace-swap/
+# -- https://pypi.org/project/i3-workspace-swap/
 # pip install i3-workspace-swap
 
 # Note: Automatic rename workspace with icons [conflict with save workspace]
@@ -195,20 +196,19 @@ default_orientation horizontal
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode
-set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [v]Variety_Favorite
+set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [v]ariety_mode
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
-bindsym Ctrl+Shift+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1)
-    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1)
-    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name "*.jpg" | shuf -n1)
-    bindsym v exec notify-send -u low "Shuffle Wallpaper (VARIETY)"  && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && variety --set=$(find $wallpaper1 -name "*.png" | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && variety --set=$(find $wallpaper2 -name "*.png" | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && variety --set=$(find $wallpaper3 -name "*.png" | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && variety --set=$(find $wallpaper4 -name "*.jpg" | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && variety --set=$(find $wallpaper5 -name "*.png" | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && variety --set=$(find $wallpaper6 -name "*.jpg" | shuf -n1)
+    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && variety --set=$(find $wallpaper7 -name "*.png" | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && variety --set=$(find $wallpaper8 -name "*.png" | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && variety --set=$(find $wallpaper9 -name "*.jpg" | shuf -n1)
+    bindsym v mode $mode_variety
     # exit
     bindsym q      mode "default"
     bindsym Return mode "default"
@@ -216,17 +216,16 @@ mode "$mode_wallpaper" {
 }
 
 # Variety mode
-set $mode_variety Variety: [n]ext [p]revious [P]ause [R]esume [F]avorite
-bindsym Ctrl+$mod1+v mode "$mode_variety"
+set $mode_variety Variety: [n]ext [p]revious [P]ause [R]esume [A]dd_Favorite [F]avorite
 mode "$mode_variety" {
-    bindsym n       exec notify-send -u low "Next Wallpaper (Variety)"    && variety -n
-    bindsym p       exec notify-send -u low "Previous Wallaper (Variety)" && variety -p
-    bindsym Shift+p exec notify-send -u low "Variety paused"              && variety --pause
-    bindsym Shift+r exec notify-send -u low "Variety resumed"             && variety --resume
-    bindsym Shift+f exec notify-send -u low "Favorite Added (Variety)"    && variety -f
-    # exit
-    bindsym q      mode "default"
-    bindsym Return mode "default"
+    bindsym n       exec notify-send -u low "Next Wallpaper (VARIETY)"            && variety -n
+    bindsym p       exec notify-send -u low "Previous Wallaper (VARIETY)"         && variety -p
+    bindsym Shift+p exec notify-send -u low "Pausee Changing Wallpaper (VARIETY)" && variety --pause
+    bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
+    bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)"           && variety -f
+    bindsym Shift+f exec notify-send -u low "Shuffle Favroite (VARIETY)"          && variety --set=$(find $wallpaperv -name "*.jpg" | shuf -n1)
+    # exi
+    bindsym Return mode "$mode_wallpaper"
     bindsym Escape mode "default"
 }
 
@@ -421,10 +420,10 @@ bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $termin
 bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
 bindsym $mod1+d           exec --no-startup-id rofi -show window -terminal $terminal
 bindsym $mod1+Shift+d     exec --no-startup-id rofi -show windowcd -terminal $terminal
-bindsym Control+$mod1+d   exec --no-startup-id rofi -show keys -terminal $terminal
+bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal
 
 # Start a terminal
-bindsym $mod+Return exec $terminal
+bindsym $mod+Return   exec $terminal
 bindsym $mod+KP_Enter exec $terminal
 
 # Kill focus window
@@ -433,7 +432,7 @@ bindsym $mod+Shift+q kill
 
 # Kill focus window with confirmation
 set $close "Close the selected window? [c/y/n]"
-bindsym $mod+shift+c  mode $close
+bindsym $mod+shift+c mode $close
 mode $close {
     bindsym y             kill; mode default
     bindsym c             kill; mode default
@@ -497,7 +496,6 @@ bindsym $mod+e layout toggle split
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
 bindsym $mod+Shift+t mode "$mode_titlebar"
-bindsym Ctrl+$mod1+t mode "$mode_titlebar"
 set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title [t]ree_mode [b]order_mode [m]ark_mode
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
@@ -550,8 +548,8 @@ bindsym $mod+p exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
 
 # Mark mode [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
-bindsym $mod+Shift+m mode "$mode_mark"
-set $mode_mark Mark: [m]ark [g]oto [s]wap [t]ree [e]nable-auto-mark [d]isable-auto-mark
+#bindsym $mod+Shift+m mode "$mode_mark"
+set $mode_mark Mark: [m]ark [g]oto [s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
     bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
     bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
@@ -559,7 +557,7 @@ mode "$mode_mark" {
     bindsym e exec i3-automark_enable.sh, mode "default"
     bindsym d exec i3-automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
-    bindsym Return mode "default"
+    bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
 }
 
@@ -574,15 +572,15 @@ bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p "
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
+set $ws1  "1"
+set $ws2  "2"
+set $ws3  "3"
+set $ws4  "4"
+set $ws5  "5"
+set $ws6  "6"
+set $ws7  "7"
+set $ws8  "8"
+set $ws9  "9"
 set $ws10 "10"
 set $ws11 "11"
 set $ws12 "12"
@@ -653,12 +651,13 @@ bindsym $mod+r             reload
 bindsym Ctrl+$mod1+Shift+r restart
 
 # Reload the configuration file (Mouse)
+# Note: Wrapped double quotation is needed here
 bindsym $mod+Shift+r \
-    exec i3-nagbar \
-    -t warning -f "pango:DroidSansMono Nerd Font 12" \
-    -m "You pressed the restart/reload shortcut. Choose one of the following options to operate." \
-    -B "Restart i3" "i3-msg restart" \
-    -B "Reload i3" "i3-msg reload"
+    exec "i3-nagbar \
+    -t warning -f 'pango:DroidSansMono Nerd Font 12' \
+    -m 'You pressed the restart/reload shortcut. Choose one of the following options to operate.' \
+    -B 'Restart i3' 'i3-msg restart' \
+    -B 'Reload i3' 'i3-msg reload'"
 
 # Exit i3 (logs you out of your X session)
 # Note: Wrapped double quotation is needed here
@@ -783,7 +782,7 @@ bindsym --border button8 move right
 # -- xdotool must be installed
 set $mode_mouse Mouse emulator [ctrl+(vim-key)]:small, [(vim-key)]:medium; [shift+(vim-key)]:large, [u]:left, [i]:middle, [o]:right
 #bindsym $mod+Shift+m mode "$mode_mouse"
-bindsym Ctrl+$mod1+m mode "$mode_mouse"
+bindsym $mod+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
     bindsym Ctrl+h exec "xdotool mousemove_relative -- -2 0"
@@ -909,8 +908,8 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
 # Startup wallpaper
-#exec --no-startup-id feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
-exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
+#exec --no-startup-id variety --set=$(find $wallpaper1 -name "*.png" | shuf -n1)
+exec --no-startup-id variety --set=$HOME/.config/i3/share/default.png
 
 # Arandr (GUI Display Manager)
 #exec --no-startup-id arandr
@@ -970,18 +969,18 @@ exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id $SYSTEM_SETUP/i3-battery-popup.sh -N -L 30 &
+exec --no-startup-id $I3_BIN/i3-battery-popup.sh -N -L 30 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 # Modified to mark all windows with lowercase instead of original uppercase
-exec --no-startup-id $SYSTEM_SETUP/i3-automark.py &
+exec --no-startup-id $I3_BIN/i3-automark.py &
 
 # Autotiling [https://github.com/nwg-piotr/autotiling]
 # Tiling direction sequence: H -> V -> H -> V ...
 # Installation: pip install autotiling
 #exec --no-startup-id $HOME/anaconda3/bin/autotiling &
 
-# Autoname workspace name with fancy symbols
+# Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon/]
 #exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so

@@ -13,8 +13,8 @@
 #
 # --------------------------------------------------------------------------------------
 # Author: i3-config-wizard, Jordan Wu
-# Email: jordankhwu@mgmail.com
-# Date: 2020/11/22
+# Email:  jordankhwu@mgmail.com
+# Date:   2020/11/22
 # --------------------------------------------------------------------------------------
 #
 # This modified configuration file is highly refered to link below # Reference
@@ -101,7 +101,6 @@ set $mod  Mod4
 set $mod1 Mod1
 
 # Setup terminal
-#set $terminal gnome-terminal
 set $terminal kitty
 
 # ======================================================================================
@@ -111,6 +110,7 @@ set $terminal kitty
 
 # Colour of border, background, text, indicator, and child_border
 # Online color palette https://thomashunter.name/i3-configurator/
+
 # Default theme
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
@@ -156,9 +156,10 @@ popup_during_fullscreen smart
 # if you'd like to have a border (or 'normal')
 # Windows frame width pixel (or 'normal')
 # Comment out below lines for display title as default
-for_window [class="^.*"] border pixel 2
-new_window pixel 2
-new_float normal
+set $default_border_width pixel 2
+for_window [class="^.*"] border $default_border_width
+new_window $default_border_width
+new_float $default_border_width
 
 # Hide edge border if there is only one window
 hide_edge_borders smart
@@ -195,19 +196,19 @@ default_orientation horizontal
 #export wallpaper9="$wallpaperd/DT_WALLPAPERS"
 # --------------------------------------------------------------------------------------
 
-# Wallpaper mode
+# Wallpaper mode (feh is much faster than variety)
 set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [v]ariety_mode
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && variety --set=$(find $wallpaper1 -name "*.png" | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && variety --set=$(find $wallpaper2 -name "*.png" | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && variety --set=$(find $wallpaper3 -name "*.png" | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && variety --set=$(find $wallpaper4 -name "*.jpg" | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && variety --set=$(find $wallpaper5 -name "*.png" | shuf -n1)
-    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && variety --set=$(find $wallpaper6 -name "*.jpg" | shuf -n1)
-    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && variety --set=$(find $wallpaper7 -name "*.png" | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && variety --set=$(find $wallpaper8 -name "*.png" | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && variety --set=$(find $wallpaper9 -name "*.jpg" | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1)
+    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name "*.jpg" | shuf -n1)
     bindsym v mode $mode_variety
     # exit
     bindsym q      mode "default"
@@ -223,8 +224,8 @@ mode "$mode_variety" {
     bindsym Shift+p exec notify-send -u low "Pausee Changing Wallpaper (VARIETY)" && variety --pause
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)"           && variety -f
-    bindsym Shift+f exec notify-send -u low "Shuffle Favroite (VARIETY)"          && variety --set=$(find $wallpaperv -name "*.jpg" | shuf -n1)
-    # exi
+    bindsym Shift+f exec notify-send -u low "Shuffle Favroite (VARIETY)"          && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
+    # exit
     bindsym Return mode "$mode_wallpaper"
     bindsym Escape mode "default"
 }
@@ -237,11 +238,14 @@ mode "$mode_variety" {
 # Gaps
 gaps inner 10
 gaps outer 10
+# Disable outer gap when there is only one window
 #smart_gaps on
+# Only enable outer gap when there is only one window
 smart_gaps inverse_outer
 
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration
+# Note: horiz, verti, top, right, bottom, left are all part of outer gaps
 set $mode_gaps Gaps: [o]uter, [i]nner, [h]orizontal, [v]ertical, [t]op, [r]ight, [b]ottom, [l]eft
 set $mode_gaps_outer Outer Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
 set $mode_gaps_inner Inner Gaps: +|-|0|d (local), Shift + +|-|0|d (global)
@@ -254,14 +258,15 @@ set $mode_gaps_left Left Gaps: +|-|0 (local), Shift + +|-|0 (global)
 bindsym $mod+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
-    bindsym o      mode "$mode_gaps_outer"
-    bindsym i      mode "$mode_gaps_inner"
-    bindsym h      mode "$mode_gaps_horiz"
-    bindsym v      mode "$mode_gaps_verti"
-    bindsym t      mode "$mode_gaps_top"
-    bindsym r      mode "$mode_gaps_right"
-    bindsym b      mode "$mode_gaps_bottom"
-    bindsym l      mode "$mode_gaps_left"
+    bindsym o mode "$mode_gaps_outer"
+    bindsym i mode "$mode_gaps_inner"
+    bindsym h mode "$mode_gaps_horiz"
+    bindsym v mode "$mode_gaps_verti"
+    bindsym t mode "$mode_gaps_top"
+    bindsym r mode "$mode_gaps_right"
+    bindsym b mode "$mode_gaps_bottom"
+    bindsym l mode "$mode_gaps_left"
+    # exit
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -401,6 +406,12 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
+# Media control [Installation: dnf install pavucontrol]
+bindsym Ctrl+$mod1+m exec pavucontrol
+
+# Bluetooth manager [Installation: dnf install blueman]
+bindsym Ctrl+$mod1+b exec blueman-manager
+
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
@@ -429,18 +440,7 @@ bindsym $mod+KP_Enter exec $terminal
 # Kill focus window
 bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
-
-# Kill focus window with confirmation
-set $close "Close the selected window? [c/y/n]"
-bindsym $mod+shift+c mode $close
-mode $close {
-    bindsym y             kill; mode default
-    bindsym c             kill; mode default
-    bindsym $mod+Shift+c  kill; mode default
-    bindsym Return        kill; mode default
-    bindsym n             mode default
-    bindsym Escape        mode default
-}
+bindsym $mod+shift+c kill
 
 # Focus the parent/child container
 bindsym $mod+a       focus parent
@@ -491,7 +491,7 @@ bindsym $mod+Shift+s      sticky toggle     exec notify-send -u low "Toggle Stic
 # Change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
-bindsym $mod+e layout toggle split
+bindsym $mod+e layout toggle   split
 
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
@@ -501,7 +501,7 @@ mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
     bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Title-bars"
-    bindsym h [class="^.*"] border pixel 2; exec notify-send -u low "Hide All Title-bars"
+    bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Title-bars"
     bindsym t exec gtk-tree-watch.pl, mode "default"
     bindsym b mode "$mode_border"
     bindsym m mode "$mode_mark"
@@ -514,13 +514,14 @@ mode "$mode_titlebar" {
 bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Title-bars"
 
 # Titlebar mode (Borders)
-set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [t]oggle
+set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [d]efault [t]oggle
 mode "$mode_border" {
     bindsym 0 border none
     bindsym 2 border pixel 2
     bindsym 5 border pixel 5
     bindsym 1 border pixel 10
     bindsym n border normal
+    bindsym d border $default_border_width
     bindsym t border toggle
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
@@ -548,7 +549,6 @@ bindsym $mod+p exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
 
 # Mark mode [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
-#bindsym $mod+Shift+m mode "$mode_mark"
 set $mode_mark Mark: [m]ark [g]oto [s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
     bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
@@ -896,7 +896,6 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # All About I3 Startup Commands/Programs
 # ======================================================================================
 # Following commands/programs will run after I3 starts
-#
 # Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
@@ -907,9 +906,9 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # -- Setting for IOA monitor
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
-# Startup wallpaper
-#exec --no-startup-id variety --set=$(find $wallpaper1 -name "*.png" | shuf -n1)
-exec --no-startup-id variety --set=$HOME/.config/i3/share/default.png
+# Startup wallpaper (feh is faster than variety)
+exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
+#exec --no-startup-id variety --set=$HOME/.config/i3/share/default.png
 
 # Arandr (GUI Display Manager)
 #exec --no-startup-id arandr
@@ -924,11 +923,11 @@ exec --no-startup-id nm-applet
 # Bluetooth Manager system tray GUI
 exec --no-startup-id blueman-applet
 
-# Default numlock on (sudo dnf install numlockx)
+# Startup numlock on (sudo dnf install numlockx)
 exec --no-startup-id numlockx on &
 
 # Imwheel (Mouse wheel speed)
-#exec --no-startup-id imwheel &
+exec --no-startup-id imwheel &
 
 # Gnome authentication [For gnome software usage]
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
@@ -961,9 +960,6 @@ exec --no-startup-id kdeconnect-indicator &
 # Mailspring (Email manager) in background
 #exec --no-startup-id mailspring --background
 
-# Variety (wallpaper manager)
-#exec --no-startup-id variety
-
 # Conky (system overview and hotkey)
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
@@ -980,7 +976,7 @@ exec --no-startup-id $I3_BIN/i3-automark.py &
 # Installation: pip install autotiling
 #exec --no-startup-id $HOME/anaconda3/bin/autotiling &
 
-# Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon/]
+# Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
 #exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so

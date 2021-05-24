@@ -22,7 +22,7 @@ conky.config = {
 	alignment = 'bottom_left',
 	background = true,
 	use_xft = true,
-	font = 'DroidSanMono Nerd Font:size=14',
+	font = 'DroidSanMono Nerd Font:size=12',
 	color2 = '#2e9ef4',
 	default_color = '#FFFFFF',
     default_outline_color = '#FFFFFF',

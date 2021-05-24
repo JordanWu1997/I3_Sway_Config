@@ -197,7 +197,7 @@ default_orientation horizontal
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [v]ariety_mode
+set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
     bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
@@ -209,7 +209,7 @@ mode "$mode_wallpaper" {
     bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1)
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name "*.jpg" | shuf -n1)
-    bindsym v mode $mode_variety
+    bindsym 0 mode $mode_variety
     # exit
     bindsym q      mode "default"
     bindsym Return mode "default"
@@ -412,6 +412,9 @@ bindsym Ctrl+$mod1+m exec pavucontrol
 # Bluetooth manager [Installation: dnf install blueman]
 bindsym Ctrl+$mod1+b exec blueman-manager
 
+# Arandr (Xrandr GUI) [Installation: dnf install arandr ]
+bindsym Ctrl+$mod1+a exec arandr
+
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
@@ -493,6 +496,9 @@ bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle   split
 
+# Toggle title bar
+bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Title-bars"
+
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
 bindsym $mod+Shift+t mode "$mode_titlebar"
@@ -510,10 +516,7 @@ mode "$mode_titlebar" {
     bindsym Escape mode "default"
 }
 
-# Toggle title bar
-bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Title-bars"
-
-# Titlebar mode (Borders)
+# Border mode
 set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [d]efault [t]oggle
 mode "$mode_border" {
     bindsym 0 border none
@@ -539,13 +542,13 @@ mode "$mode_border" {
 # -- read "1" character and go to the window with the character
 # -- read "1" character and swap the current window to the window with the character
 bindsym $mod+m exec i3-input -F "mark %s" -l 1 -P "Mark: "
-bindsym $mod+g exec i3-input -F "[con_mark="%s"] focus" -l 1 -P "Goto: "
+bindsym $mod+g exec i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto: "
 bindsym $mod+p exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
 
-# Mark mode [use rofi as input] [Not used]
-#bindsym $mod1+m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
-#bindsym $mod1+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-#bindsym $mod1+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
+# Mark mode [use rofi as input]
+bindsym $mod1+m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
+bindsym $mod1+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
+bindsym $mod1+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
 
 # Mark mode [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
@@ -910,10 +913,8 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
 #exec --no-startup-id variety --set=$HOME/.config/i3/share/default.png
 
-# Arandr (GUI Display Manager)
-#exec --no-startup-id arandr
-
-# Lxsession agent (Not work well for now)
+# Lxsession agent (load last xsession (desktop))
+# TODO For now, this agent will cause mouse left/right button reversed
 #exec --no-startup-id lxsession
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
@@ -926,13 +927,14 @@ exec --no-startup-id blueman-applet
 # Startup numlock on (sudo dnf install numlockx)
 exec --no-startup-id numlockx on &
 
-# Imwheel (Mouse wheel speed)
-exec --no-startup-id imwheel &
+# Imwheel (modify mouse wheel speed)
+# TODO For now, wheel speed of i3bar cannot be assigned independently
+#exec --no-startup-id imwheel &
 
-# Gnome authentication [For gnome software usage]
+# Gnome authentication (gnome software usage support)
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
-# Ibus input method
+# Ibus input method (ibus-chewing support)
 exec --no-startup-id export GTK_IM_MODULE=ibus
 exec --no-startup-id export XMODIFIER="@im=ibus"
 exec --no-startup-id export GTK_IM_MODULE=ibus
@@ -953,12 +955,12 @@ exec --no-startup-id xcompmgr -c -f -n
 # Dunst (notification)
 exec --no-startup-id dunst
 
-# KDE Connet (Connect to android smartphone) in background
+# KDE Connet (connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &
 exec --no-startup-id kdeconnect-indicator &
 
-# Mailspring (Email manager) in background
-#exec --no-startup-id mailspring --background
+# Mailspring (email manager) in background
+exec --no-startup-id mailspring --background
 
 # Conky (system overview and hotkey)
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system

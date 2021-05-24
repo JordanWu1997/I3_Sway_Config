@@ -1,0 +1,76 @@
+# Install virtualbox (Only for virtual machine in virtualbox)
+dnf install virtualbox-guest-additions
+
+# Enable Fedora 3rd party repository
+dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnf update
+
+# Install i3-gap
+dnf copr enable fuhrmann/i3-gaps
+
+# Original i3 comflicts with i3-gaps (Only for Fedora i3 spin)
+dnf remove i3
+# If original i3 is removed, must remember to reinstall terminal emulator
+dnf install i3-gaps kitty
+
+# Install system utility package
+dnf install git i3lock xss-lock rofi htop neofetch vim ranger
+dnf install pavucontrol dunst parcellite numlockx xdotool conky
+dnf install NetworkManager blueman arandr xrandr xbacklight redshift
+dnf install zsh fish tmux
+
+# Xcompmgr cannot be installed in Fedora 34 spin i3
+dnf install xcompmgr
+# Use picom instead of xcompmgr
+dnf install picom
+
+# Install wallpaper package
+dnf install feh variety
+
+# Input method (for chewing user)
+dnf install ibus ibus-chewing
+
+# Install gnome package
+dnf install nautilus gnome-disks gnome-screenshot
+
+# Install theme configurator
+dnf install lxappearance gtk-chtheme qt-config qt5ct qt5-qtstyleplugins
+
+# Install Python package for i3
+python -m pip install bumblebee-status i3-resurrect i3-workspace-swap autotiling
+
+# Install Nerd fonts
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
+
+# Install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Bumblebee status
+# caffeine
+dnf install gnome-shell-extension-caffeine
+
+# Bumblebee status
+# below modules of bumblebee status not working
+# network_traffic, sensors, pasink, pasource
+
+# Load my i3 configuration
+cd ~ && mkdir Desktop
+git clone https://github.com/JordanWu1997/I3_Sway_Config.git
+cd ~/.config/ && rm i3 kitty dunst ranger rofi -fr
+ln -s ~/Desktop/I3_Sway_Config/config/i3
+ln -s ~/Desktop/I3_Sway_Config/config/kitty/
+ln -s ~/Desktop/I3_Sway_Config/config/dunst
+ln -s ~/Desktop/I3_Sway_Config/config/ranger
+ln -s ~/Desktop/I3_Sway_Config/config/rofi
+ln -s ~/Desktop/I3_Sway_Config/config/conky
+
+# Load my neovim, tmux configuration
+dnf install neovim
+cd ~/Desktop
+git clone https://github.com/JordanWu1997/Vim_Tmux_Config.git
+ln ~/Desktop/Vim_Tmux_Config/tmux.conf ~/.tmux.conf
+ln ~/Desktop/Vim_Tmux_Config/tmux.conf ~/.tmux.conf
+ln -s ~/Desktop/Vim_Tmux_Config/vimrc ~/.config/nvim/init.vim

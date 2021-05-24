@@ -82,8 +82,10 @@
 # Section "InputClass"
 #       Identifier "system-keyboard"
 #       MatchIsKeyboard "on"
-#       Optirn "XkbLayout" "us"
-#       Option "XkbOptions" "caps:super"
+#       Option "XkbLayout" "us"
+#       # Uncomment below line for setting [caplock -> super]
+#       #Option "XkbOptions" "caps:super"
+#       # Uncomment below line for setting [caplock -> ctrl]
 #       #Option "XkbOptions" "ctrl:nocaps"
 # EndSection
 
@@ -729,8 +731,8 @@ mode "$mode_redshift" {
 # Lock mode -- i3lock (User defined)
 bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    bindsym Return exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default.png, mode "default"
-    #bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name "*.png" | shuf -n1), mode "default"
+    #bindsym Return exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default.png, mode "default"
+    bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name "*.png" | shuf -n1), mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -756,8 +758,8 @@ bindsym $mod+Shift+Escape \
     -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
     -B Reboot "systemctl reboot" \
     -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
-    -B Lock "i3lock -t -f -i $HOME/.config/i3/share/default.png"
-    #-B Lock "i3lock -t -f -i $(find ${wallpaper2} -name "*.png" | shuf -n1)"
+    -B Lock "i3lock -t -f -i $(find ${wallpaper2} -name "*.png" | shuf -n1)"
+    #-B Lock "i3lock -t -f -i $HOME/.config/i3/share/default.png"
 
 # Interactive screenshot by pressing printscreen
 bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
@@ -993,5 +995,5 @@ exec --no-startup-id $I3_BIN/i3-automark.py &
 # they are included here as an example. Modify as you see fit.
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-#exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $HOME/.config/i3/share/default.png --nofork
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
+#exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $HOME/.config/i3/share/default.png --nofork

@@ -103,6 +103,13 @@ set $mod1 Mod1
 # Setup terminal
 set $terminal kitty
 
+# Setup border width
+set $default_border_width pixel 2
+
+# Setup gap width (only for i3-gap)
+set $default_inner_gap 5
+set $default_outer_gap 15
+
 # ======================================================================================
 # All About Windows Settings
 # ======================================================================================
@@ -156,7 +163,6 @@ popup_during_fullscreen smart
 # if you'd like to have a border (or 'normal')
 # Windows frame width pixel (or 'normal')
 # Comment out below lines for display title as default
-set $default_border_width pixel 2
 for_window [class="^.*"] border $default_border_width
 new_window $default_border_width
 new_float $default_border_width
@@ -236,8 +242,8 @@ mode "$mode_variety" {
 # Comment out this session if you are using original i3
 
 # Gaps
-gaps inner 10
-gaps outer 10
+gaps inner $default_inner_gap
+gaps outer $default_outer_gap
 # Disable outer gap when there is only one window
 #smart_gaps on
 # Only enable outer gap when there is only one window
@@ -276,12 +282,12 @@ mode "$mode_gaps_outer" {
     bindsym plus  gaps outer current plus 5
     bindsym minus gaps outer current minus 5
     bindsym 0     gaps outer current set 0
-    bindsym d     gaps outer current set 10
+    bindsym d     gaps outer current set $default_outer_gap
     # global
     bindsym Shift+plus  gaps outer all plus 5
     bindsym Shift+minus gaps outer all minus 5
     bindsym Shift+0     gaps outer all set 0
-    bindsym Shift+d     gaps outer all set 10
+    bindsym Shift+d     gaps outer all set $default_outer_gap
     # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
@@ -292,12 +298,12 @@ mode "$mode_gaps_inner" {
     bindsym plus  gaps inner current plus 5
     bindsym minus gaps inner current minus 5
     bindsym 0     gaps inner current set 0
-    bindsym d     gaps inner current set 10
+    bindsym d     gaps inner current set $default_inner_gap
     # global
     bindsym Shift+plus  gaps inner all plus 5
     bindsym Shift+minus gaps inner all minus 5
     bindsym Shift+0     gaps inner all set 0
-    bindsym Shift+d     gaps inner all set 10
+    bindsym Shift+d     gaps inner all set $default_inner_gap
     # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
@@ -723,7 +729,8 @@ mode "$mode_redshift" {
 # Lock mode -- i3lock (User defined)
 bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name "*.png" | shuf -n1), mode "default"
+    bindsym Return exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default.png, mode "default"
+    #bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name "*.png" | shuf -n1), mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -749,7 +756,8 @@ bindsym $mod+Shift+Escape \
     -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
     -B Reboot "systemctl reboot" \
     -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
-    -B Lock "i3lock -t -f -i $(find ${wallpaper2} -name "*.png" | shuf -n1)"
+    -B Lock "i3lock -t -f -i $HOME/.config/i3/share/default.png"
+    #-B Lock "i3lock -t -f -i $(find ${wallpaper2} -name "*.png" | shuf -n1)"
 
 # Interactive screenshot by pressing printscreen
 bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
@@ -913,6 +921,9 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
 #exec --no-startup-id variety --set=$HOME/.config/i3/share/default.png
 
+# Gnome authentication (gnome software usage support)
+exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
+
 # Lxsession agent (load last xsession (desktop))
 # TODO For now, this agent will cause mouse left/right button reversed
 #exec --no-startup-id lxsession
@@ -930,9 +941,6 @@ exec --no-startup-id numlockx on &
 # Imwheel (modify mouse wheel speed)
 # TODO For now, wheel speed of i3bar cannot be assigned independently
 #exec --no-startup-id imwheel &
-
-# Gnome authentication (gnome software usage support)
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
 # Ibus input method (ibus-chewing support)
 exec --no-startup-id export GTK_IM_MODULE=ibus
@@ -985,4 +993,5 @@ exec --no-startup-id $I3_BIN/i3-automark.py &
 # they are included here as an example. Modify as you see fit.
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
+#exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $HOME/.config/i3/share/default.png --nofork

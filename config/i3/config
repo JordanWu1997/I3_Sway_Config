@@ -208,15 +208,15 @@ default_orientation horizontal
 set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name "*.png" | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name "*.png" | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name "*.png" | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name "*.jpg" | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name "*.png" | shuf -n1)
-    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name "*.jpg" | shuf -n1)
-    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name "*.png" | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name "*.png" | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name "*.jpg" | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name '*.jpg' | shuf -n1)
+    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name '*.png' | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
     # exit
     bindsym q      mode "default"
@@ -429,8 +429,8 @@ bindsym Ctrl+$mod1+a exec arandr
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
-# Start dmenu (a program launcher)
-#bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono nerd font 16" -l 10 -p "dmenu (program launcher)"
+# Start dmenu (a program launcher) [Installation: dnf install dmenu]
+bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono nerd font 16" -l 10 -p "dmenu (program launcher)"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
@@ -732,7 +732,7 @@ mode "$mode_redshift" {
 bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
     #bindsym Return exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default.png, mode "default"
-    bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name "*.png" | shuf -n1), mode "default"
+    bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name '*.png' | shuf -n1), mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -758,7 +758,7 @@ bindsym $mod+Shift+Escape \
     -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
     -B Reboot "systemctl reboot" \
     -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
-    -B Lock "i3lock -t -f -i $(find ${wallpaper2} -name "*.png" | shuf -n1)"
+    -B Lock "i3lock -t -f -i $(find ${wallpaper2} -name '*.png' | shuf -n1)"
     #-B Lock "i3lock -t -f -i $HOME/.config/i3/share/default.png"
 
 # Interactive screenshot by pressing printscreen
@@ -995,5 +995,5 @@ exec --no-startup-id $I3_BIN/i3-automark.py &
 # they are included here as an example. Modify as you see fit.
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name "*.png" | shuf -n1) --nofork
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name '*.png' | shuf -n1) --nofork
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $HOME/.config/i3/share/default.png --nofork

@@ -20,10 +20,12 @@ dnf install pavucontrol dunst parcellite numlockx xdotool conky
 dnf install NetworkManager blueman arandr xrandr xbacklight redshift
 dnf install zsh fish tmux
 
-# Xcompmgr cannot be installed in Fedora 34 spin i3
-dnf install xcompmgr
-# Use picom instead of xcompmgr
-dnf install picom
+# Xcompmgr cannot be installed from repository of Fedora 34 spin i3
+# Here change to mannually installation
+# [https://centos.pkgs.org/8/raven-x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm.html]
+cd ~/
+wget https://pkgs.dyn.su/el8/base/x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm
+dnf install ./xcompmgr-1.1.7-7.el8.x86_64.rpm
 
 # Install wallpaper package
 dnf install feh variety
@@ -35,7 +37,10 @@ dnf install ibus ibus-chewing
 dnf install nautilus gnome-disks gnome-screenshot
 
 # Install theme configurator
-dnf install lxappearance gtk-chtheme qt-config qt5ct qt5-qtstyleplugins
+dnf install lxappearance
+dnf install gtk-chtheme
+dnf install qt-config qt5ct qt5-qtstyleplugins
+dnf install arc-theme
 
 # Install Python package for i3
 python -m pip install bumblebee-status i3-resurrect i3-workspace-swap autotiling

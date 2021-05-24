@@ -1,5 +1,6 @@
 configuration {
 	modi: "drun,run,window";
+    combi-modi: "window,drun";
 	width: 100;
 	lines: 5;
 	columns: 2;
@@ -8,7 +9,7 @@ configuration {
 	padding: 400;
 	terminal: "gnome-terminal";
 	eh: 1;
-	auto-select: false;
+	auto-select: true;
 	line-margin: 2;
 	separator-style: "dash";
 	hide-scrollbar: true;

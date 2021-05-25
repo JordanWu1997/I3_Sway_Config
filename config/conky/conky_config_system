@@ -57,7 +57,7 @@ conky.config = {
     show_graph_range = true,
 }
 conky.text = [[
-${alignr}${image ~/Pictures/ICONS/fedora_logo_darkbackground.png -p 10,0 -s 270x120} ${color}
+${alignr}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 10,0 -s 270x120} ${color}
 
 
 

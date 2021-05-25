@@ -70,6 +70,9 @@ ln -s ~/Desktop/I3_Sway_Config/config/kitty/
 ln -s ~/Desktop/I3_Sway_Config/config/dunst
 ln -s ~/Desktop/I3_Sway_Config/config/ranger
 ln -s ~/Desktop/I3_Sway_Config/config/rofi
+
+# Note for conky
+# After conky installation, remeber to tune cpu number to make system conky work
 ln -s ~/Desktop/I3_Sway_Config/config/conky
 
 # Load my neovim, tmux configuration

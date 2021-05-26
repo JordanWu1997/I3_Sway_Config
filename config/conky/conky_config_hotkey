@@ -33,7 +33,8 @@ conky.config = {
     draw_outline = false,
 	gap_x = 25,
 	gap_y = 25,
-	minimum_width = 200,
+	minimum_width = 300,
+	maximum_width = 400,
 	double_buffer = true,
 	no_buffers = true,
 	own_window = true,
@@ -51,7 +52,7 @@ ${color2}system option ${color}[S]+[Shift]+[Esc]
 ${color2}reload/restart i3 ${color}[S]+[Shift]+[r]
 ${color2}exit i3 session ${color}[S]+[Shift]+[e]
 ${color2}application (rofi) ${color}[S]+[d]
-${color2}window (rofi) ${color}[Alt]+[d]
+${color2}window selector (rofi) ${color}[S]+[u]
 ${color}[Workspace / Container] ${hr 2}
 ${color2}navigate to WS ${color}[S]+[\#]
 ${color2}send focus to WS ${color}[S]+[Shift]+[\#]

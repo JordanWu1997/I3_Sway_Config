@@ -39,8 +39,7 @@ conky.config = {
     font = 'DroidSanMono Nerd Font:size=12',
     gap_x = 25,
     gap_y = 15,
-    minimum_height = 100,
-    minimum_width = 100,
+    minimum_width = 300,
 	maximum_width = 400,
     no_buffers = true,
     out_to_console = false,
@@ -57,7 +56,7 @@ conky.config = {
     show_graph_range = true,
 }
 conky.text = [[
-${alignr}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 10,0 -s 270x120} ${color}
+${alignr}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 60,0 -s 270x120} ${color}
 
 
 

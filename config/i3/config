@@ -205,9 +205,10 @@ default_orientation horizontal
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode
+set $mode_wallpaper Wallpaper: [d]efault [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
+    bindsym d exec notify-send -u low "Set Wallpaper to Default"     && feh --bg-fill $HOME/.config/i3/share/default.png
     bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
     bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
     bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
@@ -437,12 +438,12 @@ bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono ne
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+Shift+Return exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
-bindsym $mod1+d           exec --no-startup-id rofi -show window -terminal $terminal
-bindsym $mod1+Shift+d     exec --no-startup-id rofi -show windowcd -terminal $terminal
 bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal
+bindsym $mod+u            exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod+Shift+u      exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym $mod+Shift+Return exec --no-startup-id rofi -show window -terminal $terminal
 
 # Start a terminal
 bindsym $mod+Return   exec $terminal
@@ -495,17 +496,17 @@ bindsym $mod+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
-bindsym $mod+space        focus mode_toggle exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+Shift+space  floating toggle   exec notify-send -u low "Toggle Window Floating"
-bindsym $mod+Shift+s      sticky toggle     exec notify-send -u low "Toggle Sticky [For Floating]"
+bindsym $mod+space       focus mode_toggle exec notify-send -u low "Toggle Focus [Tiling/Floating]"
+bindsym $mod+Shift+space floating toggle   exec notify-send -u low "Toggle Window [Tiling/Floating]"
+bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Sticky For Floating Window"
 
 # Change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle   split
 
-# Toggle title bar
-bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Title-bars"
+# Toggle titlebar
+bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Titlebars"
 
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
@@ -514,8 +515,8 @@ set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
-    bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Title-bars"
-    bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Title-bars"
+    bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Titlebars"
+    bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
     bindsym t exec gtk-tree-watch.pl, mode "default"
     bindsym b mode "$mode_border"
     bindsym m mode "$mode_mark"

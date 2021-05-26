@@ -15,10 +15,9 @@ dnf remove i3
 dnf install i3-gaps kitty
 
 # Install system utility package
-dnf install git i3lock xss-lock rofi htop neofetch vim ranger
+dnf install git i3lock xss-lock rofi htop neofetch vim ranger zsh
 dnf install pavucontrol dunst parcellite numlockx xdotool conky
 dnf install NetworkManager blueman arandr xrandr xbacklight redshift
-dnf install zsh fish tmux
 
 # Xcompmgr cannot be installed from repository of Fedora 34 spin i3
 # Here change to mannually installation
@@ -43,7 +42,7 @@ dnf install qt-config qt5ct qt5-qtstyleplugins
 dnf install arc-theme
 
 # Install Python package for i3
-python -m pip install bumblebee-status i3-resurrect i3-workspace-swap autotiling
+python -m pip install bumblebee-status i3ipc utils i3-resurrect i3-workspace-swap autotiling
 
 # Install Nerd fonts
 mkdir -p ~/.local/share/fonts
@@ -53,13 +52,15 @@ curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://github.
 # Install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# Bumblebee status
+# Bumblebee-status [Additional dependencies]
 # caffeine
 dnf install gnome-shell-extension-caffeine
+# network_traffic modules
+dnf install python-netifaces
 
-# Bumblebee status
-# below modules of bumblebee status not working
-# network_traffic, sensors, pasink, pasource
+# TODO: Fix bumblebee-status problems
+# below modules of bumblebee-status not working
+# sensors, pasink, pasource
 
 # Load my i3 configuration
 cd ~ && mkdir Desktop
@@ -76,7 +77,7 @@ ln -s ~/Desktop/I3_Sway_Config/config/rofi
 ln -s ~/Desktop/I3_Sway_Config/config/conky
 
 # Load my neovim, tmux configuration
-dnf install neovim
+dnf install neovim tmux tmux-powerline
 cd ~/Desktop
 git clone https://github.com/JordanWu1997/Vim_Tmux_Config.git
 ln ~/Desktop/Vim_Tmux_Config/tmux.conf ~/.tmux.conf

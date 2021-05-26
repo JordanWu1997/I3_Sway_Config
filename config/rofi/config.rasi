@@ -1,21 +1,51 @@
 configuration {
-	modi: "drun,run,window";
+
+	/*Enable modi*/
+    modi: "drun,run,window";
+
+    /*Enable combined modi*/
     combi-modi: "window,drun";
-	width: 100;
-	lines: 5;
-	columns: 2;
+
+    /*Font*/
 	font: "DroidSansMono Nerd Font 16";
-	bw: 10;
-	padding: 400;
-	terminal: "gnome-terminal";
+
+    /*Fullscreen*/
+    fullscreen: true;
+
+    /*Padding (Empty region around input pallette)*/
+    padding: 350;
+
+    /*Width (No effect when fullscreen is enable)*/
+    width: 800;
+
+    /*Number of lines (No effect when fullscreen is enable)*/
+	lines: 10;
+
+    /*Number of columns*/
+	columns: 2;
+
+    /*Border width*/
+    bw: 0;
+
+    /*Row height (unit: character)*/
 	eh: 1;
-	auto-select: true;
-	line-margin: 2;
+
+    /*Margin between rows*/
+    line-margin: 2;
+
+    /*Separator between input and options*/
 	separator-style: "dash";
+
+    /*Hide scrollbar*/
 	hide-scrollbar: true;
-	fullscreen: true;
+
+    /*Auto-select mode*/
+	auto-select: false;
+
+    /*Color theme*/
 	color-normal: "argb:002f343f, #d8dee8, argb:002f343f, argb:002f343f, #2e9ef4";
 	color-urgent: "#2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b";
 	color-active: "#2f343f, #b48ead, #2f343f, #2f343f, #93e5cc";
 	color-window: "argb:cc2f343f, argb:cc2f343f, argb:cc2f343f";
+
 }

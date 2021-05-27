@@ -39,8 +39,8 @@ conky.config = {
     font = 'DroidSanMono Nerd Font:size=12',
     gap_x = 25,
     gap_y = 15,
-    minimum_width = 300,
-	maximum_width = 400,
+    minimum_width = 280,
+	maximum_width = 280,
     no_buffers = true,
     out_to_console = false,
     out_to_stderr = false,
@@ -52,34 +52,35 @@ conky.config = {
     update_interval = 1.0,
     uppercase = false,
     use_spacer = 'none',
-    show_graph_scale = true,
-    show_graph_range = true,
+    show_graph_scale = false,
+    show_graph_range = false,
 }
 conky.text = [[
-${alignr}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 60,0 -s 270x120} ${color}
+${alignr}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 40,0 -s 270x120} ${color}
 
 
 
 
 ${color}Information ${hr 2}${color}
-${alignr}${color2}Kernel: ${alignr}${color}${kernel}
-${alignr}${color2}Local Hostname: ${alignr}${color}${nodename}
-${alignr}${color2}Uptime: ${alignr}${color}${uptime}
+${alignr}${color2}Kernel  ${alignr}${color}${kernel}
+${alignr}${color2}Local Hostname  ${alignr}${color}${nodename}
+${alignr}${color2}Uptime  ${alignr}${color}${uptime}
 ${color}Network ${hr 2}${color}
-${alignr}${color2}Public IP: ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
-${alignr}${color2}Gateway IP: ${alignr}${color}${gw_ip}
+${alignr}${color2}Public IP  ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
+${alignr}${color2}Gateway IP  ${alignr}${color}${gw_ip}
 ${color}Storage / Memory ${hr 2}${color}
-${alignr}${color2}Disk Home: ${alignr}${color}${fs_used /home} / ${fs_size /home}
-${alignr}${color2}Disk Root: ${alignr}${color}${fs_used /} / ${fs_size /}
-${alignr}${color2}RAM: ${alignr}${color} ${mem} / ${memmax}
-${alignr}${color2}Swap: ${alignr}${color} ${swap} / ${swapmax}
+${alignr}${color2}Disk Home  ${alignr}${color}${fs_used /home} / ${fs_size /home}
+${alignr}${color2}Disk Root  ${alignr}${color}${fs_used /} / ${fs_size /}
+${alignr}${color2}RAM  ${alignr}${color} ${mem} / ${memmax}
+${alignr}${color2}Swap  ${alignr}${color} ${swap} / ${swapmax}
 ${color}CPU ${hr 2}${color}
-${alignr}${color2}CPU1: ${alignr}${color}${cpu cpu1}% ${alignr}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${cpubar cpu1 8,60}
-${alignr}${color2}CPU2: ${alignr}${color}${cpu cpu2}% ${alignr}${exec awk '/cpu MHz/{i++}i==2{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${cpubar cpu2 8,60}
-${alignr}${color2}CPU3: ${alignr}${color}${cpu cpu3}% ${alignr}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${cpubar cpu3 8,60}
-${alignr}${color2}CPU4: ${alignr}${color}${cpu cpu4}% ${alignr}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${cpubar cpu4 8,60}
+${alignr}${color2}Fan / Temp  ${alignr}${color}${ibm_fan} RPM / ${ibm_temps 0} °C
+${alignr}${color2}CPU1    ${alignr}${color}${cpu cpu1}%   ${alignr}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
+${alignr}${color2}CPU2    ${alignr}${color}${cpu cpu2}%   ${alignr}${exec awk '/cpu MHz/{i++}i==2{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
+${alignr}${color2}CPU3    ${alignr}${color}${cpu cpu3}%   ${alignr}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
+${alignr}${color2}CPU4    ${alignr}${color}${cpu cpu4}%   ${alignr}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${color}Processes ${hr 2}${color}
-${alignr}${color2}Process              ${alignr}${color}CPU   ${alignr}MEM
+${alignr}${color2}Command            ${alignr}${color}CPU   ${alignr}MEM
 ${alignr}${color2}${top name 1} ${alignr}${color}${top cpu 1} ${alignr}${top mem 1}
 ${alignr}${color2}${top name 2} ${alignr}${color}${top cpu 2} ${alignr}${top mem 2}
 ${alignr}${color2}${top name 3} ${alignr}${color}${top cpu 3} ${alignr}${top mem 3}
@@ -87,5 +88,5 @@ ${alignr}${color2}${top name 4} ${alignr}${color}${top cpu 4} ${alignr}${top mem
 ${alignr}${color2}${top name 5} ${alignr}${color}${top cpu 5} ${alignr}${top mem 5}
 ${alignr}${color2}${top name 6} ${alignr}${color}${top cpu 6} ${alignr}${top mem 6}
 ${color}Running ${hr 2}${color}
-${alignr}${color2}Running / Processes:  ${alignr}${color}${running_processes} / ${color}${processes}
+${alignr}${color2}Running / Processes     ${alignr}${color}${running_processes}  /  ${color}${processes}
 ]]

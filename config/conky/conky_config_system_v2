@@ -1,0 +1,98 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+--[[
+Conky, a system monitor, based on torsmo
+Any original torsmo code is licensed under the BSD license
+All code written since the fork of torsmo is licensed under the GPL
+Please see COPYING for details
+Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+Copyright (c) 2005-2012 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+All rights reserved.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+conky.config = {
+    own_window_transparent = true,
+	use_xft = true,
+	xftalpha = 1.0,
+    own_window_argb_visual = true,
+    own_window_argb_value = 64,
+    double_buffer = true,
+    alignment = 'top_right',
+    background = true,
+    border_width = 2,
+    cpu_avg_samples = 2,
+    default_color = '#FFFFFF',
+	color2 = '#2e9ef4',
+    default_outline_color = '#FFFFFF',
+    default_shade_color = '#000000',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    font = 'DroidSanMono Nerd Font:size=12',
+    gap_x = 25,
+    gap_y = 50,
+    minimum_width = 285,
+	maximum_width = 285,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'override',
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'none',
+    show_graph_scale = false,
+    show_graph_range = false,
+	top_name_width = 16
+}
+conky.text = [[
+${color}${hr 2}
+${voffset 55}${alignc}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 0,-5 -s 300x135}
+${color}${hr 2}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Information]${font}${voffset 5}
+${color2}Kernel ${alignr}${color}${kernel}
+${color2}Local Hostname ${alignr}${color}${nodename}
+${color2}Machine Uptime ${alignr}${color}${uptime}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Network]${font}${voffset 5}
+${color2}Download ${alignr}${color}${downspeed enp0s31f6}+${downspeed enp0s20f0u2u2u4}+${downspeed wlp3s0} / s
+${color2}Upload ${alignr}${color}${upspeed enp0s31f6}+${upspeed enp0s20f0u2u2u4}+${upspeed wlp3s0} / s
+${color2}Public IP ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
+${color2}Gateway IP ${alignr}${color}${gw_ip}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Disk IO]${font}${voffset 5}
+${color2}Disk Used / Free ${alignr}${color}${fs_used /home} / ${fs_size /home}
+${color2}Disk IO Read ${color}${alignr}${diskio_read /dev/sda} / s ${diskiograph_read sda 8,60}
+${color2}Disk IO Write ${color}${alignr}${diskio_write /dev/sda} / s ${diskiograph_write sda 8,60}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Memory]${font}${voffset 5}
+${color2}RAM ${alignr}${color} ${mem} / ${memmax} ${alignr}${membar 8,60}
+${color2}Swap ${alignr}${color} ${swap} / ${swapmax} ${alignr}${swapbar 8,60}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[CPU]${font}${voffset 5}
+${color2}CPU1 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu1}%  ${alignr}${cpubar cpu1 8,60}
+${color2}CPU2 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==2{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu2}%  ${alignr}${cpubar cpu2 8,60}
+${color2}CPU3 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu3}%  ${alignr}${cpubar cpu3 8,60}
+${color2}CPU4 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu4}%  ${alignr}${cpubar cpu4 8,60}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Fan]${font}${voffset 5}
+${color2}CPU Fan Speed ${alignr}${color}${ibm_fan} RPM
+${color2}CPU Temperature ${alignr}${color}${ibm_temps 0} °C   ${color}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Process]${font}${voffset 5}
+${color2}Command ${alignr}${color}CPU      ${alignr}MEM
+${color2}${top name 1} ${alignr}${color}${top cpu 1}    ${alignr}${top mem 1}
+${color2}${top name 2} ${alignr}${color}${top cpu 2}    ${alignr}${top mem 2}
+${color2}${top name 3} ${alignr}${color}${top cpu 3}    ${alignr}${top mem 3}
+${color2}${top name 4} ${alignr}${color}${top cpu 4}    ${alignr}${top mem 4}
+${color2}${top name 5} ${alignr}${color}${top cpu 5}    ${alignr}${top mem 5}
+${color2}${top name 6} ${alignr}${color}${top cpu 6}    ${alignr}${top mem 6}
+${voffset 5}${color}${hr 2}${voffset 5}
+
+]]

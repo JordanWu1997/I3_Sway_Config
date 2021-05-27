@@ -40,7 +40,7 @@ configuration {
 	hide-scrollbar: true;
 
     /*Auto-select mode*/
-	auto-select: false;
+	auto-select: true;
 
     /*Color theme*/
 	color-normal: "argb:002f343f, #d8dee8, argb:002f343f, argb:002f343f, #2e9ef4";

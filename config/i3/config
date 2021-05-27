@@ -147,6 +147,7 @@ for_window [class="VirtualBox"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Org.gnome.DejaDup"] floating enable
+for_window [class="Org.gnome.Dictionary"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Arandr"] floating enable
 for_window [class="scrcpy"] floating enable
@@ -424,6 +425,9 @@ bindsym Ctrl+$mod1+b exec blueman-manager
 # Arandr (Xrandr GUI) [Installation: dnf install arandr ]
 bindsym Ctrl+$mod1+a exec arandr
 
+# Network connection editor [Bundled in NetworkMangager package]
+bindsym Ctrl+$mod1+n exec nm-connection-editor
+
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
@@ -438,12 +442,12 @@ bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono ne
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
+bindsym $mod+Shift+Return exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
 bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal
 bindsym $mod+u            exec --no-startup-id rofi -show window -terminal $terminal
 bindsym $mod+Shift+u      exec --no-startup-id rofi -show windowcd -terminal $terminal
-bindsym $mod+Shift+Return exec --no-startup-id rofi -show window -terminal $terminal
 
 # Start a terminal
 bindsym $mod+Return   exec $terminal
@@ -890,7 +894,7 @@ bar{
     modifier none
     binding_mode_indicator yes
     font pango: DroidSansMono Nerd Font 12
-    workspace_buttons No
+    workspace_buttons Yes
     tray_output none
     # Bar color
     colors{
@@ -994,7 +998,7 @@ exec --no-startup-id $I3_BIN/i3-automark.py &
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
+# Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name '*.png' | shuf -n1) --nofork
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $HOME/.config/i3/share/default.png --nofork

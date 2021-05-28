@@ -860,13 +860,12 @@ bar {
     workspace_buttons Yes
     workspace_min_width 20
     # Tray icon
-    tray_output primary
-    tray_padding 5
+    tray_output none
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
     pasink pasource brightness caffeine \
-    time dunst date battery \
+    time dunst date battery dnf\
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
     disk.format="{percent:05.02f}%" \
@@ -895,7 +894,8 @@ bar{
     binding_mode_indicator yes
     font pango: DroidSansMono Nerd Font 12
     workspace_buttons Yes
-    tray_output none
+    tray_output primary
+    tray_padding 5
     # Bar color
     colors{
         background #161821
@@ -918,7 +918,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting
-#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
@@ -932,8 +932,16 @@ exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
 # Lxsession agent (load last xsession (desktop))
-# TODO For now, this agent will cause mouse left/right button reversed
+# For now, this agent will cause mouse left/right button reversed
 #exec --no-startup-id lxsession
+
+# Set compositor for transparency (now use picom instead)
+#exec --no-startup-id xcompmgr -c -f -n
+
+# Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
+# Picom in Fedora repository not work well [https://github.com/yshui/picom]
+# Use picom fork of jonaburg instead (need manually installed on Fedora)
+exec_always --no-startup-id /usr/local/bin/picom
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
@@ -946,8 +954,7 @@ exec --no-startup-id blueman-applet
 exec --no-startup-id numlockx on &
 
 # Imwheel (modify mouse wheel speed)
-# TODO For now, wheel speed of i3bar cannot be assigned independently
-#exec --no-startup-id imwheel &
+exec --no-startup-id imwheel &
 
 # Ibus input method (ibus-chewing support)
 exec --no-startup-id export GTK_IM_MODULE=ibus
@@ -960,12 +967,9 @@ exec --no-startup-id ibus-daemon --xim -d -r
 # Parcellite (clipboard)
 exec --no-startup-id parcellite
 
-# Set transparent terminal (transparency support)
-exec --no-startup-id xcompmgr -c -f -n
-
-# Set blur terminal (heavy computation needed, abandoned for now)
-# https://man.archlinux.org/man/picom.1.en
-# exec --no-startup-id picom --blur-method kernel
+# Flash focus window [https://github.com/fennerm/flashfocus]
+# Need picom support
+exec_always --no-startup-id ${HOME}/anaconda3/bin/flashfocus
 
 # Dunst (notification)
 exec --no-startup-id dunst
@@ -986,15 +990,15 @@ exec --no-startup-id $I3_BIN/i3-battery-popup.sh -N -L 30 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 # Modified to mark all windows with lowercase instead of original uppercase
-exec --no-startup-id $I3_BIN/i3-automark.py &
+exec_always --no-startup-id $I3_BIN/i3-automark.py &
 
 # Autotiling [https://github.com/nwg-piotr/autotiling]
 # Tiling direction sequence: H -> V -> H -> V ...
 # Installation: pip install autotiling
-#exec --no-startup-id $HOME/anaconda3/bin/autotiling &
+#exec --no-startup-id ${HOME}/anaconda3/bin/autotiling &
 
 # Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
-#exec --no-startup-id /home/jordankhwu/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
+#exec --no-startup-id ${HOME}/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.

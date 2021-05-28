@@ -59,7 +59,7 @@ conky.config = {
 }
 conky.text = [[
 ${color}${hr 2}
-${voffset 68}${alignc}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 0,0 -s 300x135}
+${voffset 68}${alignc}${image ~/.config/i3/share/fedora_logo_blue.png -p 0,0 -s 300x135}
 ${color}${hr 2}
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Information]${font}${voffset 5}
 ${color2}Kernel ${alignr}${color}${kernel}

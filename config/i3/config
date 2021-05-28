@@ -977,7 +977,7 @@ exec --no-startup-id ibus-daemon --xim -d -r
 exec --no-startup-id parcellite
 
 # Flash focus window [https://github.com/fennerm/flashfocus]
-# Need picom support
+# Need compositor support (e.g. xcompmgr, picom, etc)
 exec_always --no-startup-id ${HOME}/anaconda3/bin/flashfocus
 
 # Dunst (notification)
@@ -999,7 +999,7 @@ exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 # Modified to mark all windows with lowercase instead of original uppercase
-exec_always --no-startup-id $I3_BIN/i3_automark.py &
+exec --no-startup-id $I3_BIN/i3_automark.py &
 
 # Autotiling [https://github.com/nwg-piotr/autotiling]
 # Tiling direction sequence: H -> V -> H -> V ...

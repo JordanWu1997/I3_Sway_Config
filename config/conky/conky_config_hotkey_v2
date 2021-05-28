@@ -50,7 +50,7 @@ conky.config = {
     own_window_class = 'Conky',
     own_window_type = 'override',
     stippled_borders = 0,
-    update_interval = 0.001,
+    update_interval = 1.0,
     uppercase = false,
     use_spacer = 'none',
     show_graph_scale = false,
@@ -88,6 +88,7 @@ ${color2}move to foreground ${alignr}${color}[S]+[=]
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Function / Mode]${font}${voffset 5}
 ${color2}gap mode ${alignr}${color}[S]+[Shift]+[g]
 ${color2}titlebar mode ${alignr}${color}[S]+[Shift]+[t]
+${color2}picom mode ${alignr}${color}[S]+[Shift]+[p]
 ${color2}mouse mode ${alignr}${color}[S]+[Shift]+[m]
 ${color2}redshift mode ${alignr}${color}[S]+[Shift]+[z]
 ${color2}resize mode ${alignr}${color}[Ctrl]+[Alt]+[r]

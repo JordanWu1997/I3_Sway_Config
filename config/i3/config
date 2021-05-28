@@ -570,8 +570,8 @@ mode "$mode_mark" {
     bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
     bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
     bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
-    bindsym e exec i3-automark_enable.sh, mode "default"
-    bindsym d exec i3-automark_disable.sh, mode "default"
+    bindsym e exec i3_automark_enable.sh, mode "default"
+    bindsym d exec i3_automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -683,6 +683,17 @@ bindsym $mod+Shift+e  \
     -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' \
     -B 'Yes, exit i3' 'i3-msg exit'"
 
+# Picom mode (blur support)
+bindsym $mod+Shift+p mode "$mode_picom"
+set $mode_picom Picom (Xcompositor) mode [e]nable_blur [d]isable_blur
+mode "$mode_picom" {
+    bindsym e exec i3_picom_blur_enable.sh, mode "default"
+    bindsym d exec i3_picom_blur_disable.sh, mode "default"
+    # Exit
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 # Resize window with hotkey
 bindsym Ctrl+$mod1+h resize shrink width 5 px or 5 ppt
 bindsym Ctrl+$mod1+j resize grow height 5 px or 5 ppt
@@ -707,11 +718,9 @@ mode "$mode_resize" {
     bindsym Down  resize grow height 10 px or 10 ppt
     bindsym Up    resize shrink height 10 px or 10 ppt
     bindsym Right resize grow width 10 px or 10 ppt
-    # back to low: Enter or Escape or $mod+r
+    # back to low: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
-    bindsym r      mode "default"
-    bindsym $mod+r mode "default"
 }
 
 # Redshift mode
@@ -863,9 +872,9 @@ bar {
     tray_output none
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
-    -m title network_traffic sensors cpu memory \
+    -m title network_traffic vpn sensors cpu memory \
     pasink pasource brightness caffeine \
-    time dunst date battery dnf\
+    time dunst date battery \
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
     disk.format="{percent:05.02f}%" \
@@ -941,7 +950,7 @@ exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom
+exec_always --no-startup-id /usr/local/bin/picom --config ${HOME}/.config/picom/picom.conf
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
@@ -986,11 +995,11 @@ exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system_v2
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey_v2
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id $I3_BIN/i3-battery-popup.sh -N -L 30 &
+exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30 &
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 # Modified to mark all windows with lowercase instead of original uppercase
-exec_always --no-startup-id $I3_BIN/i3-automark.py &
+exec_always --no-startup-id $I3_BIN/i3_automark.py &
 
 # Autotiling [https://github.com/nwg-piotr/autotiling]
 # Tiling direction sequence: H -> V -> H -> V ...

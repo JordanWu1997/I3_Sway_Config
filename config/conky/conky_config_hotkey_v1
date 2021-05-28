@@ -17,6 +17,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Edit by Jordan Wu
+-- Miscellaneous mode
+${color2}quick lock ${color}[Ctrl]+[Alt]+[Shift]+[l]
+${color2}rename workspace ${color}[S]+[Shift]+[w]
+${color2}exec i3 command ${color}[S]+[Shift]+[i]
+${color2}toggle i3bar state ${color}[S]+[Shift]+[b]
+
 ]]
 conky.config = {
 	alignment = 'bottom_left',
@@ -56,11 +64,11 @@ ${color2}window selector (rofi) ${color}[S]+[u]
 ${color}[Workspace / Container] ${hr 2}
 ${color2}navigate to WS ${color}[S]+[\#]
 ${color2}send focus to WS ${color}[S]+[Shift]+[\#]
-${color2}kill focused ${color}[S]+[Shift]+[q]
-${color2}split direction toggle ${color}[S]+[q]
-${color2}tab mode toggle ${color}[S]+[w]
-${color2}stack mode toggle ${color}[S]+[s]
-${color2}tiling mode toggle ${color}[S]+[e]
+${color2}kill focused window ${color}[S]+[Shift]+[q]
+${color2}container split toggle ${color}[S]+[q]
+${color2}container tab toggle ${color}[S]+[w]
+${color2}container stack toggle ${color}[S]+[s]
+${color2}container tiling toggle ${color}[S]+[e]
 ${color2}fullscreen toggle ${color}[S]+[f]
 ${color2}navigate to ${color}[S]+[vim-key]
 ${color2}swap to ${color}[S]+[Shift]+[vim-key]
@@ -72,7 +80,7 @@ ${color2}focus toggle ${color}[S]+[Space]
 ${color2}sticky toggle ${color}[S]+[Shift]+[s]
 ${color2}move to scratchpad ${color}[S]+[-]
 ${color2}move to foreground ${color}[S]+[=]
-${color}[User-defined Mode] ${hr 2}
+${color}[Function / Mode] ${hr 2}
 ${color2}gap mode ${color}[S]+[Shift]+[g]
 ${color2}titlebar mode ${color}[S]+[Shift]+[t]
 ${color2}mouse mode ${color}[S]+[Shift]+[m]
@@ -80,13 +88,9 @@ ${color2}redshift mode ${color}[S]+[Shift]+[z]
 ${color2}resize mode ${color}[Ctrl]+[Alt]+[r]
 ${color2}wallpaper mode ${color}[Ctrl]+[Alt]+[w]
 ${color}[Miscellaneous] ${hr 2}
-${color2}quick lock ${color}[Ctrl]+[Alt]+[Shift]+[l]
 ${color2}quick resize ${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}quick titlbar toggle ${color}[S]+[t]
 ${color2}quick mark window ${color}[S]+[m]
 ${color2}goto window with mark ${color}[S]+g
 ${color2}swap window with mark ${color}[S]+p
-${color2}rename workspace ${color}[S]+[Shift]+[w]
-${color2}exec i3 command ${color}[S]+[Shift]+[i]
-${color2}toggle i3bar state ${color}[S]+[Shift]+[b]
 ]]

@@ -978,8 +978,8 @@ exec --no-startup-id kdeconnect-indicator &
 exec --no-startup-id mailspring --background
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system_v2
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey_v2
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3-battery-popup.sh -N -L 30 &

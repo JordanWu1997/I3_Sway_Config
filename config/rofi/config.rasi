@@ -13,7 +13,7 @@ configuration {
     fullscreen: true;
 
     /*Padding (Empty region around input pallette)*/
-    padding: 350;
+    padding: 375;
 
     /*Width (No effect when fullscreen is enable)*/
     width: 800;

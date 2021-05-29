@@ -80,7 +80,7 @@ ${color2}navigate to ${alignr}${color}[S]+[vim-key]
 ${color2}swap to ${alignr}${color}[S]+[Shift]+[vim-key]
 ${color2}focus parent ${alignr}${color}[S]+[a]
 ${color2}focus children ${alignr}${color}[S]+[Shift]+[a]
-${color2}mark current window ${alignr}${color}[S]+[m]
+${color2}mark focus container ${alignr}${color}[S]+[m]
 ${color2}swap mark window ${alignr}${color}[S]+[p]
 ${color2}goto mark window ${alignr}${color}[S]+[g]
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Floating / Scratchpad]${font}${voffset 5}

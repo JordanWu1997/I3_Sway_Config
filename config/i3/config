@@ -445,7 +445,7 @@ bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh
 bindsym $mod+Shift+Return exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
-bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal
+#bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal
 bindsym $mod+u            exec --no-startup-id rofi -show window -terminal $terminal
 bindsym $mod+Shift+u      exec --no-startup-id rofi -show windowcd -terminal $terminal
 
@@ -572,7 +572,7 @@ bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 
 # Enter exec command in i3
 # Rename workspace, focus window title
-bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 Command")
+bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p "New workspace name")
 
 # Define names for default workspaces for which we configure key bindings later on.

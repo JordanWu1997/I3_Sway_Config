@@ -30,13 +30,13 @@ conky.config = {
     border_width = 2,
     cpu_avg_samples = 2,
 	default_color = '#FFFFFF',
-	color2 = '#2e9ef4',
+	color2 = '#51a2da',
     default_outline_color = '#FFFFFF',
     default_shade_color = '#000000',
     draw_borders = false,
     draw_graph_borders = true,
     draw_outline = false,
-    draw_shades = true,
+    draw_shades = false,
 	font = 'DroidSanMono Nerd Font:size=12',
 	gap_x = 25,
 	gap_y = 25,
@@ -95,7 +95,6 @@ ${color2}resize mode ${alignr}${color}[Ctrl]+[Alt]+[r]
 ${color2}wallpaper mode ${alignr}${color}[Ctrl]+[Alt]+[w]
 ${voffset 5}${color}${hr 2}${voffset 5}
 ${voffset 0}${color}${font Roboto:size=36}${alignc}${time %l}:${time %M} ${time %p}${font}
-${voffset 0}${color}${font Roboto:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
-${voffset 5}${color}${hr 2}
-
+${voffset 0}${color2}${font Roboto:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${voffset 3}${color}${hr 2}${voffset 3}
 ]]

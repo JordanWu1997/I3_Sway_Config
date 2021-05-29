@@ -176,7 +176,7 @@ hide_edge_borders smart
 # Set windows titlebar fontsize
 font pango: DroidSansMono Nerd Font 12
 title_align center
-show_marks yes # Marks on titlebar
+show_marks yes
 for_window [class=".*"] title_format "%title"
 for_window [title=".* Copying.*"] title_format "File transfer in progress..."
 for_window [title=".* Moving.*"] title_format "File transfer in progress..."
@@ -435,7 +435,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher) [Installation: dnf install dmenu]
-bindsym $mod1+shift+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono nerd font 16" -l 10 -p "dmenu (program launcher)"
+#bindsym Ctrl+$mod1+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono nerd font 16" -l 10 -p "dmenu (program launcher)"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
@@ -490,9 +490,9 @@ bindsym $mod+Shift+Right move right
 # Split in vertical orientation
 bindsym $mod+c split toggle     exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+q split toggle     exec notify-send -u low "Toggled Split Direction"
-bindsym $mod+z split horizontal exec notify-send -u low "Split Horizontally"
-bindsym $mod+x split horizontal exec notify-send -u low "Split Horizontally"
-bindsym $mod+v split vertical   exec notify-send -u low "Split Vertically"
+#bindsym $mod+z split horizontal exec notify-send -u low "Split Horizontally"
+#bindsym $mod+x split horizontal exec notify-send -u low "Split Horizontally"
+#bindsym $mod+v split vertical   exec notify-send -u low "Split Vertically"
 
 # Toggle fullscreen
 bindsym $mod+f       fullscreen toggle
@@ -508,9 +508,6 @@ bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Stick
 bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle   split
-
-# Toggle titlebar
-bindsym $mod+t [class="^.*"] border toggle; exec notify-send -u low "Toggle Titlebars"
 
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
@@ -529,7 +526,7 @@ mode "$mode_titlebar" {
     bindsym Escape mode "default"
 }
 
-# Border mode
+# Border mode (within titlebar mode)
 set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [d]efault [t]oggle
 mode "$mode_border" {
     bindsym 0 border none
@@ -552,18 +549,15 @@ mode "$mode_border" {
 
 # Mark mode [use i3-msg as input]
 # -- read "1" character and mark the current window with this character
+bindsym $mod+m exec i3-msg [class="^.*"] border normal && exec i3-input -F "mark %s" -l 1 -P "Mark: "
 # -- read "1" character and go to the window with the character
+bindsym $mod+g exec i3-msg [class="^.*"] border normal && exec i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto: "
 # -- read "1" character and swap the current window to the window with the character
-bindsym $mod+m exec i3-input -F "mark %s" -l 1 -P "Mark: "
-bindsym $mod+g exec i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto: "
-bindsym $mod+p exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
+bindsym $mod+p exec i3-msg [class="^.*"] border normal && exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
+# Restore default border
+bindsym $mod+n exec i3-msg [class="^.*"] border $default_border_width
 
-# Mark mode [use rofi as input]
-bindsym $mod1+m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
-bindsym $mod1+g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-bindsym $mod1+p exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
-
-# Mark mode [use rofi as input]
+# Mark mode (within titlebar mode) [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
 set $mode_mark Mark: [m]ark [g]oto [s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
@@ -745,8 +739,10 @@ mode "$mode_redshift" {
 # Lock mode -- i3lock (User defined)
 bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
-    #bindsym Return exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default.png, mode "default"
-    bindsym Return exec --no-startup-id i3lock -t -f -i $(find $wallpaper8 -name '*.png' | shuf -n1), mode "default"
+    # use default wallpaper is assigned wallpaper directory does not exist
+    bindsym Return exec --no-startup-id i3lock -t -f -i \
+        $([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
+        echo "$HOME/.config/i3/share/default.png"), mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -808,7 +804,6 @@ bindsym --border button8 move right
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # -- xdotool must be installed
 set $mode_mouse Mouse emulator [ctrl+(vim-key)]:small, [(vim-key)]:medium; [shift+(vim-key)]:large, [u]:left, [i]:middle, [o]:right
-#bindsym $mod+Shift+m mode "$mode_mouse"
 bindsym $mod+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
@@ -845,7 +840,7 @@ mode "$mode_mouse" {
 }
 
 # ======================================================================================
-# All About I3 Bar Settings
+# All About i3bar Settings
 # ======================================================================================
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -869,10 +864,11 @@ bar {
     workspace_buttons Yes
     workspace_min_width 20
     # Tray icon
-    tray_output none
+    tray_output primary
+    tray_padding 5
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
-    -m title network_traffic vpn sensors cpu memory \
+    -m title network_traffic sensors cpu memory \
     pasink pasource brightness caffeine \
     time dunst date battery \
     -p home.path=/home time.format="%H:%M" \
@@ -903,8 +899,7 @@ bar{
     binding_mode_indicator yes
     font pango: DroidSansMono Nerd Font 12
     workspace_buttons Yes
-    tray_output primary
-    tray_padding 5
+    tray_output none
     # Bar color
     colors{
         background #161821
@@ -918,6 +913,7 @@ bar{
 # Status bar toggle, hide or show
 bindsym $mod+Shift+b bar mode toggle top-bar
 bindsym $mod+b       bar mode toggle top-bar-overlay
+
 
 # ======================================================================================
 # All About I3 Startup Commands/Programs
@@ -935,12 +931,11 @@ exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 
 # Startup wallpaper (feh is faster than variety)
 exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
-#exec --no-startup-id variety --set=$HOME/.config/i3/share/default.png
 
 # Gnome authentication (gnome software usage support)
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
-# Lxsession agent (load last xsession (desktop))
+# Lxsession agent (load xsession initializaion)
 # For now, this agent will cause mouse left/right button reversed
 #exec --no-startup-id lxsession
 
@@ -1013,5 +1008,6 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # they are included here as an example. Modify as you see fit.
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $(find  $wallpaper2 -name '*.png' | shuf -n1) --nofork
-#exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i $HOME/.config/i3/share/default.png --nofork
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i \
+    $([ -d "$wallpaper2" ] && echo $(find $wallpaper2 -name '*.png' | shuf -n1) || \
+    echo "$HOME/.config/i3/share/default.png"), mode "default"

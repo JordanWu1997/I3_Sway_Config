@@ -486,13 +486,9 @@ bindsym $mod+Shift+Down  move down
 bindsym $mod+Shift+Up    move up
 bindsym $mod+Shift+Right move right
 
-# Split in horizontal orientation
-# Split in vertical orientation
-bindsym $mod+c split toggle     exec notify-send -u low "Toggled Split Direction"
-bindsym $mod+q split toggle     exec notify-send -u low "Toggled Split Direction"
-#bindsym $mod+z split horizontal exec notify-send -u low "Split Horizontally"
-#bindsym $mod+x split horizontal exec notify-send -u low "Split Horizontally"
-#bindsym $mod+v split vertical   exec notify-send -u low "Split Vertically"
+# Split in vertical/horizontal orientation
+bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
+bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
 
 # Toggle fullscreen
 bindsym $mod+f       fullscreen toggle
@@ -508,6 +504,10 @@ bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Stick
 bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
 bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle   split
+
+# Titlebar Toggle
+bindsym $mod+n       [class="^.*"] border $default_border_width
+bindsym $mod+Shift+n [class="^.*"] border normal
 
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
@@ -548,14 +548,9 @@ mode "$mode_border" {
 }
 
 # Mark mode [use i3-msg as input]
-# -- read "1" character and mark the current window with this character
-bindsym $mod+m exec i3-msg [class="^.*"] border normal && exec i3-input -F "mark %s" -l 1 -P "Mark: "
-# -- read "1" character and go to the window with the character
-bindsym $mod+g exec i3-msg [class="^.*"] border normal && exec i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto: "
-# -- read "1" character and swap the current window to the window with the character
-bindsym $mod+p exec i3-msg [class="^.*"] border normal && exec i3-input -F "swap container with mark %s" -l 1 -P "Swapto: "
-# Restore default border
-bindsym $mod+n exec i3-msg [class="^.*"] border $default_border_width
+bindsym $mod+m exec i3_input_mark.sh # mark the current window with this character
+bindsym $mod+g exec i3_input_goto.sh # go to the window with the character
+bindsym $mod+p exec i3_input_swap.sh # swap the current window to the window with the character
 
 # Mark mode (within titlebar mode) [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
@@ -657,25 +652,8 @@ bindsym $mod+Shift+F10 move container to workspace number $ws20
 
 # Reload the configuration file (Keyboard)
 # Restart i3 inplace (preserves your layout/session, can be used to update i3)
-bindsym $mod+r             reload
-bindsym Ctrl+$mod1+Shift+r restart
-
-# Reload the configuration file (Mouse)
-# Note: Wrapped double quotation is needed here
-bindsym $mod+Shift+r \
-    exec "i3-nagbar \
-    -t warning -f 'pango:DroidSansMono Nerd Font 12' \
-    -m 'You pressed the restart/reload shortcut. Choose one of the following options to operate.' \
-    -B 'Restart i3' 'i3-msg restart' \
-    -B 'Reload i3' 'i3-msg reload'"
-
-# Exit i3 (logs you out of your X session)
-# Note: Wrapped double quotation is needed here
-bindsym $mod+Shift+e  \
-    exec "i3-nagbar \
-    -t warning -f 'pango:DroidSansMono Nerd Font 12' \
-    -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' \
-    -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+r       reload
+bindsym $mod+Shift+r restart
 
 # Picom mode (blur support)
 bindsym $mod+Shift+p mode "$mode_picom"
@@ -761,24 +739,15 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-# System manager (Mouse)
-bindsym $mod+Shift+Escape \
-    exec i3-nagbar \
-    -t warning -f "pango:DroidSansMono Nerd Font 12" \
-    -m "You pressed the system shortcut. Choose one of the following options to operate. Exit option will end your X session" \
-    -B Reboot "systemctl reboot" \
-    -B Poweroff "systemctl poweroff" -B Exit "i3-msg exit" \
-    -B Lock "i3lock -t -f -i $(find ${wallpaper2} -name '*.png' | shuf -n1)"
-    #-B Lock "i3lock -t -f -i $HOME/.config/i3/share/default.png"
-
 # Interactive screenshot by pressing printscreen
 bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
 bindsym $mod+Print       exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
 bindsym $mod+Shift+Print exec notify-send -u low "Take Selected Area Screenshot" && gnome-screenshot -a
 
 # Scratchpad: hide | show window(minus is "-" and plus is "+".)
-bindsym $mod+minus  move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
-bindsym $mod+plus   scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
+bindsym $mod+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
+bindsym $mod+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -795,10 +764,6 @@ bindsym --whole-window $mod+button2 kill
 bindsym --release button3                 floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym --border $mod+button3             floating toggle exec notify-send -u low "Toggle Window Floating"
 bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u low "Toggle Window Floating"
-
-# The side button move the window arround
-bindsym --border button9 move left
-bindsym --border button8 move right
 
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
@@ -914,7 +879,6 @@ bar{
 bindsym $mod+Shift+b bar mode toggle top-bar
 bindsym $mod+b       bar mode toggle top-bar-overlay
 
-
 # ======================================================================================
 # All About I3 Startup Commands/Programs
 # ======================================================================================
@@ -986,8 +950,8 @@ exec --no-startup-id kdeconnect-indicator &
 exec --no-startup-id mailspring --background
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system_v2
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey_v2
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30 &
@@ -1008,6 +972,4 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # they are included here as an example. Modify as you see fit.
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i \
-    $([ -d "$wallpaper2" ] && echo $(find $wallpaper2 -name '*.png' | shuf -n1) || \
-    echo "$HOME/.config/i3/share/default.png"), mode "default"
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default.png"

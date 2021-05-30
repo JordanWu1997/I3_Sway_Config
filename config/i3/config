@@ -117,26 +117,6 @@ set $default_outer_gap 15
 # ======================================================================================
 # This is initial setup for all windows and floating windows in i3
 
-# Colour of border, background, text, indicator, and child_border
-# Online color palette https://thomashunter.name/i3-configurator/
-
-# Default theme
-# class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-client.background       #ffffff
-
-# Gruvbox style theme
-#client.focused          #665c54 #665c54 #eddbb2 #2e9ef4   #665c54
-#client.focused_inactive #282828 #5f676a #ffffff #484e50   #5f676a
-#client.unfocused        #3c3836 #3c3836 #a89984 #292d2e   #222222
-#client.urgent           #cc241d #cc241d #ebdbb2 #cc241d   #cc241d
-#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-#client.background       #ffffff
-
 # For windows role/class, run xprop to check
 # Floating for pop-up
 for_window [window_role="pop-up"] floating enable
@@ -243,10 +223,15 @@ mode "$mode_variety" {
 }
 
 # Theme mode (within wallpaper mode)
-set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme
+# Pywal (https://github.com/dylanaraps/pywal)
+# Installation: pip install pywal
+# Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
+set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_vis [R]eload_dunst
 mode "$mode_theme" {
-    bindsym e exec $I3_BIN/i3_wal_autotheme.sh && notify-send -u low "Autotheme with pywal"
-    bindsym d exec $I3_BIN/i3_wal_setdefault.sh && notify-send -u low "Reset theme to default (no pywal)"
+    bindsym e       exec $I3_BIN/i3_wal_autotheme.sh && notify-send -u low "Auto-theme with pywal"
+    bindsym d       exec $I3_BIN/i3_wal_setdefault.sh && notify-send -u low "Disable auto-theme (kill pywal)"
+    bindsym r       exec $I3_BIN/i3_viscolorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
+    bindsym Shift+r exec $I3_BIN/i3_dunstcolorchanger.sh && notify-send -u low "Reload dunst (notifier)"
     # exit
     bindsym Return mode "$mode_wallpaper"
     bindsym Escape mode "default"
@@ -447,12 +432,13 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher) [Installation: dnf install dmenu]
-#bindsym $mod+Shift+Return exec --no-startup-id dmenu_run \
-    #-fn "pango:droidsansmono nerd font 16" -l 10 -p "Launcher"
+bindsym $mod+Shift+Return exec --no-startup-id dmenu_run \
+    -fn "pango:droidsansmono nerd font 16" -l 10 -p "Launcher" \
+    -nb "$c5" -nf "$bg" -sb "$c2" -sf "$c7"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $mod++Shift+Return exec --no-startup-id i3-dmenu-desktop \
-    --dmenu="dmenu -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'Program launcher'"
+#bindsym $mod++Shift+Return exec --no-startup-id i3-dmenu-desktop \
+    #--dmenu="dmenu -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'Program launcher'"
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
@@ -818,7 +804,45 @@ mode "$mode_mouse" {
 }
 
 # ======================================================================================
-# All About i3bar Settings
+# All About Color Template
+# ======================================================================================
+# Load color from Xresouce, then set color for i3 containers/windows
+# For i3 container/window color setup
+# -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
+
+# Load colors from Xresource through Pywal
+set_from_resource $fg  i3wm.color7 #f0f0f0
+set_from_resource $bg  i3wm.color0 #f0f0f0
+set_from_resource $c0  i3wm.color0 #f0f0f0
+set_from_resource $c1  i3wm.color1 #f0f0f0
+set_from_resource $c2  i3wm.color2 #f0f0f0
+set_from_resource $c3  i3wm.color3 #f0f0f0
+set_from_resource $c4  i3wm.color4 #f0f0f0
+set_from_resource $c5  i3wm.color5 #f0f0f0
+set_from_resource $c6  i3wm.color6 #f0f0f0
+set_from_resource $c7  i3wm.color7 #f0f0f0
+set_from_resource $c8  i3wm.color0 #f0f0f0
+set_from_resource $c9  i3wm.color1 #f0f0f0
+set_from_resource $c10 i3wm.color2 #f0f0f0
+set_from_resource $c11 i3wm.color3 #f0f0f0
+set_from_resource $c12 i3wm.color4 #f0f0f0
+set_from_resource $c13 i3wm.color5 #f0f0f0
+set_from_resource $c14 i3wm.color6 #f0f0f0
+set_from_resource $c15 i3wm.color7 #f0f0f0
+
+# [Comment below lines if you want original i3 container/workspace color setup]
+# Color of border, background, text, indicator, and child_border based on Xresource
+# For old color template backup, please check .config/i3/share/i3_color_template.txt
+# class                 border  backgr. text indicator child_border
+client.focused          $c5     $c5     $c0  $c7       $c5
+client.focused_inactive $c2     $c2     $c7  $c2       $c2
+client.unfocused        $c2     $c2     $c7  $c2       $c2
+client.urgent           $c4     $c4     $c0  $c2       $c2
+client.placeholder      $c2     $c2     $c7  $c2       $c2
+client.background       $c0
+
+# ======================================================================================
+# All About Color Template & i3bar Settings
 # ======================================================================================
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -827,6 +851,7 @@ mode "$mode_mouse" {
 
 # Status bar for general purposes
 bar {
+    # Bar property
     id top-bar
     # Basic bar
     position top
@@ -848,28 +873,32 @@ bar {
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
     pasink pasource brightness caffeine \
-    time date battery \
+    dunst time date battery \
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
     disk.format="{percent:05.02f}%" \
     pasink.percent_change=1 pasource.percent_change=1 \
     brightness.step=1 \
-    -t iceberg-contrast
+    -t i3bar-wal           # status for pywal i3bar
+    #-t i3bar-iceberg-fedora # status for original i3bar
+
     # Bar color
+    # [Comment below lines if you want original i3bar color]
     colors{
-        background #161821
-        statusline #FFFFFF
-        separator  #666666
+        background $bg
+        statusline $fg
+        separator  $bg
         # item             # border # bg    # text
-        focused_workspace  #4C7899  #285577 #FFFFFF
-        active_workspace   #333333  #222222 #FFFFFF
-        inactive_workspace #333333  #222222 #888888
-        urgent_workspace   #2F343A  #900000 #FFFFFF
+        focused_workspace  $c5      $c5     $c7
+        active_workspace   $c5      $c5     $c0
+        inactive_workspace $c5      $c5     $c0
+        urgent_workspace   $c4      $c4     $c0
     }
 }
 
 # Status bar for mode indication
 bar{
+    # Bar property
     id top-bar-overlay
     position top
     mode hide
@@ -878,13 +907,19 @@ bar{
     font pango: DroidSansMono Nerd Font 12
     workspace_buttons Yes
     tray_output none
+
     # Bar color
+    # [Comment below lines if you want original i3bar color]
     colors{
-        background #161821
-        statusline #FFFFFF
-        separator  #161821
-        # item       # border # bg    # text
-        binding_mode #161821  #161821 #FFFFFF
+        background $bg
+        statusline $fg
+        separator  $bg
+        # item             # border # bg    # text
+        focused_workspace  $c5      $c5     $c7
+        active_workspace   $c5      $c5     $c0
+        inactive_workspace $c5      $c5     $c0
+        urgent_workspace   $c4      $c4     $c0
+        binding_mode       $bg      $bg     $fg
     }
 }
 
@@ -907,7 +942,7 @@ exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
 # Startup wallpaper (feh is faster than variety)
-# Check https://github.com/dylanaraps/pywal
+#exec --no-startup-id wal -i  $HOME/.config/i3/share/default.png
 exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
 
 # Gnome authentication (gnome software usage support)

@@ -1,0 +1,34 @@
+# I3WM Color Template
+# Online color palette https://thomashunter.name/i3-configurator/
+
+## I3BAR
+### Default theme with minor modified
+background #161821
+statusline #FFFFFF
+separator  #666666
+# item             border   bg      text
+focused_workspace  #4C7899  #285577 #FFFFFF
+active_workspace   #333333  #222222 #FFFFFF
+inactive_workspace #333333  #222222 #888888
+urgent_workspace   #2F343A  #900000 #FFFFFF
+binding_mode       #161821  #161821 #FFFFFF
+
+## I3CONTAINTER
+### Gruvbox theme
+# class                 border  backgr. text    indicator child_border
+client.focused          #665c54 #665c54 #eddbb2 #2e9ef4   #665c54
+client.focused_inactive #282828 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #3c3836 #3c3836 #a89984 #292d2e   #222222
+client.urgent           #cc241d #cc241d #ebdbb2 #cc241d   #cc241d
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff
+
+## I3CONTAINTER
+### Default theme with minor change
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #ffffff

@@ -106,7 +106,7 @@ set $mod1 Mod1
 set $terminal kitty
 
 # Setup border width
-set $default_border_width pixel 2
+set $default_border_width pixel 1
 
 # Setup gap width (only for i3-gap)
 set $default_inner_gap 5
@@ -206,7 +206,7 @@ default_orientation horizontal
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [d]efault [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode
+set $mode_wallpaper Wallpaper: [d]efault, [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode, [t]heme_mode
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
     bindsym d exec notify-send -u low "Set Wallpaper to Default"     && feh --bg-fill $HOME/.config/i3/share/default.png
@@ -220,13 +220,15 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
+    bindsym t mode $mode_theme
     # exit
     bindsym q      mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-# Variety mode
+
+# Variety mode (within wallpaper mode)
 set $mode_variety Variety: [n]ext [p]revious [P]ause [R]esume [A]dd_Favorite [F]avorite
 mode "$mode_variety" {
     bindsym n       exec notify-send -u low "Next Wallpaper (VARIETY)"            && variety -n
@@ -235,6 +237,16 @@ mode "$mode_variety" {
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)"           && variety -f
     bindsym Shift+f exec notify-send -u low "Shuffle Favroite (VARIETY)"          && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
+    # exit
+    bindsym Return mode "$mode_wallpaper"
+    bindsym Escape mode "default"
+}
+
+# Theme mode (within wallpaper mode)
+set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme
+mode "$mode_theme" {
+    bindsym e exec $I3_BIN/i3_wal_autotheme.sh && notify-send -u low "Autotheme with pywal"
+    bindsym d exec $I3_BIN/i3_wal_setdefault.sh && notify-send -u low "Reset theme to default (no pywal)"
     # exit
     bindsym Return mode "$mode_wallpaper"
     bindsym Escape mode "default"
@@ -435,19 +447,20 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher) [Installation: dnf install dmenu]
-#bindsym Ctrl+$mod1+f exec --no-startup-id dmenu_run -fn "pango:droidsansmono nerd font 16" -l 10 -p "dmenu (program launcher)"
+#bindsym $mod+Shift+Return exec --no-startup-id dmenu_run \
+    #-fn "pango:droidsansmono nerd font 16" -l 10 -p "Launcher"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-#bindsym $mod1+f       exec --no-startup-id i3-dmenu-desktop
+bindsym $mod++Shift+Return exec --no-startup-id i3-dmenu-desktop \
+    --dmenu="dmenu -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'Program launcher'"
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+Shift+Return exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
-#bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal
-bindsym $mod+u            exec --no-startup-id rofi -show window -terminal $terminal
-bindsym $mod+Shift+u      exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym $mod+d        exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d  exec --no-startup-id rofi -show run -terminal $terminal
+bindsym Ctrl+$mod1+d  exec --no-startup-id rofi -show keys -terminal $terminal
+bindsym $mod+u        exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod+Shift+u  exec --no-startup-id rofi -show windowcd -terminal $terminal
 
 # Start a terminal
 bindsym $mod+Return   exec $terminal
@@ -835,7 +848,7 @@ bar {
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
     pasink pasource brightness caffeine \
-    time dunst date battery \
+    time date battery \
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
     disk.format="{percent:05.02f}%" \
@@ -894,6 +907,7 @@ exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
 # Startup wallpaper (feh is faster than variety)
+# Check https://github.com/dylanaraps/pywal
 exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
 
 # Gnome authentication (gnome software usage support)
@@ -947,11 +961,11 @@ exec --no-startup-id /usr/libexec/kdeconnectd &
 exec --no-startup-id kdeconnect-indicator &
 
 # Mailspring (email manager) in background
-exec --no-startup-id mailspring --background
+#exec --no-startup-id mailspring --background
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30 &

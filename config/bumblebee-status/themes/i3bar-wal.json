@@ -5,24 +5,25 @@
         "separator-block-width": 0,
         "separator": "",
         "warning": {
-          "fg": "foreground",
-			    "bg": "color6"
+            "fg": "color4",
+            "bg": "color0"
 		    },
-    		"critical": {
-    			"fg": "foreground",
-    			"bg": "color5"
+    	"critical": {
+            "fg": "color3",
+            "bg": "color0"
     		},
-        "fg": "foreground",
-        "bg": "background"
+        "fg": "cursor",
+
+        "bg": "color0"
     },
     "battery": {
         "charged": {
-            "fg": "color4",
-            "bg": "background"
+            "fg": "color2",
+            "bg": "color0"
         },
         "charging": {
             "fg": "color7",
-            "bg": "background"
+            "bg": "color0"
         }
     }
 }

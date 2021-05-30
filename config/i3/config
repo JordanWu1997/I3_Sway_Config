@@ -942,8 +942,9 @@ exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
 # Startup wallpaper (feh is faster than variety)
-#exec --no-startup-id wal -i  $HOME/.config/i3/share/default.png
-exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
+# For auto theme with pywal, use wal instead of feh
+#exec --no-startup-id feh --bg-fill $HOME/.config/i3/share/default.png
+exec --no-startup-id wal -i $HOME/.config/i3/share/default.png
 
 # Gnome authentication (gnome software usage support)
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &

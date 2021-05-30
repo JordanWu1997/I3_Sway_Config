@@ -13,12 +13,12 @@
 
 pidof dunst && killall dunst
 
-dunst -lf  "${color0:-#ffffff}" \
+dunst -lf  "${color6:-#ffffff}" \
       -lb  "${color1:-#000000}" \
-      -lfr "${color2:-#2e9ef4}" \
-      -nf  "${color3:-#ffffff}" \
-      -nb  "${color4:-#000000}" \
-      -nfr "${color5:-#2e9ef4}" \
+      -lfr "${color4:-#2e9ef4}" \
+      -nf  "${color6:-#ffffff}" \
+      -nb  "${color1:-#000000}" \
+      -nfr "${color4:-#2e9ef4}" \
       -cf  "${color6:-#ffffff}" \
-      -cb  "${color7:-#000000}" \
-      -cfr "${color8:-#2e9ef4}" > /dev/null 2>&1 &
+      -cb  "${color1:-#000000}" \
+      -cfr "${color4:-#2e9ef4}" > /dev/null 2>&1 &

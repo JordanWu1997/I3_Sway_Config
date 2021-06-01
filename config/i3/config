@@ -172,8 +172,9 @@ default_orientation horizontal
 #              Please change to where you store wallpaper directory
 #              Feel free to modify these wallpaper directories as you want
 # --------------------------------------------------------------------------------------
-#export wallpaperv="/home/jordankhwu/Pictures/VARIETY_SAVED"
-#export wallpaperd="/home/jordankhwu/Pictures/WALLPAPERS"
+#export wallpaperv="$HOME/Pictures/VARIETY_SAVED"
+#export wallpaperd="$HOME/Pictures/WALLPAPERS"
+#export wallpaperf="$wallpaperd/FAVORITES"
 #export wallpaper1="$wallpaperd/i3WM"
 #export wallpaper2="$wallpaperd/FEDORA"
 #export wallpaper3="$wallpaperd/ALMA"
@@ -186,9 +187,10 @@ default_orientation horizontal
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode, [t]heme_mode, [s]ave_as_default, [r]estore_to_default
+set $mode_wallpaper Wallpaper: [f]avorite, [1]I3WM, [2]Fedora, [3]ALMA, [4]Cats, [5]Linux, [6]Lulin, [7]RS Cat, [8]Thinkpad, [9]DTs, [0]Variety_mode, [s]ave_as_default, [r]estore_to_default, [a]dd_to_avorite
 bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
 mode "$mode_wallpaper" {
+    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
     bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
     bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
     bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
@@ -199,9 +201,9 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    bindsym t mode $mode_theme
-    bindsym s exec notify-send -u low "Save current as default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh
+    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh
     bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
+    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
     # exit
     bindsym q      mode "default"
     bindsym Return mode "default"
@@ -225,7 +227,7 @@ mode "$mode_variety" {
     bindsym Escape mode "default"
 }
 
-# Theme mode (within wallpaper mode)
+# Theme mode
 # Pywal (https://github.com/dylanaraps/pywal)
 # Installation: pip install pywal
 # Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
@@ -238,7 +240,7 @@ mode "$mode_theme" {
     bindsym 1 exec $I3_BIN/i3_viscolorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     bindsym 2 exec $I3_BIN/i3_dunstcolorchanger.sh && notify-send -u low "Reload dunst (notifier)"
     # exit
-    bindsym Return mode "$mode_wallpaper"
+    bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
@@ -571,10 +573,12 @@ mode "$mode_mark" {
 bindsym $mod+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
 bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
 
-# Enter exec command in i3
-# Rename workspace, focus window title
+# Enter exec command in i3 [use rofi as input]
 bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
+
+# Rename workspace
 bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p "New workspace name")
+#bindsym $mod+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -806,102 +810,6 @@ mode "$mode_mouse" {
 }
 
 # ======================================================================================
-# All About I3 Startup Commands/Programs
-# ======================================================================================
-# Following commands/programs will run after I3 starts
-# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
-# label: --same-as   for mirror mode
-#        --right_of  for extend mode
-# -- General setting
-exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
-# -- Setting for my dorm Acer27'
-#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
-# -- Setting for IOA monitor
-#exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
-
-# Startup wallpaper (feh is faster than variety)
-# For auto theme with pywal, use wal instead of feh
-exec --no-startup-id rm -fr $HOME/.cache/wal | wal -i $HOME/.config/i3/share/default_wallpaper
-
-# Gnome authentication (gnome software usage support)
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
-
-# Lxsession agent (load xsession initializaion)
-# For now, this agent will cause mouse left/right button reversed
-#exec --no-startup-id lxsession
-
-# Set compositor for transparency (now use picom instead)
-#exec --no-startup-id xcompmgr -c -f -n
-
-# Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
-# Picom in Fedora repository not work well [https://github.com/yshui/picom]
-# Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-indjependent system tray GUI for it.
-exec_always --no-startup-id nm-applet
-
-# Bluetooth Manager system tray GUI
-exec_always --no-startup-id blueman-applet
-
-# Startup numlock on (sudo dnf install numlockx)
-exec_always --no-startup-id numlockx on &
-
-# Imwheel (modify mouse wheel speed)
-exec_always --no-startup-id imwheel &
-
-# Ibus input method (ibus-chewing support)
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id export XMODIFIER="@im=ibus"
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id export QT_IM_MODULE=ibus
-exec --no-startup-id export DefaultIMModule=ibus
-exec_always --no-startup-id ibus-daemon --xim -d -r
-
-# Parcellite (clipboard)
-exec_always --no-startup-id parcellite
-
-# Flash focus window [https://github.com/fennerm/flashfocus]
-# Need compositor support (e.g. xcompmgr, picom, etc)
-exec_always --no-startup-id $HOME/anaconda3/bin/flashfocus
-
-# Dunst (notification)
-exec_always --no-startup-id dunst
-
-# KDE Connet (connect to android smartphone) in background
-exec --no-startup-id /usr/libexec/kdeconnectd &
-exec --no-startup-id kdeconnect-indicator &
-
-# Mailspring (email manager) in background
-#exec --no-startup-id mailspring --background
-
-# Conky (system overview and hotkey)
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
-
-# Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30
-
-# Automark windows [https://github.com/lincheney/i3-automark]
-# Modified to mark all windows with lowercase instead of original uppercase
-exec --no-startup-id $I3_BIN/i3_automark.py &
-
-# Autotiling [https://github.com/nwg-piotr/autotiling]
-# Tiling direction sequence: H -> V -> H -> V ...
-# Installation: pip install autotiling
-#exec --no-startup-id ${HOME}/anaconda3/bin/autotiling &
-
-# Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
-#exec --no-startup-id ${HOME}/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
-# Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_wallpaper"
-
-# ======================================================================================
 # All About Color Template
 # ======================================================================================
 # Load color from Xresouce, then set color for i3 containers/windows
@@ -983,7 +891,7 @@ bar {
     # Bar color
     # [Comment below lines if you want original i3bar color]
     colors{
-        background $bg
+        background $c0
         statusline $fg
         separator  $bg
         # item             # border # bg    # text
@@ -1024,3 +932,99 @@ bar{
 # Status bar toggle, hide or show
 bindsym $mod+Shift+b bar mode toggle top-bar
 bindsym $mod+b       bar mode toggle top-bar-overlay
+
+# ======================================================================================
+# All About I3 Startup Commands/Programs
+# ======================================================================================
+# Following commands/programs will run after I3 starts
+# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
+# label: --same-as   for mirror mode
+#        --right_of  for extend mode
+# -- General setting
+exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+# -- Setting for my dorm Acer27'
+#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
+# -- Setting for IOA monitor
+#exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+
+# Startup wallpaper (feh is faster than variety)
+# For auto theme with pywal, use wal instead of feh
+exec --no-startup-id rm -fr $HOME/.cache/wal | wal -i $HOME/.config/i3/share/default_wallpaper
+
+# Gnome authentication (gnome software usage support)
+exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
+
+# Lxsession agent (load xsession initializaion)
+# For now, this agent will cause mouse left/right button reversed
+#exec --no-startup-id lxsession
+
+# Set compositor for transparency (now use picom instead)
+#exec --no-startup-id xcompmgr -c -f -n
+
+# Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
+# Picom in Fedora repository not work well [https://github.com/yshui/picom]
+# Use picom fork of jonaburg instead (need manually installed on Fedora)
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-indjependent system tray GUI for it.
+exec_always --no-startup-id nm-applet
+
+# Bluetooth Manager system tray GUI
+exec_always --no-startup-id blueman-applet
+
+# Startup numlock on (sudo dnf install numlockx)
+exec_always --no-startup-id numlockx on
+
+# Imwheel (modify mouse wheel speed)
+exec_always --no-startup-id imwheel
+
+# Ibus input method (ibus-chewing support)
+exec --no-startup-id export GTK_IM_MODULE=ibus
+exec --no-startup-id export XMODIFIER="@im=ibus"
+exec --no-startup-id export GTK_IM_MODULE=ibus
+exec --no-startup-id export QT_IM_MODULE=ibus
+exec --no-startup-id export DefaultIMModule=ibus
+exec_always --no-startup-id ibus-daemon --xim -d -r
+
+# Parcellite (clipboard)
+exec_always --no-startup-id parcellite
+
+# Flash focus window [https://github.com/fennerm/flashfocus]
+# Need compositor support (e.g. xcompmgr, picom, etc)
+exec_always --no-startup-id $HOME/anaconda3/bin/flashfocus
+
+# Dunst (notification)
+exec_always --no-startup-id dunst
+
+# KDE Connet (connect to android smartphone) in background
+exec --no-startup-id /usr/libexec/kdeconnectd &
+exec --no-startup-id kdeconnect-indicator &
+
+# Mailspring (email manager) in background
+#exec --no-startup-id mailspring --background
+
+# Conky (system overview and hotkey)
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+
+# Battery warning [https://github.com/rjekker/i3-battery-popup]
+exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30
+
+# Automark windows [https://github.com/lincheney/i3-automark]
+# Modified to mark all windows with lowercase instead of original uppercase
+exec --no-startup-id $I3_BIN/i3_automark.py &
+
+# Autotiling [https://github.com/nwg-piotr/autotiling]
+# Tiling direction sequence: H -> V -> H -> V ...
+# Installation: pip install autotiling
+#exec --no-startup-id $HOME/anaconda3/bin/autotiling &
+
+# Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
+#exec --no-startup-id $HOME/anaconda3/bin/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
+# Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_i3_wallpaper.png"

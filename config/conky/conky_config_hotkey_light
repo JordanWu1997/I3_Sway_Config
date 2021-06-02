@@ -17,48 +17,53 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-Edit by Jordan Wu
--- Miscellaneous mode
-${color2}quick lock ${color}[Ctrl]+[Alt]+[Shift]+[l]
-${color2}rename workspace ${color}[S]+[Shift]+[w]
-${color2}exec i3 command ${color}[S]+[Shift]+[i]
-${color2}toggle i3bar state ${color}[S]+[Shift]+[b]
-
 ]]
 conky.config = {
+	own_window_transparent = true,
+	use_xft = true,
+	xftalpha = 1.0,
+	own_window_argb_visual = true,
+	own_window_argb_value = 0,
+	double_buffer = true,
 	alignment = 'bottom_left',
 	background = true,
-	use_xft = true,
-	font = 'DroidSanMono Nerd Font:size=12',
-	color2 = '#2e9ef4',
+	border_width = 2,
+	cpu_avg_samples = 2,
 	default_color = '#FFFFFF',
+	color2 = '#2e9ef4',
     default_outline_color = '#FFFFFF',
     default_shade_color = '#000000',
-    draw_shades = true,
     draw_borders = false,
-    draw_graph_borders = false,
+    draw_graph_borders = true,
     draw_outline = false,
+    draw_shades = true,
+	font = 'DroidSanMono Nerd Font:size=12',
 	gap_x = 25,
 	gap_y = 25,
 	minimum_width = 280,
 	maximum_width = 280,
-	double_buffer = true,
 	no_buffers = true,
-	own_window = true,
+	own_window = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
     own_window_class = 'Conky',
 	own_window_type = 'override',
-	own_window_transparent = true,
-	wn_window_argb_visual = true,
-	own_window_argb_value = 255,
-    update_interval = 0.001,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'none',
+    show_graph_scale = false,
+    show_graph_range = false,
+	top_name_width = 16
+
 }
 conky.text = [[
 ${color}[System Command] ${hr 2}
 ${color2}open terminal ${color}[S]+[Enter]
-${color2}system option ${color}[S]+[Shift]+[Esc]
-${color2}reload/restart i3 ${color}[S]+[Shift]+[r]
-${color2}exit i3 session ${color}[S]+[Shift]+[e]
+${color2}system option ${color}[S]+[Esc]
+${color2}reload i3 ${color}[S]+[r]
+${color2}restart i3 ${color}[S]+[Shift]+[r]
 ${color2}application (rofi) ${color}[S]+[d]
 ${color2}window selector (rofi) ${color}[S]+[u]
 ${color}[Workspace / Container] ${hr 2}
@@ -87,9 +92,9 @@ ${color2}mouse mode ${color}[S]+[Shift]+[m]
 ${color2}redshift mode ${color}[S]+[Shift]+[z]
 ${color2}resize mode ${color}[Ctrl]+[Alt]+[r]
 ${color2}wallpaper mode ${color}[Ctrl]+[Alt]+[w]
+${color2}theme mode ${color}[Ctrl]+[Alt]+[t]
 ${color}[Miscellaneous] ${hr 2}
 ${color2}quick resize ${color}[Ctrl]+[Alt]+[vim-key]
-${color2}quick titlbar toggle ${color}[S]+[t]
 ${color2}quick mark window ${color}[S]+[m]
 ${color2}goto window with mark ${color}[S]+g
 ${color2}swap window with mark ${color}[S]+p

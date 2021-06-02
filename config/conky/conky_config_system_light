@@ -20,8 +20,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 conky.config = {
     own_window_transparent = true,
+	use_xft = true,
+	xftalpha = 1.0,
     own_window_argb_visual = true,
-    own_window_argb_value = 255,
+    own_window_argb_value = 64,
     double_buffer = true,
     alignment = 'top_right',
     background = true,
@@ -54,6 +56,7 @@ conky.config = {
     use_spacer = 'none',
     show_graph_scale = false,
     show_graph_range = false,
+	top_name_width = 16
 }
 conky.text = [[
 ${voffset 80}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p 40,0 -s 270x120}${color}

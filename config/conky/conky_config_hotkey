@@ -95,6 +95,7 @@ ${color2}picom mode ${alignr}${color}[S]+[Shift]+[p]
 ${color2}mouse mode ${alignr}${color}[S]+[Shift]+[m]
 ${color2}redshift mode ${alignr}${color}[S]+[Shift]+[z]
 ${color2}resize mode ${alignr}${color}[Ctrl]+[Alt]+[r]
+${color2}theme mode ${alignr}${color}[Ctrl]+[Alt]+[t]
 ${color2}wallpaper mode ${alignr}${color}[Ctrl]+[Alt]+[w]
 ${voffset 5}${color}${hr 2}${voffset 5}
 ${voffset 0}${color}${font Roboto:size=36}${alignc}${time %l}:${time %M} ${time %p}${font}

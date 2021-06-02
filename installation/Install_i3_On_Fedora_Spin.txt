@@ -12,35 +12,34 @@ dnf copr enable fuhrmann/i3-gaps
 # Original i3 comflicts with i3-gaps (Only for Fedora i3 spin)
 dnf remove i3
 # If original i3 is removed, must remember to reinstall terminal emulator
-dnf install i3-gaps kitty
+dnf install i3-gaps kitty gnome-terminal
 
 # Install system utility package
 dnf install git i3lock xss-lock rofi htop neofetch vim ranger zsh
 dnf install pavucontrol dunst parcellite numlockx xdotool conky
 dnf install NetworkManager blueman arandr xrandr xbacklight redshift
 
-# Xcompmgr cannot be installed from repository of Fedora 34 spin i3
+# Xcompmgr cannot be installed from repository of Fedora 34 spin i3 [Use picom instead]
 # Here change to mannually installation
 # [https://centos.pkgs.org/8/raven-x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm.html]
-cd ~/
-wget https://pkgs.dyn.su/el8/base/x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm
-dnf install ./xcompmgr-1.1.7-7.el8.x86_64.rpm
+#cd ~/
+#wget https://pkgs.dyn.su/el8/base/x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm
+#dnf install ./xcompmgr-1.1.7-7.el8.x86_64.rpm
 
-# Picom from repository of Fedora 34 does not contain all the functions we need (e.g. blur)
-# Here change to mannually compile picom from jonaburg fork
+# Picom for Xcompositor
+dnf install picom
+
+# Note for Picom
+# Picom from repository of Fedora 34 does not contain all the functions we need (e.g. blur, fancy-animation)
+# if you really need blur effect or fancy-animation, you need to mannually compile picom from jonaburg fork
 # [https://github.com/jonaburg/picom]
-
-dnf install meson gcc ninja-build cmake
-dnf install libev-devel xcb-util-devel libX11-devel xcb-util-renderutil-devel xcb-util-image xcb-util-image-devel xcb-util-renderutil-devel pixman-devel utash-devel libconfig-devel pcre-devel mesa-libGL-devel dbus-devel
-
-cd ~/
-git clone https://github.com/jonaburg/picom.git
-git submodule update --init --recursive
-meson --buildtype=release . build
-ninja -C build
-
-
-
+#dnf install meson gcc ninja-build cmake
+#dnf install libev-devel xcb-util-devel libX11-devel xcb-util-renderutil-devel xcb-util-image xcb-util-image-devel xcb-util-renderutil-devel pixman-devel utash-devel libconfig-devel pcre-devel mesa-libGL-devel dbus-devel
+#cd ~/
+#git clone https://github.com/jonaburg/picom.git
+#git submodule update --init --recursive
+#meson --buildtype=release . build
+#ninja -C build
 
 # Install wallpaper package
 dnf install feh variety
@@ -49,7 +48,7 @@ dnf install feh variety
 dnf install ibus ibus-chewing
 
 # Install gnome package
-dnf install nautilus gnome-disks gnome-screenshot
+dnf install nautilus gnome-screenshot
 
 # Install theme configurator
 dnf install lxappearance
@@ -58,7 +57,7 @@ dnf install qt-config qt5ct qt5-qtstyleplugins
 dnf install arc-theme
 
 # Install Python package for i3
-python -m pip install pywal bumblebee-status i3ipc utils i3-resurrect i3-workspace-swap autotiling
+python -m pip install pywal bumblebee-status i3ipc utils i3-resurrect i3-workspace-swap autotiling flashfocus
 
 # Install Nerd fonts
 mkdir -p ~/.local/share/fonts
@@ -91,6 +90,16 @@ ln -s ~/Desktop/I3_Sway_Config/config/ranger
 ln -s ~/Desktop/I3_Sway_Config/config/rofi
 ln -s ~/Desktop/I3_Sway_Config/config/picom
 ln -s ~/Desktop/I3_Sway_Config/config/bumblebee-status
+ln -s ~/Desktop/I3_Sway_Config/config/vis
+
+# Add following command to ~/.profile
+export PATH=$HOME/.config/i3/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+export I3_BIN=$HOME/.config/i3/bin
+
+# Add following command to ~/.zshrc
+source "$HOME/.profile"
+cat /home/jordankhwu/.cache/wal/sequences
 
 # Set default wallpaper
 rm -f ~/.config/i3/share/default_wallpaper
@@ -104,6 +113,13 @@ ln -s ~/Desktop/I3_Sway_Config/config/conky
 dnf install neovim tmux tmux-powerline
 cd ~/Desktop
 git clone https://github.com/JordanWu1997/Vim_Tmux_Config.git
-ln ~/Desktop/Vim_Tmux_Config/tmux.conf ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln ~/Desktop/Vim_Tmux_Config/tmux.conf ~/.tmux.conf
 ln -s ~/Desktop/Vim_Tmux_Config/vimrc ~/.config/nvim/init.vim
+
+# Note for cli-visualizer (vis)
+dnf install fftw-devel ncurses-devel pulseaudio-libs-devel cmake
+cd ~/Desktop
+git clone https://github.com/dpayne/cli-visualizer.git
+cd cli-visualizer
+./install.sh

@@ -26,15 +26,16 @@ dnf install NetworkManager blueman arandr xrandr xbacklight redshift
 #wget https://pkgs.dyn.su/el8/base/x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm
 #dnf install ./xcompmgr-1.1.7-7.el8.x86_64.rpm
 
-# Picom for Xcompositor
+# Picom for Xcompositor (Transparency support)
 dnf install picom
 
-# Note for Picom
+# Note for Picom (Blur, animation support)
 # Picom from repository of Fedora 34 does not contain all the functions we need (e.g. blur, fancy-animation)
 # if you really need blur effect or fancy-animation, you need to mannually compile picom from jonaburg fork
-# [https://github.com/jonaburg/picom]
+# [https://github.com/jonaburg/picom] but it needs a lot computating resources, not recommended for virtual machine
 #dnf install meson gcc ninja-build cmake
-#dnf install libev-devel xcb-util-devel libX11-devel xcb-util-renderutil-devel xcb-util-image xcb-util-image-devel xcb-util-renderutil-devel pixman-devel utash-devel libconfig-devel pcre-devel mesa-libGL-devel dbus-devel
+#dnf install libev-devel xcb-util-devel libX11-devel xcb-util-renderutil-devel xcb-util-image xcb-util-image-devel
+#dnf install xcb-util-renderutil-devel pixman-devel uthash-devel libconfig-devel pcre-devel mesa-libGL-devel dbus-devel libXext-devel
 #cd ~/
 #git clone https://github.com/jonaburg/picom.git
 #git submodule update --init --recursive

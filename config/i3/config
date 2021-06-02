@@ -508,9 +508,12 @@ bindsym $mod+Shift+space floating toggle   exec notify-send -u low "Toggle Windo
 bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Sticky For Floating Window"
 
 # Change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking exec notify-send -u low "Stacked Mode On"
-bindsym $mod+w layout tabbed   exec notify-send -u low "Tabbed Mode On"
-bindsym $mod+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
+bindsym $mod+s layout stacking             exec notify-send -u low "Stacked Mode On"
+bindsym $mod+w layout tabbed               exec notify-send -u low "Tabbed Mode On"
+bindsym $mod+e layout toggle splitv splith exec notify-send -u low "Toggle Layout Split"
+
+# Quick change container layout (stacked, tabbed, splitv, splith)
+bindsym $mod+Shift+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
 
 # Titlebar Toggle
 bindsym $mod+n       [class="^.*"] border $default_border_width

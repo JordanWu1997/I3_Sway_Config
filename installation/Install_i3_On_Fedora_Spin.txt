@@ -26,6 +26,22 @@ cd ~/
 wget https://pkgs.dyn.su/el8/base/x86_64/xcompmgr-1.1.7-7.el8.x86_64.rpm
 dnf install ./xcompmgr-1.1.7-7.el8.x86_64.rpm
 
+# Picom from repository of Fedora 34 does not contain all the functions we need (e.g. blur)
+# Here change to mannually compile picom from jonaburg fork
+# [https://github.com/jonaburg/picom]
+
+dnf install meson gcc ninja-build cmake
+dnf install libev-devel xcb-util-devel libX11-devel xcb-util-renderutil-devel xcb-util-image xcb-util-image-devel xcb-util-renderutil-devel pixman-devel utash-devel libconfig-devel pcre-devel mesa-libGL-devel dbus-devel
+
+cd ~/
+git clone https://github.com/jonaburg/picom.git
+git submodule update --init --recursive
+meson --buildtype=release . build
+ninja -C build
+
+
+
+
 # Install wallpaper package
 dnf install feh variety
 
@@ -42,7 +58,7 @@ dnf install qt-config qt5ct qt5-qtstyleplugins
 dnf install arc-theme
 
 # Install Python package for i3
-python -m pip install bumblebee-status i3ipc utils i3-resurrect i3-workspace-swap autotiling
+python -m pip install pywal bumblebee-status i3ipc utils i3-resurrect i3-workspace-swap autotiling
 
 # Install Nerd fonts
 mkdir -p ~/.local/share/fonts
@@ -57,10 +73,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 dnf install gnome-shell-extension-caffeine
 # network_traffic modules
 dnf install python-netifaces
+# sensors module
+dnf install lm_sensors
 
 # TODO: Fix bumblebee-status problems
 # below modules of bumblebee-status not working
-# sensors, pasink, pasource
+# pasink, pasource
 
 # Load my i3 configuration
 cd ~ && mkdir Desktop
@@ -71,6 +89,12 @@ ln -s ~/Desktop/I3_Sway_Config/config/kitty/
 ln -s ~/Desktop/I3_Sway_Config/config/dunst
 ln -s ~/Desktop/I3_Sway_Config/config/ranger
 ln -s ~/Desktop/I3_Sway_Config/config/rofi
+ln -s ~/Desktop/I3_Sway_Config/config/picom
+ln -s ~/Desktop/I3_Sway_Config/config/bumblebee-status
+
+# Set default wallpaper
+rm -f ~/.config/i3/share/default_wallpaper
+$HOME/.config/i3/bin/i3_set_default_wallpaper_feh.sh
 
 # Note for conky
 # After conky installation, remeber to tune cpu number to make system conky work

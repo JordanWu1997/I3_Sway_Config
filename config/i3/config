@@ -613,21 +613,21 @@ set $ws20 "20"
 # Assign workspace for dual monitor (monitor1 + monitor2)
 #workspace $ws1  output $monitor1
 #workspace $ws2  output $monitor2
-#workspace $ws3  output $monitor2
-#workspace $ws4  output $monitor1
-#workspace $ws5  output $monitor2
+#workspace $ws3  output $monitor1
+#workspace $ws4  output $monitor2
+#workspace $ws5  output $monitor1
 #workspace $ws6  output $monitor2
 #workspace $ws7  output $monitor1
 #workspace $ws8  output $monitor2
-#workspace $ws9  output $monitor2
-#workspace $ws10 output $monitor1
-#workspace $ws11 output $monitor2
+#workspace $ws9  output $monitor1
+#workspace $ws10 output $monitor2
+#workspace $ws11 output $monitor1
 #workspace $ws12 output $monitor2
 #workspace $ws13 output $monitor1
 #workspace $ws14 output $monitor2
-#workspace $ws15 output $monitor2
-#workspace $ws16 output $monitor1
-#workspace $ws17 output $monitor2
+#workspace $ws15 output $monitor1
+#workspace $ws16 output $monitor2
+#workspace $ws17 output $monitor1
 #workspace $ws18 output $monitor2
 #workspace $ws19 output $monitor1
 #workspace $ws20 output $monitor2
@@ -847,24 +847,24 @@ mode "$mode_mouse" {
 # -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
 
 # Load colors from Xresource through Pywal
-set_from_resource $fg  i3wm.color7 #f0f0f0
-set_from_resource $bg  i3wm.color0 #f0f0f0
-set_from_resource $c0  i3wm.color0 #f0f0f0
-set_from_resource $c1  i3wm.color1 #f0f0f0
-set_from_resource $c2  i3wm.color2 #f0f0f0
-set_from_resource $c3  i3wm.color3 #f0f0f0
-set_from_resource $c4  i3wm.color4 #f0f0f0
-set_from_resource $c5  i3wm.color5 #f0f0f0
-set_from_resource $c6  i3wm.color6 #f0f0f0
-set_from_resource $c7  i3wm.color7 #f0f0f0
-set_from_resource $c8  i3wm.color1 #f0f0f0
-set_from_resource $c9  i3wm.color2 #f0f0f0
-set_from_resource $c10 i3wm.color3 #f0f0f0
-set_from_resource $c11 i3wm.color4 #f0f0f0
-set_from_resource $c12 i3wm.color5 #f0f0f0
-set_from_resource $c13 i3wm.color6 #f0f0f0
-set_from_resource $c14 i3wm.color7 #f0f0f0
-set_from_resource $c15 i3wm.color8 #f0f0f0
+set_from_resource $fg  i3wm.color15 #f0f0f0
+set_from_resource $bg  i3wm.color0  #f0f0f0
+set_from_resource $c0  i3wm.color0  #f0f0f0
+set_from_resource $c1  i3wm.color1  #f0f0f0
+set_from_resource $c2  i3wm.color2  #f0f0f0
+set_from_resource $c3  i3wm.color3  #f0f0f0
+set_from_resource $c4  i3wm.color4  #f0f0f0
+set_from_resource $c5  i3wm.color5  #f0f0f0
+set_from_resource $c6  i3wm.color6  #f0f0f0
+set_from_resource $c7  i3wm.color7  #f0f0f0
+set_from_resource $c8  i3wm.color8  #f0f0f0
+set_from_resource $c9  i3wm.color9  #f0f0f0
+set_from_resource $c10 i3wm.color10 #f0f0f0
+set_from_resource $c11 i3wm.color11 #f0f0f0
+set_from_resource $c12 i3wm.color12 #f0f0f0
+set_from_resource $c13 i3wm.color13 #f0f0f0
+set_from_resource $c14 i3wm.color14 #f0f0f0
+set_from_resource $c15 i3wm.color15 #f0f0f0
 
 # [Comment below lines if you want original i3 container/workspace color setup]
 # Color of border, background, text, indicator, and child_border based on Xresource
@@ -921,7 +921,7 @@ bar {
     # Bar color
     # [Comment below lines if you want original i3bar color]
     colors{
-        background $c0
+        background $bg
         statusline $fg
         separator  $bg
         # item             # border # bg    # text
@@ -963,10 +963,6 @@ bar{
 bindsym $mod+Shift+b bar mode toggle top-bar
 bindsym $mod+b       bar mode toggle top-bar-overlay
 
-# Notify at startup for i3bar
-# For now, i3bar wal theme config not work well at first startup, restart is needed
-exec_always exec notify-send -u critical "If i3bar theme not work well, go to theme mode (Ctrl+Alt+t) reload whole i3 (press r) and reload dunst (press 2)"
-
 # ======================================================================================
 # All About I3 Startup Commands/Programs
 # ======================================================================================
@@ -981,9 +977,10 @@ exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 
-# Startup wallpaper (feh is faster than variety)
-# For auto theme with pywal, use wal instead of feh
-exec --no-startup-id rm -fr $HOME/.cache/wal | wal -i $HOME/.config/i3/share/default_wallpaper
+# Startup wallpaper (auto theme with pywal, use wal instead of old feh)
+# Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
+#       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
+exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper
 
 # Gnome authentication (gnome software usage support)
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
@@ -994,11 +991,6 @@ exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
 # Set compositor for transparency (now use picom instead)
 #exec --no-startup-id xcompmgr -c -f -n
-
-# Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
-# Picom in Fedora repository not work well [https://github.com/yshui/picom]
-# Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
@@ -1028,8 +1020,9 @@ exec_always --no-startup-id parcellite
 # Need compositor support (e.g. xcompmgr, picom, etc)
 exec_always --no-startup-id $HOME/anaconda3/bin/flashfocus
 
-# Dunst (notification)
+# Dunst (notification with wal color theme support)
 exec_always --no-startup-id dunst
+exec_always --no-startup-id $I3_BIN/i3_dunstcolorchanger.sh
 
 # KDE Connet (connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &
@@ -1062,3 +1055,8 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_i3_wallpaper.png"
+
+# Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
+# Picom in Fedora repository not work well [https://github.com/yshui/picom]
+# Use picom fork of jonaburg instead (need manually installed on Fedora)
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf

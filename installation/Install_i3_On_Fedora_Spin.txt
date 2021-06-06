@@ -55,7 +55,7 @@ dnf install nautilus gnome-screenshot
 dnf install lxappearance
 dnf install gtk-chtheme
 dnf install qt-config qt5ct qt5-qtstyleplugins
-dnf install arc-theme
+dnf install arc-theme papirus-icon-theme
 
 # Install Python package for i3
 python -m pip install pywal bumblebee-status i3ipc utils i3-resurrect i3-workspace-swap autotiling flashfocus

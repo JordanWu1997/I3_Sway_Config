@@ -1,7 +1,7 @@
 configuration {
 
 	/*Enable modi*/
-    modi: "drun,run,window";
+    modi: "drun,run,window,windowcd";
 
     /*Enable combined modi*/
     combi-modi: "window,drun";

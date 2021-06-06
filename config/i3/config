@@ -205,7 +205,7 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh
+    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper
     bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
     bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
     # exit
@@ -463,7 +463,7 @@ bindsym $mod+KP_Enter exec $terminal
 # Kill focus window
 bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
-bindsym $mod+shift+c kill
+bindsym $mod+Shift+c kill
 
 # Focus the parent/child container
 bindsym $mod+a       focus parent
@@ -612,24 +612,24 @@ set $ws20 "20"
 
 # Assign workspace for dual monitor (monitor1 + monitor2)
 #workspace $ws1  output $monitor1
-#workspace $ws2  output $monitor2
+#workspace $ws2  output $monitor1
 #workspace $ws3  output $monitor1
-#workspace $ws4  output $monitor2
+#workspace $ws4  output $monitor1
 #workspace $ws5  output $monitor1
-#workspace $ws6  output $monitor2
+#workspace $ws6  output $monitor1
 #workspace $ws7  output $monitor1
-#workspace $ws8  output $monitor2
+#workspace $ws8  output $monitor1
 #workspace $ws9  output $monitor1
-#workspace $ws10 output $monitor2
-#workspace $ws11 output $monitor1
+#workspace $ws10 output $monitor1
+#workspace $ws11 output $monitor2
 #workspace $ws12 output $monitor2
-#workspace $ws13 output $monitor1
+#workspace $ws13 output $monitor2
 #workspace $ws14 output $monitor2
-#workspace $ws15 output $monitor1
+#workspace $ws15 output $monitor2
 #workspace $ws16 output $monitor2
-#workspace $ws17 output $monitor1
+#workspace $ws17 output $monitor2
 #workspace $ws18 output $monitor2
-#workspace $ws19 output $monitor1
+#workspace $ws19 output $monitor2
 #workspace $ws20 output $monitor2
 
 # Back and Forth [Disable for i3-workspace-swap]
@@ -869,13 +869,13 @@ set_from_resource $c15 i3wm.color15
 # [Comment below lines if you want original i3 container/workspace color setup]
 # Color of border, background, text, indicator, and child_border based on Xresource
 # For old color template backup, please check .config/i3/share/i3_color_template.txt
-# class                 border  backgr. text    indicator child_border
-client.focused          $c5     $c5     $c7     $c7       $c5
-client.focused_inactive $c2     $c2     $c7     $c2       $c2
-client.unfocused        $c2     $c2     $c6     $c2       $c2
-client.urgent           $c4     $c4     $c7     $c2       $c2
-client.placeholder      $c2     $c2     $c7     $c2       $c2
-client.background       $c0
+# class                 border    bground   text      indicator child_border
+client.focused          $c5       $c5       $c7       $c7       $c5
+client.focused_inactive $c1       $c1       $c7       $c2       $c1
+client.unfocused        $c1       $c1       $c7       $c2       $c1
+client.urgent           $c7       $c7       $c0       $c2       $c7
+client.placeholder      $c2       $c2       $c7       $c2       $c2
+client.background                 $c0
 
 # ======================================================================================
 # All About i3bar Settings
@@ -924,11 +924,12 @@ bar {
         background $bg
         statusline $fg
         separator  $bg
-        # item             # border # bg    # text
-        focused_workspace  $c5      $c3     $c7
-        active_workspace   $c5      $c3     $c0
-        inactive_workspace $c5      $c3     $c0
-        urgent_workspace   $c5      $c7     $c0
+        # item             border    bground   text
+        focused_workspace  $c5       $c3       $c7
+        active_workspace   $c5       $c3       $c0
+        inactive_workspace $c5       $c3       $c0
+        urgent_workspace   $c1       $c7       $c0
+        binding_mode       $bg       $bg       $fg
     }
 }
 
@@ -950,12 +951,12 @@ bar{
         background $bg
         statusline $fg
         separator  $bg
-        # item             # border # bg    # text
-        focused_workspace  $c5      $c3     $c7
-        active_workspace   $c5      $c3     $c0
-        inactive_workspace $c5      $c3     $c0
-        urgent_workspace   $c5      $c7     $c0
-        binding_mode       $bg      $bg     $fg
+        # item             border    bground   text
+        focused_workspace  $c5       $c3       $c7
+        active_workspace   $c5       $c3       $c0
+        inactive_workspace $c5       $c3       $c0
+        urgent_workspace   $c1       $c7       $c0
+        binding_mode       $bg       $bg       $fg
     }
 }
 
@@ -1054,7 +1055,7 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so they are included here as an example.
 # Modify as you see fit. xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_i3_wallpaper.png"
+exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]

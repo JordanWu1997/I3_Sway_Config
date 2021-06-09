@@ -75,10 +75,8 @@ dnf install gnome-shell-extension-caffeine
 dnf install python-netifaces
 # sensors module
 dnf install lm_sensors
-
-# TODO: Fix bumblebee-status problems
-# below modules of bumblebee-status not working
-# pasink, pasource
+# pasink, pasource  modules
+dnf install pulseaudio-utils
 
 # Load my i3 configuration
 cd ~ && mkdir Desktop

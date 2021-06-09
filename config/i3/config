@@ -110,7 +110,7 @@ set $monitor2 HDMI1
 set $terminal kitty
 
 # Setup border width
-set $default_border_width pixel 1
+set $default_border_width pixel 2
 
 # Setup gap width (only for i3-gap)
 set $default_inner_gap 5
@@ -846,25 +846,25 @@ mode "$mode_mouse" {
 # For i3 container/window color setup
 # -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
 
-# Load colors from Xresource through Pywal
-set_from_resource $fg  i3wm.color15
-set_from_resource $bg  i3wm.color0
-set_from_resource $c0  i3wm.color0
-set_from_resource $c1  i3wm.color1
-set_from_resource $c2  i3wm.color2
-set_from_resource $c3  i3wm.color3
-set_from_resource $c4  i3wm.color4
-set_from_resource $c5  i3wm.color5
-set_from_resource $c6  i3wm.color6
-set_from_resource $c7  i3wm.color7
-set_from_resource $c8  i3wm.color8
-set_from_resource $c9  i3wm.color9
-set_from_resource $c10 i3wm.color10
-set_from_resource $c11 i3wm.color11
-set_from_resource $c12 i3wm.color12
-set_from_resource $c13 i3wm.color13
-set_from_resource $c14 i3wm.color14
-set_from_resource $c15 i3wm.color15
+# Load colors from Pywal             # Xterm color (Must-have term, or you will get error)
+set_from_resource $fg  i3wm.color15  #ffffff
+set_from_resource $bg  i3wm.color0   #000000
+set_from_resource $c0  i3wm.color0   #000000
+set_from_resource $c1  i3wm.color1   #cd0000
+set_from_resource $c2  i3wm.color2   #00cd00
+set_from_resource $c3  i3wm.color3   #cdcd00
+set_from_resource $c4  i3wm.color4   #1167b1
+set_from_resource $c5  i3wm.color5   #cd00cd
+set_from_resource $c6  i3wm.color6   #00cdcd
+set_from_resource $c7  i3wm.color7   #e5e5e5
+set_from_resource $c8  i3wm.color8   #7f7f7f
+set_from_resource $c9  i3wm.color9   #ff0000
+set_from_resource $c10 i3wm.color10  #00ff00
+set_from_resource $c11 i3wm.color11  #ffff00
+set_from_resource $c12 i3wm.color12  #2a9df4
+set_from_resource $c13 i3wm.color13  #ff00ff
+set_from_resource $c14 i3wm.color14  #00ffff
+set_from_resource $c15 i3wm.color15  #ffffff
 
 # [Comment below lines if you want original i3 container/workspace color setup]
 # Color of border, background, text, indicator, and child_border based on Xresource
@@ -893,6 +893,8 @@ bar {
     position top
     mode dock #hide
     #hidden_state hide
+    # Height in pixels (Only for i3-gaps)
+    height 25
     # Modifier
     modifier none
     # Mode indicator
@@ -939,6 +941,7 @@ bar{
     id top-bar-overlay
     position top
     mode hide
+    height 25
     modifier none
     binding_mode_indicator yes
     font pango: DroidSansMono Nerd Font 12

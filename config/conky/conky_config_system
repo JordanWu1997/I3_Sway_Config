@@ -39,7 +39,7 @@ conky.config = {
     draw_shades = false,
     font = 'DroidSanMono Nerd Font:size=12',
     gap_x = 25,
-    gap_y = 50,
+    gap_y = 35,
     minimum_width = 285,
 	maximum_width = 285,
     no_buffers = true,

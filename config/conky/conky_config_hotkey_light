@@ -65,7 +65,7 @@ ${color2}system option ${color}[S]+[Esc]
 ${color2}reload i3 ${color}[S]+[r]
 ${color2}restart i3 ${color}[S]+[Shift]+[r]
 ${color2}application (rofi) ${color}[S]+[d]
-${color2}window selector (rofi) ${color}[S]+[u]
+${color2}window (rofi) ${color}[Alt]+[Shift]+[Tab]
 ${color}[Workspace / Container] ${hr 2}
 ${color2}navigate to WS ${color}[S]+[\#]
 ${color2}send focus to WS ${color}[S]+[Shift]+[\#]

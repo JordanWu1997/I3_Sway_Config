@@ -450,11 +450,11 @@ bindsym $mod+Shift+Return exec --no-startup-id dmenu_run -l 11\
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d        exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d  exec --no-startup-id rofi -show run -terminal $terminal
-bindsym Ctrl+$mod1+d  exec --no-startup-id rofi -show keys -terminal $terminal
-bindsym $mod+u        exec --no-startup-id rofi -show window -terminal $terminal
-bindsym $mod+Shift+u  exec --no-startup-id rofi -show windowcd -terminal $terminal
+bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
+bindsym Ctrl+$mod1+d    exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
+bindsym $mod1+Tab       exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
+bindsym $mod1+Shift+Tab exec --no-startup-id rofi -show window -terminal $terminal -columns 1
 
 # Start a terminal
 bindsym $mod+Return   exec $terminal

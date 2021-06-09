@@ -66,7 +66,7 @@ ${color2}system option ${alignr}${color}[S]+[Esc]
 ${color2}reload i3 ${alignr}${color}[S]+[r]
 ${color2}restart i3 ${alignr}${color}[S]+[Shift]+[r]
 ${color2}application (rofi) ${alignr}${color}[S]+[d]
-${color2}window selector (rofi) ${alignr}${color}[S]+[u]
+${color2}window (rofi) ${alignr}${color}[Alt]+[Shift]+[Tab]
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Workspace / Container]${font}${voffset 5}
 ${color2}navigate to WS ${alignr}${color}[S]+[\#]
 ${color2}send focus to WS ${alignr}${color}[S]+[Shift]+[\#]

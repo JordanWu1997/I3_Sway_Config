@@ -9,17 +9,18 @@ configuration {
     /*Font*/
 	font: "DroidSansMono Nerd Font 16";
 
-    /*Fullscreen*/
-    fullscreen: true;
+    /*Fullscreen (Not work well in wal theme)*/
+    /*fullscreen: true;*/
 
     /*Padding (Empty region around input pallette)*/
-    padding: 375;
+    /*padding: 375;*/
 
     /*Width (No effect when fullscreen is enable)*/
-    width: 800;
+    /*width: 800;*/
+    width: 1200;
 
     /*Number of lines (No effect when fullscreen is enable)*/
-	lines: 10;
+	lines: 12;
 
     /*Number of columns*/
 	columns: 2;
@@ -42,10 +43,13 @@ configuration {
     /*Auto-select mode*/
 	auto-select: true;
 
-    /*Color theme*/
-	color-normal: "argb:002f343f, #d8dee8, argb:002f343f, argb:002f343f, #2e9ef4";
-	color-urgent: "#2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b";
-	color-active: "#2f343f, #b48ead, #2f343f, #2f343f, #93e5cc";
-	color-window: "argb:cc2f343f, argb:cc2f343f, argb:cc2f343f";
+    /*Color theme (Arc-dark with transparency)*/
+	/*color-normal: "argb:002f343f, #d8dee8, argb:002f343f, argb:002f343f, #2e9ef4";*/
+	/*color-urgent: "#2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b";*/
+	/*color-active: "#2f343f, #b48ead, #2f343f, #2f343f, #93e5cc";*/
+	/*color-window: "argb:cc2f343f, argb:cc2f343f, argb:cc2f343f";*/
+
+    /*Color theme (wal)*/
+    theme: "~/.cache/wal/colors-rofi-dark.rasi";
 
 }

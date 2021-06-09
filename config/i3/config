@@ -454,7 +454,7 @@ bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
 bindsym Ctrl+$mod1+d    exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
 bindsym $mod1+Tab       exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
-bindsym $mod1+Shift+Tab exec --no-startup-id rofi -show window -terminal $terminal -columns 1
+bindsym $mod1+Shift+Tab exec --no-startup-id rofi -show window -terminal $terminal
 
 # Start a terminal
 bindsym $mod+Return   exec $terminal
@@ -839,6 +839,13 @@ mode "$mode_mouse" {
     bindsym Return       mode "default"
 }
 
+# Show all keybindings in i3 (use rofi as selector)
+# -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
+bindsym Ctrl+$mod1+s exec \
+    i3 $(cat ~/.config/i3/config | grep 'bindsym' | grep -v '^\s*#' | \
+    sed 's/bindsym / /' | rofi -dmenu -columns 1 -p 'Keybinds' |\
+    sed 's/^\s*//' | cut -d' ' -f 2- )
+
 # ======================================================================================
 # All About Color Template
 # ======================================================================================
@@ -1063,4 +1070,4 @@ exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
+exec_always --no-startup-id picom --config $HOME/.config/picom/picom.conf

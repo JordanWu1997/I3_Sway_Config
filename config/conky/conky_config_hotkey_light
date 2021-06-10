@@ -71,8 +71,8 @@ ${color2}navigate to WS ${color}[S]+[\#]
 ${color2}send focus to WS ${color}[S]+[Shift]+[\#]
 ${color2}kill focused window ${color}[S]+[Shift]+[q]
 ${color2}container split toggle ${color}[S]+[q]
-${color2}container tab toggle ${color}[S]+[w]
-${color2}container stack toggle ${color}[S]+[s]
+${color2}container tabbed toggle ${color}[S]+[t]
+${color2}container stacking toggle ${color}[S]+[s]
 ${color2}container tiling toggle ${color}[S]+[e]
 ${color2}fullscreen toggle ${color}[S]+[f]
 ${color2}navigate to ${color}[S]+[vim-key]
@@ -96,6 +96,6 @@ ${color2}theme mode ${color}[Ctrl]+[Alt]+[t]
 ${color}[Miscellaneous] ${hr 2}
 ${color2}quick resize ${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}quick mark window ${color}[S]+[m]
-${color2}goto window with mark ${color}[S]+g
+${color2}goto window with mark ${color}[S]+w
 ${color2}swap window with mark ${color}[S]+p
 ]]

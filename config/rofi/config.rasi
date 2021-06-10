@@ -40,6 +40,9 @@ configuration {
     /*Hide scrollbar*/
 	hide-scrollbar: true;
 
+    /*Show icons*/
+    show-icons: false;
+
     /*Auto-select mode*/
 	auto-select: true;
 

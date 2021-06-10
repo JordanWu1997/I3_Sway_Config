@@ -433,6 +433,9 @@ bindsym Ctrl+$mod1+b exec blueman-manager
 # Arandr (Xrandr GUI) [Installation: dnf install arandr ]
 bindsym Ctrl+$mod1+a exec arandr
 
+# Nmtui (Networkmanager TUI) [Bundled with NetworkManager, NOT work with wal theme]
+#bindsym Ctrl+$mod1+n exec $terminal -e nmtui
+
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
@@ -440,21 +443,22 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher) [Installation: dnf install dmenu]
-bindsym $mod+Shift+Return exec --no-startup-id dmenu_run -l 11\
-    -fn "DroidSansMono Nerd Font 12" -p "Launcher" \
-    -nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
+#bindsym $mod+Shift+Return exec --no-startup-id dmenu_run -l 16\
+    #-fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
+    #-nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
 #bindsym $mod++Shift+Return exec --no-startup-id i3-dmenu-desktop \
-    #--dmenu="dmenu -fn 'pango:droidsansmono nerd font 16' -l 10 -p 'Program launcher'"
+    #--dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d          exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d    exec --no-startup-id rofi -show run -terminal $terminal
-bindsym Ctrl+$mod1+d    exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
-bindsym $mod1+Tab       exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
-bindsym $mod1+Shift+Tab exec --no-startup-id rofi -show window -terminal $terminal
+bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
+bindsym $mod+Shift+Return exec --no-startup-id rofi -show run -terminal $terminal
+bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
+bindsym $mod1+Tab         exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
+bindsym $mod1+Shift+Tab   exec --no-startup-id rofi -show window -terminal $terminal
 
 # Start a terminal
 bindsym $mod+Return   exec $terminal
@@ -508,8 +512,8 @@ bindsym $mod+Shift+space floating toggle   exec notify-send -u low "Toggle Windo
 bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Sticky For Floating Window"
 
 # Change container layout (stacking, tabbed, toggle split)
-bindsym $mod+s layout stacking             exec notify-send -u low "Stacked Mode On"
-bindsym $mod+w layout tabbed               exec notify-send -u low "Tabbed Mode On"
+bindsym $mod+s layout stacking             exec notify-send -u low "Stacking Mode On"
+bindsym $mod+t layout tabbed               exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle splitv splith exec notify-send -u low "Toggle Layout Split"
 
 # Quick change container layout (stacking, tabbed, splitv, splith)
@@ -557,18 +561,18 @@ mode "$mode_border" {
     bindsym $mod+space focus mode_toggle
 }
 
-# Mark mode [use i3-msg as input]
-bindsym $mod+m exec i3_input_mark.sh # mark the current window with this character
-bindsym $mod+g exec i3_input_goto.sh # go to the window with the character
-bindsym $mod+p exec i3_input_swap.sh # swap the current window to the window with the character
+# Mark mode [add i3/rofi to use i3-msg/rofi as input]
+bindsym $mod+m exec i3_input_mark.sh i3 2 # mark the current window with this character
+bindsym $mod+w exec i3_input_goto.sh i3 2 # go to the window with the character
+bindsym $mod+p exec i3_input_swap.sh i3 2 # swap the current window to the window with the character
 
 # Mark mode (within titlebar mode) [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
 set $mode_mark Mark: [m]ark [g]oto [s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
-    bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -p "Mark")
-    bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -p 'Goto [Mark]')"] focus
-    bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -p "Swapto [Mark]")
+    bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -width 25 -p "Mark")
+    bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -width 25 -p 'Goto [Mark]')"] focus
+    bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -width 25 -p "Swapto [Mark]")
     bindsym e exec i3_automark_enable.sh, mode "default"
     bindsym d exec i3_automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
@@ -584,53 +588,57 @@ bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 
 # Rename workspace
-bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -p "New workspace name")
+bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
 #bindsym $mod+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1  "1"
-set $ws2  "2"
-set $ws3  "3"
-set $ws4  "4"
-set $ws5  "5"
-set $ws6  "6"
-set $ws7  "7"
-set $ws8  "8"
-set $ws9  "9"
-set $ws10 "10"
-set $ws11 "11"
-set $ws12 "12"
-set $ws13 "13"
-set $ws14 "14"
-set $ws15 "15"
-set $ws16 "16"
-set $ws17 "17"
-set $ws18 "18"
-set $ws19 "19"
-set $ws20 "20"
+set $ws1  "E1"
+set $ws2  "E2"
+set $ws3  "E3"
+set $ws4  "E4"
+set $ws5  "E5"
+set $ws6  "E6"
+set $ws7  "E7"
+set $ws8  "E8"
+set $ws9  "E9"
+set $ws10 "E10"
+set $ws11 "H1"
+set $ws12 "H2"
+set $ws13 "H3"
+set $ws14 "H4"
+set $ws15 "H5"
+set $ws16 "H6"
+set $ws17 "H7"
+set $ws18 "H8"
+set $ws19 "H9"
+set $ws20 "H10"
+set $ws21 "H11"
+set $ws22 "H12"
 
 # Assign workspace for dual monitor (monitor1 + monitor2)
-#workspace $ws1  output $monitor1
-#workspace $ws2  output $monitor1
-#workspace $ws3  output $monitor1
-#workspace $ws4  output $monitor1
-#workspace $ws5  output $monitor1
-#workspace $ws6  output $monitor1
-#workspace $ws7  output $monitor1
-#workspace $ws8  output $monitor1
-#workspace $ws9  output $monitor1
-#workspace $ws10 output $monitor1
-#workspace $ws11 output $monitor2
-#workspace $ws12 output $monitor2
-#workspace $ws13 output $monitor2
-#workspace $ws14 output $monitor2
-#workspace $ws15 output $monitor2
-#workspace $ws16 output $monitor2
-#workspace $ws17 output $monitor2
-#workspace $ws18 output $monitor2
-#workspace $ws19 output $monitor2
-#workspace $ws20 output $monitor2
+workspace $ws1  output $monitor1
+workspace $ws2  output $monitor1
+workspace $ws3  output $monitor1
+workspace $ws4  output $monitor1
+workspace $ws5  output $monitor1
+workspace $ws6  output $monitor1
+workspace $ws7  output $monitor1
+workspace $ws8  output $monitor1
+workspace $ws9  output $monitor1
+workspace $ws10 output $monitor1
+workspace $ws11 output $monitor2
+workspace $ws12 output $monitor2
+workspace $ws13 output $monitor2
+workspace $ws14 output $monitor2
+workspace $ws15 output $monitor2
+workspace $ws16 output $monitor2
+workspace $ws17 output $monitor2
+workspace $ws18 output $monitor2
+workspace $ws19 output $monitor2
+workspace $ws20 output $monitor2
+workspace $ws21 output $monitor2
+workspace $ws22 output $monitor2
 
 # Back and Forth [Disable for i3-workspace-swap]
 workspace_auto_back_and_forth no
@@ -641,48 +649,52 @@ bindsym $mod+Shift+Tab workspace prev
 bindsym Ctrl+$mod1+Tab workspace back_and_forth
 
 # Switch to workspace
-bindsym $mod+1   workspace number $ws1
-bindsym $mod+2   workspace number $ws2
-bindsym $mod+3   workspace number $ws3
-bindsym $mod+4   workspace number $ws4
-bindsym $mod+5   workspace number $ws5
-bindsym $mod+6   workspace number $ws6
-bindsym $mod+7   workspace number $ws7
-bindsym $mod+8   workspace number $ws8
-bindsym $mod+9   workspace number $ws9
-bindsym $mod+0   workspace number $ws10
-bindsym $mod+F1  workspace number $ws11
-bindsym $mod+F2  workspace number $ws12
-bindsym $mod+F3  workspace number $ws13
-bindsym $mod+F4  workspace number $ws14
-bindsym $mod+F5  workspace number $ws15
-bindsym $mod+F6  workspace number $ws16
-bindsym $mod+F7  workspace number $ws17
-bindsym $mod+F8  workspace number $ws18
-bindsym $mod+F9  workspace number $ws19
-bindsym $mod+F10 workspace number $ws20
+bindsym $mod+1   workspace $ws1
+bindsym $mod+2   workspace $ws2
+bindsym $mod+3   workspace $ws3
+bindsym $mod+4   workspace $ws4
+bindsym $mod+5   workspace $ws5
+bindsym $mod+6   workspace $ws6
+bindsym $mod+7   workspace $ws7
+bindsym $mod+8   workspace $ws8
+bindsym $mod+9   workspace $ws9
+bindsym $mod+0   workspace $ws10
+bindsym $mod+F1  workspace $ws11
+bindsym $mod+F2  workspace $ws12
+bindsym $mod+F3  workspace $ws13
+bindsym $mod+F4  workspace $ws14
+bindsym $mod+F5  workspace $ws15
+bindsym $mod+F6  workspace $ws16
+bindsym $mod+F7  workspace $ws17
+bindsym $mod+F8  workspace $ws18
+bindsym $mod+F9  workspace $ws19
+bindsym $mod+F10 workspace $ws20
+bindsym $mod+F11 workspace $ws21
+bindsym $mod+F12 workspace $ws22
 
 # Move focused container to workspace
-bindsym $mod+Shift+1   move container to workspace number $ws1
-bindsym $mod+Shift+2   move container to workspace number $ws2
-bindsym $mod+Shift+3   move container to workspace number $ws3
-bindsym $mod+Shift+4   move container to workspace number $ws4
-bindsym $mod+Shift+5   move container to workspace number $ws5
-bindsym $mod+Shift+6   move container to workspace number $ws6
-bindsym $mod+Shift+7   move container to workspace number $ws7
-bindsym $mod+Shift+8   move container to workspace number $ws8
-bindsym $mod+Shift+9   move container to workspace number $ws9
-bindsym $mod+Shift+0   move container to workspace number $ws10
-bindsym $mod+Shift+F1  move container to workspace number $ws11
-bindsym $mod+Shift+F2  move container to workspace number $ws12
-bindsym $mod+Shift+F3  move container to workspace number $ws13
-bindsym $mod+Shift+F4  move container to workspace number $ws14
-bindsym $mod+Shift+F5  move container to workspace number $ws15
-bindsym $mod+Shift+F6  move container to workspace number $ws16
-bindsym $mod+Shift+F7  move container to workspace number $ws17
-bindsym $mod+Shift+F8  move container to workspace number $ws18
-bindsym $mod+Shift+F9  move container to workspace number $ws19
-bindsym $mod+Shift+F10 move container to workspace number $ws20
+bindsym $mod+Shift+1   move container to workspace $ws1
+bindsym $mod+Shift+2   move container to workspace $ws2
+bindsym $mod+Shift+3   move container to workspace $ws3
+bindsym $mod+Shift+4   move container to workspace $ws4
+bindsym $mod+Shift+5   move container to workspace $ws5
+bindsym $mod+Shift+6   move container to workspace $ws6
+bindsym $mod+Shift+7   move container to workspace $ws7
+bindsym $mod+Shift+8   move container to workspace $ws8
+bindsym $mod+Shift+9   move container to workspace $ws9
+bindsym $mod+Shift+0   move container to workspace $ws10
+bindsym $mod+Shift+F1  move container to workspace $ws11
+bindsym $mod+Shift+F2  move container to workspace $ws12
+bindsym $mod+Shift+F3  move container to workspace $ws13
+bindsym $mod+Shift+F4  move container to workspace $ws14
+bindsym $mod+Shift+F5  move container to workspace $ws15
+bindsym $mod+Shift+F6  move container to workspace $ws16
+bindsym $mod+Shift+F7  move container to workspace $ws17
+bindsym $mod+Shift+F8  move container to workspace $ws18
+bindsym $mod+Shift+F9  move container to workspace $ws19
+bindsym $mod+Shift+F10 move container to workspace $ws20
+bindsym $mod+Shift+F11 move container to workspace $ws21
+bindsym $mod+Shift+F12 move container to workspace $ws22
 
 # Reload the configuration file (Keyboard)
 # Restart i3 inplace (preserves your layout/session, can be used to update i3)
@@ -730,7 +742,7 @@ mode "$mode_resize" {
 }
 
 # Redshift mode
-# - https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
+# -- https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
 bindsym $mod+Shift+z mode "$mode_redshift"
 set $mode_redshift Set color temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
 set $kill_redshift pkill -9 redshift;
@@ -839,11 +851,28 @@ mode "$mode_mouse" {
     bindsym Return       mode "default"
 }
 
+# Display mode (use xrandr)
+# -- https://thevaluable.dev/i3-config-mouseless/
+# For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
+set $mode_display Display: [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [h]DMI1 1920x1080 [H]DMI1 1650x1080
+bindsym $mod+Shift+x mode "$mode_display"
+mode "$mode_display" {
+    bindsym 1       exec --no-startup-id "xrandr --output HDMI1 --off  --output eDP1  --auto --primary", mode "default"
+    bindsym 2       exec --no-startup-id "xrandr --output eDP1  --off  --output HDMI1 --auto --primary", mode "default"
+    bindsym 3       exec --no-startup-id "xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1", mode "default"
+    bindsym 4       exec --no-startup-id "xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as  eDP1", mode "default"
+    bindsym h       exec --no-startup-id "xrandr --output HDMI1 --mode 1920x1080", mode "default"
+    bindsym Shift+h exec --no-startup-id "xrandr --output HDMI1 --mode 1680x1050", mode "default"
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
 # Show all keybindings in i3 (use rofi as selector)
 # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
 bindsym Ctrl+$mod1+s exec \
     i3 $(cat ~/.config/i3/config | grep 'bindsym' | grep -v '^\s*#' | \
-    sed 's/bindsym / /' | rofi -dmenu -columns 1 -p 'Keybinds' |\
+    sed 's/bindsym / /' | rofi -dmenu -columns 1 -p 'i3 Keybinds' |\
     sed 's/^\s*//' | cut -d' ' -f 2- )
 
 # ======================================================================================
@@ -853,7 +882,7 @@ bindsym Ctrl+$mod1+s exec \
 # For i3 container/window color setup
 # -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
 
-# Load colors from Pywal             # Xterm color (Must-have term, or you will get error)
+# Load colors from Pywal             # Xterm color
 set_from_resource $fg  i3wm.color15  #ffffff
 set_from_resource $bg  i3wm.color0   #000000
 set_from_resource $c0  i3wm.color0   #000000
@@ -887,9 +916,8 @@ client.background                 $c0
 # ======================================================================================
 # All About i3bar Settings
 # ======================================================================================
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-# For i3bar theme configuration, check online color palette configurator
+# Start i3bar to display a workspace bar (plus the system information i3status finds out,
+# if available). For i3bar theme configuration, check online color palette configurator
 # -- https://thomashunter.name/i3-configurator/
 
 # Status bar for general purposes
@@ -978,6 +1006,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # All About I3 Startup Commands/Programs
 # ======================================================================================
 # Following commands/programs will run after I3 starts
+
 # Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
@@ -999,9 +1028,6 @@ exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 # Lxsession agent (load xsession initializaion)
 # For now, this agent will cause mouse left/right button reversed
 #exec --no-startup-id lxsession
-
-# Set compositor for transparency (now use picom instead)
-#exec --no-startup-id xcompmgr -c -f -n
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-indjependent system tray GUI for it.
@@ -1067,7 +1093,10 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 
+# Set compositor for transparency (now use picom instead)
+#exec --no-startup-id xcompmgr -c -f -n
+
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id picom --config $HOME/.config/picom/picom.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf

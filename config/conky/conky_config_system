@@ -39,7 +39,7 @@ conky.config = {
     draw_shades = false,
     font = 'DroidSanMono Nerd Font:size=12',
     gap_x = 25,
-    gap_y = 35,
+    gap_y = 45,
     minimum_width = 285,
 	maximum_width = 285,
     no_buffers = true,
@@ -59,17 +59,25 @@ conky.config = {
 }
 conky.text = [[
 ${color}${hr 2}
-${voffset 64}${alignc}${image ~/.config/i3/share/fedora_logo_blue.png -p 0,0 -s 285x128}
+${voffset 64}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 0,0 -s 285x128}
 ${color}${hr 2}
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Information]${font}${voffset 5}
 ${color2}Kernel ${alignr}${color}${kernel}
 ${color2}Local Hostname ${alignr}${color}${nodename}
 ${color2}Machine Uptime ${alignr}${color}${uptime}
-${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Network]${font}${voffset 5}
-${color2}Download ${alignr}${color}${downspeed enp0s31f6}+${downspeed enp0s20f0u2u2u4}+${downspeed wlp3s0} / s
-${color2}Upload ${alignr}${color}${upspeed enp0s31f6}+${upspeed enp0s20f0u2u2u4}+${upspeed wlp3s0} / s
-${color2}Public IP ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
-${color2}Gateway IP ${alignr}${color}${gw_ip}
+${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Network]${font}${voffset 5}${color}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
+${color2}enp0s20f0u2u2u4
+				${color}Down ${downspeed enp0s20f0u2u2u4}/s ${alignr}Up ${upspeed enp0s20f0u2u2u4}/s
+				${color}Total ${totaldown enp0s20f0u2u2u4} ${alignr}Total ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
+${color2}enp0s31f6
+				${color}Down ${downspeed enp0s31f6}/s ${alignr}Up ${upspeed enp0s31f6}/s
+				${color}Total ${totaldown enp0s31f6} ${alignr}Total ${totalup enp0s31f6}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
+${color2}wlp3s0
+				${color}Down ${downspeed wlp3s0}/s ${alignr}Up ${upspeed wlp3s0}/s
+				${color}Total ${totaldown wlp3s0} ${alignr}Total ${totalup wlp3s0}${endif}
+${color2}IP Address
+				${color}Public IP ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
+				${color}Gateway IP ${alignr}${color}${gw_ip}
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Disk]${font}${voffset 5}
 ${color2}Used / Free ${alignr}${color}${fs_used /home} / ${fs_size /home}
 ${color2}IO Read ${color}${alignr}${diskio_read /dev/sda} / s ${diskiograph_read sda 8,60}
@@ -78,10 +86,10 @@ ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Memory]${fon
 ${color2}RAM ${alignr}${color} ${mem} / ${memmax} ${alignr}${membar 8,60}
 ${color2}Swap ${alignr}${color} ${swap} / ${swapmax} ${alignr}${swapbar 8,60}
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[CPU]${font}${voffset 5}
-${color2}CPU1 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu1}%  ${alignr}${cpubar cpu1 8,60}
-${color2}CPU2 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==2{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu2}%  ${alignr}${cpubar cpu2 8,60}
-${color2}CPU3 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu3}%  ${alignr}${cpubar cpu3 8,60}
-${color2}CPU4 ${alignr}${color}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz     ${alignr}${color}${cpu cpu4}%  ${alignr}${cpubar cpu4 8,60}
+${color2}CPU1        ${color}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${color}${cpu cpu1}%  ${alignr}${cpubar cpu1 8,60}
+${color2}CPU2        ${color}${exec awk '/cpu MHz/{i++}i==2{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${color}${cpu cpu2}%  ${alignr}${cpubar cpu2 8,60}
+${color2}CPU3        ${color}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${color}${cpu cpu3}%  ${alignr}${cpubar cpu3 8,60}
+${color2}CPU4        ${color}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz ${alignr}${color}${cpu cpu4}%  ${alignr}${cpubar cpu4 8,60}
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=16}[Thermal]${font}${voffset 5}
 ${color2}Fan Speed ${alignr}${color}${ibm_fan} RPM
 ${color2}Core Temperature ${alignr}${color}${ibm_temps 0} °C   ${color}

@@ -89,6 +89,7 @@ ${color}[Function / Mode] ${hr 2}
 ${color2}gap mode ${color}[S]+[Shift]+[g]
 ${color2}titlebar mode ${color}[S]+[Shift]+[t]
 ${color2}mouse mode ${color}[S]+[Shift]+[m]
+${color2}display mode ${color}[S]+[Shift]+[x]
 ${color2}redshift mode ${color}[S]+[Shift]+[z]
 ${color2}resize mode ${color}[Ctrl]+[Alt]+[r]
 ${color2}wallpaper mode ${color}[Ctrl]+[Alt]+[w]

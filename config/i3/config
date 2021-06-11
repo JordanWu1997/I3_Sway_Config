@@ -64,6 +64,8 @@
 # ======================================================================================
 # Keyboard and Trackpad Setup
 # ======================================================================================
+# This session modifies keyboard keymap and operation for laptop trackpad
+
 # Setup trackpad natural scrolling in i3 && Setup trackpad tap in i3
 # In /usr/share/X11/xorg.conf.d/40-libinput.conf, add the following
 
@@ -97,6 +99,8 @@
 # ======================================================================================
 # All About Mod Key Settings And I3 Varaibles
 # ======================================================================================
+# Setup i3 key and some variables
+
 # Setup mod (Prefix)#
 # Mod1: alt, Mod4: win
 set $mod  Mod4
@@ -513,7 +517,7 @@ bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Stick
 
 # Change container layout (stacking, tabbed, toggle split)
 bindsym $mod+s layout stacking             exec notify-send -u low "Stacking Mode On"
-bindsym $mod+t layout tabbed               exec notify-send -u low "Tabbed Mode On"
+bindsym $mod+w layout tabbed               exec notify-send -u low "Tabbed Mode On"
 bindsym $mod+e layout toggle splitv splith exec notify-send -u low "Toggle Layout Split"
 
 # Quick change container layout (stacking, tabbed, splitv, splith)
@@ -563,16 +567,16 @@ mode "$mode_border" {
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
 bindsym $mod+m exec i3_input_mark.sh i3 2 # mark the current window with this character
-bindsym $mod+w exec i3_input_goto.sh i3 2 # go to the window with the character
+bindsym $mod+g exec i3_input_goto.sh i3 2 # go to the window with the character
 bindsym $mod+p exec i3_input_swap.sh i3 2 # swap the current window to the window with the character
 
 # Mark mode (within titlebar mode) [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
 set $mode_mark Mark: [m]ark [g]oto [s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
-    bindsym m exec i3-msg mark $(rofi -dmenu -lines 0 -width 25 -p "Mark")
-    bindsym g exec i3-msg [con_mark="$(rofi -dmenu -lines 0 -width 25 -p 'Goto [Mark]')"] focus
-    bindsym s exec i3-msg swap container with mark $(rofi -dmenu -lines 0 -width 25 -p "Swapto [Mark]")
+    bindsym m exec i3_input_mark.sh rofi 2
+    bindsym g exec i3_input_goto.sh rofi 2
+    bindsym s exec i3_input_swap.sh rofi 2
     bindsym e exec i3_automark_enable.sh, mode "default"
     bindsym d exec i3_automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
@@ -703,7 +707,7 @@ bindsym $mod+Shift+r restart
 
 # Picom mode (blur support)
 bindsym $mod+Shift+p mode "$mode_picom"
-set $mode_picom Picom (Xcompositor) mode [e]nable_blur [d]isable_blur
+set $mode_picom Picom (Xcompositor): [e]nable_blur [d]isable_blur
 mode "$mode_picom" {
     bindsym e exec i3_picom_blur_enable.sh, mode "default"
     bindsym d exec i3_picom_blur_disable.sh, mode "default"

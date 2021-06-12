@@ -598,28 +598,28 @@ bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -wid
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1  "E1"
-set $ws2  "E2"
-set $ws3  "E3"
-set $ws4  "E4"
-set $ws5  "E5"
-set $ws6  "E6"
-set $ws7  "E7"
-set $ws8  "E8"
-set $ws9  "E9"
-set $ws10 "E10"
-set $ws11 "H1"
-set $ws12 "H2"
-set $ws13 "H3"
-set $ws14 "H4"
-set $ws15 "H5"
-set $ws16 "H6"
-set $ws17 "H7"
-set $ws18 "H8"
-set $ws19 "H9"
-set $ws20 "H10"
-set $ws21 "H11"
-set $ws22 "H12"
+set $ws1  "1:E1"
+set $ws2  "2:E2"
+set $ws3  "3:E3"
+set $ws4  "4:E4"
+set $ws5  "5:E5"
+set $ws6  "6:E6"
+set $ws7  "7:E7"
+set $ws8  "8:E8"
+set $ws9  "9:E9"
+set $ws10 "10:E10"
+set $ws11 "11:H1"
+set $ws12 "12:H2"
+set $ws13 "13:H3"
+set $ws14 "14:H4"
+set $ws15 "15:H5"
+set $ws16 "16:H6"
+set $ws17 "17:H7"
+set $ws18 "18:H8"
+set $ws19 "19:H9"
+set $ws20 "20:H10"
+set $ws21 "21:H11"
+set $ws22 "22:H12"
 
 # Assign workspace for dual monitor (monitor1 + monitor2)
 workspace $ws1  output $monitor1
@@ -944,6 +944,7 @@ bar {
     # Workspace
     workspace_buttons Yes
     workspace_min_width 20
+    strip_workspace_numbers yes
     # Tray icon
     tray_output primary
     tray_padding 5
@@ -986,6 +987,7 @@ bar{
     binding_mode_indicator yes
     font pango: DroidSansMono Nerd Font 12
     workspace_buttons Yes
+    strip_workspace_numbers yes
     tray_output none
 
     # Bar color
@@ -1072,6 +1074,9 @@ exec --no-startup-id kdeconnect-indicator &
 
 # Mailspring (email manager) in background
 #exec --no-startup-id mailspring --background
+
+# Neofetch initalization at startup
+exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 
 # Conky (system overview and hotkey)
 exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system

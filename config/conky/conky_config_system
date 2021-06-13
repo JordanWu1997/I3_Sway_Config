@@ -97,5 +97,7 @@ ${color2}${top name 3} ${alignr}${color}${top cpu 3}     ${alignr}${top mem 3}
 ${color2}${top name 4} ${alignr}${color}${top cpu 4}     ${alignr}${top mem 4}
 ${color2}${top name 5} ${alignr}${color}${top cpu 5}     ${alignr}${top mem 5}
 ${color2}${top name 6} ${alignr}${color}${top cpu 6}     ${alignr}${top mem 6}
+${color2}${top name 7} ${alignr}${color}${top cpu 7}     ${alignr}${top mem 7}
+${color2}${top name 8} ${alignr}${color}${top cpu 8}     ${alignr}${top mem 8}
 ${voffset 12}
 ]]

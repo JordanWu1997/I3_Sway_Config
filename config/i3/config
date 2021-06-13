@@ -173,9 +173,45 @@ for_window [title=".* Moving.*"] title_format "File transfer in progress..."
 default_orientation horizontal
 
 # ======================================================================================
-# All About Wallpapers
+# All About Customization
 # ======================================================================================
-# Set wallpaper (From local wallpapers)
+# Custmization includes wallpaper, theme, and visual effects (e.g. blur/animation)
+
+# Customization mode (wrapper for wallpaper_mode, theme mode, and picom_mode)
+set $mode_customization Customization: [w]allpaper_mode [t]heme_mode [p]icom_mode
+bindsym $mod+Shift+c mode "$mode_customization"
+mode "$mode_customization" {
+    bindsym w mode $mode_wallpaper
+    bindsym t mode $mode_theme
+    bindsym p mode $mode_picom
+    # exit
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Wallpaper mode (feh is much faster than variety)
+set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Lulin [7]RS Cat [8]Thinkpad [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
+mode "$mode_wallpaper" {
+    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name '*.jpg' | shuf -n1)
+    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name '*.png' | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
+    bindsym 0 mode $mode_variety
+    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper
+    bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
+    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
+    # exit
+    bindsym Return mode $mode_customization
+    bindsym Escape mode "default"
+}
+
+# Note: Wallpaper mode (local wallpaper support)
 # [Important]: Wallpaper directory (Add below lines in .profile)
 #              Please change to where you store wallpaper directory
 #              Feel free to modify these wallpaper directories as you want
@@ -194,33 +230,8 @@ default_orientation horizontal
 #export wallpaper9="$wallpaperd/DT_WALLPAPERS"
 # --------------------------------------------------------------------------------------
 
-# Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Lulin [7]RS Cat [8]Thinkpad [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
-bindsym Ctrl+$mod1+w mode "$mode_wallpaper"
-mode "$mode_wallpaper" {
-    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
-    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name '*.jpg' | shuf -n1)
-    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name '*.png' | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
-    bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper
-    bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
-    # exit
-    bindsym q      mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
 # Variety mode (within wallpaper mode)
 set $mode_variety Variety: [n]ext [p]revious [F]avorite [P]ause [R]esume [A]dd_Favorite [s]ave_as_default [q]uit
-bindsym Ctrl+$mod1+v mode "$mode_variety"
 mode "$mode_variety" {
     bindsym n       exec notify-send -u low "Next Wallpaper (VARIETY)"            && variety -n
     bindsym p       exec notify-send -u low "Previous Wallaper (VARIETY)"         && variety -p
@@ -235,12 +246,11 @@ mode "$mode_variety" {
     bindsym Escape mode "default"
 }
 
-# Theme mode
+# Theme mode (pywal color theme support)
 # Pywal (https://github.com/dylanaraps/pywal)
 # Installation: pip install pywal
 # Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
 set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_conky [2]reload_dunst [3]reload_vis
-bindsym Ctrl+$mod1+t mode "$mode_theme"
 mode "$mode_theme" {
     bindsym e exec $I3_BIN/i3_wal_enable.sh && $I3_BIN/i3_restart.sh && notify-send -u low "Auto-theme with pywal"
     bindsym d exec $I3_BIN/i3_wal_disable.sh && notify-send -u low "Disable auto-theme (kill pywal)"
@@ -249,7 +259,17 @@ mode "$mode_theme" {
     bindsym 2 exec $I3_BIN/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
     bindsym 3 exec $I3_BIN/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     # exit
-    bindsym Return mode "default"
+    bindsym Return mode $mode_customization
+    bindsym Escape mode "default"
+}
+
+# Picom mode (animation, blur, and transparency support)
+set $mode_picom Picom (Xcompositor): [e]nable_blur [d]isable_blur
+mode "$mode_picom" {
+    bindsym e exec i3_picom_blur_enable.sh, mode "default"
+    bindsym d exec i3_picom_blur_disable.sh, mode "default"
+    # Exit
+    bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
 }
 
@@ -429,14 +449,14 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
-# Media control [Installation: dnf install pavucontrol]
-bindsym Ctrl+$mod1+m exec pavucontrol
+# Media control [Installation: dnf install pavucontrol] (Not used for now, try rofi instead)
+#bindsym Ctrl+$mod1+m exec pavucontrol
 
-# Bluetooth manager [Installation: dnf install blueman]
-bindsym Ctrl+$mod1+b exec blueman-manager
+# Bluetooth manager [Installation: dnf install blueman] (Not used for now, try rofi instead)
+#bindsym Ctrl+$mod1+b exec blueman-manager
 
-# Arandr (Xrandr GUI) [Installation: dnf install arandr ]
-bindsym Ctrl+$mod1+a exec arandr
+# Arandr (Xrandr GUI) [Installation: dnf install arandr] (Not used for now, try rofi instead)
+#bindsym Ctrl+$mod1+a exec arandr
 
 # Nmtui (Networkmanager TUI) [Bundled with NetworkManager, NOT work with wal theme]
 #bindsym Ctrl+$mod1+n exec $terminal -e nmtui
@@ -472,7 +492,6 @@ bindsym $mod+KP_Enter exec $terminal
 # Kill focus window
 bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
-bindsym $mod+Shift+c kill
 
 # Focus the parent/child container
 bindsym $mod+a       focus parent
@@ -503,7 +522,7 @@ bindsym $mod+Shift+Up    move up
 bindsym $mod+Shift+Right move right
 
 # Split in vertical/horizontal orientation
-bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
+#bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
 
 # Toggle fullscreen
@@ -590,10 +609,10 @@ bindsym $mod+Shift+minus [floating] move scratchpad exec notify-send -u low "Mov
 bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
 
 # Enter exec command in i3 [use rofi as input]
-bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
+#bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 
 # Rename workspace
-bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
+#bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
 #bindsym $mod+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
 
 # Define names for default workspaces for which we configure key bindings later on.
@@ -706,17 +725,6 @@ bindsym $mod+Shift+F12 move container to workspace $ws22
 bindsym $mod+r       reload
 bindsym $mod+Shift+r restart
 
-# Picom mode (blur support)
-bindsym $mod+Shift+p mode "$mode_picom"
-set $mode_picom Picom (Xcompositor): [e]nable_blur [d]isable_blur
-mode "$mode_picom" {
-    bindsym e exec i3_picom_blur_enable.sh, mode "default"
-    bindsym d exec i3_picom_blur_disable.sh, mode "default"
-    # Exit
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
 # Resize window with hotkey
 bindsym Ctrl+$mod1+h resize shrink width 5 px or 5 ppt
 bindsym Ctrl+$mod1+j resize grow height 5 px or 5 ppt
@@ -725,7 +733,7 @@ bindsym Ctrl+$mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
 bindsym Ctrl+$mod1+r mode "$mode_resize"
-set $mode_resize Resize mode [(vim-key)]:small step [(arrow-key)]:big step
+set $mode_resize Resize: [(vim-key)]:small step [(arrow-key)]:big step
 mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
     # Pressing left will shrink the window’s width.
@@ -749,7 +757,7 @@ mode "$mode_resize" {
 # Redshift mode
 # -- https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
 bindsym $mod+Shift+z mode "$mode_redshift"
-set $mode_redshift Set color temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
+set $mode_redshift Color Temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
     bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
@@ -778,7 +786,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 
 # System manager (Keyboard)
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff
-bindsym $mod+Escape mode "$mode_system"
+bindsym $mod+Shift+Escape mode "$mode_system"
 mode "$mode_system" {
     bindsym l exec --no-startup-id loginctl lock-session, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
@@ -788,6 +796,7 @@ mode "$mode_system" {
     bindsym h exec --no-startup-id i3-msg hibernate, mode "default"
     # exit mode
     bindsym Escape mode "default"
+    bindsym Return mode "default"
 }
 
 # Interactive screenshot by pressing printscreen
@@ -819,7 +828,7 @@ bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u lo
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # -- xdotool must be installed
-set $mode_mouse Mouse emulator [ctrl+(vim-key)]:small [(vim-key)]:medium; [shift+(vim-key)]:large [u]:left [i]:middle [o]:right
+set $mode_mouse Mouse emulator: [ctrl+(vim-key)]:small [(vim-key)]:medium; [shift+(vim-key)]:large [ctlr+shift+(vim-key)]:extra-large [u]:left [i]:middle [o]:right
 bindsym $mod+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
@@ -848,7 +857,6 @@ mode "$mode_mouse" {
     bindsym o exec "xdotool click 3"
     # redefine kill window in mouse mode
     bindsym $mod+Shift+q kill
-    bindsym $mod+shift+c kill
     # exit mouse mode
     bindsym m            mode "default"
     bindsym $mod+Shift+m mode "default"

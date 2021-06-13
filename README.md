@@ -1,6 +1,22 @@
 # I3_Sway_Config
 Backup for my I3WM (Xorg) and Sway (Xwayland) configuration
 
+Table of Contents
+=================
+
+* [I3_Sway_Config](#i3_sway_config)
+   * [Demo Current Customization Result for i3](#demo-current-customization-result-for-i3)
+   * [Preparation (Dependence) for i3](#preparation-dependence-for-i3)
+   * [First Time Usage for i3](#first-time-usage-for-i3)
+   * [Autostart Programs for i3](#autostart-programs-for-i3)
+   * [Keybinding Sheet for i3](#keybinding-sheet-for-i3)
+      * [Prefix: Winkey](#prefix-winkey)
+      * [Prefix: Winkey + Shift](#prefix-winkey--shift)
+      * [Prefix: Ctrl + Alt](#prefix-ctrl--alt)
+      * [Miscellaneous:](#miscellaneous)
+      * [Mode Usage:](#mode-usage)
+   * [Reference](#reference)
+
 ## Demo Current Customization Result for i3
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
 
@@ -48,7 +64,7 @@ Backup for my I3WM (Xorg) and Sway (Xwayland) configuration
     ln -s ~/Desktop/I3_Sway_Config/config/conky
     ```
 
-### 3. $HOME/dotfile (SHELL CONFIGURATION)
+3. $HOME/dotfile (SHELL CONFIGURATION)
 - Add following lines for pywal color support for bash/zsh/fish
     ```
     # Add following line to .bashrc/.zshrc/config.fish

@@ -493,6 +493,9 @@ bindsym $mod+KP_Enter exec $terminal
 bindsym $mod1+F4     kill
 bindsym $mod+Shift+q kill
 
+# Exit i3
+bindsym Ctrl+$mod1+q exit
+
 # Focus the parent/child container
 bindsym $mod+a       focus parent
 bindsym $mod+Shift+a focus child
@@ -774,15 +777,15 @@ mode "$mode_redshift" {
 }
 
 # Lock mode -- i3lock (User defined)
-bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
-mode "i3lock: Return to lock/Escape to Cancel" {
-    # use default wallpaper is assigned wallpaper directory does not exist
-    bindsym Return exec --no-startup-id i3lock -t -f -i \
-        $([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
-        echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
-    # exit mode
-    bindsym Escape mode "default"
-}
+#bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
+#mode "i3lock: Return to lock/Escape to Cancel" {
+    ## use default wallpaper is assigned wallpaper directory does not exist
+    #bindsym Return exec --no-startup-id i3lock -t -f -i \
+        #$([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
+        #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
+    ## exit mode
+    #bindsym Escape mode "default"
+#}
 
 # System manager (Keyboard)
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff

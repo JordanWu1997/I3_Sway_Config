@@ -1,7 +1,10 @@
 # I3_Sway_Config
 Backup for my I3WM (Xorg) and Sway (Xwayland) configuration
 
-## Preparation (Dependence)
+## Demo Current Customization Result for i3
+![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
+
+## Preparation (Dependence) for i3
 1. Software list
 - Shell: [fish](https://github.com/fish-shell/fish-shell) + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty)
@@ -18,75 +21,92 @@ Backup for my I3WM (Xorg) and Sway (Xwayland) configuration
 - [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
 - [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 
-## First Time Usage
+## First Time Usage for i3
 1. $HOME/.profile (PATH/VARIABLES)
 - Add PATH and I3_BIN to ~/.profile
-```
-# Add following lines to ~/.profile
-export PATH=$HOME/.config/i3/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
-export I3_BIN=$HOME/.config/i3/bin
-```
+    ```
+    # Add following lines to ~/.profile
+    export PATH=$HOME/.config/i3/bin:$PATH
+    export PATH=$HOME/.local/bin:$PATH
+    export I3_BIN=$HOME/.config/i3/bin
+    ```
 
 2. $HOME/.config (CONFIGURATION)
 - Link/copy config directories/files under ~/.config
-```
-# Link or copy following lines to ~/.config
-# If is already a config file in ~/config, remove it first
-cd ~/.config/ && rm -fr i3 kitty dunst ranger rofi picom bumblebee-status vis conky
-ln -s ~/Desktop/I3_Sway_Config/config/i3
-ln -s ~/Desktop/I3_Sway_Config/config/kitty/
-ln -s ~/Desktop/I3_Sway_Config/config/dunst
-ln -s ~/Desktop/I3_Sway_Config/config/ranger
-ln -s ~/Desktop/I3_Sway_Config/config/rofi
-ln -s ~/Desktop/I3_Sway_Config/config/picom
-ln -s ~/Desktop/I3_Sway_Config/config/bumblebee-status
-ln -s ~/Desktop/I3_Sway_Config/config/vis
-ln -s ~/Desktop/I3_Sway_Config/config/conky
-```
+    ```
+    # Link or copy following lines to ~/.config
+    # If is already a config file in ~/config, remove it first
+    cd ~/.config/ && rm -fr i3 kitty dunst ranger rofi picom bumblebee-status vis conky
+    ln -s ~/Desktop/I3_Sway_Config/config/i3
+    ln -s ~/Desktop/I3_Sway_Config/config/kitty/
+    ln -s ~/Desktop/I3_Sway_Config/config/dunst
+    ln -s ~/Desktop/I3_Sway_Config/config/ranger
+    ln -s ~/Desktop/I3_Sway_Config/config/rofi
+    ln -s ~/Desktop/I3_Sway_Config/config/picom
+    ln -s ~/Desktop/I3_Sway_Config/config/bumblebee-status
+    ln -s ~/Desktop/I3_Sway_Config/config/vis
+    ln -s ~/Desktop/I3_Sway_Config/config/conky
+    ```
 
 ### 3. $HOME/dotfile (SHELL CONFIGURATION)
 - Add following lines for pywal color support for bash/zsh/fish
-```
-# Add following line to .bashrc/.zshrc/config.fish
-[ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
-```
+    ```
+    # Add following line to .bashrc/.zshrc/config.fish
+    [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
+    ```
 
-## Autostart Programs
-- xrandr
-- wal
-- gnome-authentication-agent
-- NetworkManger
-- bluetooth
-- numlockx
-- imwheel
-- ibus
-- parcellite
-- flashfocus
-- dunst
-- kdeconnectd
-- battery-popup
-- i3_automark
-- xss-lock
-- picom
+## Autostart Programs for i3
+- [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
+- [pywal](https://github.com/dylanaraps/pywal): colortheme autotune by wal
+- [conky](https://github.com/brndnmtthws/conky): system monitor for Xwindow
+- [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome software support
+- [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
+- [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manger
+- [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
+- [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing
+- [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): Xsession lock
+- [parcellite](https://github.com/rickyrockrat/parcellite): clipboard applet
+- [flashfocus](https://github.com/fennerm/flashfocus): flash when changing focus
+- [dunst](https://github.com/dunst-project/dunst): notification
+- [kdeconnectd](https://community.kde.org/KDEConnect): mobile phone connector
+- [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
+- [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
+- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): automark i3 window
+- [jonaburg/picom](https://github.com/jonaburg/picom): Xcompositor for blur, transparency, animation support
 
-## Keybinding Sheet
-- Workspace
-- Container
-- I3 built-in
+## Keybinding Sheet for i3
 
-## Mode Usage
-- System mode
-- Gap mode
-- Titlebar mode
-- Mark mode
-- Picom mode
-- Mouse mode
-- Display mode
-- Redshift mode
-- Resize mode
-- Theme mode
-- Wallpaper mode
+### Prefix: Winkey
+![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
+
+### Prefix: Winkey + Shift
+![alt text](./demo/Shortcut_Sheet/i3_shortcut_win_shift.png "Title")
+
+### Prefix: Ctrl + Alt
+![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
+
+### Miscellaneous:
+- Alt + Tab: Show current workspace window list
+- Alt + Shift + Tab: Show window list through all workspaces
+- Winkey + Number(#): Goto workspace number # in monitor1
+- Winkey + Function(F#): Goto workspace number 10+# in monitor2
+- Winkey + Shift+Number: Send to workspace number # in monitor1
+- Winkey + Shift+Function: Send to workspace number 10+# in monitor2
+
+### Mode Usage:
+- __System mode (Win+Shift+Esc):__ system command, e.g. exit, poweroff, reboot, lock, hibernate
+- __Display mode (Win+Shift+x):__ deal with dual monitor, e.g. joint monitor, mirror monitor
+- __Mouse mode (Win+Shift+m):__ mouse emulator using keyboard
+- __Redshift mode (Win+Shift+z):__ screen color temperature tuner
+- __Resize mode (Ctrl+Alt+r):__ resize focus window
+- __Gap mode (Win+Shift+g):__ modify i3 gaps e.g. inner gaps, outer gaps
+- __Titlebar mode (Win+Shift+t):__ modify i3 titlebar
+    - __Border mode:__ modify i3 border
+    - __Mark mode:__ mark window, automark function
+- __Customization mode (Win+Shift+c):__ customize for i3wm
+    - __Theme mode:__ auto-theme with pywal
+    - __Wallpaper mode:__ select wallpaper
+    - __Picom mode:__ blur, transparency support
 
 ## Reference
 - https://i3wm.org/docs/userguide.html

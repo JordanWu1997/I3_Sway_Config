@@ -101,7 +101,7 @@ Table of Contents
 ### Prefix: Ctrl + Alt
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
 
-### Miscellaneous:
+### Miscellaneous
 - Alt + Tab: Show current workspace window list
 - Alt + Shift + Tab: Show window list through all workspaces
 - Winkey + Number(#): Goto workspace number # in monitor1
@@ -109,7 +109,7 @@ Table of Contents
 - Winkey + Shift+Number: Send to workspace number # in monitor1
 - Winkey + Shift+Function: Send to workspace number 10+# in monitor2
 
-### Mode Usage:
+### Mode Usage
 - __System mode (Win+Shift+Esc):__ system command, e.g. exit, poweroff, reboot, lock, hibernate
 - __Display mode (Win+Shift+x):__ deal with dual monitor, e.g. joint monitor, mirror monitor
 - __Mouse mode (Win+Shift+m):__ mouse emulator using keyboard

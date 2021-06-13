@@ -5,16 +5,17 @@ Table of Contents
 =================
 
 * [I3_Sway_Config](#i3_sway_config)
+* [Table of Contents](#table-of-contents)
    * [Demo Current Customization Result for i3](#demo-current-customization-result-for-i3)
    * [Preparation (Dependence) for i3](#preparation-dependence-for-i3)
    * [First Time Usage for i3](#first-time-usage-for-i3)
    * [Autostart Programs for i3](#autostart-programs-for-i3)
    * [Keybinding Sheet for i3](#keybinding-sheet-for-i3)
-      * [Prefix: Winkey](#prefix-winkey)
-      * [Prefix: Winkey + Shift](#prefix-winkey--shift)
-      * [Prefix: Ctrl + Alt](#prefix-ctrl--alt)
-      * [Miscellaneous:](#miscellaneous)
-      * [Mode Usage:](#mode-usage)
+      * [Prefix: [Winkey]](#prefix-winkey)
+      * [Prefix: [Winkey] + [Shift]](#prefix-winkey--shift)
+      * [Prefix: [Ctrl] + [Alt]](#prefix-ctrl--alt)
+      * [Miscellaneous](#miscellaneous)
+      * [Mode Usage](#mode-usage)
    * [Reference](#reference)
 
 ## Demo Current Customization Result for i3
@@ -92,34 +93,41 @@ Table of Contents
 
 ## Keybinding Sheet for i3
 
-### Prefix: Winkey
+### Prefix: [Winkey]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
 
-### Prefix: Winkey + Shift
+### Prefix: [Winkey] + [Shift]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win_shift.png "Title")
 
-### Prefix: Ctrl + Alt
+### Prefix: [Ctrl] + [Alt]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
 
 ### Miscellaneous
-- Alt + Tab: Show current workspace window list
-- Alt + Shift + Tab: Show window list through all workspaces
-- Winkey + Number(#): Goto workspace number # in monitor1
-- Winkey + Function(F#): Goto workspace number 10+# in monitor2
-- Winkey + Shift+Number: Send to workspace number # in monitor1
-- Winkey + Shift+Function: Send to workspace number 10+# in monitor2
+- Workspace
+    - [Winkey] + [Number(#)]: Goto workspace number # in monitor1
+    - [Winkey] + [Function(F#)]: Goto workspace number 10+# in monitor2
+    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # in monitor1
+    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# in monitor2
+- Window
+    - [Alt] + [Tab]: Show current workspace window list
+    - [Alt] + [Shift] + [Tab]: Show window list through all workspaces
+- Scratchpad
+    - [Winkey] + [-]: Send focus to scratchpad (background)
+    - [Winkey] + [Shift] + [-]: Send all floating windows to scratchpad (background)
+    - [Winkey] + [=]: Bring window in scratchpad to foreground one by one
+    - [Winkey] + [Shift] + [=]: Bring all windows in scratchpad to foreground
 
 ### Mode Usage
-- __System mode (Win+Shift+Esc):__ system command, e.g. exit, poweroff, reboot, lock, hibernate
-- __Display mode (Win+Shift+x):__ deal with dual monitor, e.g. joint monitor, mirror monitor
-- __Mouse mode (Win+Shift+m):__ mouse emulator using keyboard
-- __Redshift mode (Win+Shift+z):__ screen color temperature tuner
-- __Resize mode (Ctrl+Alt+r):__ resize focus window
-- __Gap mode (Win+Shift+g):__ modify i3 gaps e.g. inner gaps, outer gaps
-- __Titlebar mode (Win+Shift+t):__ modify i3 titlebar
+- __System mode ([Win] + [Shift] + [Esc]):__ system command, e.g. exit, poweroff, reboot, lock, hibernate
+- __Display mode ([Win] + [Shift] + [x]):__ deal with dual monitor, e.g. joint monitor, mirror monitor
+- __Mouse mode ([Win] + [Shift] + [m]):__ mouse emulator using keyboard
+- __Redshift mode ([Win] + [Shift] + [z]):__ screen color temperature tuner
+- __Resize mode ([Ctrl] + [Alt] + [r]):__ resize focus window
+- __Gap mode ([Win] + [Shift] + [g]):__ modify i3 gaps e.g. inner gaps, outer gaps
+- __Titlebar mode ([Win] + [Shift] + [t]):__ modify i3 titlebar
     - __Border mode:__ modify i3 border
     - __Mark mode:__ mark window, automark function
-- __Customization mode (Win+Shift+c):__ customize for i3wm
+- __Customization mode ([Win] + [Shift] + [c]):__ customize for i3wm
     - __Theme mode:__ auto-theme with pywal
     - __Wallpaper mode:__ select wallpaper
     - __Picom mode:__ blur, transparency support

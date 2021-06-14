@@ -776,7 +776,7 @@ mode "$mode_redshift" {
     bindsym Escape mode "default"
 }
 
-# Lock mode -- i3lock (User defined)
+# Lock mode -- i3lock (User defined wallpaper)
 #bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 #mode "i3lock: Return to lock/Escape to Cancel" {
     ## use default wallpaper is assigned wallpaper directory does not exist
@@ -786,6 +786,9 @@ mode "$mode_redshift" {
     ## exit mode
     #bindsym Escape mode "default"
 #}
+
+# Lock mode -- i3lock (Current default wallpaper)
+bindsym Ctrl+$mod1+Shift+l exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default_thinkpad_wallpaper.png
 
 # System manager (Keyboard)
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff

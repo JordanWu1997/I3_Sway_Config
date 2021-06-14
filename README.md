@@ -104,10 +104,10 @@ Table of Contents
 
 ### Miscellaneous
 - Workspace
-    - [Winkey] + [Number(#)]: Goto workspace number # in monitor1
-    - [Winkey] + [Function(F#)]: Goto workspace number 10+# in monitor2
-    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # in monitor1
-    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# in monitor2
+    - [Winkey] + [Number(#)]: Goto workspace number # in monitor1 (E#)
+    - [Winkey] + [Function(F#)]: Goto workspace number 10+# in monitor2 (H#)
+    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # in monitor1 (E#)
+    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# in monitor2 (H#)
 - Window
     - [Alt] + [Tab]: Show current workspace window list
     - [Alt] + [Shift] + [Tab]: Show window list through all workspaces
@@ -116,6 +116,8 @@ Table of Contents
     - [Winkey] + [Shift] + [-]: Send all floating windows to scratchpad (background)
     - [Winkey] + [=]: Bring window in scratchpad to foreground one by one
     - [Winkey] + [Shift] + [=]: Bring all windows in scratchpad to foreground
+- Lockscreen
+-   - [Crtl] + [Alt] + [Shift] + [l]: Lock screeen with xss-lock
 
 ### Mode Usage
 - __System mode ([Win] + [Shift] + [Esc]):__ system command, e.g. exit, poweroff, reboot, lock, hibernate

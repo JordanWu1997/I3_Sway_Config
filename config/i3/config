@@ -264,10 +264,10 @@ mode "$mode_theme" {
 }
 
 # Picom mode (animation, blur, and transparency support)
-set $mode_picom Picom (Xcompositor): [e]nable_blur [d]isable_blur
+set $mode_picom Picom (Xcompositor): [1]enable_blur [2]enable_transparency
 mode "$mode_picom" {
-    bindsym e exec i3_picom_blur_enable.sh, mode "default"
-    bindsym d exec i3_picom_blur_disable.sh, mode "default"
+    bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
+    bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
     # Exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"

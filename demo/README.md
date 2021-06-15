@@ -5,3 +5,5 @@
 ![alt_text](../demo/MY_I3WM_WAL_DEMO_01.png)
 ![alt_text](../demo/MY_I3WM_WAL_DEMO_02.png)
 ![alt_text](../demo/MY_I3WM_WAL_DEMO_03.png)
+![alt_text](../demo/MY_I3WM_WAL_DEMO_04.png)
+![alt_text](../demo/MY_I3WM_WAL_DEMO_05.png)

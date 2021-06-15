@@ -443,23 +443,37 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-# Media player controls
+# Media player control
 bindsym XF86AudioPlay  exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
-# Media control [Installation: dnf install pavucontrol] (Not used for now, try rofi instead)
-#bindsym Ctrl+$mod1+m exec pavucontrol
-
-# Bluetooth manager [Installation: dnf install blueman] (Not used for now, try rofi instead)
-#bindsym Ctrl+$mod1+b exec blueman-manager
-
-# Arandr (Xrandr GUI) [Installation: dnf install arandr] (Not used for now, try rofi instead)
-#bindsym Ctrl+$mod1+a exec arandr
-
-# Nmtui (Networkmanager TUI) [Bundled with NetworkManager, NOT work with wal theme]
-#bindsym Ctrl+$mod1+n exec $terminal -e nmtui
+# Common program shortcut
+# 1 - Text editor: neovim [Installation: dnf install neovim]
+bindsym Ctrl+$mod1+1 exec --no-startup-id $terminal -e fish -C nvim
+# 2 - File Manager: ranger [Installation: dnf install ranger]
+bindsym Ctrl+$mod1+2 exec --no-startup-id $terminal -e fish -C ranger
+# 3 - Media: pulsemixer [Installation: pip install pulsemixer]
+bindsym Ctrl+$mod1+3 exec --no-startup-id $terminal -e fish -C pulsemixer
+# 4 - System monitor: htop [Installation: dnf install htop]
+bindsym Ctrl+$mod1+4 exec --no-startup-id $terminal -e fish -C htop
+# 5 - Nmtui (networkmanager TUI) [Bundled with NetworkManager]
+bindsym Ctrl+$mod1+5 exec --no-startup-id $terminal -e fish -C nmtui
+# 6 - Visualizer: cava [Installation: dnf install cava]
+bindsym Ctrl+$mod1+6 exec --no-startup-id $terminal -e fish -C cava
+# 7 - Spotify (TUI)
+bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e fish -C spt
+# 8 - Spotify (GUI and backend)
+bindsym Ctrl+$mod1+8 exec --no-startup-id flatpak run com.spotify.Client
+# 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
+bindsym Ctrl+$mod1+9 exec --no-startup-id blueman-manager
+# 0 - Bluetooth manager: blueman [Installation: dnf install blueman]
+bindsym Ctrl+$mod1+0 exec --no-startup-id arandr
+# - (minus) - Web browser: google-chrome
+bindsym Ctrl+$mod1+minus exec --no-startup-id google-chrome
+# = (equal) - Web browser: firefox
+bindsym Ctrl+$mod1+equal exec --no-startup-id firefox
 
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
@@ -1123,4 +1137,5 @@ exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
+#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_no_blur.conf

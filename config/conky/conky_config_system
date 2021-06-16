@@ -67,7 +67,7 @@ ${color2}Local Hostname ${alignr}${color}${nodename}
 ${color2}Machine Uptime ${alignr}${color}${uptime}
 ${voffset 5}${alignc}${color}${font DroidSanMono Nerd Font:size=13}[Network]${font}${voffset 5}${color}
 ${color2}External IP ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
-${color2}Internal IP ${alignr}${color}${execi 1000 ip a | grep inet | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
+${color2}Internal IP ${alignr}${color}${execi 1000 ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
 ${color2}Gateway IP ${alignr}${color}${gw_ip}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
 ${color2}Ethe-Dw ${alignr}${color}${downspeed enp0s20f0u2u2u4}/s   ${alignr}Tot ${totaldown enp0s20f0u2u2u4}
 ${color2}Ethe-Up ${alignr}${color}${upspeed enp0s20f0u2u2u4}/s   ${alignr}Tot ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
@@ -99,6 +99,5 @@ ${color2}${top name 4} ${alignr}${color}${top cpu 4}     ${alignr}${top mem 4}
 ${color2}${top name 5} ${alignr}${color}${top cpu 5}     ${alignr}${top mem 5}
 ${color2}${top name 6} ${alignr}${color}${top cpu 6}     ${alignr}${top mem 6}
 ${color2}${top name 7} ${alignr}${color}${top cpu 7}     ${alignr}${top mem 7}
-${color2}${top name 8} ${alignr}${color}${top cpu 8}     ${alignr}${top mem 8}
 ${voffset 12}
 ]]

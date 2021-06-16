@@ -790,19 +790,19 @@ mode "$mode_redshift" {
     bindsym Escape mode "default"
 }
 
-# Lock mode -- i3lock (User defined wallpaper)
-#bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
-#mode "i3lock: Return to lock/Escape to Cancel" {
-    ## use default wallpaper is assigned wallpaper directory does not exist
+# Lock mode -- i3lock
+bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
+mode "i3lock: Return to lock/Escape to Cancel" {
+    # Option1 - User defined wallpaper
+    # use default wallpaper is assigned wallpaper directory does not exist
     #bindsym Return exec --no-startup-id i3lock -t -f -i \
         #$([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
         #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
-    ## exit mode
-    #bindsym Escape mode "default"
-#}
-
-# Lock mode -- i3lock (Current default wallpaper)
-bindsym Ctrl+$mod1+Shift+l exec --no-startup-id i3lock -t -f -i $HOME/.config/i3/share/default_thinkpad_wallpaper.png
+    # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
+    bindsym Return exec --no-startup-id $I3_BIN/i3_i3lock.sh, mode "default"
+    # exit mode
+    bindsym Escape mode "default"
+}
 
 # System manager (Keyboard)
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff
@@ -1129,7 +1129,8 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so they are included here as an example.
 # Modify as you see fit. xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
+#exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
+exec_always --no-startup-id $I3_BIN/i3_xsslock.sh
 
 # Set compositor for transparency (now use picom instead)
 #exec --no-startup-id xcompmgr -c -f -n

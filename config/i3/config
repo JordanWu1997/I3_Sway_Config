@@ -250,14 +250,15 @@ mode "$mode_variety" {
 # Pywal (https://github.com/dylanaraps/pywal)
 # Installation: pip install pywal
 # Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
-set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_conky [2]reload_dunst [3]reload_vis
+set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_conky [2]reload_dunst [3]reload_xsslock [4]reload_vis
 mode "$mode_theme" {
     bindsym e exec $I3_BIN/i3_wal_enable.sh && $I3_BIN/i3_restart.sh && notify-send -u low "Auto-theme with pywal"
     bindsym d exec $I3_BIN/i3_wal_disable.sh && notify-send -u low "Disable auto-theme (kill pywal)"
     bindsym r exec $I3_BIN/i3_restart.sh && notify-send -u low "Reload i3"
     bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system && $I3_BIN/i3_conky_colorchanger.sh hotkey && notify-send -u low "Reload conky"
     bindsym 2 exec $I3_BIN/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
-    bindsym 3 exec $I3_BIN/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
+    bindsym 3 exec $I3_BIN/i3_xsslock.sh current && notify-send -u low "Reload xsslock (session lock)"
+    bindsym 4 exec $I3_BIN/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     # exit
     bindsym Return mode $mode_customization
     bindsym Escape mode "default"
@@ -799,7 +800,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
         #$([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
         #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
     # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
-    bindsym Return exec --no-startup-id $I3_BIN/i3_i3lock.sh, mode "default"
+    bindsym Return exec --no-startup-id $I3_BIN/i3_i3lock.sh current, mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -1130,7 +1131,7 @@ exec --no-startup-id $I3_BIN/i3_automark.py &
 # Modify as you see fit. xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
-exec_always --no-startup-id $I3_BIN/i3_xsslock.sh
+exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 
 # Set compositor for transparency (now use picom instead)
 #exec --no-startup-id xcompmgr -c -f -n

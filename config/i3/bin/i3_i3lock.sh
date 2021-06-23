@@ -13,7 +13,7 @@ else
         i3lock -t -f -i $default
     elif [ $1 == "current" ]; then
         if [ ! -f $current.png ]; then
-            mogrify -format png $current
+            mogrify -resize 1920x1080 -format png $current
         fi
         i3lock -t -f -i $current.png
     else

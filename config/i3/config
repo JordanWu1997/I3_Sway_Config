@@ -471,8 +471,8 @@ bindsym Ctrl+$mod1+8 exec --no-startup-id flatpak run com.spotify.Client
 bindsym Ctrl+$mod1+9 exec --no-startup-id blueman-manager
 # 0 - Bluetooth manager: blueman [Installation: dnf install blueman]
 bindsym Ctrl+$mod1+0 exec --no-startup-id arandr
-# - (minus) - Web browser: google-chrome
-bindsym Ctrl+$mod1+minus exec --no-startup-id google-chrome
+# - (minus) - Web browser: brave-browser (google-chromium based)
+bindsym Ctrl+$mod1+minus exec --no-startup-id brave-browser
 # = (equal) - Web browser: firefox
 bindsym Ctrl+$mod1+equal exec --no-startup-id firefox
 

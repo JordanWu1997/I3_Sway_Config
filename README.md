@@ -101,38 +101,68 @@ Table of Contents
 
 ### Prefix: [Ctrl] + [Alt]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
+- __Program shortcut (1~9, 0, -, =)__
+    - All following shortcuts can be modified in config, modify as you wish
+        - 1: [Neovim (text editor)](https://neovim.io/)
+        - 2: [Ranger (file manager)](https://github.com/ranger/ranger)
+        - 3: [Pulsemixer (sound manager)](https://pypi.org/project/pulsemixer/)
+        - 4: [Htop (system monitor)](https://htop.dev/)
+        - 5: [Nmtui (network manager)](https://developer.gnome.org/NetworkManager/stable/nmtui.html)
+        - 6: [Cava (visualizer)](https://github.com/karlstav/cava)
+        - 7: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
+        - 8: [Spotify (music streamer)](https://flathub.org/apps/details/com.spotify.Client)
+        - 9: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
+        - 0: [Arandr (gui xdisplay manager)](https://christian.amsuess.com/tools/arandr/)
+        - -: [Brave browser (web browser)](https://brave.com/)
+        - =: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 
 ### Miscellaneous
-- Workspace
-    - [Winkey] + [Number(#)]: Goto workspace number # in monitor1 (E#)
-    - [Winkey] + [Function(F#)]: Goto workspace number 10+# in monitor2 (H#)
-    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # in monitor1 (E#)
-    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# in monitor2 (H#)
-- Window
+- __Navigate to Workspace__
+    - [Winkey] + [Number(#)]:    Goto workspace number # in monitor1 (A#)
+    - [Winkey] + [Function(F#)]: Goto workspace number 10+# in monitor2 (B#)
+    - [Alt] + [Number(#)]:    Goto workspace number 20+# in monitor1 (C#)
+- __Send to Workspace__
+    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # in monitor1 (A#)
+    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# in monitor2 (B#)
+    - [Alt] + [Shift] + [Number(#)]: Send to workspace number 20+# in monitor3 (C#)
+- __Move between Workspace__
     - [Alt] + [Tab]: Show current workspace window list
     - [Alt] + [Shift] + [Tab]: Show window list through all workspaces
-- Scratchpad
+- __Manipulate Scratchpad__
     - [Winkey] + [-]: Send focus to scratchpad (background)
     - [Winkey] + [Shift] + [-]: Send all floating windows to scratchpad (background)
     - [Winkey] + [=]: Bring window in scratchpad to foreground one by one
     - [Winkey] + [Shift] + [=]: Bring all windows in scratchpad to foreground
-- Lockscreen
--   - [Crtl] + [Alt] + [Shift] + [l]: Lock screeen with xss-lock
+- __Lockscreen__
+    - [Crtl] + [Alt] + [Shift] + [l]: Lock screeen with xss-lock
 
 ### Mode Usage
-- __System mode ([Win] + [Shift] + [Esc]):__ system command, e.g. exit, poweroff, reboot, lock, hibernate
-- __Display mode ([Win] + [Shift] + [x]):__ deal with dual monitor, e.g. joint monitor, mirror monitor
-- __Mouse mode ([Win] + [Shift] + [m]):__ mouse emulator using keyboard
-- __Redshift mode ([Win] + [Shift] + [z]):__ screen color temperature tuner
-- __Resize mode ([Ctrl] + [Alt] + [r]):__ resize focus window
-- __Gap mode ([Win] + [Shift] + [g]):__ modify i3 gaps e.g. inner gaps, outer gaps
-- __Titlebar mode ([Win] + [Shift] + [t]):__ modify i3 titlebar
-    - __Border mode:__ modify i3 border
-    - __Mark mode:__ mark window, automark function
-- __Customization mode ([Win] + [Shift] + [c]):__ customize for i3wm
-    - __Theme mode:__ auto-theme with pywal
-    - __Wallpaper mode:__ select wallpaper
-    - __Picom mode:__ blur, transparency support
+- __System mode ([Win] + [Shift] + [Esc])__
+    - system command, e.g. exit, poweroff, reboot, lock, hibernate
+- __Display mode ([Win] + [Shift] + [x])__
+    - deal with dual monitor, e.g. joint monitor, mirror monitor
+- __Mouse mode ([Win] + [Shift] + [m])__
+    - mouse emulator using keyboard, e.g. move, left/right click
+- __Redshift mode ([Win] + [Shift] + [z])__
+    - screen color temperature tuner
+- __Resize mode ([Ctrl] + [Alt] + [r])__
+    - resize focus window
+- __Gap mode ([Win] + [Shift] + [g])__
+    - modify i3 gaps, e.g. inner gaps, outer gaps
+- __Titlebar mode ([Win] + [Shift] + [t])__
+    - modify i3 titlebar, e.g. hide/show titlebar, mark window
+        - __Border mode ([b])__
+            - modify i3 border
+        - __Mark mode ([m])__
+            - mark window, automark function
+- __Customization mode ([Win] + [Shift] + [c])__
+    - customize i3wm, e.g. wallpaper, theme, xcompositor
+        - __Theme mode ([t])__
+            - auto-theme with pywal, reload after auto-theming
+        - __Wallpaper mode ([w])__
+            - select wallpaper, set default wallpaper
+        - __Picom mode ([p])__
+            - blur, transparency support
 
 ## Reference
 - https://i3wm.org/docs/userguide.html

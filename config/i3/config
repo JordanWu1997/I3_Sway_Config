@@ -109,6 +109,7 @@ set $mod1 Mod1
 # Setup monitor
 set $monitor1 eDP1
 set $monitor2 HDMI1
+set $monitor3 HDMI2
 
 # Setup terminal
 set $terminal kitty
@@ -635,30 +636,38 @@ bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1  "1:E1"
-set $ws2  "2:E2"
-set $ws3  "3:E3"
-set $ws4  "4:E4"
-set $ws5  "5:E5"
-set $ws6  "6:E6"
-set $ws7  "7:E7"
-set $ws8  "8:E8"
-set $ws9  "9:E9"
-set $ws10 "10:E10"
-set $ws11 "11:H1"
-set $ws12 "12:H2"
-set $ws13 "13:H3"
-set $ws14 "14:H4"
-set $ws15 "15:H5"
-set $ws16 "16:H6"
-set $ws17 "17:H7"
-set $ws18 "18:H8"
-set $ws19 "19:H9"
-set $ws20 "20:H10"
-set $ws21 "21:H11"
-set $ws22 "22:H12"
+set $ws1  "1:A1"
+set $ws2  "2:A2"
+set $ws3  "3:A3"
+set $ws4  "4:A4"
+set $ws5  "5:A5"
+set $ws6  "6:A6"
+set $ws7  "7:A7"
+set $ws8  "8:A8"
+set $ws9  "9:A9"
+set $ws10 "10:A10"
+set $ws11 "11:B1"
+set $ws12 "12:B2"
+set $ws13 "13:B3"
+set $ws14 "14:B4"
+set $ws15 "15:B5"
+set $ws16 "16:B6"
+set $ws17 "17:B7"
+set $ws18 "18:B8"
+set $ws19 "19:B9"
+set $ws20 "20:B10"
+set $ws21 "21:C1"
+set $ws22 "22:C2"
+set $ws23 "23:C3"
+set $ws24 "24:C4"
+set $ws25 "25:C5"
+set $ws26 "26:C6"
+set $ws27 "27:C7"
+set $ws28 "28:C8"
+set $ws29 "29:C9"
+set $ws30 "30:C10"
 
-# Assign workspace for dual monitor (monitor1 + monitor2)
+# Assign workspace for triple monitor (monitor1 + monitor2 + monitor3)
 workspace $ws1  output $monitor1
 workspace $ws2  output $monitor1
 workspace $ws3  output $monitor1
@@ -679,8 +688,16 @@ workspace $ws17 output $monitor2
 workspace $ws18 output $monitor2
 workspace $ws19 output $monitor2
 workspace $ws20 output $monitor2
-workspace $ws21 output $monitor2
-workspace $ws22 output $monitor2
+workspace $ws21 output $monitor3
+workspace $ws22 output $monitor3
+workspace $ws23 output $monitor3
+workspace $ws24 output $monitor3
+workspace $ws25 output $monitor3
+workspace $ws26 output $monitor3
+workspace $ws27 output $monitor3
+workspace $ws28 output $monitor3
+workspace $ws29 output $monitor3
+workspace $ws30 output $monitor3
 
 # Back and Forth [Disable for i3-workspace-swap]
 workspace_auto_back_and_forth no
@@ -711,8 +728,16 @@ bindsym $mod+F7  workspace $ws17
 bindsym $mod+F8  workspace $ws18
 bindsym $mod+F9  workspace $ws19
 bindsym $mod+F10 workspace $ws20
-bindsym $mod+F11 workspace $ws21
-bindsym $mod+F12 workspace $ws22
+bindsym $mod1+1  workspace $ws21
+bindsym $mod1+2  workspace $ws22
+bindsym $mod1+3  workspace $ws23
+bindsym $mod1+4  workspace $ws24
+bindsym $mod1+5  workspace $ws25
+bindsym $mod1+6  workspace $ws26
+bindsym $mod1+7  workspace $ws27
+bindsym $mod1+8  workspace $ws28
+bindsym $mod1+9  workspace $ws29
+bindsym $mod1+0  workspace $ws30
 
 # Move focused container to workspace
 bindsym $mod+Shift+1   move container to workspace $ws1
@@ -735,8 +760,16 @@ bindsym $mod+Shift+F7  move container to workspace $ws17
 bindsym $mod+Shift+F8  move container to workspace $ws18
 bindsym $mod+Shift+F9  move container to workspace $ws19
 bindsym $mod+Shift+F10 move container to workspace $ws20
-bindsym $mod+Shift+F11 move container to workspace $ws21
-bindsym $mod+Shift+F12 move container to workspace $ws22
+bindsym $mod1+Shift+1  move container to workspace $ws21
+bindsym $mod1+Shift+2  move container to workspace $ws22
+bindsym $mod1+Shift+3  move container to workspace $ws23
+bindsym $mod1+Shift+4  move container to workspace $ws24
+bindsym $mod1+Shift+5  move container to workspace $ws25
+bindsym $mod1+Shift+6  move container to workspace $ws26
+bindsym $mod1+Shift+7  move container to workspace $ws27
+bindsym $mod1+Shift+8  move container to workspace $ws28
+bindsym $mod1+Shift+9  move container to workspace $ws29
+bindsym $mod1+Shift+0  move container to workspace $ws30
 
 # Reload the configuration file (Keyboard)
 # Restart i3 inplace (preserves your layout/session, can be used to update i3)
@@ -1047,7 +1080,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting
-exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor

@@ -666,8 +666,18 @@ set $ws27 "27:C7"
 set $ws28 "28:C8"
 set $ws29 "29:C9"
 set $ws30 "30:C10"
+set $ws31 "31:D1"
+set $ws32 "32:D2"
+set $ws33 "33:D3"
+set $ws34 "34:D4"
+set $ws35 "35:D5"
+set $ws36 "36:D6"
+set $ws37 "37:D7"
+set $ws38 "38:D8"
+set $ws39 "39:D9"
+set $ws40 "40:D10"
 
-# Assign workspace for triple monitor (monitor1 + monitor2 + monitor3)
+# Assign workspace for quadra monitor (monitor1 + monitor2 + monitor3 + monitor4)
 workspace $ws1  output $monitor1
 workspace $ws2  output $monitor1
 workspace $ws3  output $monitor1
@@ -698,6 +708,16 @@ workspace $ws27 output $monitor3
 workspace $ws28 output $monitor3
 workspace $ws29 output $monitor3
 workspace $ws30 output $monitor3
+workspace $ws31 output $monitor4
+workspace $ws32 output $monitor4
+workspace $ws33 output $monitor4
+workspace $ws34 output $monitor4
+workspace $ws35 output $monitor4
+workspace $ws36 output $monitor4
+workspace $ws37 output $monitor4
+workspace $ws38 output $monitor4
+workspace $ws39 output $monitor4
+workspace $ws40 output $monitor4
 
 # Back and Forth [Disable for i3-workspace-swap]
 workspace_auto_back_and_forth no
@@ -728,16 +748,26 @@ bindsym $mod+F7  workspace $ws17
 bindsym $mod+F8  workspace $ws18
 bindsym $mod+F9  workspace $ws19
 bindsym $mod+F10 workspace $ws20
-bindsym $mod1+1  workspace $ws21
-bindsym $mod1+2  workspace $ws22
-bindsym $mod1+3  workspace $ws23
-bindsym $mod1+4  workspace $ws24
-bindsym $mod1+5  workspace $ws25
-bindsym $mod1+6  workspace $ws26
-bindsym $mod1+7  workspace $ws27
-bindsym $mod1+8  workspace $ws28
-bindsym $mod1+9  workspace $ws29
-bindsym $mod1+0  workspace $ws30
+bindsym Ctrl+1   workspace $ws21
+bindsym Ctrl+2   workspace $ws22
+bindsym Ctrl+3   workspace $ws23
+bindsym Ctrl+4   workspace $ws24
+bindsym Ctrl+5   workspace $ws25
+bindsym Ctrl+6   workspace $ws26
+bindsym Ctrl+7   workspace $ws27
+bindsym Ctrl+8   workspace $ws28
+bindsym Ctrl+9   workspace $ws29
+bindsym Ctrl+0   workspace $ws30
+bindsym Ctrl+F1  workspace $ws31
+bindsym Ctrl+F2  workspace $ws32
+bindsym Ctrl+F3  workspace $ws33
+bindsym Ctrl+F4  workspace $ws34
+bindsym Ctrl+F5  workspace $ws35
+bindsym Ctrl+F6  workspace $ws36
+bindsym Ctrl+F7  workspace $ws37
+bindsym Ctrl+F8  workspace $ws38
+bindsym Ctrl+F9  workspace $ws39
+bindsym Ctrl+F0  workspace $ws40
 
 # Move focused container to workspace
 bindsym $mod+Shift+1   move container to workspace $ws1
@@ -760,16 +790,26 @@ bindsym $mod+Shift+F7  move container to workspace $ws17
 bindsym $mod+Shift+F8  move container to workspace $ws18
 bindsym $mod+Shift+F9  move container to workspace $ws19
 bindsym $mod+Shift+F10 move container to workspace $ws20
-bindsym $mod1+Shift+1  move container to workspace $ws21
-bindsym $mod1+Shift+2  move container to workspace $ws22
-bindsym $mod1+Shift+3  move container to workspace $ws23
-bindsym $mod1+Shift+4  move container to workspace $ws24
-bindsym $mod1+Shift+5  move container to workspace $ws25
-bindsym $mod1+Shift+6  move container to workspace $ws26
-bindsym $mod1+Shift+7  move container to workspace $ws27
-bindsym $mod1+Shift+8  move container to workspace $ws28
-bindsym $mod1+Shift+9  move container to workspace $ws29
-bindsym $mod1+Shift+0  move container to workspace $ws30
+bindsym Ctrl+Shift+1   move container to workspace $ws21
+bindsym Ctrl+Shift+2   move container to workspace $ws22
+bindsym Ctrl+Shift+3   move container to workspace $ws23
+bindsym Ctrl+Shift+4   move container to workspace $ws24
+bindsym Ctrl+Shift+5   move container to workspace $ws25
+bindsym Ctrl+Shift+6   move container to workspace $ws26
+bindsym Ctrl+Shift+7   move container to workspace $ws27
+bindsym Ctrl+Shift+8   move container to workspace $ws28
+bindsym Ctrl+Shift+9   move container to workspace $ws29
+bindsym Ctrl+Shift+0   move container to workspace $ws30
+bindsym Ctrl+Shift+F1  move container to workspace $ws31
+bindsym Ctrl+Shift+F2  move container to workspace $ws32
+bindsym Ctrl+Shift+F3  move container to workspace $ws33
+bindsym Ctrl+Shift+F4  move container to workspace $ws34
+bindsym Ctrl+Shift+F5  move container to workspace $ws35
+bindsym Ctrl+Shift+F6  move container to workspace $ws36
+bindsym Ctrl+Shift+F7  move container to workspace $ws37
+bindsym Ctrl+Shift+F8  move container to workspace $ws38
+bindsym Ctrl+Shift+F9  move container to workspace $ws39
+bindsym Ctrl+Shift+F0  move container to workspace $ws40
 
 # Reload the configuration file (Keyboard)
 # Restart i3 inplace (preserves your layout/session, can be used to update i3)
@@ -1173,4 +1213,4 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
 #exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_no_blur.conf
+#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_no_blur.conf

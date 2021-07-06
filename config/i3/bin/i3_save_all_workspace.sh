@@ -30,3 +30,13 @@ i3-resurrect save -w 27:C7
 i3-resurrect save -w 28:C8
 i3-resurrect save -w 29:C9
 i3-resurrect save -w 30:C10
+i3-resurrect save -w 31:D1
+i3-resurrect save -w 32:D2
+i3-resurrect save -w 33:D3
+i3-resurrect save -w 34:D4
+i3-resurrect save -w 35:D5
+i3-resurrect save -w 36:D6
+i3-resurrect save -w 37:D7
+i3-resurrect save -w 38:D8
+i3-resurrect save -w 39:D9
+i3-resurrect save -w 40:D10

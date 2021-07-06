@@ -179,12 +179,13 @@ default_orientation horizontal
 # Custmization includes wallpaper, theme, and visual effects (e.g. blur/animation)
 
 # Customization mode (wrapper for wallpaper_mode, theme mode, and picom_mode)
-set $mode_customization Customization: [w]allpaper_mode [t]heme_mode [p]icom_mode
+set $mode_customization Customization: [c]onky_mode [p]icom_mode [t]heme_mode [w]allpaper_mode
 bindsym $mod+Shift+c mode "$mode_customization"
 mode "$mode_customization" {
-    bindsym w mode $mode_wallpaper
-    bindsym t mode $mode_theme
+    bindsym c mode $mode_conky
     bindsym p mode $mode_picom
+    bindsym t mode $mode_theme
+    bindsym w mode $mode_wallpaper
     # exit
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -247,27 +248,72 @@ mode "$mode_variety" {
     bindsym Escape mode "default"
 }
 
+# Conky mode (system monitor and shortcut sheet)
+set $mode_conky Conky (On Primary Display): [0]killall_conky [1]shortcut_sheet [2]system_monitor [3]set_shortcut_color [4]set_system_color
+mode "$mode_conky" {
+    bindsym 0 exec killall conky
+    bindsym 1 exec conky -c $HOME/.config/conky/conky_config_hotkey
+    bindsym 2 exec conky -c $HOME/.config/conky/conky_config_system
+    bindsym 3 mode "$mode_conky_palette_shortcut"
+    bindsym 4 mode "$mode_conky_palette_system"
+    # exit
+    bindsym Return mode "$mode_customization"
+    bindsym Escape mode "default"
+}
+
+# Palette mode (color palette for conky shortcut)
+set $mode_conky_palette_shortcut Color for conky shortcut: [0]black [1]red [2]green [3]yellow [4]blue [5]magenta [6]cyan [7]white
+mode "$mode_conky_palette_shortcut" {
+    bindsym 0 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color0, mode "$mode_conky"
+    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color1, mode "$mode_conky"
+    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color2, mode "$mode_conky"
+    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color3, mode "$mode_conky"
+    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color4, mode "$mode_conky"
+    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color5, mode "$mode_conky"
+    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color6, mode "$mode_conky"
+    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey color7, mode "$mode_conky"
+    # exit
+    bindsym Return mode "$mode_conky"
+    bindsym Escape mode "default"
+}
+
+# Palette mode (color palette for conky system)
+set $mode_conky_palette_system Color for conky system: [0]black [1]red [2]green [3]yellow [4]blue [5]magenta [6]cyan [7]white
+mode "$mode_conky_palette_system" {
+    bindsym 0 exec $I3_BIN/i3_conky_colorchanger.sh system color0, mode "$mode_conky"
+    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system color1, mode "$mode_conky"
+    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system color2, mode "$mode_conky"
+    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system color3, mode "$mode_conky"
+    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system color4, mode "$mode_conky"
+    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system color5, mode "$mode_conky"
+    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system color6, mode "$mode_conky"
+    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system color7, mode "$mode_conky"
+    # exit
+    bindsym Return mode "$mode_conky"
+    bindsym Escape mode "default"
+}
+
 # Theme mode (pywal color theme support)
 # Pywal (https://github.com/dylanaraps/pywal)
 # Installation: pip install pywal
 # Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
-set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_conky [2]reload_dunst [3]reload_xsslock [4]reload_vis
+set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_dunst [2]reload_xsslock [3]reload_vis
 mode "$mode_theme" {
     bindsym e exec $I3_BIN/i3_wal_enable.sh && $I3_BIN/i3_restart.sh && notify-send -u low "Auto-theme with pywal"
     bindsym d exec $I3_BIN/i3_wal_disable.sh && notify-send -u low "Disable auto-theme (kill pywal)"
     bindsym r exec $I3_BIN/i3_restart.sh && notify-send -u low "Reload i3"
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system && $I3_BIN/i3_conky_colorchanger.sh hotkey && notify-send -u low "Reload conky"
-    bindsym 2 exec $I3_BIN/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
-    bindsym 3 exec $I3_BIN/i3_xsslock.sh current && notify-send -u low "Reload xsslock (session lock)"
-    bindsym 4 exec $I3_BIN/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
+    bindsym 1 exec $I3_BIN/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
+    bindsym 2 exec $I3_BIN/i3_xsslock.sh current && notify-send -u low "Reload xsslock (session lock)"
+    bindsym 3 exec $I3_BIN/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     # exit
-    bindsym Return mode $mode_customization
+    bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
 }
 
 # Picom mode (animation, blur, and transparency support)
-set $mode_picom Picom (Xcompositor): [1]enable_blur [2]enable_transparency
+set $mode_picom Picom (Xcompositor): [0]no_effect [1]enable_blur [2]enable_transparency
 mode "$mode_picom" {
+    bindsym 0 exec killall picom, mode "default"
     bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
     bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
     # Exit
@@ -1212,5 +1258,5 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom.conf
 #exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_no_blur.conf

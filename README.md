@@ -157,12 +157,14 @@ Table of Contents
             - mark window, automark function
 - __Customization mode ([Win] + [Shift] + [c])__
     - customize i3wm, e.g. wallpaper, theme, xcompositor
+        - __Conky mode ([c])__
+            - shortcut_conky, system_conky, color of conky
+        - __Picom mode ([p])__
+            - blur, transparency support
         - __Theme mode ([t])__
             - auto-theme with pywal, reload after auto-theming
         - __Wallpaper mode ([w])__
             - select wallpaper, set default wallpaper
-        - __Picom mode ([p])__
-            - blur, transparency support
 
 ## Reference
 - https://i3wm.org/docs/userguide.html

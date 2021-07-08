@@ -120,7 +120,7 @@ set $default_border_width pixel 2
 
 # Setup gap width (only for i3-gap)
 set $default_inner_gap 5
-set $default_outer_gap 15
+set $default_outer_gap 5
 
 # ======================================================================================
 # All About Windows Settings

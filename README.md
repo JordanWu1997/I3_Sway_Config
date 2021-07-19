@@ -112,7 +112,7 @@ Table of Contents
         - 7: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
         - 8: [Spotify (music streamer)](https://flathub.org/apps/details/com.spotify.Client)
         - 9: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
-        - 0: [Arandr (gui xdisplay manager)](https://christian.amsuess.com/tools/arandr/)
+        - 0: [Nautilus (gui file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
         - -: [Brave browser (web browser)](https://brave.com/)
         - =: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 

@@ -250,13 +250,13 @@ mode "$mode_variety" {
 }
 
 # Conky mode (system monitor and shortcut sheet)
-set $mode_conky Conky (On Primary Display): [0]killall_conky [1]shortcut_sheet [2]system_monitor [3]set_shortcut_color [4]set_system_color
+set $mode_conky Conky (On Primary Display): [0]killall_conky [1]system_monitor [2]shortcut_sheet [3]set_system_color [4]set_shortcut_color
 mode "$mode_conky" {
     bindsym 0 exec killall conky
-    bindsym 1 exec conky -c $HOME/.config/conky/conky_config_hotkey
-    bindsym 2 exec conky -c $HOME/.config/conky/conky_config_system
-    bindsym 3 mode "$mode_conky_palette_shortcut"
-    bindsym 4 mode "$mode_conky_palette_system"
+    bindsym 1 exec conky -c $HOME/.config/conky/conky_config_system
+    bindsym 2 exec conky -c $HOME/.config/conky/conky_config_hotkey
+    bindsym 3 mode "$mode_conky_palette_system"
+    bindsym 4 mode "$mode_conky_palette_shortcut"
     # exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
@@ -518,8 +518,8 @@ bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e fish -C spt
 bindsym Ctrl+$mod1+8 exec --no-startup-id flatpak run com.spotify.Client
 # 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
 bindsym Ctrl+$mod1+9 exec --no-startup-id blueman-manager
-# 0 - Bluetooth manager: blueman [Installation: dnf install blueman]
-bindsym Ctrl+$mod1+0 exec --no-startup-id arandr
+# 0 - Nautilus (file manager) [Installation: dnf install nautilus]
+bindsym Ctrl+$mod1+0 exec --no-startup-id nautilus
 # - (minus) - Web browser: brave-browser (google-chromium based)
 bindsym Ctrl+$mod1+minus exec --no-startup-id brave-browser
 # = (equal) - Web browser: firefox
@@ -1009,9 +1009,10 @@ mode "$mode_mouse" {
 # Display mode (use xrandr)
 # -- https://thevaluable.dev/i3-config-mouseless/
 # For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
-set $mode_display Display: [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [h]DMI1 1920x1080 [H]DMI1 1650x1080
+set $mode_display Display: [a]randr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [h]DMI1 1920x1080 [H]DMI1 1650x1080
 bindsym $mod+Shift+x mode "$mode_display"
 mode "$mode_display" {
+    bindsym a       exec --no-startup-id arandr, mode "default"
     bindsym 1       exec --no-startup-id "xrandr --output HDMI1 --off  --output eDP1  --auto --primary", mode "default"
     bindsym 2       exec --no-startup-id "xrandr --output eDP1  --off  --output HDMI1 --auto --primary", mode "default"
     bindsym 3       exec --no-startup-id "xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1", mode "default"

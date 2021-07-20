@@ -117,14 +117,16 @@ Table of Contents
         - =: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 
 ### Miscellaneous
-- __Navigate to Workspace__
-    - [Winkey] + [Number(#)]:    Goto workspace number # in monitor1 (A#)
-    - [Winkey] + [Function(F#)]: Goto workspace number 10+# in monitor2 (B#)
-    - [Alt] + [Number(#)]:    Goto workspace number 20+# in monitor1 (C#)
+- __Go to Workspace__
+    - [Winkey] + [Number(#)]: Goto workspace number # (A#) in monitor1 (eDP1)
+    - [Winkey] + [Function(F#)]: Goto workspace number 10+# (B#) in monitor2 (HDMI1)
+    - [Ctrl] + [Number(#)]: Goto workspace number 20+# (C#) in monitor3 (VIRTUAL1)
+    - [Ctrl] + [Function(#)]: Goto workspace number 30+# (D#) in monitor4 (VIRTUAL2)
 - __Send to Workspace__
-    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # in monitor1 (A#)
-    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# in monitor2 (B#)
-    - [Alt] + [Shift] + [Number(#)]: Send to workspace number 20+# in monitor3 (C#)
+    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # (A#) in monitor1 (eDP1)
+    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# (B#) in monitor2 (HDMI1)
+    - [Ctrl] + [Shift] + [Number(#)]: Send to workspace number 20+# (C#) in monitor3 (VIRTUAL1)
+    - [Ctrl] + [Shift] + [Function(#)]: Send to workspace number 30+# (D#) in monitor4 (VIRTUAL2)
 - __Move between Workspace__
     - [Alt] + [Tab]: Show current workspace window list
     - [Alt] + [Shift] + [Tab]: Show window list through all workspaces
@@ -158,7 +160,7 @@ Table of Contents
 - __Customization mode ([Win] + [Shift] + [c])__
     - customize i3wm, e.g. wallpaper, theme, xcompositor
         - __Conky mode ([c])__
-            - shortcut_conky, system_conky, color of conky
+            - system_conky, hotkey_conky, color of conky
         - __Picom mode ([p])__
             - blur, transparency support
         - __Theme mode ([t])__

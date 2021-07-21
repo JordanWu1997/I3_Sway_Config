@@ -177,7 +177,7 @@ default_orientation horizontal
 # ======================================================================================
 # All About Customization
 # ======================================================================================
-# Custmization includes wallpaper, theme, and visual effects (e.g. blur/animation)
+# Customization includes wallpaper, theme, and visual effects (e.g. blur/animation)
 
 # Customization mode (wrapper for wallpaper_mode, theme mode, and picom_mode)
 set $mode_customization Customization: [c]onky_mode [p]icom_mode [t]heme_mode [w]allpaper_mode
@@ -815,7 +815,7 @@ bindsym Ctrl+F6  workspace $ws36
 bindsym Ctrl+F7  workspace $ws37
 bindsym Ctrl+F8  workspace $ws38
 bindsym Ctrl+F9  workspace $ws39
-bindsym Ctrl+F0  workspace $ws40
+bindsym Ctrl+F10 workspace $ws40
 
 # Move focused container to workspace
 bindsym $mod+Shift+1   move container to workspace $ws1
@@ -857,7 +857,89 @@ bindsym Ctrl+Shift+F6  move container to workspace $ws36
 bindsym Ctrl+Shift+F7  move container to workspace $ws37
 bindsym Ctrl+Shift+F8  move container to workspace $ws38
 bindsym Ctrl+Shift+F9  move container to workspace $ws39
-bindsym Ctrl+Shift+F0  move container to workspace $ws40
+bindsym Ctrl+Shift+F10 move container to workspace $ws40
+
+# Swap workspace mode
+set $mode_swap_workspace Swap_Workspace: [A] [B] [C] [D]
+set $mode_swap_A_workspace Swap_Workspace A: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
+set $mode_swap_B_workspace Swap_Workspace B: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
+set $mode_swap_C_workspace Swap_Workspace C: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
+set $mode_swap_D_workspace Swap_Workspace D: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
+bindsym $mod+Shift+p mode $mode_swap_workspace
+
+mode "$mode_swap_workspace" {
+    bindsym A mode "$mode_swap_A_workspace"
+    bindsym B mode "$mode_swap_B_workspace"
+    bindsym C mode "$mode_swap_C_workspace"
+    bindsym D mode "$mode_swap_D_workspace"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_swap_A_workspace" {
+    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1, mode "default"
+    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2, mode "default"
+    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 3, mode "default"
+    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 4, mode "default"
+    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 5, mode "default"
+    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 6, mode "default"
+    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 7, mode "default"
+    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 8, mode "default"
+    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 9, mode "default"
+    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 10, mode "default"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_swap_workspace"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_swap_B_workspace" {
+    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 1, mode "default"
+    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 2, mode "default"
+    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 3, mode "default"
+    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 4, mode "default"
+    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 5, mode "default"
+    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 6, mode "default"
+    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 7, mode "default"
+    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 8, mode "default"
+    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 9, mode "default"
+    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 10, mode "default"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_swap_workspace"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_swap_C_workspace" {
+    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 1, mode "default"
+    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 2, mode "default"
+    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 3, mode "default"
+    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 4, mode "default"
+    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 5, mode "default"
+    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 6, mode "default"
+    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 7, mode "default"
+    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 8, mode "default"
+    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 9, mode "default"
+    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 10, mode "default"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_swap_workspace"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_swap_D_workspace" {
+    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 1, mode "default"
+    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 2, mode "default"
+    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 3, mode "default"
+    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 4, mode "default"
+    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 5, mode "default"
+    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 6, mode "default"
+    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 7, mode "default"
+    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 8, mode "default"
+    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 9, mode "default"
+    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 10, mode "default"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_swap_workspace"
+    bindsym Escape mode "default"
+}
 
 # Reload the configuration file (Keyboard)
 # Restart i3 inplace (preserves your layout/session, can be used to update i3)

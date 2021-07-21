@@ -29,8 +29,8 @@ conky.config = {
     background = true,
     border_width = 2,
     cpu_avg_samples = 2,
-	default_color = '#abb9cc',
-	color2 = '#355B90',
+	default_color = '#e5bdb1',
+	color2 = '#953515',
     default_outline_color = '#FFFFFF',
     default_shade_color = '#000000',
     draw_borders = false,
@@ -102,5 +102,8 @@ ${color2}${top name 4} ${alignr}${color}${top cpu 4}     ${alignr}${top mem 4}
 ${color2}${top name 5} ${alignr}${color}${top cpu 5}     ${alignr}${top mem 5}
 ${color2}${top name 6} ${alignr}${color}${top cpu 6}     ${alignr}${top mem 6}
 ${color2}${top name 7} ${alignr}${color}${top cpu 7}     ${alignr}${top mem 7}
+${color2}${top name 8} ${alignr}${color}${top cpu 8}     ${alignr}${top mem 8}
+${color2}${top name 9} ${alignr}${color}${top cpu 9}     ${alignr}${top mem 9}
+${color2}${top name 10} ${alignr}${color}${top cpu 1o}     ${alignr}${top mem 10}
 ${voffset 12}
 ]]

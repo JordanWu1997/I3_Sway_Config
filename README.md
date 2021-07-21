@@ -157,6 +157,11 @@ Table of Contents
             - modify i3 border
         - __Mark mode ([m])__
             - mark window, automark function
+- __Swap mode ([Win] + [Shift] + [p])__
+    - swap i3 workspace (destination selector)
+        - __Monitor head ([a/b/c/d])__
+            - workspace monitor head from A to D
+                - workspace from 1 to 10
 - __Customization mode ([Win] + [Shift] + [c])__
     - customize i3wm, e.g. wallpaper, theme, xcompositor
         - __Conky mode ([c])__

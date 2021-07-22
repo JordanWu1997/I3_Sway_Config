@@ -860,84 +860,51 @@ bindsym Ctrl+Shift+F9  move container to workspace $ws39
 bindsym Ctrl+Shift+F10 move container to workspace $ws40
 
 # Swap workspace mode
-set $mode_swap_workspace Swap_Workspace: [A] [B] [C] [D]
-set $mode_swap_A_workspace Swap_Workspace A: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
-set $mode_swap_B_workspace Swap_Workspace B: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
-set $mode_swap_C_workspace Swap_Workspace C: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
-set $mode_swap_D_workspace Swap_Workspace D: [1] [2] [3] [4] [5] [6] [7] [8] [9] 1[0]
+set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10]
 bindsym $mod+Shift+p mode $mode_swap_workspace
-
 mode "$mode_swap_workspace" {
-    bindsym A mode "$mode_swap_A_workspace"
-    bindsym B mode "$mode_swap_B_workspace"
-    bindsym C mode "$mode_swap_C_workspace"
-    bindsym D mode "$mode_swap_D_workspace"
+    bindsym $mod+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1,  mode "default"
+    bindsym $mod+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2,  mode "default"
+    bindsym $mod+3   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 3,  mode "default"
+    bindsym $mod+4   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 4,  mode "default"
+    bindsym $mod+5   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 5,  mode "default"
+    bindsym $mod+6   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 6,  mode "default"
+    bindsym $mod+7   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 7,  mode "default"
+    bindsym $mod+8   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 8,  mode "default"
+    bindsym $mod+9   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 9,  mode "default"
+    bindsym $mod+10  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 10, mode "default"
+    bindsym $mod+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 1,  mode "default"
+    bindsym $mod+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 2,  mode "default"
+    bindsym $mod+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 3,  mode "default"
+    bindsym $mod+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 4,  mode "default"
+    bindsym $mod+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 5,  mode "default"
+    bindsym $mod+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 6,  mode "default"
+    bindsym $mod+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 7,  mode "default"
+    bindsym $mod+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 8,  mode "default"
+    bindsym $mod+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 9,  mode "default"
+    bindsym $mod+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 10, mode "default"
+    bindsym Ctrl+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 1,  mode "default"
+    bindsym Ctrl+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 2,  mode "default"
+    bindsym Ctrl+3   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 3,  mode "default"
+    bindsym Ctrl+4   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 4,  mode "default"
+    bindsym Ctrl+5   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 5,  mode "default"
+    bindsym Ctrl+6   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 6,  mode "default"
+    bindsym Ctrl+7   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 7,  mode "default"
+    bindsym Ctrl+8   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 8,  mode "default"
+    bindsym Ctrl+9   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 9,  mode "default"
+    bindsym Ctrl+10  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 10, mode "default"
+    bindsym Ctrl+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 1,  mode "default"
+    bindsym Ctrl+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 2,  mode "default"
+    bindsym Ctrl+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 3,  mode "default"
+    bindsym Ctrl+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 4,  mode "default"
+    bindsym Ctrl+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 5,  mode "default"
+    bindsym Ctrl+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 6,  mode "default"
+    bindsym Ctrl+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 7,  mode "default"
+    bindsym Ctrl+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 8,  mode "default"
+    bindsym Ctrl+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 9,  mode "default"
+    bindsym Ctrl+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 10, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-mode "$mode_swap_A_workspace" {
-    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1, mode "default"
-    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2, mode "default"
-    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 3, mode "default"
-    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 4, mode "default"
-    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 5, mode "default"
-    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 6, mode "default"
-    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 7, mode "default"
-    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 8, mode "default"
-    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 9, mode "default"
-    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 10, mode "default"
-    # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_swap_workspace"
-    bindsym Escape mode "default"
-}
-
-mode "$mode_swap_B_workspace" {
-    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 1, mode "default"
-    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 2, mode "default"
-    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 3, mode "default"
-    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 4, mode "default"
-    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 5, mode "default"
-    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 6, mode "default"
-    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 7, mode "default"
-    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 8, mode "default"
-    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 9, mode "default"
-    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 10, mode "default"
-    # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_swap_workspace"
-    bindsym Escape mode "default"
-}
-
-mode "$mode_swap_C_workspace" {
-    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 1, mode "default"
-    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 2, mode "default"
-    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 3, mode "default"
-    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 4, mode "default"
-    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 5, mode "default"
-    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 6, mode "default"
-    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 7, mode "default"
-    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 8, mode "default"
-    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 9, mode "default"
-    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 10, mode "default"
-    # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_swap_workspace"
-    bindsym Escape mode "default"
-}
-
-mode "$mode_swap_D_workspace" {
-    bindsym 1 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 1, mode "default"
-    bindsym 2 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 2, mode "default"
-    bindsym 3 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 3, mode "default"
-    bindsym 4 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 4, mode "default"
-    bindsym 5 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 5, mode "default"
-    bindsym 6 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 6, mode "default"
-    bindsym 7 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 7, mode "default"
-    bindsym 8 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 8, mode "default"
-    bindsym 9 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 9, mode "default"
-    bindsym 0 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 10, mode "default"
-    # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_swap_workspace"
     bindsym Escape mode "default"
 }
 

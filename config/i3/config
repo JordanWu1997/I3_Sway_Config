@@ -116,11 +116,11 @@ set $monitor4 VIRTUAL2
 set $terminal kitty
 
 # Setup border width
-set $default_border_width pixel 2
+set $default_border_width pixel 0
 
 # Setup gap width (only for i3-gap)
-set $default_inner_gap 5
-set $default_outer_gap 15
+set $default_inner_gap 20
+set $default_outer_gap 10
 
 # ======================================================================================
 # All About Windows Settings
@@ -339,7 +339,7 @@ smart_gaps inverse_outer
 # i3-gap [modify in mode]
 # https://github.com/Airblader/i3/wiki/Example-Configuration
 # Note: horiz, verti, top, right, bottom, left are all part of outer gaps
-set $mode_gaps Gaps: [o]uter [i]nner [h]orizontal [v]ertical [t]op [r]ight [b]ottom [l]eft
+set $mode_gaps Gaps: [o]uter [i]nner [h]orizontal [v]ertical [t]op [r]ight [b]ottom [l]eft [s]et_default_inner_gap [S]et_default_outer_gap
 set $mode_gaps_outer Outer Gaps: +|-|0|d (local) Shift + +|-|0|d (global)
 set $mode_gaps_inner Inner Gaps: +|-|0|d (local) Shift + +|-|0|d (global)
 set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local) Shift + +|-|0 (global)
@@ -348,17 +348,23 @@ set $mode_gaps_top Top Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_right Right Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_bottom Bottom Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_left Left Gaps: +|-|0 (local) Shift + +|-|0 (global)
+# Set outer gap width mode (within gap mode)
+set $mode_set_outer_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix
+# Set inner gap width mode (within gap mode)
+set $mode_set_inner_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix
 bindsym $mod+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
-    bindsym o mode "$mode_gaps_outer"
-    bindsym i mode "$mode_gaps_inner"
-    bindsym h mode "$mode_gaps_horiz"
-    bindsym v mode "$mode_gaps_verti"
-    bindsym t mode "$mode_gaps_top"
-    bindsym r mode "$mode_gaps_right"
-    bindsym b mode "$mode_gaps_bottom"
-    bindsym l mode "$mode_gaps_left"
+    bindsym o       mode "$mode_gaps_outer"
+    bindsym i       mode "$mode_gaps_inner"
+    bindsym h       mode "$mode_gaps_horiz"
+    bindsym v       mode "$mode_gaps_verti"
+    bindsym t       mode "$mode_gaps_top"
+    bindsym r       mode "$mode_gaps_right"
+    bindsym b       mode "$mode_gaps_bottom"
+    bindsym l       mode "$mode_gaps_left"
+    bindsym s       mode "$mode_set_inner_gap"
+    bindsym Shift+s mode "$mode_set_outer_gap"
     # exit
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -477,6 +483,36 @@ mode "$mode_gaps_left" {
     bindsym Shift+0     gaps left all set 0
     # exit
     bindsym Return mode "$mode_gaps"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_set_outer_gap" {
+    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 0, mode "default"
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 5, mode "default"
+    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 10, mode "default"
+    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 15, mode "default"
+    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 20, mode "defaulk"
+    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 25, mode "default"
+    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 30, mode "default"
+    bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 35, mode "default"
+    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 40, mode "defaulk"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_border"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_set_inner_gap" {
+    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 0, mode "default"
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 5, mode "default"
+    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 10, mode "default"
+    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 15, mode "default"
+    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 20, mode "defaulk"
+    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 25, mode "default"
+    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 30, mode "default"
+    bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 35, mode "default"
+    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 40, mode "defaulk"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
 }
 
@@ -632,15 +668,16 @@ mode "$mode_titlebar" {
 }
 
 # Border mode (within titlebar mode)
-set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [d]efault [t]oggle
+set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [t]oggle [r]estore_to_default [s]et_new_fault
 mode "$mode_border" {
     bindsym 0 border none
     bindsym 2 border pixel 2
     bindsym 5 border pixel 5
     bindsym 1 border pixel 10
     bindsym n border normal
-    bindsym d border $default_border_width
     bindsym t border toggle
+    bindsym r border $default_border_width
+    bindsym s mode "$mode_set_border"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -652,20 +689,35 @@ mode "$mode_border" {
     bindsym $mod+space focus mode_toggle
 }
 
-# Mark mode [add i3/rofi to use i3-msg/rofi as input]
-bindsym $mod+m exec i3_input_mark.sh i3 2 # mark the current window with this character
-bindsym $mod+g exec i3_input_goto.sh i3 2 # go to the window with the character
-bindsym $mod+p exec i3_input_swap.sh i3 2 # swap the current window to the window with the character
+# Set border width mode (within border mode)
+set $mode_set_border Width pixel value: [0]pix [2]pix [5]pix [1]0pix
+mode "$mode_set_border" {
+    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh border_width 0, mode "default"
+    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh border_width 2, mode "default"
+    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh border_width 5, mode "default"
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh border_width 10, mode "default"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_border"
+    bindsym Escape mode "default"
+}
 
-# Mark mode (within titlebar mode) [use rofi as input]
+# Mark mode [add i3/rofi to use i3-msg/rofi as input]
+bindsym $mod+m exec $I3_BIN/i3_mark_operation.sh mark i3 # mark the current window with this character
+bindsym $mod+g exec $I3_BIN/i3_mark_operation.sh goto i3 # go to the window with the character
+bindsym $mod+p exec $I3_BIN/i3_mark_operation.sh swap i3 # swap the current window to the window with the character
+
+# Mark mode (within titlebar mode) [use i3-msg/rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
-set $mode_mark Mark: [m]ark [g]oto [s]wap [e]nable-auto-mark [d]isable-auto-mark
+set $mode_mark Mark: [M/m]ark [G/g]oto [S/s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
-    bindsym m exec i3_input_mark.sh rofi 2
-    bindsym g exec i3_input_goto.sh rofi 2
-    bindsym s exec i3_input_swap.sh rofi 2
-    bindsym e exec i3_automark_enable.sh, mode "default"
-    bindsym d exec i3_automark_disable.sh, mode "default"
+    bindsym m       exec $I3_BIN/i3_mark_operation.sh mark rofi
+    bindsym g       exec $I3_BIN/i3_mark_operation.sh goto rofi
+    bindsym s       exec $I3_BIN/i3_mark_operation.sh swap rofi
+    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh mark i3
+    bindsym Shift+g exec $I3_BIN/i3_mark_operation.sh goto i3
+    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh swap i3
+    bindsym e       exec i3_automark_enable.sh, mode "default"
+    bindsym d       exec i3_automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -1159,10 +1211,10 @@ bar {
     disk.format="{percent:05.02f}%" \
     pasink.percent_change=1 pasource.percent_change=1 \
     brightness.step=1 \
-    -t i3bar-wal           # status for pywal i3bar
+    -t i3bar-wal             # status for pywal i3bar
     #-t i3bar-iceberg-fedora # status for original i3bar
 
-    # Bar color
+    # Bar color [Wal color]
     # [Comment below lines if you want original i3bar color]
     colors{
         background $bg
@@ -1191,7 +1243,7 @@ bar{
     strip_workspace_numbers yes
     tray_output none
 
-    # Bar color
+    # Bar color [Wal color]
     # [Comment below lines if you want original i3bar color]
     colors{
         background $bg
@@ -1313,5 +1365,5 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

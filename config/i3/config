@@ -1058,16 +1058,18 @@ mode "$mode_mouse" {
 # Display mode (use xrandr)
 # -- https://thevaluable.dev/i3-config-mouseless/
 # For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
-set $mode_display Display: [a]randr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [h]DMI1 1920x1080 [H]DMI1 1650x1080
+set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1650x1080 [E/e]eDP1 1920x1080/1440x810
 bindsym $mod+Shift+x mode "$mode_display"
 mode "$mode_display" {
-    bindsym a       exec --no-startup-id arandr, mode "default"
-    bindsym 1       exec --no-startup-id "xrandr --output HDMI1 --off  --output eDP1  --auto --primary", mode "default"
-    bindsym 2       exec --no-startup-id "xrandr --output eDP1  --off  --output HDMI1 --auto --primary", mode "default"
-    bindsym 3       exec --no-startup-id "xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1", mode "default"
-    bindsym 4       exec --no-startup-id "xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as  eDP1", mode "default"
-    bindsym h       exec --no-startup-id "xrandr --output HDMI1 --mode 1920x1080", mode "default"
-    bindsym Shift+h exec --no-startup-id "xrandr --output HDMI1 --mode 1680x1050", mode "default"
+    bindsym 0       exec --no-startup-id arandr, mode "default"
+    bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off  --output eDP1  --auto --primary, mode "default"
+    bindsym 2       exec --no-startup-id xrandr --output eDP1  --off  --output HDMI1 --auto --primary, mode "default"
+    bindsym 3       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1, mode "default"
+    bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as  eDP1, mode "default"
+    bindsym Shift+h exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080, mode "default"
+    bindsym h       exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050, mode "default"
+    bindsym Shift+e exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh reset, mode "default"
+    bindsym e       exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh shrink, mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1151,8 +1153,7 @@ bar {
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
-    pasink pasource brightness caffeine \
-    dunst time date battery \
+    pasink pasource brightness time date battery \
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
     disk.format="{percent:05.02f}%" \
@@ -1218,11 +1219,13 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting
-#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+# -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
+exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 # Note: for now, wal colors won't be loaded by below i3 color at the first time setup,

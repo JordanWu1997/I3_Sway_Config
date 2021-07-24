@@ -1,14 +1,14 @@
 #!/bin/bash
 
-i3-resurrect save -w  1:A1
-i3-resurrect save -w  2:A2
-i3-resurrect save -w  3:A3
-i3-resurrect save -w  4:A4
-i3-resurrect save -w  5:A5
-i3-resurrect save -w  6:A6
-i3-resurrect save -w  7:A7
-i3-resurrect save -w  8:A8
-i3-resurrect save -w  9:A9
+i3-resurrect save -w 1:A1
+i3-resurrect save -w 2:A2
+i3-resurrect save -w 3:A3
+i3-resurrect save -w 4:A4
+i3-resurrect save -w 5:A5
+i3-resurrect save -w 6:A6
+i3-resurrect save -w 7:A7
+i3-resurrect save -w 8:A8
+i3-resurrect save -w 9:A9
 i3-resurrect save -w 10:A10
 i3-resurrect save -w 11:B1
 i3-resurrect save -w 12:B2

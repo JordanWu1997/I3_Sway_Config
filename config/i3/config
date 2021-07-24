@@ -120,7 +120,7 @@ set $default_border_width pixel 0
 
 # Setup gap width (only for i3-gap)
 set $default_inner_gap 20
-set $default_outer_gap 10
+set $default_outer_gap 5
 
 # ======================================================================================
 # All About Windows Settings
@@ -946,7 +946,7 @@ bindsym Ctrl+Shift+F9  move container to workspace $ws39
 bindsym Ctrl+Shift+F10 move container to workspace $ws40
 
 # Swap workspace mode
-set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10]
+set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10] Load/Save_Workspace: [s]ave_workspace [r]estore_workspace
 bindsym $mod+Shift+p mode $mode_swap_workspace
 mode "$mode_swap_workspace" {
     bindsym $mod+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1,  mode "default"
@@ -989,6 +989,109 @@ mode "$mode_swap_workspace" {
     bindsym Ctrl+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 8,  mode "default"
     bindsym Ctrl+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 9,  mode "default"
     bindsym Ctrl+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 10, mode "default"
+    # Save/Restore workspace layout
+    bindsym s mode $mode_save_workspace
+    bindsym r mode $mode_restore_workspace
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Save workspace mode
+set $mode_save_workspace Save_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10] [s]ave_all_workspaces
+mode "$mode_save_workspace" {
+    bindsym $mod+1   exec --no-startup-id i3-resurrect save -w 1:A1,  mode "default"
+    bindsym $mod+2   exec --no-startup-id i3-resurrect save -w 2:A2,  mode "default"
+    bindsym $mod+3   exec --no-startup-id i3-resurrect save -w 3:A3,  mode "default"
+    bindsym $mod+4   exec --no-startup-id i3-resurrect save -w 4:A4,  mode "default"
+    bindsym $mod+5   exec --no-startup-id i3-resurrect save -w 5:A5,  mode "default"
+    bindsym $mod+6   exec --no-startup-id i3-resurrect save -w 6:A6,  mode "default"
+    bindsym $mod+7   exec --no-startup-id i3-resurrect save -w 7:A7,  mode "default"
+    bindsym $mod+8   exec --no-startup-id i3-resurrect save -w 8:A8,  mode "default"
+    bindsym $mod+9   exec --no-startup-id i3-resurrect save -w 9:A9,  mode "default"
+    bindsym $mod+10  exec --no-startup-id i3-resurrect save -w 10:A10, mode "default"
+    bindsym $mod+F1  exec --no-startup-id i3-resurrect save -w 11:B1,  mode "default"
+    bindsym $mod+F2  exec --no-startup-id i3-resurrect save -w 12:B2,  mode "default"
+    bindsym $mod+F3  exec --no-startup-id i3-resurrect save -w 13:B3,  mode "default"
+    bindsym $mod+F4  exec --no-startup-id i3-resurrect save -w 14:B4,  mode "default"
+    bindsym $mod+F5  exec --no-startup-id i3-resurrect save -w 15:B5,  mode "default"
+    bindsym $mod+F6  exec --no-startup-id i3-resurrect save -w 16:B6,  mode "default"
+    bindsym $mod+F7  exec --no-startup-id i3-resurrect save -w 17:B7,  mode "default"
+    bindsym $mod+F8  exec --no-startup-id i3-resurrect save -w 18:B8,  mode "default"
+    bindsym $mod+F9  exec --no-startup-id i3-resurrect save -w 19:B9,  mode "default"
+    bindsym $mod+F10 exec --no-startup-id i3-resurrect save -w 20:B10, mode "default"
+    bindsym Ctrl+1   exec --no-startup-id i3-resurrect save -w 21:C1,  mode "default"
+    bindsym Ctrl+2   exec --no-startup-id i3-resurrect save -w 22:C2,  mode "default"
+    bindsym Ctrl+3   exec --no-startup-id i3-resurrect save -w 23:C3,  mode "default"
+    bindsym Ctrl+4   exec --no-startup-id i3-resurrect save -w 24:C4,  mode "default"
+    bindsym Ctrl+5   exec --no-startup-id i3-resurrect save -w 25:C5,  mode "default"
+    bindsym Ctrl+6   exec --no-startup-id i3-resurrect save -w 26:C6,  mode "default"
+    bindsym Ctrl+7   exec --no-startup-id i3-resurrect save -w 27:C7,  mode "default"
+    bindsym Ctrl+8   exec --no-startup-id i3-resurrect save -w 28:C8,  mode "default"
+    bindsym Ctrl+9   exec --no-startup-id i3-resurrect save -w 29:C9,  mode "default"
+    bindsym Ctrl+10  exec --no-startup-id i3-resurrect save -w 30:C10, mode "default"
+    bindsym Ctrl+F1  exec --no-startup-id i3-resurrect save -w 31:D1,  mode "default"
+    bindsym Ctrl+F2  exec --no-startup-id i3-resurrect save -w 32:D2,  mode "default"
+    bindsym Ctrl+F3  exec --no-startup-id i3-resurrect save -w 33:D3,  mode "default"
+    bindsym Ctrl+F4  exec --no-startup-id i3-resurrect save -w 34:D4,  mode "default"
+    bindsym Ctrl+F5  exec --no-startup-id i3-resurrect save -w 35:D5,  mode "default"
+    bindsym Ctrl+F6  exec --no-startup-id i3-resurrect save -w 36:D6,  mode "default"
+    bindsym Ctrl+F7  exec --no-startup-id i3-resurrect save -w 37:D7,  mode "default"
+    bindsym Ctrl+F8  exec --no-startup-id i3-resurrect save -w 38:D8,  mode "default"
+    bindsym Ctrl+F9  exec --no-startup-id i3-resurrect save -w 39:D9,  mode "default"
+    bindsym Ctrl+F10 exec --no-startup-id i3-resurrect save -w 40:D10, mode "default"
+    # Save all workspaces
+    bindsym s exec --no-startup-id $I3_BIN/i3_save_all_workspace.sh, mode "$mode_swap_workspace"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# restore workspace mode
+set $mode_restore_workspace Restore_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10] [r]estore_all_workspaces
+mode "$mode_restore_workspace" {
+    bindsym $mod+1   exec --no-startup-id i3-resurrect restore -w 1:A1,  mode "default"
+    bindsym $mod+2   exec --no-startup-id i3-resurrect restore -w 2:A2,  mode "default"
+    bindsym $mod+3   exec --no-startup-id i3-resurrect restore -w 3:A3,  mode "default"
+    bindsym $mod+4   exec --no-startup-id i3-resurrect restore -w 4:A4,  mode "default"
+    bindsym $mod+5   exec --no-startup-id i3-resurrect restore -w 5:A5,  mode "default"
+    bindsym $mod+6   exec --no-startup-id i3-resurrect restore -w 6:A6,  mode "default"
+    bindsym $mod+7   exec --no-startup-id i3-resurrect restore -w 7:A7,  mode "default"
+    bindsym $mod+8   exec --no-startup-id i3-resurrect restore -w 8:A8,  mode "default"
+    bindsym $mod+9   exec --no-startup-id i3-resurrect restore -w 9:A9,  mode "default"
+    bindsym $mod+10  exec --no-startup-id i3-resurrect restore -w 10:A10, mode "default"
+    bindsym $mod+F1  exec --no-startup-id i3-resurrect restore -w 11:B1,  mode "default"
+    bindsym $mod+F2  exec --no-startup-id i3-resurrect restore -w 12:B2,  mode "default"
+    bindsym $mod+F3  exec --no-startup-id i3-resurrect restore -w 13:B3,  mode "default"
+    bindsym $mod+F4  exec --no-startup-id i3-resurrect restore -w 14:B4,  mode "default"
+    bindsym $mod+F5  exec --no-startup-id i3-resurrect restore -w 15:B5,  mode "default"
+    bindsym $mod+F6  exec --no-startup-id i3-resurrect restore -w 16:B6,  mode "default"
+    bindsym $mod+F7  exec --no-startup-id i3-resurrect restore -w 17:B7,  mode "default"
+    bindsym $mod+F8  exec --no-startup-id i3-resurrect restore -w 18:B8,  mode "default"
+    bindsym $mod+F9  exec --no-startup-id i3-resurrect restore -w 19:B9,  mode "default"
+    bindsym $mod+F10 exec --no-startup-id i3-resurrect restore -w 20:B10, mode "default"
+    bindsym Ctrl+1   exec --no-startup-id i3-resurrect restore -w 21:C1,  mode "default"
+    bindsym Ctrl+2   exec --no-startup-id i3-resurrect restore -w 22:C2,  mode "default"
+    bindsym Ctrl+3   exec --no-startup-id i3-resurrect restore -w 23:C3,  mode "default"
+    bindsym Ctrl+4   exec --no-startup-id i3-resurrect restore -w 24:C4,  mode "default"
+    bindsym Ctrl+5   exec --no-startup-id i3-resurrect restore -w 25:C5,  mode "default"
+    bindsym Ctrl+6   exec --no-startup-id i3-resurrect restore -w 26:C6,  mode "default"
+    bindsym Ctrl+7   exec --no-startup-id i3-resurrect restore -w 27:C7,  mode "default"
+    bindsym Ctrl+8   exec --no-startup-id i3-resurrect restore -w 28:C8,  mode "default"
+    bindsym Ctrl+9   exec --no-startup-id i3-resurrect restore -w 29:C9,  mode "default"
+    bindsym Ctrl+10  exec --no-startup-id i3-resurrect restore -w 30:C10, mode "default"
+    bindsym Ctrl+F1  exec --no-startup-id i3-resurrect restore -w 31:D1,  mode "default"
+    bindsym Ctrl+F2  exec --no-startup-id i3-resurrect restore -w 32:D2,  mode "default"
+    bindsym Ctrl+F3  exec --no-startup-id i3-resurrect restore -w 33:D3,  mode "default"
+    bindsym Ctrl+F4  exec --no-startup-id i3-resurrect restore -w 34:D4,  mode "default"
+    bindsym Ctrl+F5  exec --no-startup-id i3-resurrect restore -w 35:D5,  mode "default"
+    bindsym Ctrl+F6  exec --no-startup-id i3-resurrect restore -w 36:D6,  mode "default"
+    bindsym Ctrl+F7  exec --no-startup-id i3-resurrect restore -w 37:D7,  mode "default"
+    bindsym Ctrl+F8  exec --no-startup-id i3-resurrect restore -w 38:D8,  mode "default"
+    bindsym Ctrl+F9  exec --no-startup-id i3-resurrect restore -w 39:D9,  mode "default"
+    bindsym Ctrl+F10 exec --no-startup-id i3-resurrect restore -w 40:D10, mode "default"
+    # Restore all workspaces
+    bindsym r exec --no-startup-id $I3_BIN/i3_restore_all_workspace.sh, mode "$mode_swap_workspace"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1305,7 +1408,8 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting
-exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+exec --no-startup-id arandr
+#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
@@ -1338,6 +1442,10 @@ exec_always --no-startup-id numlockx on
 # Imwheel (modify mouse wheel speed)
 exec_always --no-startup-id imwheel
 
+# Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
+# Need to be complied mannually
+exec_always --no-startup-id hhpc -i 5
+
 # Ibus input method (ibus-chewing support)
 exec --no-startup-id export GTK_IM_MODULE=ibus
 exec --no-startup-id export XMODIFIER="@im=ibus"
@@ -1368,20 +1476,20 @@ exec --no-startup-id kdeconnect-indicator &
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 # Modified to mark all windows with lowercase instead of original uppercase
-exec --no-startup-id $I3_BIN/i3_automark.py &
+exec_always --no-startup-id $I3_BIN/i3_automark.py
 
 # Autotiling [https://github.com/nwg-piotr/autotiling]
 # For Dwindle mode (Tiling direction sequence: H -> V -> H -> V ...) support
 # Installation: pip install autotiling
-#exec --no-startup-id $PYTHON_BIN/autotiling &
+#exec_always --no-startup-id $PYTHON_BIN/autotiling
 
 # Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
 #exec --no-startup-id $PYTHON_BIN/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
@@ -1399,5 +1507,5 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
 #exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

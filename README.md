@@ -159,6 +159,10 @@ Table of Contents
             - mark window, automark function
 - __Swap mode ([Win] + [Shift] + [p])__
     - swap i3 workspace (destination selector)
+        - __Save_workspace mode ([s])__
+            - Save workspace layout
+        - __Restore_workspace mode ([r])__
+            - Restore workspace layout
 - __Customization mode ([Win] + [Shift] + [c])__
     - customize i3wm, e.g. wallpaper, theme, xcompositor
         - __Conky mode ([c])__

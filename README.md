@@ -144,7 +144,7 @@ Table of Contents
 - __Display mode ([Win] + [Shift] + [x])__
     - deal with dual monitor, e.g. joint monitor, mirror monitor
 - __Mouse mode ([Win] + [Shift] + [m])__
-    - mouse emulator using keyboard, e.g. move, left/right click
+    - mouse emulator using keyboard, e.g. move, left/right click, cursor autohide
 - __Redshift mode ([Win] + [Shift] + [z])__
     - screen color temperature tuner
 - __Resize mode ([Ctrl] + [Alt] + [r])__
@@ -168,7 +168,7 @@ Table of Contents
         - __Conky mode ([c])__
             - system_conky, hotkey_conky, color of conky
         - __Picom mode ([p])__
-            - blur, transparency support
+            - blur, transparency support. also flashfocus
         - __Theme mode ([t])__
             - auto-theme with pywal, reload after auto-theming
         - __Wallpaper mode ([w])__

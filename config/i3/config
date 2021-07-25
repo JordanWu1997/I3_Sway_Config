@@ -13,7 +13,7 @@
 #
 # --------------------------------------------------------------------------------------
 # Author: i3-config-wizard, Jordan Wu
-# Email:  jordankhwu@mgmail.com
+# Email:  jordankhwu@gmail.com
 # Date:   2020/11/22
 # --------------------------------------------------------------------------------------
 #
@@ -106,9 +106,10 @@
 set $mod  Mod4
 set $mod1 Mod1
 
-# Setup monitor
-set $monitor1 eDP1
-set $monitor2 HDMI1
+# Setup monitor order according to frequent-usage priorty
+# If the monitor does not exist, workspaces will still work as normal
+set $monitor1 HDMI1
+set $monitor2 eDP1
 set $monitor3 VIRTUAL1
 set $monitor4 VIRTUAL2
 
@@ -347,11 +348,14 @@ mode "$mode_theme" {
 }
 
 # Picom mode (animation, blur, and transparency support)
-set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency
+set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [e]nable_flashfocus [d]isable_flashfocus
 mode "$mode_picom" {
     bindsym 0 exec killall picom, mode "default"
     bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
     bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
+    # Flashfocus
+    bindsym e exec flashfocus, mode "default"
+    bindsym d exec killall flashfocus, mode "default"
     # exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
@@ -1208,7 +1212,7 @@ bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u lo
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # -- xdotool must be installed
-set $mode_mouse Mouse emulator: [ctrl+(vim-key)]:small [(vim-key)]:medium; [shift+(vim-key)]:large [ctlr+shift+(vim-key)]:extra-large [u]:left [i]:middle [o]:right
+set $mode_mouse Mouse emulator: [ctrl+(vim-key)]:small [(vim-key)]:medium [shift+(vim-key)]:large [ctlr+shift+(vim-key)]:extra-large [u]:left [i]:middle [o]:right [e]nable_autohide [d]isable_auto_hide
 bindsym $mod+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
@@ -1237,6 +1241,9 @@ mode "$mode_mouse" {
     bindsym o exec "xdotool click 3"
     # redefine kill window in mouse mode
     bindsym $mod+Shift+q kill
+    # Cursor autohide [hhpc is needed]
+    bindsym e exec "hhpc -i 5", mode "default"
+    bindsym d exec "killall hhpc", mode "default"
     # exit mouse mode
     bindsym m            mode "default"
     bindsym $mod+Shift+m mode "default"
@@ -1274,11 +1281,13 @@ bindsym Ctrl+$mod1+s exec \
 # ======================================================================================
 # All About Color Template
 # ======================================================================================
-# Load color from Xresouce, then set color for i3 containers/windows
+# Load color from Xresource, then set color for i3 containers/windows
 # For i3 container/window color setup
 # -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
 
-# Load colors from Pywal             # Xterm color
+# Load colors from Xresource (Pywal)
+# fallback is default value in case resource can't be loaded
+# command         name resource      fallback
 set_from_resource $fg  i3wm.color15  #ffffff
 set_from_resource $bg  i3wm.color0   #000000
 set_from_resource $c0  i3wm.color0   #000000
@@ -1322,7 +1331,8 @@ bar {
     id top-bar
     # Basic bar
     position top
-    mode dock #hide
+    mode dock
+    #mode hide
     #hidden_state hide
     # Height in pixels (Only for i3-gaps)
     height 25
@@ -1333,7 +1343,7 @@ bar {
     # Font
     font pango: DroidSansMono Nerd Font 12
     # Workspace
-    workspace_buttons Yes
+    workspace_buttons yes
     workspace_min_width 20
     strip_workspace_numbers yes
     # Tray icon
@@ -1444,7 +1454,7 @@ exec_always --no-startup-id imwheel
 
 # Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
 # Need to be complied mannually
-exec_always --no-startup-id hhpc -i 5
+#exec_always --no-startup-id hhpc -i 3
 
 # Ibus input method (ibus-chewing support)
 exec --no-startup-id export GTK_IM_MODULE=ibus
@@ -1459,7 +1469,7 @@ exec_always --no-startup-id parcellite
 
 # Flash focus window [https://github.com/fennerm/flashfocus]
 # Need compositor support (e.g. xcompmgr, picom, etc)
-exec_always --no-startup-id $PYTHON_BIN/flashfocus
+#exec_always --no-startup-id $PYTHON_BIN/flashfocus
 
 # Dunst (notification with wal color theme support)
 exec_always --no-startup-id dunst

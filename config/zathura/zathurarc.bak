@@ -1,0 +1,77 @@
+### Settings from original zathurarc ###
+set adjust-open "best-fit"
+set pages-per-row 1
+set font "DroidSansMono Nerd Font Bold 12"
+
+### zathura-pywal ###
+# Allow recolor
+set recolor "true"
+
+# Don't allow original hue when recoloring
+set recolor-keephue "false"
+
+# Don't keep original image colors while recoloring
+set recolor-reverse-video "false"
+
+# Command line completion entries
+set completion-fg "#cad5de"
+set completion-bg "#010F1A"
+
+# Command line completion group elements
+set completion-group-fg "#023F82"
+set completion-group-bg "#010F1A"
+
+# Current command line completion element
+set completion-highlight-fg "#010F1A"
+set completion-highlight-bg "#cad5de"
+
+# Default foreground/background color
+set default-bg rgba(1,15,26,0.7)
+
+# Input bar
+set inputbar-fg "#cad5de"
+set inputbar-bg "#010F1A"
+
+# Notification
+set notification-fg "#cad5de"
+set notification-bg "#010F1A"
+
+# Error notification
+set notification-error-fg "#cad5de"
+set notification-error-bg "#596E7E"
+
+# Warning notification
+set notification-warning-fg "#cad5de"
+set notification-warning-bg "#596E7E"
+
+# Tab - TODO
+# set tabbar-fg
+# set tabbar-bg
+
+# Focused tab - TODO
+# set tabbar-focus-fg
+# set tabbar-focus-bg
+
+# Status bar
+set statusbar-fg "#cad5de"
+set statusbar-bg "#010F1A"
+
+# Highlighting parts of the document (e.g. show search results)
+set highlight-color "#023F82"
+set highlight-active-color "#023F82"
+
+# Represent light/dark colors in recoloring mode
+set recolor-lightcolor rgba(0,0,0,0)
+set recolor-darkcolor "#cad5de"
+
+# "Loading..." text
+set render-loading-fg "#cad5de"
+set render-loading-bg "#010F1A"
+
+# Index mode
+set index-fg "#cad5de"
+set index-bg "#010F1A"
+
+# Selected element in index mode
+set index-active-fg "#010F1A"
+set index-active-bg "#cad5de"

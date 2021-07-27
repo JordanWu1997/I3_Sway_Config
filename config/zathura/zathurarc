@@ -1,7 +1,10 @@
 ### Settings from original zathurarc ###
+# Zathura options
 set adjust-open "best-fit"
 set pages-per-row 1
 set font "DroidSansMono Nerd Font Bold 12"
+set guioptions 'shv'
+set selection-clipboard clipboard
 
 ### zathura-pywal ###
 # Allow recolor

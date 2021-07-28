@@ -5,6 +5,7 @@ set pages-per-row 1
 set font "DroidSansMono Nerd Font Bold 12"
 set guioptions 'shv'
 set selection-clipboard clipboard
+set scroll-page-aware "true"
 
 ### zathura-pywal ###
 # Allow recolor

@@ -382,7 +382,7 @@ smart_gaps inverse_outer
 set $mode_gaps Gaps: [o]uter [i]nner [h]orizontal [v]ertical [t]op [r]ight [b]ottom [l]eft [s]et_default_inner_gap [S]et_default_outer_gap
 set $mode_gaps_outer Outer Gaps: +|-|0|d (local) Shift + +|-|0|d (global)
 set $mode_gaps_inner Inner Gaps: +|-|0|d (local) Shift + +|-|0|d (global)
-set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local) Shift + +|-|0 (global)
+set $mode_gaps_horiz Horizontal Gaps: +|-|0 (local) Shift + +|-|0 (global) [1]16:9 (local) [Shift+1]16:9 (global)
 set $mode_gaps_verti Vertical Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_top Top Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_right Right Gaps: +|-|0 (local) Shift + +|-|0 (global)
@@ -451,6 +451,9 @@ mode "$mode_gaps_horiz" {
     bindsym Shift+plus  gaps horizontal all plus 5
     bindsym Shift+minus gaps horizontal all minus 5
     bindsym Shift+0     gaps horizontal all set 0
+    # 16:9 for single window in single monitor
+    bindsym 1       gaps horizontal current set 48
+    bindsym Shift+1 gaps horizontal all set 48
     # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"

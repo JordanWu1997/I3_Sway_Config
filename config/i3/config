@@ -117,7 +117,7 @@ set $monitor4 VIRTUAL2
 set $terminal kitty
 
 # Setup border width
-set $default_border_width pixel 0
+set $default_border_width pixel 1
 
 # Setup gap width (only for i3-gap)
 set $default_inner_gap 20
@@ -193,28 +193,6 @@ mode "$mode_customization" {
     bindsym Escape mode "default"
 }
 
-# Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Lulin [7]RS Cat [8]Thinkpad [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
-mode "$mode_wallpaper" {
-    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
-    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (LULIN)"    && feh --bg-fill $(find $wallpaper6 -name '*.jpg' | shuf -n1)
-    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (RS CAT)"   && feh --bg-fill $(find $wallpaper7 -name '*.png' | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
-    bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper
-    bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
-    # exit
-    bindsym Return mode $mode_customization
-    bindsym Escape mode "default"
-}
-
 # Note: Wallpaper mode (local wallpaper support)
 # [Important]: Wallpaper directory (Add below lines in .profile)
 #              Please change to where you store wallpaper directory
@@ -228,11 +206,31 @@ mode "$mode_wallpaper" {
 #export wallpaper3="$wallpaperd/ALMA"
 #export wallpaper4="$wallpaperd/CATS"
 #export wallpaper5="$wallpaperd/LINUX"
-#export wallpaper6="$wallpaperd/LULIN"
-#export wallpaper7="$wallpaperd/RUSTY SPOTTED CAT"
-#export wallpaper8="$wallpaperd/THINKPAD"
+#export wallpaper6="$wallpaperd/THINKPAD"
+#export wallpaper8="$wallpaperd/MISCELLANEOUS"
 #export wallpaper9="$wallpaperd/DT_WALLPAPERS"
 # --------------------------------------------------------------------------------------
+
+# Wallpaper mode (feh is much faster than variety)
+set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [8]Misellaneous [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
+mode "$mode_wallpaper" {
+    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper6 -name '*.png' | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISELLANEOUS)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
+    bindsym 0 mode $mode_variety
+    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
+    bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
+    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
+    # exit
+    bindsym Return mode $mode_customization
+    bindsym Escape mode "default"
+}
 
 # Variety mode (within wallpaper mode)
 set $mode_variety Variety: [n]ext [p]revious [F]avorite [P]ause [R]esume [A]dd_Favorite [s]ave_as_default [q]uit
@@ -711,16 +709,17 @@ mode "$mode_titlebar" {
 }
 
 # Border mode (within titlebar mode)
-set $mode_border Border: [0]_pix [2]_pix [5]_pix [1]0_pix [n]ormal [t]oggle [r]estore_to_default [s]et_new_fault
+set $mode_border Border: [n]o_border [1]pix [2]pix [5]pix 1[0]pix [N]ormal [t]oggle [r]estore_to_default [s]et_new_fault
 mode "$mode_border" {
-    bindsym 0 border none
-    bindsym 2 border pixel 2
-    bindsym 5 border pixel 5
-    bindsym 1 border pixel 10
-    bindsym n border normal
-    bindsym t border toggle
-    bindsym r border $default_border_width
-    bindsym s mode "$mode_set_border"
+    bindsym n       border none
+    bindsym 1       border pixel 1
+    bindsym 2       border pixel 2
+    bindsym 5       border pixel 5
+    bindsym 0       border pixel 10
+    bindsym Shift+n border normal
+    bindsym t       border toggle
+    bindsym r       border $default_border_width
+    bindsym s       mode "$mode_set_border"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -733,12 +732,13 @@ mode "$mode_border" {
 }
 
 # Set border width mode (within border mode)
-set $mode_set_border Width pixel value: [0]pix [2]pix [5]pix [1]0pix
+set $mode_set_border Width pixel value: [n]o_border [1]pix [2]pix [5]pix 1[0]pix
 mode "$mode_set_border" {
-    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh border_width 0, mode "default"
+    bindsym n exec $I3_BIN/i3_default_valuechanger.sh border_width 0, mode "default"
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh border_width 0, mode "default"
     bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh border_width 2, mode "default"
     bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh border_width 5, mode "default"
-    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh border_width 10, mode "default"
+    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh border_width 10, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
@@ -1316,7 +1316,7 @@ set_from_resource $c15 i3wm.color15  #ffffff
 # Color of border, background, text, indicator, and child_border based on Xresource
 # For old color template backup, please check .config/i3/share/i3_color_template.txt
 # class                 border    bground   text      indicator child_border
-client.focused          $c5       $c5       $c7       $c7       $c5
+client.focused          $c13      $c5       $c15      $c15      $c5
 client.focused_inactive $c1       $c1       $c7       $c2       $c1
 client.unfocused        $c1       $c1       $c7       $c2       $c1
 client.urgent           $c7       $c7       $c0       $c2       $c7
@@ -1373,7 +1373,7 @@ bar {
         statusline $fg
         separator  $bg
         # item             border    bground   text
-        focused_workspace  $c5       $c3       $c7
+        focused_workspace  $c5       $c3       $c15
         active_workspace   $c5       $c3       $c0
         inactive_workspace $c5       $c3       $c0
         urgent_workspace   $c1       $c7       $c0
@@ -1402,7 +1402,7 @@ bar{
         statusline $fg
         separator  $bg
         # item             border    bground   text
-        focused_workspace  $c5       $c3       $c7
+        focused_workspace  $c5       $c3       $c15
         active_workspace   $c5       $c3       $c0
         inactive_workspace $c5       $c3       $c0
         urgent_workspace   $c1       $c7       $c0
@@ -1423,10 +1423,10 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting
-exec --no-startup-id arandr
+#exec --no-startup-id arandr
 #exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
-#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
+exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
@@ -1435,7 +1435,10 @@ exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 # Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
 #       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
-exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper
+# Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
+#       16-color support than original 9-color. --nine flag for original 9-color
+
+exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
 
 # Gnome authentication (gnome software usage support)
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
@@ -1452,7 +1455,7 @@ exec_always --no-startup-id nm-applet
 exec_always --no-startup-id blueman-applet
 
 # Startup numlock on (sudo dnf install numlockx)
-exec_always --no-startup-id numlockx on
+#exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
 exec_always --no-startup-id imwheel
@@ -1474,7 +1477,7 @@ exec_always --no-startup-id parcellite
 
 # Flash focus window [https://github.com/fennerm/flashfocus]
 # Need compositor support (e.g. xcompmgr, picom, etc)
-#exec_always --no-startup-id $PYTHON_BIN/flashfocus
+exec_always --no-startup-id $PYTHON_BIN/flashfocus
 
 # Dunst (notification with wal color theme support)
 exec_always --no-startup-id dunst
@@ -1522,5 +1525,5 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
 #exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

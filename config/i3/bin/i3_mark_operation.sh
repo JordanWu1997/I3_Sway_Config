@@ -26,12 +26,13 @@ elif [ $1 == "goto" ]; then
     elif [ $2 == "rofi" ]; then
         i3-msg [con_mark="$(rofi -dmenu -lines 0 -width 25 -p 'Goto Window [Mark]')"] focus
     fi
-# Swap current window to mark window
+# Swap current window to mark window but remain focus
 elif [ $1 == "swap" ]; then
     if [ $2 == "i3" ]; then
-        i3-input -F "swap container with mark %s" -l 1 -P "Swapto [Mark]: "
+        i3-input -F "swap container with mark %s, [con_mark=%s] focus" -l 1 -P "Swapto [Mark]: "
     elif [ $2 == "rofi" ]; then
-        i3-msg swap container with mark $(rofi -dmenu -lines 0 -width 25 -p 'Swapto [Mark]')
+        mark_title=$(rofi -dmenu -lines 0 -width 25 -p 'Swapto [Mark]')
+        i3-msg "swap container with mark $mark_title, [con_mark=$mark_title] focus"
     fi
 else
     echo

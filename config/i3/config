@@ -1259,7 +1259,7 @@ mode "$mode_mouse" {
 # Display mode (use xrandr)
 # -- https://thevaluable.dev/i3-config-mouseless/
 # For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
-set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1080 [E/e]eDP1 1920x1080/1440x810
+set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810
 bindsym $mod+Shift+x mode "$mode_display"
 mode "$mode_display" {
     bindsym 0       exec --no-startup-id arandr, mode "default"

@@ -120,8 +120,8 @@ set $terminal kitty
 set $default_border_width pixel 1
 
 # Setup gap width (only for i3-gap)
-set $default_inner_gap 20
-set $default_outer_gap 5
+set $default_inner_gap 15
+set $default_outer_gap 10
 
 # ======================================================================================
 # All About Windows Settings
@@ -1457,7 +1457,7 @@ exec_always --no-startup-id nm-applet
 exec_always --no-startup-id blueman-applet
 
 # Startup numlock on (sudo dnf install numlockx)
-#exec_always --no-startup-id numlockx on
+exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
 exec_always --no-startup-id imwheel
@@ -1496,8 +1496,8 @@ exec --no-startup-id kdeconnect-indicator &
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 
 # Conky (system overview and hotkey)
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30

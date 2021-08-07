@@ -578,19 +578,19 @@ bindsym XF86AudioPrev  exec playerctl previous
 
 # Common program shortcut
 # 1 - Text editor: neovim [Installation: dnf install neovim]
-bindsym Ctrl+$mod1+1 exec --no-startup-id $terminal -e fish -C nvim
+bindsym Ctrl+$mod1+1 exec --no-startup-id $terminal -e nvim
 # 2 - File Manager: ranger [Installation: dnf install ranger]
-bindsym Ctrl+$mod1+2 exec --no-startup-id $terminal -e fish -C ranger
+bindsym Ctrl+$mod1+2 exec --no-startup-id $terminal -e ranger
 # 3 - Media: pulsemixer [Installation: pip install pulsemixer]
-bindsym Ctrl+$mod1+3 exec --no-startup-id $terminal -e fish -C pulsemixer
+bindsym Ctrl+$mod1+3 exec --no-startup-id $terminal -e pulsemixer
 # 4 - System monitor: htop [Installation: dnf install htop]
-bindsym Ctrl+$mod1+4 exec --no-startup-id $terminal -e fish -C htop
+bindsym Ctrl+$mod1+4 exec --no-startup-id $terminal -e htop
 # 5 - Nmtui (networkmanager TUI) [Bundled with NetworkManager]
-bindsym Ctrl+$mod1+5 exec --no-startup-id $terminal -e fish -C nmtui
+bindsym Ctrl+$mod1+5 exec --no-startup-id $terminal -e nmtui
 # 6 - Visualizer: cava [Installation: dnf install cava]
-bindsym Ctrl+$mod1+6 exec --no-startup-id $terminal -e fish -C cava
+bindsym Ctrl+$mod1+6 exec --no-startup-id $terminal -e cava
 # 7 - Spotify (TUI)
-bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e fish -C spt
+bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e spt
 # 8 - Spotify (GUI and backend)
 bindsym Ctrl+$mod1+8 exec --no-startup-id flatpak run com.spotify.Client
 # 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
@@ -1423,7 +1423,7 @@ bindsym $mod+b       bar mode toggle top-bar-overlay
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting
-#exec --no-startup-id arandr
+exec --no-startup-id arandr
 #exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
 # -- Setting for my dorm Acer27'
 exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1

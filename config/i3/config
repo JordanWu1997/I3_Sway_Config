@@ -590,7 +590,7 @@ bindsym Ctrl+$mod1+5 exec --no-startup-id $terminal -e nmtui
 # 6 - Visualizer: cava [Installation: dnf install cava]
 bindsym Ctrl+$mod1+6 exec --no-startup-id $terminal -e cava
 # 7 - Spotify (TUI)
-bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e spt
+bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e spotify_tui.sh
 # 8 - Spotify (GUI and backend)
 bindsym Ctrl+$mod1+8 exec --no-startup-id flatpak run com.spotify.Client
 # 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
@@ -1188,10 +1188,10 @@ mode "$mode_system" {
     bindsym Return mode "default"
 }
 
-# Interactive screenshot by pressing printscreen
-bindsym --release Print  exec notify-send -u low "Interactive Screenshot"        && gnome-screenshot -i
-bindsym $mod+Print       exec notify-send -u low "Take Joint Monitor Screenshot" && gnome-screenshot
-bindsym $mod+Shift+Print exec notify-send -u low "Take Selected Area Screenshot" && gnome-screenshot -a
+# Screenshot tools (gnome-screenshot + flameshot)
+bindsym --release Print  exec gnome-screenshot
+bindsym $mod+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
+bindsym $mod+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
 
 # Scratchpad: hide | show window(minus is "-" and plus is "+".)
 bindsym $mod+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
@@ -1276,11 +1276,11 @@ mode "$mode_display" {
     bindsym Escape mode "default"
 }
 
-# Show all keybindings in i3 (use rofi as selector)
+# Show all keybindings in i3 (use rofi as viewer)
 # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
 bindsym Ctrl+$mod1+s exec \
-    i3 $(cat ~/.config/i3/config | grep 'bindsym' | grep -v '^\s*#' | \
-    sed 's/bindsym / /' | rofi -dmenu -columns 1 -p 'i3 Keybinds' |\
+    i3 $(cat ~/.config/i3/config | grep '^bindsym' | grep -v '^\s*#' | \
+    sed 's/bindsym / /' | sort | rofi -dmenu -columns 1 -p 'i3 Keybinds' |\
     sed 's/^\s*//' | cut -d' ' -f 2- )
 
 # ======================================================================================
@@ -1432,14 +1432,12 @@ exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of
 exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
 exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
-#
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 # Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
 #       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
 # Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
 #       16-color support than original 9-color. --nine flag for original 9-color
-
 exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
 
 # Gnome authentication (gnome software usage support)
@@ -1492,12 +1490,15 @@ exec --no-startup-id kdeconnect-indicator &
 # Mailspring (email manager) in background
 #exec --no-startup-id mailspring --background
 
+# Flameshot (screenshot tool)
+exec_always --no-startup-id flameshot
+
 # Neofetch initalization at startup
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30

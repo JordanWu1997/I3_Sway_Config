@@ -91,10 +91,14 @@
 #       #Option "XkbOptions" "ctrl:nocaps"
 # EndSection
 
+# Key bindsym name search
+# Use xev to find out bindsym name of key
+
 # Reference
 # -- https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
 # -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 # -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
+# -- https://www.reddit.com/r/i3wm/comments/cqefj3/mapping_symbols/
 
 # ======================================================================================
 # All About Mod Key Settings And I3 Varaibles
@@ -103,8 +107,6 @@
 
 # Setup mod (Prefix)#
 # Mod1: alt, Mod4: win
-set $mod  Mod4
-set $mod1 Mod1
 
 # Setup monitor order according to frequent-usage priorty
 # If the monitor does not exist, workspaces will still work as normal
@@ -114,7 +116,8 @@ set $monitor3 VIRTUAL1
 set $monitor4 VIRTUAL2
 
 # Setup terminal
-set $terminal kitty
+# If you want to use specific terminal emulator, $TERMINAL must be set in .profile
+set $terminal i3-sensible-terminal
 
 # Setup border width
 set $default_border_width pixel 1
@@ -182,7 +185,7 @@ default_orientation horizontal
 
 # Customization mode (wrapper for wallpaper_mode, theme mode, and picom_mode)
 set $mode_customization Customization: [c]onky_mode [p]icom_mode [t]heme_mode [w]allpaper_mode
-bindsym $mod+Shift+c mode "$mode_customization"
+bindsym Mod4+Shift+c mode "$mode_customization"
 mode "$mode_customization" {
     bindsym c mode $mode_conky
     bindsym p mode $mode_picom
@@ -390,7 +393,7 @@ set $mode_gaps_left Left Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_set_outer_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix
 # Set inner gap width mode (within gap mode)
 set $mode_set_inner_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix
-bindsym $mod+Shift+g mode "$mode_gaps"
+bindsym Mod4+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
     bindsym o       mode "$mode_gaps_outer"
@@ -528,8 +531,8 @@ mode "$mode_gaps_left" {
 }
 
 mode "$mode_set_outer_gap" {
-    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 0, mode "default"
-    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 5, mode "default"
+    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 0,  mode "default"
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 5,  mode "default"
     bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 10, mode "default"
     bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 15, mode "default"
     bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 20, mode "defaulk"
@@ -543,8 +546,8 @@ mode "$mode_set_outer_gap" {
 }
 
 mode "$mode_set_inner_gap" {
-    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 0, mode "default"
-    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 5, mode "default"
+    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 0,  mode "default"
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 5,  mode "default"
     bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 10, mode "default"
     bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 15, mode "default"
     bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 20, mode "defaulk"
@@ -578,29 +581,29 @@ bindsym XF86AudioPrev  exec playerctl previous
 
 # Common program shortcut
 # 1 - Text editor: neovim [Installation: dnf install neovim]
-bindsym Ctrl+$mod1+1 exec --no-startup-id $terminal -e nvim
+bindsym Ctrl+Mod1+1 exec --no-startup-id $terminal -e nvim
 # 2 - File Manager: ranger [Installation: dnf install ranger]
-bindsym Ctrl+$mod1+2 exec --no-startup-id $terminal -e ranger
+bindsym Ctrl+Mod1+2 exec --no-startup-id $terminal -e ranger
 # 3 - Media: pulsemixer [Installation: pip install pulsemixer]
-bindsym Ctrl+$mod1+3 exec --no-startup-id $terminal -e pulsemixer
+bindsym Ctrl+Mod1+3 exec --no-startup-id $terminal -e pulsemixer
 # 4 - System monitor: htop [Installation: dnf install htop]
-bindsym Ctrl+$mod1+4 exec --no-startup-id $terminal -e htop
+bindsym Ctrl+Mod1+4 exec --no-startup-id $terminal -e htop
 # 5 - Nmtui (networkmanager TUI) [Bundled with NetworkManager]
-bindsym Ctrl+$mod1+5 exec --no-startup-id $terminal -e nmtui
+bindsym Ctrl+Mod1+5 exec --no-startup-id $terminal -e nmtui
 # 6 - Visualizer: cava [Installation: dnf install cava]
-bindsym Ctrl+$mod1+6 exec --no-startup-id $terminal -e cava
+bindsym Ctrl+Mod1+6 exec --no-startup-id $terminal -e cava
 # 7 - Spotify (TUI)
-bindsym Ctrl+$mod1+7 exec --no-startup-id $terminal -e spotify_tui.sh
+bindsym Ctrl+Mod1+7 exec --no-startup-id $terminal -e spotify_tui.sh
 # 8 - Spotify (GUI and backend)
-bindsym Ctrl+$mod1+8 exec --no-startup-id flatpak run com.spotify.Client
+bindsym Ctrl+Mod1+8 exec --no-startup-id flatpak run com.spotify.Client
 # 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
-bindsym Ctrl+$mod1+9 exec --no-startup-id blueman-manager
+bindsym Ctrl+Mod1+9 exec --no-startup-id blueman-manager
 # 0 - Nautilus (file manager) [Installation: dnf install nautilus]
-bindsym Ctrl+$mod1+0 exec --no-startup-id nautilus
+bindsym Ctrl+Mod1+0 exec --no-startup-id nautilus
 # - (minus) - Web browser: brave-browser (google-chromium based)
-bindsym Ctrl+$mod1+minus exec --no-startup-id brave-browser
+bindsym Ctrl+Mod1+minus exec --no-startup-id brave-browser
 # = (equal) - Web browser: firefox
-bindsym Ctrl+$mod1+equal exec --no-startup-id firefox
+bindsym Ctrl+Mod1+equal exec --no-startup-id firefox
 
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
@@ -609,91 +612,91 @@ bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh
 bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
 
 # Start dmenu (a program launcher) [Installation: dnf install dmenu]
-#bindsym $mod+Shift+Return exec --no-startup-id dmenu_run -l 16\
+#bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16\
     #-fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
     #-nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-#bindsym $mod++Shift+Return exec --no-startup-id i3-dmenu-desktop \
+#bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop \
     #--dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
 
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
-bindsym $mod+d            exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym $mod+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
-bindsym $mod+Shift+Return exec --no-startup-id rofi -show run -terminal $terminal
-bindsym Ctrl+$mod1+d      exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
-bindsym $mod1+Tab         exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
-bindsym $mod1+Shift+Tab   exec --no-startup-id rofi -show window -terminal $terminal
+bindsym Mod4+d            exec --no-startup-id rofi -show drun -terminal $terminal
+bindsym Mod4+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
+bindsym Mod4+Shift+Return exec --no-startup-id rofi -show run -terminal $terminal
+bindsym Mod1+Tab          exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
+bindsym Ctrl+Mod1+d       exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
+bindsym Mod1+Shift+Tab    exec --no-startup-id rofi -show window -terminal $terminal
 
 # Start a terminal
-bindsym $mod+Return   exec $terminal
-bindsym $mod+KP_Enter exec $terminal
+bindsym Mod4+Return   exec $terminal
+bindsym Mod4+KP_Enter exec $terminal
 
 # Kill focus window
-bindsym $mod1+F4     kill
-bindsym $mod+Shift+q kill
+bindsym Mod1+F4      kill
+bindsym Mod4+Shift+q kill
 
 # Exit i3
-bindsym Ctrl+$mod1+q exit
+bindsym Ctrl+Mod1+q exit
 
 # Focus the parent/child container
-bindsym $mod+a       focus parent
-bindsym $mod+Shift+a focus child
+bindsym Mod4+a       focus parent
+bindsym Mod4+Shift+a focus child
 
 # Change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym Mod4+h focus left
+bindsym Mod4+j focus down
+bindsym Mod4+k focus up
+bindsym Mod4+l focus right
 
 # Alternatively, you can use the cursor keys:
-bindsym $mod+Left  focus left
-bindsym $mod+Down  focus down
-bindsym $mod+Up    focus up
-bindsym $mod+Right focus right
+bindsym Mod4+Left  focus left
+bindsym Mod4+Down  focus down
+bindsym Mod4+Up    focus up
+bindsym Mod4+Right focus right
 
 # Move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym Mod4+Shift+h move left
+bindsym Mod4+Shift+j move down
+bindsym Mod4+Shift+k move up
+bindsym Mod4+Shift+l move right
 
 # Alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left  move left
-bindsym $mod+Shift+Down  move down
-bindsym $mod+Shift+Up    move up
-bindsym $mod+Shift+Right move right
+bindsym Mod4+Shift+Left  move left
+bindsym Mod4+Shift+Down  move down
+bindsym Mod4+Shift+Up    move up
+bindsym Mod4+Shift+Right move right
 
 # Split in vertical/horizontal orientation
-#bindsym $mod+c split toggle exec notify-send -u low "Toggled Split Direction"
-bindsym $mod+q split toggle exec notify-send -u low "Toggled Split Direction"
+#bindsym Mod4+c split toggle exec notify-send -u low "Toggled Split Direction"
+bindsym Mod4+q split toggle exec notify-send -u low "Toggled Split Direction"
 
 # Toggle fullscreen
-bindsym $mod+f       fullscreen toggle
-bindsym $mod+Shift+f fullscreen toggle global
+bindsym Mod4+f       fullscreen toggle
+bindsym Mod4+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
 # Change focus between tiling / floating windows
-bindsym $mod+space       focus mode_toggle exec notify-send -u low "Toggle Focus [Tiling/Floating]"
-bindsym $mod+Shift+space floating toggle   exec notify-send -u low "Toggle Window [Tiling/Floating]"
-bindsym $mod+Shift+s     sticky toggle     exec notify-send -u low "Toggle Sticky For Floating Window"
+bindsym Mod4+space       focus mode_toggle exec notify-send -u low "Toggle Focus [Tiling/Floating]"
+bindsym Mod4+Shift+space floating toggle   exec notify-send -u low "Toggle Window [Tiling/Floating]"
+bindsym Mod4+Shift+s     sticky toggle     exec notify-send -u low "Toggle Sticky For Floating Window"
 
 # Change container layout (stacking, tabbed, toggle split)
-bindsym $mod+s layout stacking             exec notify-send -u low "Stacking Mode On"
-bindsym $mod+w layout tabbed               exec notify-send -u low "Tabbed Mode On"
-bindsym $mod+e layout toggle splitv splith exec notify-send -u low "Toggle Layout Split"
+bindsym Mod4+s layout stacking             exec notify-send -u low "Stacking Mode On"
+bindsym Mod4+w layout tabbed               exec notify-send -u low "Tabbed Mode On"
+bindsym Mod4+e layout toggle splitv splith exec notify-send -u low "Toggle Layout Split"
 
 # Quick change container layout (stacking, tabbed, splitv, splith)
-bindsym $mod+Shift+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
+bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
 
 # Titlebar Toggle
-bindsym $mod+n       [class="^.*"] border $default_border_width
-bindsym $mod+Shift+n [class="^.*"] border normal
+bindsym Mod4+n       [class="^.*"] border $default_border_width
+bindsym Mod4+Shift+n [class="^.*"] border normal
 
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
-bindsym $mod+Shift+t mode "$mode_titlebar"
+bindsym Mod4+Shift+t mode "$mode_titlebar"
 set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title [t]ree_mode [b]order_mode [m]ark_mode
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
@@ -724,11 +727,11 @@ mode "$mode_border" {
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
     # motion (change focus)
-    bindsym $mod+h     focus left
-    bindsym $mod+j     focus down
-    bindsym $mod+k     focus up
-    bindsym $mod+l     focus right
-    bindsym $mod+space focus mode_toggle
+    bindsym Mod4+h     focus left
+    bindsym Mod4+j     focus down
+    bindsym Mod4+k     focus up
+    bindsym Mod4+l     focus right
+    bindsym Mod4+space focus mode_toggle
 }
 
 # Set border width mode (within border mode)
@@ -745,9 +748,9 @@ mode "$mode_set_border" {
 }
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
-bindsym $mod+m exec $I3_BIN/i3_mark_operation.sh mark i3 # mark the current window with this character
-bindsym $mod+g exec $I3_BIN/i3_mark_operation.sh goto i3 # go to the window with the character
-bindsym $mod+p exec $I3_BIN/i3_mark_operation.sh swap i3 # swap the current window to the window with the character
+bindsym Mod4+m exec $I3_BIN/i3_mark_operation.sh mark i3 # mark the current window with this character
+bindsym Mod4+g exec $I3_BIN/i3_mark_operation.sh goto i3 # go to the window with the character
+bindsym Mod4+p exec $I3_BIN/i3_mark_operation.sh swap i3 # swap the current window to the window with the character
 
 # Mark mode (within titlebar mode) [use i3-msg/rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
@@ -767,15 +770,15 @@ mode "$mode_mark" {
 }
 
 # Move all floating windows to the scratchpad and vice versa
-bindsym $mod+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
-bindsym $mod+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
+bindsym Mod4+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
+bindsym Mod4+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
 
 # Enter exec command in i3 [use rofi as input]
-#bindsym $mod+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
+#bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 
 # Rename workspace
-#bindsym $mod+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
-#bindsym $mod+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
+#bindsym Mod4+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
+#bindsym Mod4+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -866,31 +869,31 @@ workspace $ws40 output $monitor4
 workspace_auto_back_and_forth no
 
 # Switch to near workspace
-bindsym $mod+Tab       workspace next
-bindsym $mod+Shift+Tab workspace prev
-bindsym Ctrl+$mod1+Tab workspace back_and_forth
+bindsym Mod4+Tab       workspace next
+bindsym Mod4+Shift+Tab workspace prev
+bindsym Ctrl+Mod1+Tab  workspace back_and_forth
 
 # Switch to workspace
-bindsym $mod+1   workspace $ws1
-bindsym $mod+2   workspace $ws2
-bindsym $mod+3   workspace $ws3
-bindsym $mod+4   workspace $ws4
-bindsym $mod+5   workspace $ws5
-bindsym $mod+6   workspace $ws6
-bindsym $mod+7   workspace $ws7
-bindsym $mod+8   workspace $ws8
-bindsym $mod+9   workspace $ws9
-bindsym $mod+0   workspace $ws10
-bindsym $mod+F1  workspace $ws11
-bindsym $mod+F2  workspace $ws12
-bindsym $mod+F3  workspace $ws13
-bindsym $mod+F4  workspace $ws14
-bindsym $mod+F5  workspace $ws15
-bindsym $mod+F6  workspace $ws16
-bindsym $mod+F7  workspace $ws17
-bindsym $mod+F8  workspace $ws18
-bindsym $mod+F9  workspace $ws19
-bindsym $mod+F10 workspace $ws20
+bindsym Mod4+1   workspace $ws1
+bindsym Mod4+2   workspace $ws2
+bindsym Mod4+3   workspace $ws3
+bindsym Mod4+4   workspace $ws4
+bindsym Mod4+5   workspace $ws5
+bindsym Mod4+6   workspace $ws6
+bindsym Mod4+7   workspace $ws7
+bindsym Mod4+8   workspace $ws8
+bindsym Mod4+9   workspace $ws9
+bindsym Mod4+0   workspace $ws10
+bindsym Mod4+F1  workspace $ws11
+bindsym Mod4+F2  workspace $ws12
+bindsym Mod4+F3  workspace $ws13
+bindsym Mod4+F4  workspace $ws14
+bindsym Mod4+F5  workspace $ws15
+bindsym Mod4+F6  workspace $ws16
+bindsym Mod4+F7  workspace $ws17
+bindsym Mod4+F8  workspace $ws18
+bindsym Mod4+F9  workspace $ws19
+bindsym Mod4+F10 workspace $ws20
 bindsym Ctrl+1   workspace $ws21
 bindsym Ctrl+2   workspace $ws22
 bindsym Ctrl+3   workspace $ws23
@@ -913,71 +916,71 @@ bindsym Ctrl+F9  workspace $ws39
 bindsym Ctrl+F10 workspace $ws40
 
 # Move focused container to workspace
-bindsym $mod+Shift+1   move container to workspace $ws1
-bindsym $mod+Shift+2   move container to workspace $ws2
-bindsym $mod+Shift+3   move container to workspace $ws3
-bindsym $mod+Shift+4   move container to workspace $ws4
-bindsym $mod+Shift+5   move container to workspace $ws5
-bindsym $mod+Shift+6   move container to workspace $ws6
-bindsym $mod+Shift+7   move container to workspace $ws7
-bindsym $mod+Shift+8   move container to workspace $ws8
-bindsym $mod+Shift+9   move container to workspace $ws9
-bindsym $mod+Shift+0   move container to workspace $ws10
-bindsym $mod+Shift+F1  move container to workspace $ws11
-bindsym $mod+Shift+F2  move container to workspace $ws12
-bindsym $mod+Shift+F3  move container to workspace $ws13
-bindsym $mod+Shift+F4  move container to workspace $ws14
-bindsym $mod+Shift+F5  move container to workspace $ws15
-bindsym $mod+Shift+F6  move container to workspace $ws16
-bindsym $mod+Shift+F7  move container to workspace $ws17
-bindsym $mod+Shift+F8  move container to workspace $ws18
-bindsym $mod+Shift+F9  move container to workspace $ws19
-bindsym $mod+Shift+F10 move container to workspace $ws20
-bindsym Ctrl+Shift+1   move container to workspace $ws21
-bindsym Ctrl+Shift+2   move container to workspace $ws22
-bindsym Ctrl+Shift+3   move container to workspace $ws23
-bindsym Ctrl+Shift+4   move container to workspace $ws24
-bindsym Ctrl+Shift+5   move container to workspace $ws25
-bindsym Ctrl+Shift+6   move container to workspace $ws26
-bindsym Ctrl+Shift+7   move container to workspace $ws27
-bindsym Ctrl+Shift+8   move container to workspace $ws28
-bindsym Ctrl+Shift+9   move container to workspace $ws29
-bindsym Ctrl+Shift+0   move container to workspace $ws30
-bindsym Ctrl+Shift+F1  move container to workspace $ws31
-bindsym Ctrl+Shift+F2  move container to workspace $ws32
-bindsym Ctrl+Shift+F3  move container to workspace $ws33
-bindsym Ctrl+Shift+F4  move container to workspace $ws34
-bindsym Ctrl+Shift+F5  move container to workspace $ws35
-bindsym Ctrl+Shift+F6  move container to workspace $ws36
-bindsym Ctrl+Shift+F7  move container to workspace $ws37
-bindsym Ctrl+Shift+F8  move container to workspace $ws38
-bindsym Ctrl+Shift+F9  move container to workspace $ws39
-bindsym Ctrl+Shift+F10 move container to workspace $ws40
+bindsym Mod4+Shift+1   move container to workspace $ws1
+bindsym Mod4+Shift+2   move container to workspace $ws2
+bindsym Mod4+Shift+3   move container to workspace $ws3
+bindsym Mod4+Shift+4   move container to workspace $ws4
+bindsym Mod4+Shift+5   move container to workspace $ws5
+bindsym Mod4+Shift+6   move container to workspace $ws6
+bindsym Mod4+Shift+7   move container to workspace $ws7
+bindsym Mod4+Shift+8   move container to workspace $ws8
+bindsym Mod4+Shift+9   move container to workspace $ws9
+bindsym Mod4+Shift+0   move container to workspace $ws10
+bindsym Mod4+Shift+F1  move container to workspace $ws11
+bindsym Mod4+Shift+F2  move container to workspace $ws12
+bindsym Mod4+Shift+F3  move container to workspace $ws13
+bindsym Mod4+Shift+F4  move container to workspace $ws14
+bindsym Mod4+Shift+F5  move container to workspace $ws15
+bindsym Mod4+Shift+F6  move container to workspace $ws16
+bindsym Mod4+Shift+F7  move container to workspace $ws17
+bindsym Mod4+Shift+F8  move container to workspace $ws18
+bindsym Mod4+Shift+F9  move container to workspace $ws19
+bindsym Mod4+Shift+F10 move container to workspace $ws20
+#bindsym Ctrl+Shift+1   move container to workspace $ws21
+#bindsym Ctrl+Shift+2   move container to workspace $ws22
+#bindsym Ctrl+Shift+3   move container to workspace $ws23
+#bindsym Ctrl+Shift+4   move container to workspace $ws24
+#bindsym Ctrl+Shift+5   move container to workspace $ws25
+#bindsym Ctrl+Shift+6   move container to workspace $ws26
+#bindsym Ctrl+Shift+7   move container to workspace $ws27
+#bindsym Ctrl+Shift+8   move container to workspace $ws28
+#bindsym Ctrl+Shift+9   move container to workspace $ws29
+#bindsym Ctrl+Shift+0   move container to workspace $ws30
+#bindsym Ctrl+Shift+F1  move container to workspace $ws31
+#bindsym Ctrl+Shift+F2  move container to workspace $ws32
+#bindsym Ctrl+Shift+F3  move container to workspace $ws33
+#bindsym Ctrl+Shift+F4  move container to workspace $ws34
+#bindsym Ctrl+Shift+F5  move container to workspace $ws35
+#bindsym Ctrl+Shift+F6  move container to workspace $ws36
+#bindsym Ctrl+Shift+F7  move container to workspace $ws37
+#bindsym Ctrl+Shift+F8  move container to workspace $ws38
+#bindsym Ctrl+Shift+F9  move container to workspace $ws39
+#bindsym Ctrl+Shift+F10 move container to workspace $ws40
 
 # Swap workspace mode
 set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10] Load/Save_Workspace: [s]ave_workspace [r]estore_workspace
-bindsym $mod+Shift+p mode $mode_swap_workspace
+bindsym Mod4+Shift+p mode $mode_swap_workspace
 mode "$mode_swap_workspace" {
-    bindsym $mod+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1,  mode "default"
-    bindsym $mod+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2,  mode "default"
-    bindsym $mod+3   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 3,  mode "default"
-    bindsym $mod+4   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 4,  mode "default"
-    bindsym $mod+5   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 5,  mode "default"
-    bindsym $mod+6   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 6,  mode "default"
-    bindsym $mod+7   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 7,  mode "default"
-    bindsym $mod+8   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 8,  mode "default"
-    bindsym $mod+9   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 9,  mode "default"
-    bindsym $mod+10  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 10, mode "default"
-    bindsym $mod+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 1,  mode "default"
-    bindsym $mod+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 2,  mode "default"
-    bindsym $mod+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 3,  mode "default"
-    bindsym $mod+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 4,  mode "default"
-    bindsym $mod+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 5,  mode "default"
-    bindsym $mod+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 6,  mode "default"
-    bindsym $mod+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 7,  mode "default"
-    bindsym $mod+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 8,  mode "default"
-    bindsym $mod+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 9,  mode "default"
-    bindsym $mod+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 10, mode "default"
+    bindsym Mod4+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1,  mode "default"
+    bindsym Mod4+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2,  mode "default"
+    bindsym Mod4+3   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 3,  mode "default"
+    bindsym Mod4+4   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 4,  mode "default"
+    bindsym Mod4+5   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 5,  mode "default"
+    bindsym Mod4+6   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 6,  mode "default"
+    bindsym Mod4+7   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 7,  mode "default"
+    bindsym Mod4+8   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 8,  mode "default"
+    bindsym Mod4+9   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 9,  mode "default"
+    bindsym Mod4+10  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 10, mode "default"
+    bindsym Mod4+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 1,  mode "default"
+    bindsym Mod4+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 2,  mode "default"
+    bindsym Mod4+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 3,  mode "default"
+    bindsym Mod4+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 4,  mode "default"
+    bindsym Mod4+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 5,  mode "default"
+    bindsym Mod4+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 6,  mode "default"
+    bindsym Mod4+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 7,  mode "default"
+    bindsym Mod4+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 8,  mode "default"
+    bindsym Mod4+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 9,  mode "default"
+    bindsym Mod4+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 10, mode "default"
     bindsym Ctrl+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 1,  mode "default"
     bindsym Ctrl+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 2,  mode "default"
     bindsym Ctrl+3   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 3,  mode "default"
@@ -1009,26 +1012,26 @@ mode "$mode_swap_workspace" {
 # Save workspace mode
 set $mode_save_workspace Save_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10] [s]ave_all_workspaces
 mode "$mode_save_workspace" {
-    bindsym $mod+1   exec --no-startup-id i3-resurrect save -w 1:A1,  mode "default"
-    bindsym $mod+2   exec --no-startup-id i3-resurrect save -w 2:A2,  mode "default"
-    bindsym $mod+3   exec --no-startup-id i3-resurrect save -w 3:A3,  mode "default"
-    bindsym $mod+4   exec --no-startup-id i3-resurrect save -w 4:A4,  mode "default"
-    bindsym $mod+5   exec --no-startup-id i3-resurrect save -w 5:A5,  mode "default"
-    bindsym $mod+6   exec --no-startup-id i3-resurrect save -w 6:A6,  mode "default"
-    bindsym $mod+7   exec --no-startup-id i3-resurrect save -w 7:A7,  mode "default"
-    bindsym $mod+8   exec --no-startup-id i3-resurrect save -w 8:A8,  mode "default"
-    bindsym $mod+9   exec --no-startup-id i3-resurrect save -w 9:A9,  mode "default"
-    bindsym $mod+10  exec --no-startup-id i3-resurrect save -w 10:A10, mode "default"
-    bindsym $mod+F1  exec --no-startup-id i3-resurrect save -w 11:B1,  mode "default"
-    bindsym $mod+F2  exec --no-startup-id i3-resurrect save -w 12:B2,  mode "default"
-    bindsym $mod+F3  exec --no-startup-id i3-resurrect save -w 13:B3,  mode "default"
-    bindsym $mod+F4  exec --no-startup-id i3-resurrect save -w 14:B4,  mode "default"
-    bindsym $mod+F5  exec --no-startup-id i3-resurrect save -w 15:B5,  mode "default"
-    bindsym $mod+F6  exec --no-startup-id i3-resurrect save -w 16:B6,  mode "default"
-    bindsym $mod+F7  exec --no-startup-id i3-resurrect save -w 17:B7,  mode "default"
-    bindsym $mod+F8  exec --no-startup-id i3-resurrect save -w 18:B8,  mode "default"
-    bindsym $mod+F9  exec --no-startup-id i3-resurrect save -w 19:B9,  mode "default"
-    bindsym $mod+F10 exec --no-startup-id i3-resurrect save -w 20:B10, mode "default"
+    bindsym Mod4+1   exec --no-startup-id i3-resurrect save -w 1:A1,   mode "default"
+    bindsym Mod4+2   exec --no-startup-id i3-resurrect save -w 2:A2,   mode "default"
+    bindsym Mod4+3   exec --no-startup-id i3-resurrect save -w 3:A3,   mode "default"
+    bindsym Mod4+4   exec --no-startup-id i3-resurrect save -w 4:A4,   mode "default"
+    bindsym Mod4+5   exec --no-startup-id i3-resurrect save -w 5:A5,   mode "default"
+    bindsym Mod4+6   exec --no-startup-id i3-resurrect save -w 6:A6,   mode "default"
+    bindsym Mod4+7   exec --no-startup-id i3-resurrect save -w 7:A7,   mode "default"
+    bindsym Mod4+8   exec --no-startup-id i3-resurrect save -w 8:A8,   mode "default"
+    bindsym Mod4+9   exec --no-startup-id i3-resurrect save -w 9:A9,   mode "default"
+    bindsym Mod4+10  exec --no-startup-id i3-resurrect save -w 10:A10, mode "default"
+    bindsym Mod4+F1  exec --no-startup-id i3-resurrect save -w 11:B1,  mode "default"
+    bindsym Mod4+F2  exec --no-startup-id i3-resurrect save -w 12:B2,  mode "default"
+    bindsym Mod4+F3  exec --no-startup-id i3-resurrect save -w 13:B3,  mode "default"
+    bindsym Mod4+F4  exec --no-startup-id i3-resurrect save -w 14:B4,  mode "default"
+    bindsym Mod4+F5  exec --no-startup-id i3-resurrect save -w 15:B5,  mode "default"
+    bindsym Mod4+F6  exec --no-startup-id i3-resurrect save -w 16:B6,  mode "default"
+    bindsym Mod4+F7  exec --no-startup-id i3-resurrect save -w 17:B7,  mode "default"
+    bindsym Mod4+F8  exec --no-startup-id i3-resurrect save -w 18:B8,  mode "default"
+    bindsym Mod4+F9  exec --no-startup-id i3-resurrect save -w 19:B9,  mode "default"
+    bindsym Mod4+F10 exec --no-startup-id i3-resurrect save -w 20:B10, mode "default"
     bindsym Ctrl+1   exec --no-startup-id i3-resurrect save -w 21:C1,  mode "default"
     bindsym Ctrl+2   exec --no-startup-id i3-resurrect save -w 22:C2,  mode "default"
     bindsym Ctrl+3   exec --no-startup-id i3-resurrect save -w 23:C3,  mode "default"
@@ -1059,26 +1062,26 @@ mode "$mode_save_workspace" {
 # restore workspace mode
 set $mode_restore_workspace Restore_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C4[Ctrl+1~10] D1-D4[Ctrl+F1~F10] [r]estore_all_workspaces
 mode "$mode_restore_workspace" {
-    bindsym $mod+1   exec --no-startup-id i3-resurrect restore -w 1:A1,  mode "default"
-    bindsym $mod+2   exec --no-startup-id i3-resurrect restore -w 2:A2,  mode "default"
-    bindsym $mod+3   exec --no-startup-id i3-resurrect restore -w 3:A3,  mode "default"
-    bindsym $mod+4   exec --no-startup-id i3-resurrect restore -w 4:A4,  mode "default"
-    bindsym $mod+5   exec --no-startup-id i3-resurrect restore -w 5:A5,  mode "default"
-    bindsym $mod+6   exec --no-startup-id i3-resurrect restore -w 6:A6,  mode "default"
-    bindsym $mod+7   exec --no-startup-id i3-resurrect restore -w 7:A7,  mode "default"
-    bindsym $mod+8   exec --no-startup-id i3-resurrect restore -w 8:A8,  mode "default"
-    bindsym $mod+9   exec --no-startup-id i3-resurrect restore -w 9:A9,  mode "default"
-    bindsym $mod+10  exec --no-startup-id i3-resurrect restore -w 10:A10, mode "default"
-    bindsym $mod+F1  exec --no-startup-id i3-resurrect restore -w 11:B1,  mode "default"
-    bindsym $mod+F2  exec --no-startup-id i3-resurrect restore -w 12:B2,  mode "default"
-    bindsym $mod+F3  exec --no-startup-id i3-resurrect restore -w 13:B3,  mode "default"
-    bindsym $mod+F4  exec --no-startup-id i3-resurrect restore -w 14:B4,  mode "default"
-    bindsym $mod+F5  exec --no-startup-id i3-resurrect restore -w 15:B5,  mode "default"
-    bindsym $mod+F6  exec --no-startup-id i3-resurrect restore -w 16:B6,  mode "default"
-    bindsym $mod+F7  exec --no-startup-id i3-resurrect restore -w 17:B7,  mode "default"
-    bindsym $mod+F8  exec --no-startup-id i3-resurrect restore -w 18:B8,  mode "default"
-    bindsym $mod+F9  exec --no-startup-id i3-resurrect restore -w 19:B9,  mode "default"
-    bindsym $mod+F10 exec --no-startup-id i3-resurrect restore -w 20:B10, mode "default"
+    bindsym Mod4+1   exec --no-startup-id i3-resurrect restore -w 1:A1,   mode "default"
+    bindsym Mod4+2   exec --no-startup-id i3-resurrect restore -w 2:A2,   mode "default"
+    bindsym Mod4+3   exec --no-startup-id i3-resurrect restore -w 3:A3,   mode "default"
+    bindsym Mod4+4   exec --no-startup-id i3-resurrect restore -w 4:A4,   mode "default"
+    bindsym Mod4+5   exec --no-startup-id i3-resurrect restore -w 5:A5,   mode "default"
+    bindsym Mod4+6   exec --no-startup-id i3-resurrect restore -w 6:A6,   mode "default"
+    bindsym Mod4+7   exec --no-startup-id i3-resurrect restore -w 7:A7,   mode "default"
+    bindsym Mod4+8   exec --no-startup-id i3-resurrect restore -w 8:A8,   mode "default"
+    bindsym Mod4+9   exec --no-startup-id i3-resurrect restore -w 9:A9,   mode "default"
+    bindsym Mod4+10  exec --no-startup-id i3-resurrect restore -w 10:A10, mode "default"
+    bindsym Mod4+F1  exec --no-startup-id i3-resurrect restore -w 11:B1,  mode "default"
+    bindsym Mod4+F2  exec --no-startup-id i3-resurrect restore -w 12:B2,  mode "default"
+    bindsym Mod4+F3  exec --no-startup-id i3-resurrect restore -w 13:B3,  mode "default"
+    bindsym Mod4+F4  exec --no-startup-id i3-resurrect restore -w 14:B4,  mode "default"
+    bindsym Mod4+F5  exec --no-startup-id i3-resurrect restore -w 15:B5,  mode "default"
+    bindsym Mod4+F6  exec --no-startup-id i3-resurrect restore -w 16:B6,  mode "default"
+    bindsym Mod4+F7  exec --no-startup-id i3-resurrect restore -w 17:B7,  mode "default"
+    bindsym Mod4+F8  exec --no-startup-id i3-resurrect restore -w 18:B8,  mode "default"
+    bindsym Mod4+F9  exec --no-startup-id i3-resurrect restore -w 19:B9,  mode "default"
+    bindsym Mod4+F10 exec --no-startup-id i3-resurrect restore -w 20:B10, mode "default"
     bindsym Ctrl+1   exec --no-startup-id i3-resurrect restore -w 21:C1,  mode "default"
     bindsym Ctrl+2   exec --no-startup-id i3-resurrect restore -w 22:C2,  mode "default"
     bindsym Ctrl+3   exec --no-startup-id i3-resurrect restore -w 23:C3,  mode "default"
@@ -1108,17 +1111,17 @@ mode "$mode_restore_workspace" {
 
 # Reload the configuration file (Keyboard)
 # Restart i3 inplace (preserves your layout/session, can be used to update i3)
-bindsym $mod+r       reload
-bindsym $mod+Shift+r restart
+bindsym Mod4+r       reload
+bindsym Mod4+Shift+r restart
 
 # Resize window with hotkey
-bindsym Ctrl+$mod1+h resize shrink width 5 px or 5 ppt
-bindsym Ctrl+$mod1+j resize grow height 5 px or 5 ppt
-bindsym Ctrl+$mod1+k resize shrink height 5 px or 5 ppt
-bindsym Ctrl+$mod1+l resize grow width 5 px or 5 ppt
+bindsym Ctrl+Mod1+h resize shrink width 5 px or 5 ppt
+bindsym Ctrl+Mod1+j resize grow height 5 px or 5 ppt
+bindsym Ctrl+Mod1+k resize shrink height 5 px or 5 ppt
+bindsym Ctrl+Mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
-bindsym Ctrl+$mod1+r mode "$mode_resize"
+bindsym Ctrl+Mod1+r mode "$mode_resize"
 set $mode_resize Resize: [(vim-key)]:small step [(arrow-key)]:big step
 mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
@@ -1142,7 +1145,7 @@ mode "$mode_resize" {
 
 # Redshift mode
 # -- https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
-bindsym $mod+Shift+z mode "$mode_redshift"
+bindsym Mod4+Shift+z mode "$mode_redshift"
 set $mode_redshift Color Temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
@@ -1160,7 +1163,7 @@ mode "$mode_redshift" {
 }
 
 # Lock mode -- i3lock
-bindsym Ctrl+$mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
+bindsym Ctrl+Mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
     # Option1 - User defined wallpaper
     # use default wallpaper is assigned wallpaper directory does not exist
@@ -1175,7 +1178,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
 
 # System manager (Keyboard)
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff
-bindsym $mod+Shift+Escape mode "$mode_system"
+bindsym Mod4+Shift+Escape mode "$mode_system"
 mode "$mode_system" {
     bindsym l exec --no-startup-id loginctl lock-session, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
@@ -1190,15 +1193,15 @@ mode "$mode_system" {
 
 # Screenshot tools (gnome-screenshot + flameshot)
 bindsym --release Print  exec gnome-screenshot
-bindsym $mod+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
-bindsym $mod+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
+bindsym Mod4+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
+bindsym Mod4+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
 
 # Scratchpad: hide | show window(minus is "-" and plus is "+".)
-bindsym $mod+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
-bindsym $mod+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
+bindsym Mod4+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
+bindsym Mod4+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+# Use Mouse+Mod4 to drag floating windows to their wanted position
+floating_modifier Mod4
 
 # Focus follow
 focus_follows_mouse yes
@@ -1207,18 +1210,18 @@ mouse_warping output
 # The middle button over a titlebar kills the window
 # The middle button and a modifer over any part of the window kills the window
 bindsym --release button2           kill
-bindsym --whole-window $mod+button2 kill
+bindsym --whole-window Mod4+button2 kill
 
 # The right button toggles floating
 bindsym --release button3                 floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym --border $mod+button3             floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym --whole-window $mod+Shift+button3 floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym --border Mod4+button3             floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym --whole-window Mod4+Shift+button3 floating toggle exec notify-send -u low "Toggle Window Floating"
 
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # -- xdotool must be installed
 set $mode_mouse Mouse emulator: [ctrl+(vim-key)]:small [(vim-key)]:medium [shift+(vim-key)]:large [ctlr+shift+(vim-key)]:extra-large [u]:left [i]:middle [o]:right [e]nable_autohide [d]isable_auto_hide
-bindsym $mod+Shift+m mode "$mode_mouse"
+bindsym Mod4+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
     bindsym Ctrl+h exec "xdotool mousemove_relative -- -2 0"
@@ -1245,13 +1248,13 @@ mode "$mode_mouse" {
     bindsym i exec "xdotool click 2"
     bindsym o exec "xdotool click 3"
     # redefine kill window in mouse mode
-    bindsym $mod+Shift+q kill
+    bindsym Mod4+Shift+q kill
     # Cursor autohide [hhpc is needed]
     bindsym e exec "hhpc -i 5", mode "default"
     bindsym d exec "killall hhpc", mode "default"
     # exit mouse mode
     bindsym m            mode "default"
-    bindsym $mod+Shift+m mode "default"
+    bindsym Mod4+Shift+m mode "default"
     bindsym Escape       mode "default"
     bindsym Return       mode "default"
 }
@@ -1260,7 +1263,7 @@ mode "$mode_mouse" {
 # -- https://thevaluable.dev/i3-config-mouseless/
 # For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
 set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810
-bindsym $mod+Shift+x mode "$mode_display"
+bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
     bindsym 0       exec --no-startup-id arandr, mode "default"
     bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off  --output eDP1  --auto --primary, mode "default"
@@ -1278,7 +1281,7 @@ mode "$mode_display" {
 
 # Show all keybindings in i3 (use rofi as viewer)
 # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
-bindsym Ctrl+$mod1+s exec \
+bindsym Ctrl+Mod1+s exec \
     i3 $(cat ~/.config/i3/config | grep '^bindsym' | grep -v '^\s*#' | \
     sed 's/bindsym / /' | sort | rofi -dmenu -columns 1 -p 'i3 Keybinds' |\
     sed 's/^\s*//' | cut -d' ' -f 2- )
@@ -1411,8 +1414,8 @@ bar{
 }
 
 # Status bar toggle, hide or show
-bindsym $mod+Shift+b bar mode toggle top-bar
-bindsym $mod+b       bar mode toggle top-bar-overlay
+bindsym Mod4+Shift+b bar mode toggle top-bar
+bindsym Mod4+b       bar mode toggle top-bar-overlay
 
 # ======================================================================================
 # All About I3 Startup Commands/Programs
@@ -1460,16 +1463,22 @@ exec_always --no-startup-id numlockx on
 # Imwheel (modify mouse wheel speed)
 exec_always --no-startup-id imwheel
 
+# Short repeat key waiting time and faster repeat key rate (xset support)
+exec --no-startup-id xset r rate 300 40
+
 # Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
 # Need to be complied mannually
 #exec_always --no-startup-id hhpc -i 3
 
 # Ibus input method (ibus-chewing support)
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id export XMODIFIER="@im=ibus"
-exec --no-startup-id export GTK_IM_MODULE=ibus
-exec --no-startup-id export QT_IM_MODULE=ibus
-exec --no-startup-id export DefaultIMModule=ibus
+# Note: Following lines must be added to .profile to set ibus as default input method
+# --------------------------------------------------------------------------------------
+# export GTK_IM_MODULE=ibus
+# export XMODIFIER="@im=ibus"
+# export GTK_IM_MODULE=ibus
+# export QT_IM_MODULE=ibus
+# export DefaultIMModule=ibus
+# --------------------------------------------------------------------------------------
 exec_always --no-startup-id ibus-daemon --xim -d -r
 
 # Parcellite (clipboard)

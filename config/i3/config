@@ -168,7 +168,7 @@ new_float $default_border_width
 hide_edge_borders smart
 
 # Set windows titlebar fontsize
-font pango: DroidSansMono Nerd Font 14
+font pango: DroidSansMono Nerd Font 16
 title_align center
 show_marks yes
 for_window [class=".*"] title_format "%title"
@@ -567,11 +567,16 @@ mode "$mode_set_inner_gap" {
 
 # Use pactl to adjust volume in PulseAudio.
 # Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
+# For advanced modification, check pulsemxier or alsamixer
 set $refresh_i3status "killall -SIGUSR1 i3status"
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioMute              exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym Ctrl+XF86AudioRaiseVolume  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%  && $refresh_i3status
+bindsym Ctrl+XF86AudioLowerVolume  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%  && $refresh_i3status
+bindsym XF86AudioRaiseVolume       exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%  && $refresh_i3status
+bindsym XF86AudioLowerVolume       exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%  && $refresh_i3status
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMicMute           exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Media player control
 bindsym XF86AudioPlay  exec playerctl play
@@ -626,8 +631,8 @@ bindsym Mod4+d            exec --no-startup-id rofi -show drun -terminal $termin
 bindsym Mod4+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
 bindsym Mod4+Shift+Return exec --no-startup-id rofi -show run -terminal $terminal
 bindsym Mod1+Tab          exec --no-startup-id rofi -show windowcd -terminal $terminal -columns 1
-bindsym Ctrl+Mod1+d       exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
 bindsym Mod1+Shift+Tab    exec --no-startup-id rofi -show window -terminal $terminal
+bindsym Ctrl+Mod1+d       exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
 
 # Start a terminal
 bindsym Mod4+Return   exec $terminal
@@ -748,20 +753,25 @@ mode "$mode_set_border" {
 }
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
-bindsym Mod4+m exec $I3_BIN/i3_mark_operation.sh mark i3 # mark the current window with this character
-bindsym Mod4+g exec $I3_BIN/i3_mark_operation.sh goto i3 # go to the window with the character
-bindsym Mod4+p exec $I3_BIN/i3_mark_operation.sh swap i3 # swap the current window to the window with the character
+# Mark the current window with this character
+bindsym Mod4+m exec $I3_BIN/i3_mark_operation.sh mark i3 none
+# Goto the window with the character
+bindsym Mod4+g exec $I3_BIN/i3_mark_operation.sh goto i3 none
+# Swap the current window to the window with the character (focus moves)
+bindsym Mod4+p exec $I3_BIN/i3_mark_operation.sh swap i3 none
+# Swap the current window to the window with the character (focus stays)
+bindsym Mod4+semicolon exec $I3_BIN/i3_mark_operation.sh swap i3 stay
 
 # Mark mode (within titlebar mode) [use i3-msg/rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
 set $mode_mark Mark: [M/m]ark [G/g]oto [S/s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
-    bindsym m       exec $I3_BIN/i3_mark_operation.sh mark rofi
-    bindsym g       exec $I3_BIN/i3_mark_operation.sh goto rofi
-    bindsym s       exec $I3_BIN/i3_mark_operation.sh swap rofi
-    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh mark i3
-    bindsym Shift+g exec $I3_BIN/i3_mark_operation.sh goto i3
-    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh swap i3
+    bindsym m       exec $I3_BIN/i3_mark_operation.sh mark rofi none
+    bindsym g       exec $I3_BIN/i3_mark_operation.sh goto rofi none
+    bindsym s       exec $I3_BIN/i3_mark_operation.sh swap rofi none
+    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh mark i3 none
+    bindsym Shift+g exec $I3_BIN/i3_mark_operation.sh goto i3 none
+    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh swap i3 none
     bindsym e       exec i3_automark_enable.sh, mode "default"
     bindsym d       exec i3_automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
@@ -774,10 +784,10 @@ bindsym Mod4+Shift+minus [floating] move scratchpad exec notify-send -u low "Mov
 bindsym Mod4+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
 
 # Enter exec command in i3 [use rofi as input]
-#bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
+bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 
-# Rename workspace
-#bindsym Mod4+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
+# Rename workspace [use rofi as input]
+bindsym Mod4+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
 #bindsym Mod4+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
 
 # Define names for default workspaces for which we configure key bindings later on.
@@ -894,26 +904,26 @@ bindsym Mod4+F7  workspace $ws17
 bindsym Mod4+F8  workspace $ws18
 bindsym Mod4+F9  workspace $ws19
 bindsym Mod4+F10 workspace $ws20
-bindsym Ctrl+1   workspace $ws21
-bindsym Ctrl+2   workspace $ws22
-bindsym Ctrl+3   workspace $ws23
-bindsym Ctrl+4   workspace $ws24
-bindsym Ctrl+5   workspace $ws25
-bindsym Ctrl+6   workspace $ws26
-bindsym Ctrl+7   workspace $ws27
-bindsym Ctrl+8   workspace $ws28
-bindsym Ctrl+9   workspace $ws29
-bindsym Ctrl+0   workspace $ws30
-bindsym Ctrl+F1  workspace $ws31
-bindsym Ctrl+F2  workspace $ws32
-bindsym Ctrl+F3  workspace $ws33
-bindsym Ctrl+F4  workspace $ws34
-bindsym Ctrl+F5  workspace $ws35
-bindsym Ctrl+F6  workspace $ws36
-bindsym Ctrl+F7  workspace $ws37
-bindsym Ctrl+F8  workspace $ws38
-bindsym Ctrl+F9  workspace $ws39
-bindsym Ctrl+F10 workspace $ws40
+#bindsym Ctrl+1   workspace $ws21
+#bindsym Ctrl+2   workspace $ws22
+#bindsym Ctrl+3   workspace $ws23
+#bindsym Ctrl+4   workspace $ws24
+#bindsym Ctrl+5   workspace $ws25
+#bindsym Ctrl+6   workspace $ws26
+#bindsym Ctrl+7   workspace $ws27
+#bindsym Ctrl+8   workspace $ws28
+#bindsym Ctrl+9   workspace $ws29
+#bindsym Ctrl+0   workspace $ws30
+#bindsym Ctrl+F1  workspace $ws31
+#bindsym Ctrl+F2  workspace $ws32
+#bindsym Ctrl+F3  workspace $ws33
+#bindsym Ctrl+F4  workspace $ws34
+#bindsym Ctrl+F5  workspace $ws35
+#bindsym Ctrl+F6  workspace $ws36
+#bindsym Ctrl+F7  workspace $ws37
+#bindsym Ctrl+F8  workspace $ws38
+#bindsym Ctrl+F9  workspace $ws39
+#bindsym Ctrl+F10 workspace $ws40
 
 # Move focused container to workspace
 bindsym Mod4+Shift+1   move container to workspace $ws1

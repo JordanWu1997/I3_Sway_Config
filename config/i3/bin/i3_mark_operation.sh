@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Set default border width
-if [ $# -eq 3 ]; then
-    default_width=$3
+if [ $# -eq 4 ]; then
+    default_width=$4
 else
     default_width=$(awk '$0~/default_border_width/ {print $4}' $HOME/.config/i3/config | awk 'NR==1')
 fi
@@ -29,10 +29,18 @@ elif [ $1 == "goto" ]; then
 # Swap current window to mark window but remain focus
 elif [ $1 == "swap" ]; then
     if [ $2 == "i3" ]; then
-        i3-input -F "swap container with mark %s, [con_mark=%s] focus" -l 1 -P "Swapto [Mark]: "
+        # Keep focus stay in current container
+        if [ $3 == "stay" ]; then
+            i3-input -F "swap container with mark %s, [con_mark=%s] focus" -l 1 -P "Swapto [Mark]: "
+        else
+            i3-input -F "swap container with mark %s" -l 1 -P "Swapto [Mark]: "
+        fi
     elif [ $2 == "rofi" ]; then
         mark_title=$(rofi -dmenu -lines 0 -width 25 -p 'Swapto [Mark]')
-        i3-msg "swap container with mark $mark_title, [con_mark=$mark_title] focus"
+        # Keep focus stay in current container
+        if [ $3 == "stay" ]; then
+            i3-msg "swap container with mark $mark_title, [con_mark=$mark_title] focus"
+        fi
     fi
 else
     echo

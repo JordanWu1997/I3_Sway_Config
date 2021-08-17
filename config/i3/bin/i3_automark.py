@@ -9,7 +9,7 @@ import time
 import itertools
 
 class SocketClosedException(Exception): pass
-MARKS = 'qwertyuiop'
+MARKS = 'qwertyuiop123456789'
 
 COMMANDS = [
     'run_command',

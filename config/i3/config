@@ -883,6 +883,18 @@ bindsym Mod4+Tab       workspace next
 bindsym Mod4+Shift+Tab workspace prev
 bindsym Ctrl+Mod1+Tab  workspace back_and_forth
 
+# Move between workspaces/monitors ([/,/./])
+bindsym Mod4+bracketleft  focus up
+bindsym Mod4+bracketright focus down
+bindsym Mod4+period       focus right
+bindsym Mod4+comma        focus left
+
+# Move workspace between monitors ({/</>/})
+bindsym Mod4+Shift+bracketleft  move workspace to output up
+bindsym Mod4+Shift+bracketright move workspace to output down
+bindsym Mod4+Shift+period       move workspace to output right
+bindsym Mod4+Shift+comma        move workspace to output left
+
 # Switch to workspace
 bindsym Mod4+1   workspace $ws1
 bindsym Mod4+2   workspace $ws2
@@ -1291,7 +1303,7 @@ mode "$mode_display" {
 
 # Show all keybindings in i3 (use rofi as viewer)
 # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
-bindsym Ctrl+Mod1+s exec \
+bindsym Mod4+Shift+slash exec \
     i3 $(cat ~/.config/i3/config | grep '^bindsym' | grep -v '^\s*#' | \
     sed 's/bindsym / /' | sort | rofi -dmenu -columns 1 -p 'i3 Keybinds' |\
     sed 's/^\s*//' | cut -d' ' -f 2- )
@@ -1346,7 +1358,7 @@ client.background                 $c0
 # Status bar for general purposes
 bar {
     # Bar property
-    id top-bar
+    id bar_base
     # Basic bar
     position top
     mode dock
@@ -1397,7 +1409,7 @@ bar {
 # Status bar for mode indication
 bar{
     # Bar property
-    id top-bar-overlay
+    id bar_overlay
     position top
     mode hide
     height 25
@@ -1424,8 +1436,8 @@ bar{
 }
 
 # Status bar toggle, hide or show
-bindsym Mod4+Shift+b bar mode toggle top-bar
-bindsym Mod4+b       bar mode toggle top-bar-overlay
+bindsym Mod4+Shift+b bar mode toggle bar_base
+bindsym Mod4+b       bar mode toggle bar_overlay
 
 # ======================================================================================
 # All About I3 Startup Commands/Programs

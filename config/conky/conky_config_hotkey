@@ -65,7 +65,7 @@ ${color2}system option ${alignr}${color}[S]+[Shift]+[Esc]
 ${color2}reload/restart i3 ${alignr}${color}[S]+([Shift])+[r]
 ${color2}application (rofi) ${alignr}${color}[S]+([Shift])+[d]
 ${color2}window (rofi) ${alignr}${color}[Alt]+([Shift])+[Tab]
-${color2}bindkey map (rofi) ${alignr}${color}[Ctrl]+[Alt]+[s]
+${color2}bindkey map (rofi) ${alignr}${color}[S]+[Shift]+[/]
 ${color2}lock screen ${alignr}${color}[Ctrl]+[Alt]+[Shift]+[l]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Workspace / Window]${font}${voffset 5}
 ${color2}navigate to WS ${alignr}${color}[S]+[(F)\#]

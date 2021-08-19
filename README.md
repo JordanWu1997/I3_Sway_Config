@@ -89,9 +89,11 @@ Table of Contents
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
 - [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): automark i3 window
+- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): autotiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): Xcompositor for blur, transparency, animation support
 
 ## Keybinding Sheet for i3
+- Cheat sheet format, colortheme are the same as i3 user guide
 
 ### Prefix: [Winkey]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")

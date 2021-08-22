@@ -55,9 +55,9 @@
 # Theme configuration
 # As for detailed theme and font Setup
 # -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
-#   -- for lxde: sudo dnf install lxappearance
-#   -- for gtk : sudo dnf install gtk-chtheme
-#   -- for kde : sudo dnf install kvantum
+#    -- for lxde: sudo dnf install lxappearance
+#    -- for gtk : sudo dnf install gtk-chtheme
+#    -- for kde : sudo dnf install kvantum
 #       -- for qt4 : sudo dnf install qt-config
 #       -- for qt5 : sudo dnf install qt5ct qt5-qtstyleplugins
 
@@ -541,11 +541,11 @@ mode "$mode_set_outer_gap" {
     bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 5,  mode "default"
     bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 10, mode "default"
     bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 15, mode "default"
-    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 20, mode "defaulk"
+    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 20, mode "default"
     bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 25, mode "default"
     bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 30, mode "default"
     bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 35, mode "default"
-    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 40, mode "defaulk"
+    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 40, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
@@ -556,11 +556,11 @@ mode "$mode_set_inner_gap" {
     bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 5,  mode "default"
     bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 10, mode "default"
     bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 15, mode "default"
-    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 20, mode "defaulk"
+    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 20, mode "default"
     bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 25, mode "default"
     bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 30, mode "default"
     bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 35, mode "default"
-    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 40, mode "defaulk"
+    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 40, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
@@ -1493,8 +1493,8 @@ exec_always --no-startup-id imwheel
 # Short repeat key waiting time and faster repeat key rate (xset support)
 exec_always --no-startup-id xset r rate 300 40
 
-# Replace Caplock key to Ctrl
-#exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
+# Remap Caplock key to Ctrl
+exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 
 # Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
 # Need to be complied from source mannually
@@ -1536,8 +1536,8 @@ exec_always --no-startup-id flameshot
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 
 # Conky (system overview and hotkey)
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
-exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
+#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30

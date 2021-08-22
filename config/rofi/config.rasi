@@ -9,6 +9,13 @@ configuration {
     /*Font*/
 	font: "DroidSansMono Nerd Font 16";
 
+    /*Show icons*/
+    show-icons: true;
+
+    /*Icon theme*/
+    icon-theme: "Papirus";
+
+
     /*Fullscreen (Not work well in wal theme)*/
     /*fullscreen: true;*/
 
@@ -39,9 +46,6 @@ configuration {
 
     /*Hide scrollbar*/
 	hide-scrollbar: true;
-
-    /*Show icons*/
-    show-icons: false;
 
     /*Auto-select mode*/
 	auto-select: true;

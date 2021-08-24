@@ -126,6 +126,9 @@ set $monitor4 VIRTUAL2
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile
 set $terminal i3-sensible-terminal
 
+# Setup titlebar fontsize
+set $default_titlebar_fontsize 16
+
 # Setup border width
 set $default_border_width pixel 1
 
@@ -174,7 +177,7 @@ new_float $default_border_width
 hide_edge_borders smart
 
 # Set windows titlebar fontsize
-font pango: DroidSansMono Nerd Font 16
+font pango: DroidSansMono Nerd Font $default_titlebar_fontsize
 title_align center
 show_marks yes
 for_window [class=".*"] title_format "%title"
@@ -706,19 +709,35 @@ bindsym Mod4+Shift+n [class="^.*"] border normal
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
 bindsym Mod4+Shift+t mode "$mode_titlebar"
-set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [h]ide_title [t]ree_mode [b]order_mode [m]ark_mode
+set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree_mode [b]order_mode [m]ark_mode
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
     bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Titlebars"
     bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
     bindsym t exec gtk-tree-watch.pl, mode "default"
+    bindsym f mode "$mode_titlebar_font"
     bindsym b mode "$mode_border"
     bindsym m mode "$mode_mark"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
+# Titlebar fontsize mode (within titlebar mode)
+set $mode_titlebar_font Fontsize: [1] 0 [2] 10 [3] 12 [4] 14 [5] 16 [6] 20
+mode "$mode_titlebar_font" {
+    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 0, mode "default"
+    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 10, mode "default"
+    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 12, mode "default"
+    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 14, mode "default"
+    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 16, mode "default"
+    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 20, mode "default"
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "$mode_titlebar"
+    bindsym Escape mode "default"
+}
+
 
 # Border mode (within titlebar mode)
 set $mode_border Border: [n]o_border [1]pix [2]pix [5]pix 1[0]pix [N]ormal [t]oggle [r]estore_to_default [s]et_new_fault
@@ -1323,25 +1342,25 @@ bindsym Mod4+Shift+slash exec \
 
 # Load colors from Xresource (Pywal)
 # fallback is default value in case resource can't be loaded
-# command         name resource      fallback
-set_from_resource $fg  i3wm.color15  #ffffff
-set_from_resource $bg  i3wm.color0   #000000
-set_from_resource $c0  i3wm.color0   #000000
-set_from_resource $c1  i3wm.color1   #cd0000
-set_from_resource $c2  i3wm.color2   #00cd00
-set_from_resource $c3  i3wm.color3   #cdcd00
-set_from_resource $c4  i3wm.color4   #1167b1
-set_from_resource $c5  i3wm.color5   #cd00cd
-set_from_resource $c6  i3wm.color6   #00cdcd
-set_from_resource $c7  i3wm.color7   #e5e5e5
-set_from_resource $c8  i3wm.color8   #7f7f7f
-set_from_resource $c9  i3wm.color9   #ff0000
-set_from_resource $c10 i3wm.color10  #00ff00
-set_from_resource $c11 i3wm.color11  #ffff00
-set_from_resource $c12 i3wm.color12  #2a9df4
-set_from_resource $c13 i3wm.color13  #ff00ff
-set_from_resource $c14 i3wm.color14  #00ffff
-set_from_resource $c15 i3wm.color15  #ffffff
+# command         name resource     fallback
+set_from_resource $fg  i3wm.color15 #ffffff
+set_from_resource $bg  i3wm.color0  #000000
+set_from_resource $c0  i3wm.color0  #000000
+set_from_resource $c1  i3wm.color1  #cd0000
+set_from_resource $c2  i3wm.color2  #00cd00
+set_from_resource $c3  i3wm.color3  #cdcd00
+set_from_resource $c4  i3wm.color4  #1167b1
+set_from_resource $c5  i3wm.color5  #cd00cd
+set_from_resource $c6  i3wm.color6  #00cdcd
+set_from_resource $c7  i3wm.color7  #e5e5e5
+set_from_resource $c8  i3wm.color8  #7f7f7f
+set_from_resource $c9  i3wm.color9  #ff0000
+set_from_resource $c10 i3wm.color10 #00ff00
+set_from_resource $c11 i3wm.color11 #ffff00
+set_from_resource $c12 i3wm.color12 #2a9df4
+set_from_resource $c13 i3wm.color13 #ff00ff
+set_from_resource $c14 i3wm.color14 #00ffff
+set_from_resource $c15 i3wm.color15 #ffffff
 
 # [Comment below lines if you want original i3 container/workspace color setup]
 # Color of border, background, text, indicator, and child_border based on Xresource
@@ -1489,6 +1508,9 @@ exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
 exec_always --no-startup-id imwheel
+
+# Mouse accerlation profile (xset support)
+exec_always --no-startup-id xset m 10 2
 
 # Short repeat key waiting time and faster repeat key rate (xset support)
 exec_always --no-startup-id xset r rate 300 40

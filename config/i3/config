@@ -1467,27 +1467,26 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 # ======================================================================================
 # Following commands/programs will run after I3 starts
 
-# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
-# label: --same-as   for mirror mode
-#        --right_of  for extend mode
-# -- General setting
-#exec --no-startup-id arandr
-exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
-# -- Setting for my dorm Acer27'
-#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
-# -- Setting for IOA monitor
-#exec --no-startup-id xrandr --output HDMI1 --mode 1680x1050 --primary --right-of eDP1
+# Set additional monitor display options
 # -- Setting for extended HDMI1 (for 16:10 1080P monitor)
 exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
 exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 
-# Startup wallpaper (auto theme with pywal, use wal instead of old feh)
-# Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
-#       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
-# Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
-#       16-color support than original 9-color. --nine flag for original 9-color
-exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
+# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
+# label: --same-as   for mirror mode
+#        --right_of  for extend mode
+# -- General setting (arandr GUI)
+#exec --no-startup-id arandr
+# -- General setting (xrandr)
+#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
+# -- Setting for my dorm Acer27'
+#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
+# -- Setting for IOA monitor
+#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
+
+# Set output joint display automatically (HDMI1 connected or not)
+exec --no-startup-id $I3_BIN/i3_monitor_display.sh
 
 # Gnome authentication (gnome software usage support)
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
@@ -1520,6 +1519,7 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 
 # Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
 # Need to be complied from source mannually
+# Conflict with i3lock since there is no cursor to lock
 #exec_always --no-startup-id hhpc -i 3
 
 # Ibus input method (ibus-chewing support)

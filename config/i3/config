@@ -1007,7 +1007,8 @@ bindsym Mod1+Shift+F10 move container to workspace $ws40
 
 # Swap workspace mode
 set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C10[Ctrl+F1~F10] D1-D10[Alt+F1~F10] Load/Save_Workspace: [s]ave_workspace [r]estore_workspace
-bindsym Mod4+Shift+p mode $mode_swap_workspace
+bindsym Mod4+Shift+p         mode $mode_swap_workspace
+bindsym Mod4+Shift+semicolon mode $mode_swap_workspace
 mode "$mode_swap_workspace" {
     bindsym Mod4+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1,  mode "default"
     bindsym Mod4+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2,  mode "default"
@@ -1542,6 +1543,8 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # export DefaultIMModule=ibus
 # --------------------------------------------------------------------------------------
 exec_always --no-startup-id ibus-daemon --xim -d -r
+# Disable full character mode of IBUS by default
+bindsym Shift+space exec notify-send -u low "IBUS full character mode has been disabled by default. [Try to use system tray IBUS icon if you really want to have full character]"
 
 # Parcellite (clipboard)
 exec_always --no-startup-id parcellite

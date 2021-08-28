@@ -15,7 +15,6 @@ configuration {
     /*Icon theme*/
     icon-theme: "Papirus";
 
-
     /*Fullscreen (Not work well in wal theme)*/
     /*fullscreen: true;*/
 

@@ -1271,7 +1271,7 @@ bindsym --whole-window Mod4+Shift+button3 floating toggle exec notify-send -u lo
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # -- xdotool must be installed
-set $mode_mouse Mouse emulator: [ctrl+(vim-key)]:small [(vim-key)]:medium [alt+(vim-key)]:large [ctlr+alt+(vim-key)]:extra-large [u]:left [i]:middle [o]:right [e]nable_autohide [d]isable_auto_hide
+set $mode_mouse Mouse emulator: [ctrl/NONE/alt/ctrl_alt+(vim-key)]:S/M/L/XL [u/i/o]:left/middle/right [m/,/.]:click-and-drag/scrolldown/scrollup [p]:autohide_mode
 bindsym Mod4+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
@@ -1298,16 +1298,31 @@ mode "$mode_mouse" {
     bindsym u exec "xdotool click 1"
     bindsym i exec "xdotool click 2"
     bindsym o exec "xdotool click 3"
+    # click: scroll wheel up/down
+    bindsym comma  exec "xdotool click 4"
+    bindsym period exec "xdotool click 5"
+    # click and drag: left
+    bindsym m exec "xdotool mousedown 1"
+    # mouse autohide mode
+    bindsym p mode "$mode_mouse_autohide"
     # redefine kill window in mouse mode
     bindsym Mod4+Shift+q kill
-    # Cursor autohide [hhpc is needed]
-    bindsym e exec "hhpc -i 5", mode "default"
-    bindsym d exec "killall hhpc", mode "default"
     # exit mouse mode
     bindsym m            mode "default"
     bindsym Mod4+Shift+m mode "default"
     bindsym Escape       mode "default"
     bindsym Return       mode "default"
+}
+
+# Mouse autohide mode (within mouse mode)
+set $mode_mouse_autohide Mouse autohide: [e]nable_mouse_autohide [d]isable_mouse_autohide
+mode "$mode_mouse_autohide" {
+    # Cursor autohide [hhpc is needed]
+    bindsym e exec "hhpc -i 5", mode "default"
+    bindsym d exec "killall hhpc", mode "default"
+    # exit
+    bindsym Return mode "$mode_mouse"
+    bindsym Escape mode "default"
 }
 
 # Display mode (use xrandr)

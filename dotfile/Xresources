@@ -1,5 +1,5 @@
 !# Bigger cursorsize
-Xcursor.size: 36
+Xcursor.size: 48
 
 !# Define color (Xterm)
 !*.background: #000000

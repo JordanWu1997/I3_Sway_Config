@@ -71,7 +71,7 @@ ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Workspace /
 ${color2}navigate to WS ${alignr}${color}[S]+[(F)\#]
 ${color2}send to WS ${alignr}${color}[S]+[Shift]+[(F)\#]
 ${color2}kill focused WD ${alignr}${color}[S]+[Shift]+[q]
-${color2}split direction toggle ${alignr}${color}[S]+[q]
+${color2}split direction toggle ${alignr}${color}[S]+[e/q]
 ${color2}tabbed mode toggle ${alignr}${color}[S]+[w]
 ${color2}stacking mode toggle ${alignr}${color}[S]+[s]
 ${color2}tiling mode toggle ${alignr}${color}[S]+[Shift]+[e]

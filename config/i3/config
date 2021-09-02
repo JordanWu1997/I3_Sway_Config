@@ -148,6 +148,7 @@ for_window [window_role="task_dialog"] floating enable
 for_window [title="Preference$"] floating enable
 for_window [title="Pages Unresponsive"] floating enable
 for_window [class="VirtualBox"] floating enable
+for_window [class="VirtualBox Machine"] floating disable
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Org.gnome.DejaDup"] floating enable

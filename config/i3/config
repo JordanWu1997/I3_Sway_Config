@@ -742,7 +742,6 @@ mode "$mode_titlebar_font" {
     bindsym Escape mode "default"
 }
 
-
 # Border mode (within titlebar mode)
 set $mode_border Border: [n]o_border [1]pix [2]pix [5]pix 1[0]pix [N]ormal [t]oggle [r]estore_to_default [s]et_new_fault
 mode "$mode_border" {
@@ -1389,7 +1388,7 @@ set_from_resource $c15 i3wm.color15 #ffffff
 client.focused          $c13      $c5       $c15      $c14      $c5
 client.focused_inactive $c1       $c1       $c7       $c2       $c1
 client.unfocused        $c1       $c1       $c7       $c2       $c1
-client.urgent           $c7       $c7       $c0       $c2       $c7
+client.urgent           $c15      $c15      $c0       $c2       $c15
 client.placeholder      $c2       $c2       $c7       $c2       $c2
 client.background                 $c0
 
@@ -1506,17 +1505,17 @@ exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
 
 # Set output joint display automatically (HDMI1 connected or not)
-exec --no-startup-id $I3_BIN/i3_monitor_display.sh
+exec_always --no-startup-id $I3_BIN/i3_monitor_display.sh
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 # Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
 #       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
 # Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
 #       16-color support than original 9-color. --nine flag for original 9-color
-exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
+exec_always --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
 
 # Gnome authentication (gnome software usage support)
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
+exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 
 # Lxsession agent (load xsession initializaion)
 # For now, this agent will cause mouse left/right button reversed

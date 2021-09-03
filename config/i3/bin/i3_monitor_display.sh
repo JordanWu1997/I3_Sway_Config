@@ -12,9 +12,12 @@ if [ $HDMI1_STATUS == 'connected' ]; then
         echo "ACER 27'"
         xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
     #  IOA 24':
-    elif [ $HDMI1_WIDTH == "xxxmm" ] && [ $HDMI1_HEIGHT == "xxxmm" ]; then
+    elif [ $HDMI1_WIDTH == "520mm" ] && [ $HDMI1_HEIGHT == "290mm" ]; then
         echo "IOA 24'"
-        xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
+        $I3_BIN/i3_extend_HDMI1.sh
+        $I3_BIN/i3_shrink_eDP1.sh
+        xrandr --output eDP1 --mode 1440x810_60.00
+        xrandr --output HDMI1 --mode 1920x1200_50.00 --primary --right-of eDP1
     else
         echo "Unknow HDMI1 input"
         xrandr --output HDMI1 --auto --primary --right-of eDP1

@@ -104,7 +104,6 @@
 # Reference
 # -- https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
 # -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
-# -- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 # -- https://www.reddit.com/r/i3wm/comments/cqefj3/mapping_symbols/
 
 # ======================================================================================
@@ -265,7 +264,7 @@ mode "$mode_variety" {
 }
 
 # Conky mode (system monitor and shortcut sheet)
-set $mode_conky Conky (On Primary Display): [0]killall_conky [1]system_monitor [2]shortcut_sheet [3/4]set_system_color (item/title) [5/6]set_shortcut_color (item/title)
+set $mode_conky Conky (On Primary Display): [0]killall_conky [1]system_monitor [2]shortcut_sheet [3/4]set_system_color (item/title) [5/6]set_shortcut_color (item/title) [7/8]all_conky (primary/all)
 mode "$mode_conky" {
     bindsym 0 exec killall conky
     bindsym 1 exec conky -c $HOME/.config/conky/conky_config_system
@@ -274,6 +273,8 @@ mode "$mode_conky" {
     bindsym 4 mode "$mode_conky_palette_system_title"
     bindsym 5 mode "$mode_conky_palette_shortcut_item"
     bindsym 6 mode "$mode_conky_palette_shortcut_title"
+    bindsym 7 exec $I3_BIN/i3_conky_primary_only.sh
+    bindsym 8 exec $I3_BIN/i3_conky_all_monitors.sh
     # exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
@@ -693,10 +694,13 @@ bindsym Mod4+f       fullscreen toggle
 bindsym Mod4+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
-# Change focus between tiling / floating windows
-bindsym Mod4+space       focus mode_toggle exec notify-send -u low "Toggle Focus [Tiling/Floating]"
 bindsym Mod4+Shift+space floating toggle   exec notify-send -u low "Toggle Window [Tiling/Floating]"
-bindsym Mod4+Shift+s     sticky toggle     exec notify-send -u low "Toggle Sticky For Floating Window"
+
+# Toggle stickiness of floating window (alway on the top)
+bindsym Mod4+Shift+s sticky toggle exec notify-send -u low "Toggle Sticky For Floating Window"
+
+# Change focus between tiling / floating windows
+bindsym Mod4+space focus mode_toggle exec notify-send -u low "Toggle Focus [Tiling/Floating]"
 
 # Change container layout (stacking, tabbed, toggle split)
 bindsym Mod4+s layout stacking             exec notify-send -u low "Stacking Mode On"
@@ -717,7 +721,7 @@ set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
-    bindsym s [class="^.*"] border normal;  exec notify-send -u low "Show All Titlebars"
+    bindsym s [class="^.*"] border normal; exec notify-send -u low "Show All Titlebars"
     bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
     bindsym t exec gtk-tree-watch.pl, mode "default"
     bindsym f mode "$mode_titlebar_font"
@@ -1195,7 +1199,7 @@ mode "$mode_resize" {
 # Redshift mode
 # -- https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
 bindsym Mod4+Shift+z mode "$mode_redshift"
-set $mode_redshift Color Temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
+set $mode_redshift Color temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
     bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
@@ -1328,7 +1332,7 @@ mode "$mode_mouse_autohide" {
 # Display mode (use xrandr)
 # -- https://thevaluable.dev/i3-config-mouseless/
 # For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
-set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810
+set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810 [P/p]Primary HDMI1/eDP1
 bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
     bindsym 0       exec --no-startup-id arandr, mode "default"
@@ -1340,6 +1344,8 @@ mode "$mode_display" {
     bindsym h       exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh extend, mode "default"
     bindsym Shift+e exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh reset, mode "default"
     bindsym e       exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh shrink, mode "default"
+    bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary, mode "default"
+    bindsym p       exec --no-startup-id xrandr --output eDP1 --primary, mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1458,7 +1464,7 @@ bar{
     modifier none
     binding_mode_indicator yes
     font pango: DroidSansMono Nerd Font 12
-    workspace_buttons Yes
+    workspace_buttons yes
     strip_workspace_numbers yes
     tray_output none
 
@@ -1553,7 +1559,6 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # --------------------------------------------------------------------------------------
 # export GTK_IM_MODULE=ibus
 # export XMODIFIER="@im=ibus"
-# export GTK_IM_MODULE=ibus
 # export QT_IM_MODULE=ibus
 # export DefaultIMModule=ibus
 # --------------------------------------------------------------------------------------

@@ -12,7 +12,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 #
 # --------------------------------------------------------------------------------------
-# Author: i3-config-wizard, Jordan Wu
+# Author: i3-config-wizard, Jordan Kuan-Hsien Wu
 # Email:  jordankhwu@gmail.com
 # Date:   2020/11/22
 # --------------------------------------------------------------------------------------
@@ -27,27 +27,25 @@
 # -- https://github.com/Airblader/i3 (i3-gap)
 
 # Note: Install i3-gaps in Fedora 33
-# sudo dnf copr enable fuhrmann/i3-gaps
-# sudo dnf install i3-gaps
+# -- Installation: sudo dnf copr enable fuhrmann/i3-gaps; sudo dnf install i3-gaps
 
-# Note: I3 working environment
-# Below commands must be added to shell dotfile
+# Note: Add I3 working environment
+# Below commands must be added to shell dotfile (e.g. .bashrc .zshrc and etc.)
+#
 # export PATH="$PATH:$HOME/.config/i3/bin"
 # export I3_BIN="$HOME/.config/i3/bin"
 
 # Note: Save workspace layout
-# -- https://pypi.org/project/i3-resurrect/
-# pip install i3-resurrect
+# i3-resurrect (https://pypi.org/project/i3-resurrect/)
+# -- Installation: pip install i3-resurrect
 
 # Note: Swap workspace
-# -- https://pypi.org/project/i3-workspace-swap/
-# pip install i3-workspace-swap
+# i3-workspace-swap (https://pypi.org/project/i3-workspace-swap/)
+# -- Installation: pip install i3-workspace-swap
 
 # Note: Automatic rename workspace with icons [conflict with save workspace]
-# i3-workspace-names-daemon
-# -- https://github.com/cboddy/i3-workspace-names-daemon
-# Font awesome icons
-# -- https://origin.fontawesome.com/icons?d=gallery
+# i3-workspace-names-daemon (https://github.com/cboddy/i3-workspace-names-daemon)
+# Awesome font and icons (https://origin.fontawesome.com/icons?d=gallery)
 
 # ======================================================================================
 # GUI Theme Configuration
@@ -68,7 +66,7 @@
 
 # Setup trackpad natural scrolling in i3 && Setup trackpad tap in i3
 # In /usr/share/X11/xorg.conf.d/40-libinput.conf, add the following
-
+#
 # Section "InputClass"
 #       Identifier "libinput touchpad catchall"
 #       MatchIsTouchpad "on"
@@ -92,7 +90,7 @@
 # EndSection
 #
 # Option 2 - If you don't have root permission. In i3 config, add the following
-
+#
 # # [caplock -> ctrl]
 # exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # # Reset caplock key [ctrl -> caplock], in terminal,

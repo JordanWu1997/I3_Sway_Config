@@ -783,14 +783,14 @@ mode "$mode_set_border" {
 }
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
-# Mark the current window with this character
-bindsym Mod4+m exec $I3_BIN/i3_mark_operation.sh mark i3 none
+# Mark the current window with this character [automark.py overwrites user-defined mark]
+bindsym Mod4+m exec $I3_BIN/i3_mark_operation.sh mark rofi none
 # Goto the window with the character
-bindsym Mod4+g exec $I3_BIN/i3_mark_operation.sh goto i3 none
+bindsym Mod4+g exec $I3_BIN/i3_mark_operation.sh goto rofi none
 # Swap the current window to the window with the character (focus moves)
-bindsym Mod4+p exec $I3_BIN/i3_mark_operation.sh swap i3 none
+bindsym Mod4+p exec $I3_BIN/i3_mark_operation.sh swap rofi none
 # Swap the current window to the window with the character (focus stays)
-bindsym Mod4+semicolon exec $I3_BIN/i3_mark_operation.sh swap i3 stay
+bindsym Mod4+semicolon exec $I3_BIN/i3_mark_operation.sh swap rofi stay
 
 # Mark mode (within titlebar mode) [use i3-msg/rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
@@ -1561,7 +1561,8 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # export QT_IM_MODULE=ibus
 # export DefaultIMModule=ibus
 # --------------------------------------------------------------------------------------
-exec_always --no-startup-id ibus-daemon --xim -d -r
+exec_always --no-startup-id ibus-daemon -r -d -x
+
 # Disable full character mode of IBUS by default
 bindsym Shift+space exec notify-send -u low "IBUS full character mode has been disabled by default. [Try to use system tray IBUS icon if you really want to have full character]"
 

@@ -10,12 +10,12 @@ fi
 # Show titlebar for all windows
 i3-msg [con_mark="^.*"] border normal
 
-# Mark current window
+# Mark current window [Automark.py overwrite user-defined mark]
 if [ $1 == "mark" ]; then
     if [ $2 == "i3" ]; then
         i3-input -F "mark %s" -l 1 -P "Mark: "
     elif [ $2 == "rofi" ]; then
-        i3-msg mark $(rofi -dmenu -lines 0 -width 25 -p 'Mark')
+        i3-msg mark $(rofi -dmenu -lines 0 -width 35 -p 'Mark')
     else
         i3-input -F "mark %s" -l 1 -P "Mark: "
     fi
@@ -24,7 +24,7 @@ elif [ $1 == "goto" ]; then
     if [ $2 == "i3" ]; then
         i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto Window [Mark]: "
     elif [ $2 == "rofi" ]; then
-        i3-msg [con_mark="$(rofi -dmenu -lines 0 -width 25 -p 'Goto Window [Mark]')"] focus
+        i3-msg [con_mark="$(rofi -dmenu -columns 10 -lines 2 -width 35 -select -input ~/.config/i3/share/i3_automark_list.txt -p 'Goto Window [Mark]')"] focus
     fi
 # Swap current window to mark window but remain focus
 elif [ $1 == "swap" ]; then
@@ -36,10 +36,12 @@ elif [ $1 == "swap" ]; then
             i3-input -F "swap container with mark %s" -l 1 -P "Swapto [Mark]: "
         fi
     elif [ $2 == "rofi" ]; then
-        mark_title=$(rofi -dmenu -lines 0 -width 25 -p 'Swapto [Mark]')
+        mark_title="$(rofi -dmenu -columns 10 -lines 2 -width 35 -select -input ~/.config/i3/share/i3_automark_list.txt -p 'Swapto [Mark]')"
         # Keep focus stay in current container
         if [ $3 == "stay" ]; then
             i3-msg "swap container with mark $mark_title, [con_mark=$mark_title] focus"
+        else
+            i3-msg "swap container with mark $mark_title"
         fi
     fi
 else

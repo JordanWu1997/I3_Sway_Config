@@ -5,6 +5,7 @@ set font "DroidSansMono Nerd Font Bold 12"
 set guioptions 'shv'
 set selection-clipboard clipboard
 set scroll-page-aware "true"
+set sandbox none
 
 ### zathura-pywal ###
 # Allow recolor

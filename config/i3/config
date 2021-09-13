@@ -611,8 +611,10 @@ bindsym Ctrl+Mod1+5 exec --no-startup-id $terminal -e nmtui
 bindsym Ctrl+Mod1+6 exec --no-startup-id $terminal -e cava
 # 7 - Spotify (TUI)
 bindsym Ctrl+Mod1+7 exec --no-startup-id $terminal -e spotify_tui.sh
-# 8 - Spotify (GUI and backend)
-bindsym Ctrl+Mod1+8 exec --no-startup-id flatpak run com.spotify.Client
+## 8 - Spotify (GUI and backend)
+#bindsym Ctrl+Mod1+8 exec --no-startup-id flatpak run com.spotify.Client
+# 8 - Zathura (PDF viewer)
+bindsym Ctrl+Mod1+8 exec --no-startup-id zathura
 # 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
 bindsym Ctrl+Mod1+9 exec --no-startup-id blueman-manager
 # 0 - Nautilus (file manager) [Installation: dnf install nautilus]
@@ -1580,7 +1582,7 @@ exec --no-startup-id /usr/libexec/kdeconnectd &
 exec --no-startup-id kdeconnect-indicator &
 
 # Mailspring (email manager) in background
-#exec --no-startup-id mailspring --background
+exec --no-startup-id mailspring --background
 
 # Flameshot (screenshot tool)
 exec_always --no-startup-id flameshot

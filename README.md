@@ -112,7 +112,7 @@ Table of Contents
         - 5: [Nmtui (network manager)](https://developer.gnome.org/NetworkManager/stable/nmtui.html)
         - 6: [Cava (visualizer)](https://github.com/karlstav/cava)
         - 7: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
-        - 8: [Spotify (music streamer)](https://flathub.org/apps/details/com.spotify.Client)
+        - 8: [Zathura (document viewer)](https://github.com/pwmt/zathura)
         - 9: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
         - 0: [Nautilus (gui file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
         - -: [Brave browser (web browser)](https://brave.com/)

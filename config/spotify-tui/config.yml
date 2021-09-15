@@ -43,7 +43,7 @@ keybindings:
   # Key stroke can be used if it only uses two keys:
   # ctrl-q works,
   # ctrl-alt-q doesn't.
-  back: "ctrl-q"
+  back: "q"
 
   jump_to_album: "a"
 
@@ -62,8 +62,8 @@ keybindings:
   copy_song_url: "c"
   copy_album_url: "C"
   help: "?"
-  shuffle: "ctrl-s"
-  repeat: "r"
+  shuffle: "S"
+  repeat: "R"
   search: "/"
   audio_analysis: "v"
   jump_to_context: "o"

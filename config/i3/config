@@ -50,14 +50,36 @@
 # ======================================================================================
 # GUI Theme Configuration
 # ======================================================================================
+
 # Theme configuration
 # As for detailed theme and font Setup
 # -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
 #    -- for lxde: sudo dnf install lxappearance
 #    -- for gtk : sudo dnf install gtk-chtheme
-#    -- for kde : sudo dnf install kvantum
+#    -- for kde :
 #       -- for qt4 : sudo dnf install qt-config
 #       -- for qt5 : sudo dnf install qt5ct qt5-qtstyleplugins
+
+# Note: program corresponding theme configuration
+# -- lxde
+#    -- nautilus, parcellite, and etc.
+# -- gtk
+#    -- brave-browser
+# -- qt4/qt5
+#    -- mendeleydestop, okular, kde connect and etc.
+
+# Note: my current setup
+# -- Theme
+#    -- lxappearance - Arc-Darker-solid
+#    -- gtk-chtheme - Arc-Darker-solid
+#    -- qt5 Settings - Adwaita-HighContrast
+#    -- qt4 Config - Desktop Settings (Default)
+# -- Icon
+#    -- Light: Papirus
+#    -- Dark: Papirus-Dark
+# -- Font
+#    -- SAN regular 11
+#    -- SAN serif regular 11
 
 # ======================================================================================
 # Keyboard and Trackpad Setup
@@ -1332,9 +1354,10 @@ mode "$mode_mouse_autohide" {
 # Display mode (use xrandr)
 # -- https://thevaluable.dev/i3-config-mouseless/
 # For my monitor physically setup: laptop [eDP1 13'] + external {[HDMI1 27'], [HDMI1 24']}
-set $mode_display Display: [0]Arandr (GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810 [P/p]Primary HDMI1/eDP1
+set $mode_display Display: [aa]automatic [0]Arandr(GUI) [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810 [P/p]Primary HDMI1/eDP1
 bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
+    bindsym a       exec --no-startup-id $I3_BIN/i3_monitor_display.sh right
     bindsym 0       exec --no-startup-id arandr, mode "default"
     bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off  --output eDP1  --auto --primary, mode "default"
     bindsym 2       exec --no-startup-id xrandr --output eDP1  --off  --output HDMI1 --auto --primary, mode "default"
@@ -1494,9 +1517,9 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 
 # Set additional monitor display options [now all integrated with i3_monitor_display.sh]
 # -- Setting for extended HDMI1 (for 16:10 1080P monitor)
-#exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh
+exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
-#exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
+exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 # Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
@@ -1508,9 +1531,8 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
-
 # Set output joint display automatically (HDMI1 connected or not)
-exec_always --no-startup-id $I3_BIN/i3_monitor_display.sh right
+#exec_always --no-startup-id $I3_BIN/i3_monitor_display.sh right
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 # Note: for now, wal colors won't be loaded by below i3 color at the first time setup,

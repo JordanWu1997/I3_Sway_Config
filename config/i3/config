@@ -55,10 +55,10 @@
 # As for detailed theme and font Setup
 # -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
 #    -- for lxde: sudo dnf install lxappearance
-#    -- for gtk : sudo dnf install gtk-chtheme
-#    -- for kde :
-#       -- for qt4 : sudo dnf install qt-config
-#       -- for qt5 : sudo dnf install qt5ct qt5-qtstyleplugins
+#    -- for gtk:  sudo dnf install gtk-chtheme
+#    -- for kde:
+#       -- for qt4: sudo dnf install qt-config
+#       -- for qt5: sudo dnf install qt5ct qt5-qtstyleplugins
 
 # Note: program corresponding theme configuration
 # -- lxde
@@ -68,7 +68,7 @@
 # -- qt4/qt5
 #    -- mendeleydestop, okular, kde connect and etc.
 
-# Note: my current setup
+# Note: my current color theme setup
 # -- Theme
 #    -- lxappearance - Arc-Darker-solid
 #    -- gtk-chtheme - Arc-Darker-solid
@@ -159,8 +159,8 @@ set $default_outer_gap 10
 # All About Windows Settings
 # ======================================================================================
 # This is initial setup for all windows and floating windows in i3
-
 # For windows role/class, run xprop to check
+
 # Floating for pop-up
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -189,8 +189,8 @@ focus_on_window_activation smart
 popup_during_fullscreen smart
 
 # You can also use any non-zero value
-# if you'd like to have a border (or 'normal')
-# Windows frame width pixel (or 'normal')
+# if you would like to have a border (or 'normal')
+# Window frame width pixel (or 'normal')
 # Comment out below lines for display title as default
 for_window [class="^.*"] border $default_border_width
 new_window $default_border_width
@@ -1224,7 +1224,7 @@ bindsym Mod4+Shift+z mode "$mode_redshift"
 set $mode_redshift Color temperature: [a]uto [r]eset [1]500K [2]500K [3]000K [4]000K [5]000K [6]000K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
-    bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:4000", mode "default"
+    bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:3500", mode "default"
     bindsym r exec --no-startup-id "$kill_redshift redshift -x", mode "default"
     bindsym 1 exec --no-startup-id "$kill_redshift redshift -P -O 1500", mode "default"
     bindsym 2 exec --no-startup-id "$kill_redshift redshift -P -O 2500", mode "default"
@@ -1623,10 +1623,21 @@ exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30
 # Modified to mark all windows with lowercase instead of original uppercase
 exec_always --no-startup-id $I3_BIN/i3_automark.py
 
-# Autotiling [https://github.com/nwg-piotr/autotiling]
-# For Dwindle mode (Tiling direction sequence: H -> V -> H -> V ...) support
+# Dwindle layout (autotiling) [https://github.com/nwg-piotr/autotiling]
+# For dwindle mode (Tiling direction sequence: H -> V -> H -> V ...) support
 # Installation: pip install autotiling
 exec_always --no-startup-id $PYTHON_BIN/autotiling
+
+# Master-stack layout [https://github.com/windwp/i3-master-stack]
+# Installation: cd ~/.config/i3/; git clone https://github.com/windwp/i3-master-stack.git
+# For master-stack mode, i3_automark.py, autotiling must be disabled
+#exec_always --no-startup-id  $HOME/.config/i3/i3-master-stack/i3_master
+# Swap to master node
+#bindsym Mod4+semicolon nop swap master
+# Go to master node
+#bindsym Mod4+m nop go master
+# Enable/disable master layout in current workspace
+#bindsym $mod+alt+m nop master toggle
 
 # Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
 #exec --no-startup-id $PYTHON_BIN/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json

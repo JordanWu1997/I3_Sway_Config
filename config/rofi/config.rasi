@@ -23,7 +23,7 @@ configuration {
 
     /*Width (No effect when fullscreen is enable)*/
     /*width: 800;*/
-    width: 1200;
+    width: 1000;
 
     /*Number of lines (No effect when fullscreen is enable)*/
 	lines: 12;

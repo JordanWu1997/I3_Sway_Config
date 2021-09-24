@@ -385,16 +385,26 @@ mode "$mode_theme" {
 }
 
 # Picom mode (animation, blur, and transparency support)
-set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [e]nable_flashfocus [d]isable_flashfocus
+set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]flashfocus_mode
 mode "$mode_picom" {
     bindsym 0 exec killall picom, mode "default"
     bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
     bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
+    bindsym p mode "mode_default_picom"
+    bindsym f mode "$mode_flashfocus"
+    # exit
+    bindsym Return mode "$mode_customization"
+    bindsym Escape mode "default"
+}
+
+# Flashfocus mode (within picom mode)
+set $mode_flashfocus Flashfocus: [e]nable_flashfocus [d]isable_flashfocus
+mode "$mode_flashfocus" {
     # Flashfocus
     bindsym e exec flashfocus, mode "default"
     bindsym d exec killall flashfocus, mode "default"
     # exit
-    bindsym Return mode "$mode_customization"
+    bindsym Return mode "$mode_picom"
     bindsym Escape mode "default"
 }
 
@@ -424,9 +434,9 @@ set $mode_gaps_right Right Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_bottom Bottom Gaps: +|-|0 (local) Shift + +|-|0 (global)
 set $mode_gaps_left Left Gaps: +|-|0 (local) Shift + +|-|0 (global)
 # Set outer gap width mode (within gap mode)
-set $mode_set_outer_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix
+set $mode_set_outer_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix [9] 45pix
 # Set inner gap width mode (within gap mode)
-set $mode_set_inner_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix
+set $mode_set_inner_gap Width pixel value: [0] 0pix [1] 5pix [2] 10pix [3] 15pix [4] 20pix [5] 25pix [6] 30pix [7] 35pix [8] 40pix [9] 45pix
 bindsym Mod4+Shift+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
@@ -574,6 +584,7 @@ mode "$mode_set_outer_gap" {
     bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 30, mode "default"
     bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 35, mode "default"
     bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 40, mode "default"
+    bindsym 9 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 45, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
@@ -589,6 +600,7 @@ mode "$mode_set_inner_gap" {
     bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 30, mode "default"
     bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 35, mode "default"
     bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 40, mode "default"
+    bindsym 9 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 45, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
@@ -1539,7 +1551,7 @@ exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 #       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
 # Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
 #       16-color support than original 9-color. --nine flag for original 9-color
-exec_always --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
+exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
 
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
@@ -1649,7 +1661,7 @@ exec_always --no-startup-id $PYTHON_BIN/autotiling
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 
-# Set compositor for transparency (now use picom instead)
+# Set compositor for transparency support (now use picom instead)
 #exec --no-startup-id xcompmgr -c -f -n
 
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]

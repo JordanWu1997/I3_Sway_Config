@@ -175,6 +175,7 @@ for_window [class="Org.gnome.Dictionary"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Arandr"] floating enable
 for_window [class="Gtk-tree-watch.pl"] floating enable
+for_window [class="matplotlib"] floating enable
 
 # Sticky for floating window
 for_window [title="Picture-in-Picture"] sticky enable
@@ -701,7 +702,7 @@ bindsym Mod4+j focus down
 bindsym Mod4+k focus up
 bindsym Mod4+l focus right
 
-# Alternatively, you can use the cursor keys:
+# Alternatively, you can use the cursor keys
 bindsym Mod4+Left  focus left
 bindsym Mod4+Down  focus down
 bindsym Mod4+Up    focus up
@@ -713,7 +714,7 @@ bindsym Mod4+Shift+j move down
 bindsym Mod4+Shift+k move up
 bindsym Mod4+Shift+l move right
 
-# Alternatively, you can use the cursor keys:
+# Alternatively, you can use the cursor keys
 bindsym Mod4+Shift+Left  move left
 bindsym Mod4+Shift+Down  move down
 bindsym Mod4+Shift+Up    move up
@@ -1571,7 +1572,7 @@ exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
-exec_always --no-startup-id imwheel
+#exec_always --no-startup-id imwheel
 
 # Mouse accerlation profile (xset support)
 exec_always --no-startup-id xset m 10 2

@@ -302,64 +302,64 @@ mode "$mode_conky" {
 }
 
 # Palette mode (color palette for conky shortcut item)
-set $mode_conky_palette_shortcut_item Color for conky shortcut item: [0]black [1]red [2]green [3]yellow [4]blue [5]magenta [6]cyan [7]white
+set $mode_conky_palette_shortcut_item Color for conky shortcut item: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_shortcut_item" {
-    bindsym 0 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color0, mode "$mode_conky"
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color1, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color2, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color3, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color4, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color5, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color6, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color7, mode "$mode_conky"
+    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color0, mode "$mode_conky"
+    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color1, mode "$mode_conky"
+    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color2, mode "$mode_conky"
+    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color3, mode "$mode_conky"
+    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color4, mode "$mode_conky"
+    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color5, mode "$mode_conky"
+    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color6, mode "$mode_conky"
+    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
 }
 
 # Palette mode (color palette for conky shortcut title)
-set $mode_conky_palette_shortcut_title Color for conky shortcut title: [0]black [1]red [2]green [3]yellow [4]blue [5]magenta [6]cyan [7]white
+set $mode_conky_palette_shortcut_title Color for conky shortcut title: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_shortcut_title" {
-    bindsym 0 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color0, mode "$mode_conky"
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color1, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color2, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color3, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color4, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color5, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color6, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color7, mode "$mode_conky"
+    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color0, mode "$mode_conky"
+    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color1, mode "$mode_conky"
+    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color2, mode "$mode_conky"
+    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color3, mode "$mode_conky"
+    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color4, mode "$mode_conky"
+    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color5, mode "$mode_conky"
+    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color6, mode "$mode_conky"
+    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
 }
 
 # Palette mode (color palette for conky system item)
-set $mode_conky_palette_system_item Color for conky system item: [0]black [1]red [2]green [3]yellow [4]blue [5]magenta [6]cyan [7]white
+set $mode_conky_palette_system_item Color for conky system item: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_system_item" {
-    bindsym 0 exec $I3_BIN/i3_conky_colorchanger.sh system item color0, mode "$mode_conky"
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system item color1, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system item color2, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system item color3, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system item color4, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system item color5, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system item color6, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system item color7, mode "$mode_conky"
+    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system item color0, mode "$mode_conky"
+    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system item color1, mode "$mode_conky"
+    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system item color2, mode "$mode_conky"
+    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system item color3, mode "$mode_conky"
+    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system item color4, mode "$mode_conky"
+    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system item color5, mode "$mode_conky"
+    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system item color6, mode "$mode_conky"
+    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh system item color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
 }
 
 # Palette mode (color palette for conky system title)
-set $mode_conky_palette_system_title Color for conky system title: [0]black [1]red [2]green [3]yellow [4]blue [5]magenta [6]cyan [7]white
+set $mode_conky_palette_system_title Color for conky system title: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_system_title" {
-    bindsym 0 exec $I3_BIN/i3_conky_colorchanger.sh system title color0, mode "$mode_conky"
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system title color1, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system title color2, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system title color3, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system title color4, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system title color5, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system title color6, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system title color7, mode "$mode_conky"
+    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system title color0, mode "$mode_conky"
+    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system title color1, mode "$mode_conky"
+    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system title color2, mode "$mode_conky"
+    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system title color3, mode "$mode_conky"
+    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system title color4, mode "$mode_conky"
+    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system title color5, mode "$mode_conky"
+    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system title color6, mode "$mode_conky"
+    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh system title color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -1668,5 +1668,5 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf
+#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

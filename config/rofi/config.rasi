@@ -22,8 +22,7 @@ configuration {
     /*padding: 375;*/
 
     /*Width (No effect when fullscreen is enable)*/
-    /*width: 800;*/
-    width: 1000;
+    width: 1200;
 
     /*Number of lines (No effect when fullscreen is enable)*/
 	lines: 12;

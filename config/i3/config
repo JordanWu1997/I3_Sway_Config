@@ -146,7 +146,7 @@ set $monitor4 VIRTUAL2
 set $terminal i3-sensible-terminal
 
 # Setup titlebar fontsize
-set $default_titlebar_fontsize 16
+set $default_titlebar_fontsize 12
 
 # Setup border width
 set $default_border_width pixel 1
@@ -587,7 +587,7 @@ mode "$mode_set_outer_gap" {
     bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 40, mode "default"
     bindsym 9 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 45, mode "default"
     # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_border"
+    bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
@@ -603,7 +603,7 @@ mode "$mode_set_inner_gap" {
     bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 40, mode "default"
     bindsym 9 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 45, mode "default"
     # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_border"
+    bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
@@ -745,7 +745,7 @@ bindsym Mod4+e layout toggle splitv splith exec notify-send -u low "Toggle Layou
 # Quick change container layout (stacking, tabbed, splitv, splith)
 bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
 
-# Titlebar Toggle
+# Titlebar toggle
 bindsym Mod4+n       [class="^.*"] border $default_border_width
 bindsym Mod4+Shift+n [class="^.*"] border normal
 
@@ -1572,7 +1572,7 @@ exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
-#exec_always --no-startup-id imwheel
+exec_always --no-startup-id imwheel
 
 # Mouse accerlation profile (xset support)
 exec_always --no-startup-id xset m 10 2

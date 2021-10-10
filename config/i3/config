@@ -70,9 +70,9 @@
 
 # Note: my current color theme setup
 # -- Theme
-#    -- lxappearance - Arc-Darker-solid
-#    -- gtk-chtheme - Arc-Darker-solid
-#    -- qt5 Settings - Adwaita-HighContrast
+#    -- lxappearance - Arc-Dark-solid
+#    -- gtk-chtheme - Arc-Dark-solid
+#    -- qt5 Settings - Adwaita-HighContrastInverse
 #    -- qt4 Config - Desktop Settings (Default)
 # -- Icon
 #    -- Light: Papirus
@@ -176,6 +176,7 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="Arandr"] floating enable
 for_window [class="Gtk-tree-watch.pl"] floating enable
 for_window [class="matplotlib"] floating enable
+for_window [class="Gnome-calculator"] floating enable
 
 # Sticky for floating window
 for_window [title="Picture-in-Picture"] sticky enable
@@ -1572,7 +1573,7 @@ exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
-exec_always --no-startup-id imwheel
+exec_always --no-startup-id imwheel -b 45
 
 # Mouse accerlation profile (xset support)
 exec_always --no-startup-id xset m 10 2

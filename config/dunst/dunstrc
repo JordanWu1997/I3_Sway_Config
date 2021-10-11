@@ -1,29 +1,96 @@
 # This dunst configuration is based on:
-#   - https://github.com/a-schaefers/i3-wm-gruvbox-theme/blob/master/dunst/dunstrc
-#   - https://github.com/Kaligule/dunst-config/blob/master/reload
+# -- https://github.com/a-schaefers/i3-wm-gruvbox-theme/blob/master/dunst/dunstrc
+# -- https://github.com/Kaligule/dunst-config/blob/master/reload
+# -- https://zjuyk.gitlab.io/posts/i3wm-config/
 
 [global]
-    font = "DroidSansMono Nerd Font 12"
-    allow_markup = yes
-    format = "<b>%a:</b> <b>%s</b>\n%b"
-    sort = yes
-    indicate_hidden = yes
-    alignment = right
-     bounce_freq = 0
-    show_age_threshold = 60
-    word_wrap = yes
-    ignore_newline = no
-    geometry = "0x0-25-25"
-    transparency = 20
-    idle_threshold = 120
+
+    ### Display ###
+
+    # Which monitor should the notifications be displayed on.
     monitor = 2
+
+    # Display notification on focused monitor.
     follow = mouse
-    sticky_history = yes
-    line_height = 0
+
+    ### Geometry ###
+
+    # Width x Height Offset
+    geometry = "540x60-25-25"
+
+    ### Progress bar ###
+
+    # Show how many messages are currently hidden (because of
+    # notification_limit).
+    indicate_hidden = yes
+
+    # Draw a line of "separator_height" pixel height between two
+    # notifications.
     separator_height = 2
+
+    # Padding between text and separator.
     padding = 8
+
+    # Horizontal padding.
     horizontal_padding = 8
-    separator_color = "#585858"
+
+    # Define a color for the separator.
+    separator_color = frame
+
+    # Sort messages by urgency.
+    sort = yes
+
+    # Don't remove messages, if the user is idle (no mouse or keyboard input)
+    idle_threshold = 120
+
+    ### Text ###
+    font = "DroidSansMono Nerd Font 12"
+
+    # The spacing between lines.  If the height is smaller than the
+    # font height, it will get raised to the font height.
+    line_height = 0
+
+    # Allow a small subset of html markup in notifications
+    markup = full
+    allow_markup = yes
+
+    # The format of the message.
+    format = "<b>%a:</b> <b>%s</b>\n%b"
+
+    # Alignment of message text.
+    alignment = right
+
+    # Vertical alignment of message text and icon.
+    vertical_alignment = center
+
+    # Show age of message if message is older than show_age_threshold
+    # seconds.
+    show_age_threshold = 60
+
+    # Ignore newlines '\n' in notifications.
+    ignore_newline = no
+
+    # Stack together notifications with the same content
+    stack_duplicates = true
+
+    # Hide the count of stacked notifications with the same content
+    hide_duplicate_count = false
+
+    # Display indicators for URLs (U) and actions (A).
+    show_indicators = yes
+
+    ### History ###
+    sticky_history = yes
+
+    ### Mouse action ###
+    mouse_left_click = do_action
+	mouse_middle_click = close_all
+	mouse_right_click = close_current
+
+    ### Misc/Advanced ###
+    shrink = no
+    bounce_freq = 0
+    word_wrap = yes
     startup_notification = true
 
 [frame]
@@ -39,13 +106,12 @@
 [urgency_low]
     background = "#282828"
     foreground = "#ffffff"
-    timeout = 3
+    timeout = 5
 
 [urgency_normal]
-background = "#282828"
-
-foreground = "#ffffff"
-    timeout = 15
+    background = "#282828"
+    foreground = "#ffffff"
+    timeout = 10
 
 [urgency_critical]
     background = "#282828"

@@ -1,3 +1,5 @@
+# ~/.config/dunst/dunstrc
+#
 # This dunst configuration is based on:
 # -- https://github.com/a-schaefers/i3-wm-gruvbox-theme/blob/master/dunst/dunstrc
 # -- https://github.com/Kaligule/dunst-config/blob/master/reload

@@ -93,7 +93,7 @@ ${color2}to foreground ${alignr}${color}[S]+([Shift])+[=]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Function / Mode]${font}${voffset 5}
 ${color2}customization ${alignr}${color}[S]+[Shift]+[c]
 ${color2}gap mode ${alignr}${color}[S]+[Shift]+[g]
-${color2}swap mode ${alignr}${color}[S]+[Shift]+[s/;]
+${color2}swap mode ${alignr}${color}[S]+([Shift])+[p]
 ${color2}titlebar mode ${alignr}${color}[S]+[Shift]+[t]
 ${color2}mouse mode ${alignr}${color}[S]+[Shift]+[m]
 ${color2}display mode ${alignr}${color}[S]+[Shift]+[x]

@@ -17,8 +17,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-]]
-conky.config = {
+]] conky.config = {
 	own_window_transparent = true,
 	use_xft = true,
 	xftalpha = 1.0,
@@ -81,15 +80,15 @@ ${color2}move WD to ${alignr}${color}[S]+[Shift]+[vim-key]
 ${color2}resize WD ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}focus parent WD ${alignr}${color}[S]+[a]
 ${color2}focus children WD ${alignr}${color}[S]+[Shift]+[a]
-${color2}mark focus window ${alignr}${color}[S]+[m]
-${color2}swap marked window ${alignr}${color}[S]+[p]
-${color2}goto marked window ${alignr}${color}[S]+[g]
+${color2}mark focus WD ${alignr}${color}[S]+[m]
+${color2}goto marked WD ${alignr}${color}[S]+[g]
+${color2}swap marked WD  ${alignr}${color}[S]+([Shift])+[;]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Floating / Scratchpad]${font}${voffset 5}
 ${color2}floating toggle ${alignr}${color}[S]+[Shift]+[Space]
 ${color2}floating focus toggle ${alignr}${color}[S]+[Space]
-${color2}sticky toggle ${alignr}${color}[S]+[Shift]+[s]
-${color2}to scratchpad ${alignr}${color}[S]+([Shift])+[-]
-${color2}to foreground ${alignr}${color}[S]+([Shift])+[=]
+${color2}sticky WD toggle ${alignr}${color}[S]+[Shift]+[s]
+${color2}send WD to SP ${alignr}${color}[S]+([Shift])+[-]
+${color2}bring WD to FG ${alignr}${color}[S]+([Shift])+[=]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Function / Mode]${font}${voffset 5}
 ${color2}customization ${alignr}${color}[S]+[Shift]+[c]
 ${color2}gap mode ${alignr}${color}[S]+[Shift]+[g]

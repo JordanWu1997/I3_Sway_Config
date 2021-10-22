@@ -13,13 +13,22 @@ COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $HOME/.c
 
 # Set new default value in i3 configuration file
 if [ $CHANGE_ITEM == "outer_gap" ]; then
+    echo $NEW_DEFAULT_VALUE
+    echo $COL_OUTER_GAP_WIDTH
     sed -i "$COL_OUTER_GAP_WIDTH s/.*/set \$default_outer_gap $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
     i3-msg reload
 elif [ $CHANGE_ITEM == "inner_gap" ]; then
+    echo test
+    echo $NEW_DEFAULT_VALUE
+    echo $COL_INNER_GAP_WIDTH
     sed -i "$COL_INNER_GAP_WIDTH s/.*/set \$default_inner_gap $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
     i3-msg reload
 elif [ $CHANGE_ITEM == "border_width" ]; then
-    sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width pixel $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+    if [ $NEW_DEFAULT_VALUE == "normal" ]; then
+        sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width normal/" $I3_CONFIG_FILE
+    else
+        sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width pixel $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+    fi
     i3-msg reload
 elif [ $CHANGE_ITEM == "titlebar_fontsize" ]; then
     sed -i "$COL_TITLEBAR_FONTSIZE s/.*/set \$default_titlebar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE

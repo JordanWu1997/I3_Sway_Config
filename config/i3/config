@@ -51,6 +51,7 @@
 # ======================================================================================
 # GUI Theme Configuration
 # ======================================================================================
+# This session modifies software GUI theme configuration
 
 # Theme configuration
 # As for detailed theme and font Setup
@@ -179,6 +180,7 @@ for_window [class="Gtk-tree-watch.pl"] floating enable
 for_window [class="matplotlib"] floating enable
 for_window [class="Gnome-calculator"] floating enable
 for_window [class="kruler"] floating enable
+for_window [class="Steam"] floating enable
 
 # Sticky for floating window
 for_window [title="Picture-in-Picture"] sticky enable
@@ -732,7 +734,7 @@ bindsym Mod4+f       fullscreen toggle
 bindsym Mod4+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
-bindsym Mod4+Shift+space floating toggle   exec notify-send -u low "Toggle Window [Tiling/Floating]"
+bindsym Mod4+Shift+space floating toggle exec notify-send -u low "Toggle Window [Tiling/Floating]"
 
 # Toggle stickiness of floating window (alway on the top)
 bindsym Mod4+Shift+s sticky toggle exec notify-send -u low "Toggle Sticky For Floating Window"

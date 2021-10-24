@@ -151,10 +151,10 @@ set $terminal i3-sensible-terminal
 set $default_titlebar_fontsize 12
 
 # Setup border width (set normal to show window titlebar)
-set $default_border_width pixel 1
+set $default_border_width pixel 2
 
 # Setup gap width (only for i3-gap, set 0 to reduce to original i3)
-set $default_inner_gap 15
+set $default_inner_gap 10
 set $default_outer_gap 10
 
 # ======================================================================================
@@ -203,7 +203,8 @@ new_window $default_border_width
 new_float $default_border_width
 
 # Hide edge border if there is only one window
-hide_edge_borders smart
+#hide_edge_borders smart
+hide_edge_borders none
 
 # Set windows titlebar fontsize
 font pango: DroidSansMono Nerd Font $default_titlebar_fontsize
@@ -750,9 +751,10 @@ bindsym Mod4+e layout toggle splitv splith exec notify-send -u low "Toggle Layou
 # Quick change container layout (stacking, tabbed, splitv, splith)
 bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
 
-# Titlebar toggle
-bindsym Mod4+n       [class="^.*"] border normal
-bindsym Mod4+Shift+n [class="^.*"] border $default_border_width
+# Titlebar toggle (locally, globally)
+bindsym Mod4+n       border toggle
+bindsym Mod4+Shift+n [class="^.*"] border toggle
+bindsym Ctrl+Mod1+n  [class="^.*"] border normal
 
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
@@ -1680,5 +1682,5 @@ exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
 # Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en]
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
-exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf
+exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

@@ -155,7 +155,7 @@ set $default_border_width pixel 2
 
 # Setup gap width (only for i3-gap, set 0 to reduce to original i3)
 set $default_inner_gap 10
-set $default_outer_gap 10
+set $default_outer_gap 0
 
 # ======================================================================================
 # All About Windows Settings
@@ -618,25 +618,6 @@ mode "$mode_set_inner_gap" {
 # ======================================================================================
 # This is to save all bindkeys of modes and programs
 
-# Use pactl to adjust volume in PulseAudio.
-# Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
-# For advanced modification, check pulsemxier or alsamixer
-set $refresh_i3status "killall -SIGUSR1 i3status"
-bindsym XF86AudioMute             exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym Ctrl+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%  && $refresh_i3status
-bindsym Ctrl+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%  && $refresh_i3status
-bindsym XF86AudioRaiseVolume      exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%  && $refresh_i3status
-bindsym XF86AudioLowerVolume      exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%  && $refresh_i3status
-bindsym Mod1+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym Mod1+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMicMute          exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-# Media player control
-bindsym XF86AudioPlay  exec playerctl play
-bindsym XF86AudioPause exec playerctl pause
-bindsym XF86AudioNext  exec playerctl next
-bindsym XF86AudioPrev  exec playerctl previous
-
 # Common program shortcut
 # 1 - Text editor: neovim [Installation: dnf install neovim]
 bindsym Ctrl+Mod1+1 exec --no-startup-id $terminal -e nvim
@@ -665,11 +646,34 @@ bindsym Ctrl+Mod1+minus exec --no-startup-id brave-browser
 # = (equal) - Web browser: firefox
 bindsym Ctrl+Mod1+equal exec --no-startup-id firefox
 
+# Use pactl to adjust volume in PulseAudio.
+# Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
+# For advanced modification, check pulsemxier or alsamixer
+set $refresh_i3status "killall -SIGUSR1 i3status"
+bindsym XF86AudioMute             exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym Ctrl+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%  && $refresh_i3status
+bindsym Ctrl+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%  && $refresh_i3status
+bindsym XF86AudioRaiseVolume      exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%  && $refresh_i3status
+bindsym XF86AudioLowerVolume      exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%  && $refresh_i3status
+bindsym Mod1+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym Mod1+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMicMute          exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Media player control
+bindsym XF86AudioPlay  exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext  exec playerctl next
+bindsym XF86AudioPrev  exec playerctl previous
+
 # Keyboard backlight control
 # Check https://github.com/alberto-santini/i3-configuration-x1
 # Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
-bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
+bindsym Ctrl+XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 1 && $refresh_i3status
+bindsym Ctrl+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 1 && $refresh_i3status
+bindsym XF86MonBrightnessDown      exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
+bindsym XF86MonBrightnessUp        exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
+bindsym Mod1+XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && $refresh_i3status
+bindsym Mod1+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 10 && $refresh_i3status
 
 # Start dmenu (a program launcher) [Installation: dnf install dmenu]
 #bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16\

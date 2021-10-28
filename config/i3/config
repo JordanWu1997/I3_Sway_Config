@@ -291,15 +291,15 @@ mode "$mode_variety" {
 }
 
 # Conky mode (system monitor and shortcut sheet)
-set $mode_conky Conky (On Primary Display): [0]killall_conky [1]system_monitor [2]shortcut_sheet [3/4]set_system_color (item/title) [5/6]set_shortcut_color (item/title) [7/8]all_conky (primary/all)
+set $mode_conky Conky (On Primary Display): [0]killall_conky [1]shortcut_sheet [2]system_monitor [3/4]set_shortcut_color (item/title) [5/6]set_system_color (item/title) [7/8]all_conky (primary/all)
 mode "$mode_conky" {
     bindsym 0 exec killall conky
-    bindsym 1 exec conky -c $HOME/.config/conky/conky_config_system
-    bindsym 2 exec conky -c $HOME/.config/conky/conky_config_hotkey
-    bindsym 3 mode "$mode_conky_palette_system_item"
-    bindsym 4 mode "$mode_conky_palette_system_title"
-    bindsym 5 mode "$mode_conky_palette_shortcut_item"
-    bindsym 6 mode "$mode_conky_palette_shortcut_title"
+    bindsym 1 exec conky -c $HOME/.config/conky/conky_config_hotkey
+    bindsym 2 exec conky -c $HOME/.config/conky/conky_config_system
+    bindsym 3 mode "$mode_conky_palette_shortcut_item"
+    bindsym 4 mode "$mode_conky_palette_shortcut_title"
+    bindsym 5 mode "$mode_conky_palette_system_item"
+    bindsym 6 mode "$mode_conky_palette_system_title"
     bindsym 7 exec $I3_BIN/i3_conky_primary_only.sh
     bindsym 8 exec $I3_BIN/i3_conky_all_monitors.sh
     # exit
@@ -779,14 +779,16 @@ mode "$mode_titlebar" {
 }
 
 # Titlebar fontsize mode (within titlebar mode)
-set $mode_titlebar_font Fontsize: [1] 0 [2] 10 [3] 12 [4] 14 [5] 16 [6] 20
+set $mode_titlebar_font Fontsize: [1] 0 [2] 8 [3] 10 [4] 12 [5] 14 [6] 16 [7] 18 [8] 20
 mode "$mode_titlebar_font" {
     bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 0, mode "default"
-    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 10, mode "default"
-    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 12, mode "default"
-    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 14, mode "default"
-    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 16, mode "default"
-    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 20, mode "default"
+    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 8, mode "default"
+    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 10, mode "default"
+    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 12, mode "default"
+    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 14, mode "default"
+    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 16, mode "default"
+    bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 18, mode "default"
+    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 20, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -1297,6 +1299,12 @@ mode "$mode_system" {
     bindsym Return mode "default"
 }
 
+# Input method - ibus
+# Change ibus engine
+bindsym Ctrl+Mod1+space exec $I3_BIN/i3_languagechanger.sh
+# Disable full character mode of IBUS by default
+bindsym Shift+space exec notify-send -u low "IBUS full character mode has been disabled by default. [Try to use system tray IBUS icon if you really want to have full character]"
+
 # Screenshot tools (gnome-screenshot + flameshot)
 bindsym --release Print  exec gnome-screenshot
 bindsym Mod4+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
@@ -1615,9 +1623,6 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # export DefaultIMModule=ibus
 # --------------------------------------------------------------------------------------
 exec_always --no-startup-id ibus-daemon -r -d -x
-
-# Disable full character mode of IBUS by default
-bindsym Shift+space exec notify-send -u low "IBUS full character mode has been disabled by default. [Try to use system tray IBUS icon if you really want to have full character]"
 
 # Parcellite (clipboard)
 exec_always --no-startup-id parcellite

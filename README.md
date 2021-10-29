@@ -1,5 +1,5 @@
 # I3_Sway_Config
-Backup for my I3WM (Xorg) and Sway (Xwayland) configuration
+Backup for my I3WM(Xorg), SwayWM(Wayland), and other applications configuration
 
 Table of Contents
 =================
@@ -7,7 +7,7 @@ Table of Contents
 * [I3_Sway_Config](#i3_sway_config)
 * [Table of Contents](#table-of-contents)
    * [Demo Current Customization Result for i3](#demo-current-customization-result-for-i3)
-   * [Preparation (Dependence) for i3](#preparation-dependence-for-i3)
+   * [Preparation for i3](#preparation-for-i3)
    * [First Time Usage for i3](#first-time-usage-for-i3)
    * [Autostart Programs for i3](#autostart-programs-for-i3)
    * [Keybinding Sheet for i3](#keybinding-sheet-for-i3)
@@ -21,7 +21,7 @@ Table of Contents
 ## Demo Current Customization Result for i3
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
 
-## Preparation (Dependence) for i3
+## Preparation for i3
 1. Software list
 - Shell: [fish](https://github.com/fish-shell/fish-shell) + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty)
@@ -34,7 +34,7 @@ Table of Contents
 
 2. Wallpapers
 - Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
-- Default Lockscreen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
+- Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
 - [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
 - [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 
@@ -74,7 +74,7 @@ Table of Contents
 
 ## Autostart Programs for i3
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
-- [pywal](https://github.com/dylanaraps/pywal): colortheme autotune by wal
+- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [conky](https://github.com/brndnmtthws/conky): system monitor for Xwindow
 - [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome software support
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
@@ -88,12 +88,12 @@ Table of Contents
 - [kdeconnectd](https://community.kde.org/KDEConnect): mobile phone connector
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
-- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): automark i3 window
-- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): autotiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
+- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto mark i3 window
+- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): Xcompositor for blur, transparency, animation support
 
 ## Keybinding Sheet for i3
-- Cheat sheet format, colortheme are the same as i3 user guide
+- Cheat sheet format, color theme here is the same as i3 user guide
 
 ### Prefix: [Winkey]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
@@ -120,25 +120,24 @@ Table of Contents
 
 ### Miscellaneous
 - __Go to Workspace__
-    - [Winkey] + [Number(#)]: Goto workspace number # (A#) in monitor1 (eDP1)
-    - [Winkey] + [Function(F#)]: Goto workspace number 10+# (B#) in monitor2 (HDMI1)
-    - [Ctrl] + [Function(#)]: Goto workspace number 20+# (C#) in monitor3 (VIRTUAL1)
-    - [Alt] + [Function(#)]: Goto workspace number 30+# (D#) in monitor4 (VIRTUAL2)
+    - [Winkey] + [Number(#)]: Go to workspace number # (A#) in monitor 1 (eDP1)
+    - [Winkey] + [Function(F#)]: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
+    - [Ctrl] + [Function(#)]: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - [Alt] + [Function(#)]: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - __Send to Workspace__
-    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # (A#) in monitor1 (eDP1)
-    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# (B#) in monitor2 (HDMI1)
-    - [Ctrl] + [Shift] + [Function(#)]: Send to workspace number 20+# (C#) in monitor3 (VIRTUAL1)
-    - [Alt] + [Shift] + [Function(#)]: Send to workspace number 30+# (D#) in monitor4 (VIRTUAL2)
+    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # (A#) in monitor 1 (eDP1)
+    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
+    - [Ctrl] + [Shift] + [Function(F#)]: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - [Alt] + [Shift] + [Function(F#)]: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - __Move between Workspace__
     - [Alt] + [Tab]: Show current workspace window list
-    - [Alt] + [Shift] + [Tab]: Show window list through all workspaces
 - __Manipulate Scratchpad__
     - [Winkey] + [-]: Send focus to scratchpad (background)
     - [Winkey] + [Shift] + [-]: Send all floating windows to scratchpad (background)
     - [Winkey] + [=]: Bring window in scratchpad to foreground one by one
     - [Winkey] + [Shift] + [=]: Bring all windows in scratchpad to foreground
-- __Lockscreen__
-    - [Crtl] + [Alt] + [Shift] + [l]: Lock screeen with xss-lock
+- __Lock screen__
+    - [Crtl] + [Alt] + [Shift] + [l]: Lock screen with xss-lock
 
 ### Mode Usage
 - __System mode ([Win] + [Shift] + [Esc])__
@@ -146,15 +145,15 @@ Table of Contents
 - __Display mode ([Win] + [Shift] + [x])__
     - deal with dual monitor, e.g. joint monitor, mirror monitor
 - __Mouse mode ([Win] + [Shift] + [m])__
-    - mouse emulator using keyboard, e.g. move, left/right click, cursor autohide
-- __Redshift mode ([Win] + [Shift] + [z])__
+    - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
+- __Red shift mode ([Win] + [Shift] + [z])__
     - screen color temperature tuner
 - __Resize mode ([Ctrl] + [Alt] + [r])__
     - resize focus window
 - __Gap mode ([Win] + [Shift] + [g])__
     - modify i3 gaps, e.g. inner gaps, outer gaps
-- __Titlebar mode ([Win] + [Shift] + [t])__
-    - modify i3 titlebar, e.g. hide/show titlebar, mark window
+- __Title bar mode ([Win] + [Shift] + [t])__
+    - modify i3 title bar, e.g. hide/show title bar, mark window
         - __Border mode ([b])__
             - modify i3 border
         - __Mark mode ([m])__

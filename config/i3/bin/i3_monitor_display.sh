@@ -43,3 +43,7 @@ fi
 
 # Reload wallpaper
 feh --bg-fill $HOME/.config/i3/share/default_wallpaper
+
+# Reload compositor
+/usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+#/usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

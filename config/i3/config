@@ -176,13 +176,13 @@ for_window [title="Preference$"] floating enable
 for_window [title="Pages Unresponsive"] floating enable
 
 # Floating for assigned class
-for_window [class="VirtualBox"] floating enable
-for_window [class="VirtualBox Machine"] floating disable
+
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="Blueman-manager"] floating enable
+for_window [class="Pavucontrol"] floating enable
 for_window [class="Org.gnome.DejaDup"] floating enable
 for_window [class="Org.gnome.Dictionary"] floating enable
-for_window [class="Pavucontrol"] floating enable
+for_window [class="Org.gnome.Nautilus"] floating enable
 for_window [class="Arandr"] floating enable
 for_window [class="Gtk-tree-watch.pl"] floating enable
 for_window [class="Gnome-calculator"] floating enable
@@ -191,6 +191,8 @@ for_window [class="Steam"] floating enable
 for_window [class="matplotlib"] floating enable
 for_window [class="Evince"] floating enable
 for_window [class="Eog"] floating enable
+for_window [class="Toplevel"] floating enable
+for_window [class="Gnome-screenshot"] floating enable
 
 # Sticky for floating window
 for_window [title="Picture-in-Picture"] sticky enable
@@ -1437,6 +1439,13 @@ bindsym Mod4+Shift+slash exec \
 # For i3 container/window color setup
 # -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
 
+# Startup wallpaper (auto theme with pywal, use wal instead of old feh)
+# Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
+#       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
+# Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
+#       16-color support than original 9-color. --nine flag for original 9-color
+exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
+
 # Load colors from Xresource (Pywal)
 # fallback is default value in case resource can't be loaded
 # command         name resource     fallback
@@ -1569,7 +1578,8 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 exec_always --no-startup-id $I3_BIN/i3_extend_HDMI1.sh
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
 exec_always --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
-# Set output display and primary display (use xrandr command to check) [Or use arandr (GUI)]
+
+# Set output display and primary display (use xrandr command to check) [or use arandr (GUI)]
 # label: --same-as   for mirror mode
 #        --right_of  for extend mode
 # -- General setting (arandr GUI)
@@ -1580,15 +1590,9 @@ exec_always --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
 # -- Setting for IOA monitor
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
+
 # Set output joint display automatically (HDMI1 connected or not)
 exec --no-startup-id $I3_BIN/i3_monitor_display.sh right
-
-# Startup wallpaper (auto theme with pywal, use wal instead of old feh)
-# Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
-#       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
-# Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
-#       16-color support than original 9-color. --nine flag for original 9-color
-exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
 
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1

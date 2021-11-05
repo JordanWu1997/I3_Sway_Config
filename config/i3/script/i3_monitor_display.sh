@@ -19,7 +19,7 @@ if [ $HDMI1_STATUS == 'connected' ]; then
         if [ $HDMI1_WIDTH == "520mm" ] && [ $HDMI1_HEIGHT == "290mm" ]; then
             echo "IOA 24'"
             # Locate eDP1 & HDMI1
-            $I3_BIN/i3_extend_HDMI1.sh && $I3_BIN/i3_shrink_eDP1.sh && xrandr \
+            $I3_SCRIPT/i3_extend_HDMI1.sh && $I3_SCRIPT/i3_shrink_eDP1.sh && xrandr \
                 --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
                 --output eDP1 --mode 1440x810_60.00 \
                 --output HDMI1 --mode 1920x1200_50.00 --primary
@@ -28,7 +28,7 @@ if [ $HDMI1_STATUS == 'connected' ]; then
         elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
             echo "ACER 27'"
             # Locate eDP1 & HDMI1
-            $I3_BIN/i3_shrink_eDP1.sh && xrandr \
+            $I3_SCRIPT/i3_shrink_eDP1.sh && xrandr \
                 --output eDP1 --pos 0x270 --output HDMI1 --pos 1440x0 \
                 --output eDP1 --mode 1440x810_60.00 \
                 --output HDMI1 --mode 1920x1080 --primary

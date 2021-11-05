@@ -33,8 +33,8 @@
 # Note: Add I3 working environment
 # Below commands must be added to shell dotfile (e.g. .bashrc .zshrc and etc.)
 #
-# export PATH="$PATH:$HOME/.config/i3/bin"
-# export I3_BIN="$HOME/.config/i3/bin"
+# export I3_SCRIPT="$HOME/.config/i3/script"
+# export PATH="$I3_SCRIPT:$PATH"
 
 # Note: Save workspace layout
 # i3-resurrect (https://pypi.org/project/i3-resurrect/)
@@ -278,9 +278,9 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_BIN/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
+    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_SCRIPT/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
     bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_BIN/i3_save_favorite_wallpaper_feh.sh
+    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_SCRIPT/i3_save_favorite_wallpaper_feh.sh
     # exit
     bindsym Return mode $mode_customization
     bindsym Escape mode "default"
@@ -295,7 +295,7 @@ mode "$mode_variety" {
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)"           && variety -f
     bindsym Shift+f exec notify-send -u low "Shuffle Favroite (VARIETY)"          && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
-    bindsym s       exec notify-send -u low "Save current as default"             && $I3_BIN/i3_set_default_wallpaper_variety.sh
+    bindsym s       exec notify-send -u low "Save current as default"             && $I3_SCRIPT/i3_set_default_wallpaper_variety.sh
     bindsym q       exec notify-send -u low "Quit Variety"                        && variety --quit
     # exit
     bindsym Return mode "$mode_wallpaper"
@@ -312,8 +312,8 @@ mode "$mode_conky" {
     bindsym 4 mode "$mode_conky_palette_shortcut_title"
     bindsym 5 mode "$mode_conky_palette_system_item"
     bindsym 6 mode "$mode_conky_palette_system_title"
-    bindsym 7 exec $I3_BIN/i3_conky_primary_only.sh
-    bindsym 8 exec $I3_BIN/i3_conky_all_monitors.sh
+    bindsym 7 exec $I3_SCRIPT/i3_conky_primary_only.sh
+    bindsym 8 exec $I3_SCRIPT/i3_conky_all_monitors.sh
     # exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
@@ -322,14 +322,14 @@ mode "$mode_conky" {
 # Palette mode (color palette for conky shortcut item)
 set $mode_conky_palette_shortcut_item Color for conky shortcut item: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_shortcut_item" {
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color0, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color1, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color2, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color3, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color4, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color5, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color6, mode "$mode_conky"
-    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh hotkey item color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color0, mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color1, mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color2, mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color3, mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color4, mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color5, mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color6, mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -338,14 +338,14 @@ mode "$mode_conky_palette_shortcut_item" {
 # Palette mode (color palette for conky shortcut title)
 set $mode_conky_palette_shortcut_title Color for conky shortcut title: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_shortcut_title" {
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color0, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color1, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color2, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color3, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color4, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color5, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color6, mode "$mode_conky"
-    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh hotkey title color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color0, mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color1, mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color2, mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color3, mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color4, mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color5, mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color6, mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -354,14 +354,14 @@ mode "$mode_conky_palette_shortcut_title" {
 # Palette mode (color palette for conky system item)
 set $mode_conky_palette_system_item Color for conky system item: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_system_item" {
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system item color0, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system item color1, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system item color2, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system item color3, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system item color4, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system item color5, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system item color6, mode "$mode_conky"
-    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh system item color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color0, mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color1, mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color2, mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color3, mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color4, mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color5, mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color6, mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -370,14 +370,14 @@ mode "$mode_conky_palette_system_item" {
 # Palette mode (color palette for conky system title)
 set $mode_conky_palette_system_title Color for conky system title: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_system_title" {
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system title color0, mode "$mode_conky"
-    bindsym 2 exec $I3_BIN/i3_conky_colorchanger.sh system title color1, mode "$mode_conky"
-    bindsym 3 exec $I3_BIN/i3_conky_colorchanger.sh system title color2, mode "$mode_conky"
-    bindsym 4 exec $I3_BIN/i3_conky_colorchanger.sh system title color3, mode "$mode_conky"
-    bindsym 5 exec $I3_BIN/i3_conky_colorchanger.sh system title color4, mode "$mode_conky"
-    bindsym 6 exec $I3_BIN/i3_conky_colorchanger.sh system title color5, mode "$mode_conky"
-    bindsym 7 exec $I3_BIN/i3_conky_colorchanger.sh system title color6, mode "$mode_conky"
-    bindsym 8 exec $I3_BIN/i3_conky_colorchanger.sh system title color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color0, mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color1, mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color2, mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color3, mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color4, mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color5, mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color6, mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color7, mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -389,13 +389,13 @@ mode "$mode_conky_palette_system_title" {
 # Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
 set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_conky [2]reload_dunst [3]reload_xsslock [4]reload_vis [5]reload_zathura
 mode "$mode_theme" {
-    bindsym e exec $I3_BIN/i3_wal_enable.sh && $I3_BIN/i3_restart.sh && notify-send -u low "Auto-theme with pywal"
-    bindsym d exec $I3_BIN/i3_wal_disable.sh && notify-send -u low "Disable auto-theme (kill pywal)"
-    bindsym r exec $I3_BIN/i3_restart.sh && notify-send -u low "Reload i3"
-    bindsym 1 exec $I3_BIN/i3_conky_colorchanger.sh system both color3 && $I3_BIN/i3_conky_colorchanger.sh hotkey both color3 && notify-send -u low "Reload conky"
-    bindsym 2 exec $I3_BIN/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
-    bindsym 3 exec $I3_BIN/i3_xsslock.sh current && notify-send -u low "Reload xsslock (session lock)"
-    bindsym 4 exec $I3_BIN/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
+    bindsym e exec $I3_SCRIPT/i3_wal_enable.sh && $I3_SCRIPT/i3_restart.sh && notify-send -u low "Auto-theme with pywal"
+    bindsym d exec $I3_SCRIPT/i3_wal_disable.sh && notify-send -u low "Disable auto-theme (kill pywal)"
+    bindsym r exec $I3_SCRIPT/i3_restart.sh && notify-send -u low "Reload i3"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system both color3 && $I3_SCRIPT/i3_conky_colorchanger.sh hotkey both color3 && notify-send -u low "Reload conky"
+    bindsym 2 exec $I3_SCRIPT/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
+    bindsym 3 exec $I3_SCRIPT/i3_xsslock.sh current && notify-send -u low "Reload xsslock (session lock)"
+    bindsym 4 exec $I3_SCRIPT/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     # Zathura-pywal need to be installed mannually [https://github.com/mslcarlson/zathura-pywal]
     bindsym 5 exec zathura-pywal -a 0.7 && notify-send -u low "Reload zathura (PDF viewer)"
     # exit
@@ -594,32 +594,32 @@ mode "$mode_gaps_left" {
 }
 
 mode "$mode_set_outer_gap" {
-    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 0,  mode "default"
-    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 5,  mode "default"
-    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 10, mode "default"
-    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 15, mode "default"
-    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 20, mode "default"
-    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 25, mode "default"
-    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 30, mode "default"
-    bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 35, mode "default"
-    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 40, mode "default"
-    bindsym 9 exec $I3_BIN/i3_default_valuechanger.sh outer_gap 45, mode "default"
+    bindsym 0 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 0,  mode "default"
+    bindsym 1 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 5,  mode "default"
+    bindsym 2 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 10, mode "default"
+    bindsym 3 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 15, mode "default"
+    bindsym 4 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 20, mode "default"
+    bindsym 5 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 25, mode "default"
+    bindsym 6 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 30, mode "default"
+    bindsym 7 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 35, mode "default"
+    bindsym 8 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 40, mode "default"
+    bindsym 9 exec $I3_SCRIPT/i3_default_valuechanger.sh outer_gap 45, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
 }
 
 mode "$mode_set_inner_gap" {
-    bindsym 0 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 0,  mode "default"
-    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 5,  mode "default"
-    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 10, mode "default"
-    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 15, mode "default"
-    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 20, mode "default"
-    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 25, mode "default"
-    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 30, mode "default"
-    bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 35, mode "default"
-    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 40, mode "default"
-    bindsym 9 exec $I3_BIN/i3_default_valuechanger.sh inner_gap 45, mode "default"
+    bindsym 0 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 0,  mode "default"
+    bindsym 1 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 5,  mode "default"
+    bindsym 2 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 10, mode "default"
+    bindsym 3 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 15, mode "default"
+    bindsym 4 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 20, mode "default"
+    bindsym 5 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 25, mode "default"
+    bindsym 6 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 30, mode "default"
+    bindsym 7 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 35, mode "default"
+    bindsym 8 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 40, mode "default"
+    bindsym 9 exec $I3_SCRIPT/i3_default_valuechanger.sh inner_gap 45, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
@@ -793,14 +793,14 @@ mode "$mode_titlebar" {
 # Titlebar fontsize mode (within titlebar mode)
 set $mode_titlebar_font Fontsize: [1] 0 [2] 8 [3] 10 [4] 12 [5] 14 [6] 16 [7] 18 [8] 20
 mode "$mode_titlebar_font" {
-    bindsym 1 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 0, mode "default"
-    bindsym 2 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 8, mode "default"
-    bindsym 3 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 10, mode "default"
-    bindsym 4 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 12, mode "default"
-    bindsym 5 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 14, mode "default"
-    bindsym 6 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 16, mode "default"
-    bindsym 7 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 18, mode "default"
-    bindsym 8 exec $I3_BIN/i3_default_valuechanger.sh titlebar_fontsize 20, mode "default"
+    bindsym 1 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 0, mode "default"
+    bindsym 2 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 8, mode "default"
+    bindsym 3 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 10, mode "default"
+    bindsym 4 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 12, mode "default"
+    bindsym 5 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 14, mode "default"
+    bindsym 6 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 16, mode "default"
+    bindsym 7 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 18, mode "default"
+    bindsym 8 exec $I3_SCRIPT/i3_default_valuechanger.sh titlebar_fontsize 20, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -832,12 +832,12 @@ mode "$mode_border" {
 # Set border width mode (within border mode)
 set $mode_set_border Width pixel value: [n]o_border [1]pix [2]pix [5]pix 1[0]pix [N]ormal
 mode "$mode_set_border" {
-    bindsym n       exec $I3_BIN/i3_default_valuechanger.sh border_width 0, mode "default"
-    bindsym 1       exec $I3_BIN/i3_default_valuechanger.sh border_width 1, mode "default"
-    bindsym 2       exec $I3_BIN/i3_default_valuechanger.sh border_width 2, mode "default"
-    bindsym 5       exec $I3_BIN/i3_default_valuechanger.sh border_width 5, mode "default"
-    bindsym 0       exec $I3_BIN/i3_default_valuechanger.sh border_width 10, mode "default"
-    bindsym Shift+n exec $I3_BIN/i3_default_valuechanger.sh border_width normal, mode "default"
+    bindsym n       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 0, mode "default"
+    bindsym 1       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 1, mode "default"
+    bindsym 2       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 2, mode "default"
+    bindsym 5       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 5, mode "default"
+    bindsym 0       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 10, mode "default"
+    bindsym Shift+n exec $I3_SCRIPT/i3_default_valuechanger.sh border_width normal, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_border"
     bindsym Escape mode "default"
@@ -845,24 +845,24 @@ mode "$mode_set_border" {
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
 # Mark the current window with this character [automark.py overwrites user-defined mark]
-bindsym Mod4+m exec $I3_BIN/i3_mark_operation.sh mark rofi none
+bindsym Mod4+m exec $I3_SCRIPT/i3_mark_operation.sh mark rofi none
 # Goto the window with the character
-bindsym Mod4+g exec $I3_BIN/i3_mark_operation.sh goto rofi none
+bindsym Mod4+g exec $I3_SCRIPT/i3_mark_operation.sh goto rofi none
 # Swap the current window to the window with the character (focus stays)
-bindsym Mod4+semicolon exec $I3_BIN/i3_mark_operation.sh swap rofi stay
+bindsym Mod4+semicolon exec $I3_SCRIPT/i3_mark_operation.sh swap rofi stay
 # Swap the current window to the window with the character (focus moves)
-bindsym Mod4+Shift+semicolon exec $I3_BIN/i3_mark_operation.sh swap rofi none
+bindsym Mod4+Shift+semicolon exec $I3_SCRIPT/i3_mark_operation.sh swap rofi none
 
 # Mark mode (within titlebar mode) [use i3-msg/rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
 set $mode_mark Mark: [M/m]ark [G/g]oto [S/s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
-    bindsym m       exec $I3_BIN/i3_mark_operation.sh mark rofi none
-    bindsym g       exec $I3_BIN/i3_mark_operation.sh goto rofi none
-    bindsym s       exec $I3_BIN/i3_mark_operation.sh swap rofi none
-    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh mark i3 none
-    bindsym Shift+g exec $I3_BIN/i3_mark_operation.sh goto i3 none
-    bindsym Shift+m exec $I3_BIN/i3_mark_operation.sh swap i3 none
+    bindsym m       exec $I3_SCRIPT/i3_mark_operation.sh mark rofi none
+    bindsym g       exec $I3_SCRIPT/i3_mark_operation.sh goto rofi none
+    bindsym s       exec $I3_SCRIPT/i3_mark_operation.sh swap rofi none
+    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operation.sh mark i3 none
+    bindsym Shift+g exec $I3_SCRIPT/i3_mark_operation.sh goto i3 none
+    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operation.sh swap i3 none
     bindsym e       exec i3_automark_enable.sh, mode "default"
     bindsym d       exec i3_automark_disable.sh, mode "default"
     # exit mode: "Enter" or "Escape"
@@ -1081,46 +1081,46 @@ set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-
 bindsym Mod4+p       mode $mode_swap_workspace
 bindsym Mod4+Shift+p mode $mode_swap_workspace
 mode "$mode_swap_workspace" {
-    bindsym Mod4+1   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 1,  mode "default"
-    bindsym Mod4+2   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 2,  mode "default"
-    bindsym Mod4+3   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 3,  mode "default"
-    bindsym Mod4+4   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 4,  mode "default"
-    bindsym Mod4+5   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 5,  mode "default"
-    bindsym Mod4+6   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 6,  mode "default"
-    bindsym Mod4+7   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 7,  mode "default"
-    bindsym Mod4+8   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 8,  mode "default"
-    bindsym Mod4+9   exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 9,  mode "default"
-    bindsym Mod4+10  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh A 10, mode "default"
-    bindsym Mod4+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 1,  mode "default"
-    bindsym Mod4+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 2,  mode "default"
-    bindsym Mod4+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 3,  mode "default"
-    bindsym Mod4+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 4,  mode "default"
-    bindsym Mod4+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 5,  mode "default"
-    bindsym Mod4+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 6,  mode "default"
-    bindsym Mod4+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 7,  mode "default"
-    bindsym Mod4+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 8,  mode "default"
-    bindsym Mod4+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 9,  mode "default"
-    bindsym Mod4+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh B 10, mode "default"
-    bindsym Ctrl+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 1,  mode "default"
-    bindsym Ctrl+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 2,  mode "default"
-    bindsym Ctrl+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 3,  mode "default"
-    bindsym Ctrl+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 4,  mode "default"
-    bindsym Ctrl+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 5,  mode "default"
-    bindsym Ctrl+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 6,  mode "default"
-    bindsym Ctrl+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 7,  mode "default"
-    bindsym Ctrl+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 8,  mode "default"
-    bindsym Ctrl+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 9,  mode "default"
-    bindsym Ctrl+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh C 10, mode "default"
-    bindsym Mod1+F1  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 1,  mode "default"
-    bindsym Mod1+F2  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 2,  mode "default"
-    bindsym Mod1+F3  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 3,  mode "default"
-    bindsym Mod1+F4  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 4,  mode "default"
-    bindsym Mod1+F5  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 5,  mode "default"
-    bindsym Mod1+F6  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 6,  mode "default"
-    bindsym Mod1+F7  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 7,  mode "default"
-    bindsym Mod1+F8  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 8,  mode "default"
-    bindsym Mod1+F9  exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 9,  mode "default"
-    bindsym Mod1+F10 exec --no-startup-id $I3_BIN/i3_swap_workspace.sh D 10, mode "default"
+    bindsym Mod4+1   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 1,  mode "default"
+    bindsym Mod4+2   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 2,  mode "default"
+    bindsym Mod4+3   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 3,  mode "default"
+    bindsym Mod4+4   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 4,  mode "default"
+    bindsym Mod4+5   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 5,  mode "default"
+    bindsym Mod4+6   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 6,  mode "default"
+    bindsym Mod4+7   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 7,  mode "default"
+    bindsym Mod4+8   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 8,  mode "default"
+    bindsym Mod4+9   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 9,  mode "default"
+    bindsym Mod4+10  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 10, mode "default"
+    bindsym Mod4+F1  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 1,  mode "default"
+    bindsym Mod4+F2  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 2,  mode "default"
+    bindsym Mod4+F3  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 3,  mode "default"
+    bindsym Mod4+F4  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 4,  mode "default"
+    bindsym Mod4+F5  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 5,  mode "default"
+    bindsym Mod4+F6  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 6,  mode "default"
+    bindsym Mod4+F7  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 7,  mode "default"
+    bindsym Mod4+F8  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 8,  mode "default"
+    bindsym Mod4+F9  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 9,  mode "default"
+    bindsym Mod4+F10 exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 10, mode "default"
+    bindsym Ctrl+F1  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 1,  mode "default"
+    bindsym Ctrl+F2  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 2,  mode "default"
+    bindsym Ctrl+F3  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 3,  mode "default"
+    bindsym Ctrl+F4  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 4,  mode "default"
+    bindsym Ctrl+F5  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 5,  mode "default"
+    bindsym Ctrl+F6  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 6,  mode "default"
+    bindsym Ctrl+F7  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 7,  mode "default"
+    bindsym Ctrl+F8  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 8,  mode "default"
+    bindsym Ctrl+F9  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 9,  mode "default"
+    bindsym Ctrl+F10 exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 10, mode "default"
+    bindsym Mod1+F1  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 1,  mode "default"
+    bindsym Mod1+F2  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 2,  mode "default"
+    bindsym Mod1+F3  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 3,  mode "default"
+    bindsym Mod1+F4  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 4,  mode "default"
+    bindsym Mod1+F5  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 5,  mode "default"
+    bindsym Mod1+F6  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 6,  mode "default"
+    bindsym Mod1+F7  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 7,  mode "default"
+    bindsym Mod1+F8  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 8,  mode "default"
+    bindsym Mod1+F9  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 9,  mode "default"
+    bindsym Mod1+F10 exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 10, mode "default"
     # Save/Restore workspace layout
     bindsym s mode $mode_save_workspace
     bindsym r mode $mode_restore_workspace
@@ -1173,7 +1173,7 @@ mode "$mode_save_workspace" {
     bindsym Mod1+F9  exec --no-startup-id i3-resurrect save -w 39:D9,  mode "default"
     bindsym Mod1+F10 exec --no-startup-id i3-resurrect save -w 40:D10, mode "default"
     # Save all workspaces
-    bindsym s exec --no-startup-id $I3_BIN/i3_save_all_workspace.sh, mode "$mode_swap_workspace"
+    bindsym s exec --no-startup-id $I3_SCRIPT/i3_save_all_workspace.sh, mode "$mode_swap_workspace"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1223,7 +1223,7 @@ mode "$mode_restore_workspace" {
     bindsym Mod1+F9  exec --no-startup-id i3-resurrect restore -w 39:D9,  mode "default"
     bindsym Mod1+F10 exec --no-startup-id i3-resurrect restore -w 40:D10, mode "default"
     # Restore all workspaces
-    bindsym r exec --no-startup-id $I3_BIN/i3_restore_all_workspace.sh, mode "$mode_swap_workspace"
+    bindsym r exec --no-startup-id $I3_SCRIPT/i3_restore_all_workspace.sh, mode "$mode_swap_workspace"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1291,7 +1291,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
         #$([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
         #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
     # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
-    bindsym Return exec --no-startup-id $I3_BIN/i3_i3lock.sh current, mode "default"
+    bindsym Return exec --no-startup-id $I3_SCRIPT/i3_i3lock.sh current, mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -1313,7 +1313,7 @@ mode "$mode_system" {
 
 # Input method - ibus
 # Change ibus engine
-bindsym Ctrl+Mod1+space exec $I3_BIN/i3_languagechanger.sh
+bindsym Ctrl+Mod1+space exec $I3_SCRIPT/i3_languagechanger.sh
 # Disable full character mode of IBUS by default
 bindsym Shift+space exec notify-send -u low "IBUS full character mode has been disabled by default. [Try to use system tray IBUS icon if you really want to have full character]"
 
@@ -1408,16 +1408,16 @@ mode "$mode_mouse_autohide" {
 set $mode_display Display: [a]Automatic [0]Arandr [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810 [P/p]Primary HDMI1/eDP1
 bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
-    bindsym a       exec --no-startup-id $I3_BIN/i3_monitor_display.sh right
+    bindsym a       exec --no-startup-id $I3_SCRIPT/i3_monitor_display.sh right
     bindsym 0       exec --no-startup-id arandr, mode "default"
     bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off  --output eDP1  --auto --primary, mode "default"
     bindsym 2       exec --no-startup-id xrandr --output eDP1  --off  --output HDMI1 --auto --primary, mode "default"
     bindsym 3       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1, mode "default"
     bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as  eDP1, mode "default"
-    bindsym Shift+h exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh reset, mode "default"
-    bindsym h       exec --no-startup-id $I3_BIN/i3_extend_HDMI1.sh extend, mode "default"
-    bindsym Shift+e exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh reset, mode "default"
-    bindsym e       exec --no-startup-id $I3_BIN/i3_shrink_eDP1.sh shrink, mode "default"
+    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh reset, mode "default"
+    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh extend, mode "default"
+    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh reset, mode "default"
+    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh shrink, mode "default"
     bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary, mode "default"
     bindsym p       exec --no-startup-id xrandr --output eDP1 --primary, mode "default"
     # back to normal: Enter or Escape
@@ -1575,9 +1575,9 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 
 # Set additional monitor display options [now all integrated with i3_monitor_display.sh]
 # -- Setting for extended HDMI1 (for 16:10 1080P monitor)
-exec_always --no-startup-id $I3_BIN/i3_extend_HDMI1.sh
+exec_always --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
-exec_always --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
+exec_always --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh
 
 # Set output display and primary display (use xrandr command to check) [or use arandr (GUI)]
 # label: --same-as   for mirror mode
@@ -1592,7 +1592,7 @@ exec_always --no-startup-id $I3_BIN/i3_shrink_eDP1.sh
 #exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
 
 # Set output joint display automatically (HDMI1 connected or not)
-exec --no-startup-id $I3_BIN/i3_monitor_display.sh right
+exec --no-startup-id $I3_SCRIPT/i3_monitor_display.sh right
 
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
@@ -1647,7 +1647,7 @@ exec_always --no-startup-id $PYTHON_BIN/flashfocus
 
 # Dunst (notification with wal color theme support)
 exec_always --no-startup-id dunst
-exec_always --no-startup-id $I3_BIN/i3_dunst_colorchanger.sh
+exec_always --no-startup-id $I3_SCRIPT/i3_dunst_colorchanger.sh
 
 # KDE Connet (connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &
@@ -1667,11 +1667,11 @@ exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 #exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
-exec --no-startup-id $I3_BIN/i3_battery-popup.sh -N -L 30
+exec --no-startup-id $I3_SCRIPT/i3_battery-popup.sh -N -L 30
 
 # Automark windows [https://github.com/lincheney/i3-automark]
 # Modified to mark all windows with lowercase instead of original uppercase
-exec_always --no-startup-id $I3_BIN/i3_automark.py
+exec_always --no-startup-id $I3_SCRIPT/i3_automark.py
 
 # Dwindle layout (autotiling) [https://github.com/nwg-piotr/autotiling]
 # For dwindle mode (Tiling direction sequence: H -> V -> H -> V ...) support
@@ -1697,7 +1697,7 @@ exec_always --no-startup-id $PYTHON_BIN/autotiling
 # Modify as you see fit. xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
-exec_always --no-startup-id $I3_BIN/i3_xsslock.sh current
+exec_always --no-startup-id $I3_SCRIPT/i3_xsslock.sh current
 
 # Set compositor for transparency support (now use picom instead)
 #exec --no-startup-id xcompmgr -c -f -n

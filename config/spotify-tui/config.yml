@@ -1,3 +1,5 @@
+# ~/.config/spotify-tui/config.yml
+#
 # Sample config file
 
 # The theme colours can be an rgb string of the form "255, 255, 255" or a string that references the colours from your terminal theme: Reset, Black, Red, Green, Yellow, Blue, Magenta, Cyan, Gray, DarkGray, LightRed, LightGreen, LightYellow, LightBlue, LightMagenta, LightCyan, White.
@@ -11,7 +13,7 @@ theme:
   inactive: Gray # borders of inactive panes
   playbar_background: Black # background of progress bar
   playbar_progress: LightCyan # filled-in part of the progress bar (default: LightCyan)
-  playbar_progress_text: Cyan # song length and time played/left indicator in the progress bar
+  playbar_progress_text: White # song length and time played/left indicator in the progress bar
   playbar_text: White # artist name in player pane
   selected: LightCyan # a) selected pane border, b) hovered item in list, & c) track title in player (default: LightCyan)
   text: "255, 255, 255" # text in panes
@@ -44,13 +46,10 @@ keybindings:
   # ctrl-q works,
   # ctrl-alt-q doesn't.
   back: "q"
-
   jump_to_album: "a"
-
   # Shift modifiers use a capital letter (also applies with other modifier keys
   # like ctrl-A)
   jump_to_artist_album: "A"
-
   manage_devices: "d"
   decrease_volume: "-"
   increase_volume: "+"

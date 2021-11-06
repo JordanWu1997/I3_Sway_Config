@@ -121,7 +121,8 @@
 # setxkbmap -option "ctrl:aa_ctrl"
 
 # Key bindsym name search
-# Use xev to find out bindsym name of key
+# Use xev to find out bindsym name of key interactively
+# Use xmodmap -pke to print out all keycode
 
 # Reference
 # -- https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
@@ -136,7 +137,7 @@
 # Setup mod (Prefix)#
 # Mod1: alt, Mod4: win
 
-# Setup monitor order according to frequent-usage priorty
+# Setup monitor order according to frequent-usage priority
 # If the monitor does not exist, workspaces will still work as normal
 set $monitor1 HDMI1
 set $monitor2 eDP1
@@ -176,7 +177,6 @@ for_window [title="Preference$"] floating enable
 for_window [title="Pages Unresponsive"] floating enable
 
 # Floating for assigned class
-
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Pavucontrol"] floating enable
@@ -187,12 +187,14 @@ for_window [class="Arandr"] floating enable
 for_window [class="Gtk-tree-watch.pl"] floating enable
 for_window [class="Gnome-calculator"] floating enable
 for_window [class="kruler"] floating enable
-for_window [class="Steam"] floating enable
 for_window [class="matplotlib"] floating enable
 for_window [class="Evince"] floating enable
 for_window [class="Eog"] floating enable
 for_window [class="Toplevel"] floating enable
 for_window [class="Gnome-screenshot"] floating enable
+
+# Floating for steam applications
+for_window [class="Steam"] floating enable
 
 # Sticky for floating window
 for_window [title="Picture-in-Picture"] sticky enable
@@ -269,18 +271,18 @@ mode "$mode_customization" {
 set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [8]Misellaneous [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
 mode "$mode_wallpaper" {
     bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)"     && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)"   && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)"     && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)"     && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)"    && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)" && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)" && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)" && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)" && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)" && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
     bindsym 6 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper6 -name '*.png' | shuf -n1)
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)"      && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default"      && $I3_SCRIPT/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
-    bindsym r exec notify-send -u low "Reset Wallpaper to Default"   && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    bindsym a exec notify-send -u low "Add current to Favorite"      && $I3_SCRIPT/i3_save_favorite_wallpaper_feh.sh
+    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
+    bindsym r exec notify-send -u low "Reset Wallpaper to Default" && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
+    bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_save_favorite_wallpaper_feh.sh
     # exit
     bindsym Return mode $mode_customization
     bindsym Escape mode "default"
@@ -289,14 +291,14 @@ mode "$mode_wallpaper" {
 # Variety mode (within wallpaper mode)
 set $mode_variety Variety: [n]ext [p]revious [F]avorite [P]ause [R]esume [A]dd_Favorite [s]ave_as_default [q]uit
 mode "$mode_variety" {
-    bindsym n       exec notify-send -u low "Next Wallpaper (VARIETY)"            && variety -n
-    bindsym p       exec notify-send -u low "Previous Wallaper (VARIETY)"         && variety -p
-    bindsym Shift+p exec notify-send -u low "Pausee Changing Wallpaper (VARIETY)" && variety --pause
+    bindsym n       exec notify-send -u low "Next Wallpaper (VARIETY)" && variety -n
+    bindsym p       exec notify-send -u low "Previous Wallpaper (VARIETY)" && variety -p
+    bindsym Shift+p exec notify-send -u low "Pause Changing Wallpaper (VARIETY)" && variety --pause
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
-    bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)"           && variety -f
-    bindsym Shift+f exec notify-send -u low "Shuffle Favroite (VARIETY)"          && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
-    bindsym s       exec notify-send -u low "Save current as default"             && $I3_SCRIPT/i3_set_default_wallpaper_variety.sh
-    bindsym q       exec notify-send -u low "Quit Variety"                        && variety --quit
+    bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)" && variety -f
+    bindsym Shift+f exec notify-send -u low "Shuffle Favorite (VARIETY)" && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
+    bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_set_default_wallpaper_variety.sh
+    bindsym q       exec notify-send -u low "Quit Variety" && variety --quit
     # exit
     bindsym Return mode "$mode_wallpaper"
     bindsym Escape mode "default"
@@ -645,8 +647,6 @@ bindsym Ctrl+Mod1+5 exec --no-startup-id $terminal -e nmtui
 bindsym Ctrl+Mod1+6 exec --no-startup-id $terminal -e cava
 # 7 - Spotify (TUI)
 bindsym Ctrl+Mod1+7 exec --no-startup-id $terminal -e spotify_tui.sh
-## 8 - Spotify (GUI and backend)
-#bindsym Ctrl+Mod1+8 exec --no-startup-id flatpak run com.spotify.Client
 # 8 - Zathura (PDF viewer)
 bindsym Ctrl+Mod1+8 exec --no-startup-id zathura
 # 9 - Bluetooth manager: blueman [Installation: dnf install blueman]
@@ -1336,7 +1336,7 @@ focus_follows_mouse yes
 mouse_warping output
 
 # The middle button over a titlebar kills the window
-# The middle button and a modifer over any part of the window kills the window
+# The middle button and a modifier over any part of the window kills the window
 bindsym --release button2           kill
 bindsym --whole-window Mod4+button2 kill
 
@@ -1394,7 +1394,7 @@ mode "$mode_mouse" {
 # Mouse autohide mode (within mouse mode)
 set $mode_mouse_autohide Mouse autohide: [e]nable_mouse_autohide [d]isable_mouse_autohide
 mode "$mode_mouse_autohide" {
-    # Cursor autohide [hhpc is needed]
+    # Cursor autohide [hhpc need to be installed]
     bindsym e exec "hhpc -i 5", mode "default"
     bindsym d exec "killall hhpc", mode "default"
     # exit
@@ -1410,10 +1410,10 @@ bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
     bindsym a       exec --no-startup-id $I3_SCRIPT/i3_monitor_display.sh right
     bindsym 0       exec --no-startup-id arandr, mode "default"
-    bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off  --output eDP1  --auto --primary, mode "default"
-    bindsym 2       exec --no-startup-id xrandr --output eDP1  --off  --output HDMI1 --auto --primary, mode "default"
+    bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off --output eDP1  --auto --primary, mode "default"
+    bindsym 2       exec --no-startup-id xrandr --output eDP1  --off --output HDMI1 --auto --primary, mode "default"
     bindsym 3       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1, mode "default"
-    bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as  eDP1, mode "default"
+    bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as eDP1, mode "default"
     bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh reset, mode "default"
     bindsym h       exec --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh extend, mode "default"
     bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh reset, mode "default"
@@ -1441,7 +1441,7 @@ bindsym Mod4+Shift+slash exec \
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 # Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
-#       but it loads well when (1) enter i3 next time or (2) just simlpy restart i3.
+#       but it loads well when (1) enter i3 next time or (2) just simply restart i3.
 # Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
 #       16-color support than original 9-color. --nine flag for original 9-color
 exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
@@ -1486,18 +1486,21 @@ client.background                 $c0
 # if available). For i3bar theme configuration, check online color palette configurator
 # -- https://thomashunter.name/i3-configurator/
 
-# Status bar for general purposes
+# Status bar for general purposes (primary output)
 bar {
     # Bar property
-    id bar_base
+    id bar_base_primary
     # Basic bar
     position top
+    # Bar visibility
     mode dock
+    # Bar output display
+    output primary
     # Height in pixels (Only for i3-gaps)
     height 25
-    # Modifier
+    # Modifier (show bar when pressing)
     modifier none
-    # Mode indicator
+    # Mode indicator (show i3 mode)
     binding_mode_indicator no
     # Font
     font pango: DroidSansMono Nerd Font 12
@@ -1519,9 +1522,46 @@ bar {
     brightness.step=1 \
     -t i3bar-wal             # status for pywal i3bar
     #-t i3bar-iceberg-fedora # status for original i3bar
-
     # Bar color [Wal color]
-    # [Comment below lines if you want original i3bar color]
+    colors{
+        background $bg
+        statusline $fg
+        separator  $bg
+        # item             border    bground   text
+        focused_workspace  $c5       $c3       $c15
+        active_workspace   $c5       $c3       $c0
+        inactive_workspace $c5       $c3       $c0
+        urgent_workspace   $c1       $c7       $c0
+        binding_mode       $bg       $bg       $fg
+    }
+}
+
+# Status bar for non-primary output
+bar {
+    # Bar property
+    id bar_base_nonprimary
+    position top
+    mode dock
+    output nonprimary
+    height 25
+    modifier none
+    binding_mode_indicator no
+    font pango: DroidSansMono Nerd Font 12
+    workspace_buttons yes
+    workspace_min_width 20
+    strip_workspace_numbers yes
+    tray_output none
+    # Bumblebee-status
+    status_command $HOME/.local/bin/bumblebee-status \
+    -m title network_traffic sensors cpu memory \
+    pasink pasource brightness battery \
+    -p home.path=/home time.format="%H:%M" \
+    date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
+    disk.format="{percent:05.02f}%" \
+    pasink.percent_change=1 pasource.percent_change=1 \
+    brightness.step=1 \
+    -t i3bar-wal
+    # Bar color [Wal color]
     colors{
         background $bg
         statusline $fg
@@ -1548,9 +1588,7 @@ bar{
     workspace_buttons yes
     strip_workspace_numbers yes
     tray_output none
-
     # Bar color [Wal color]
-    # [Comment below lines if you want original i3bar color]
     colors{
         background $bg
         statusline $fg
@@ -1565,7 +1603,7 @@ bar{
 }
 
 # Status bar toggle, hide or show
-bindsym Mod4+Shift+b bar mode toggle bar_base
+bindsym Mod4+Shift+b bar mode toggle bar_base, bar mode toggle bar_base_nonprimary
 bindsym Mod4+b       bar mode toggle bar_overlay
 
 # ======================================================================================
@@ -1597,12 +1635,12 @@ exec --no-startup-id $I3_SCRIPT/i3_monitor_display.sh right
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
 
-# Lxsession agent (load xsession initializaion)
+# Lxsession agent (load xsession initialization)
 # For now, this agent will cause mouse left/right button reversed
 #exec --no-startup-id lxsession
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-indjependent system tray GUI for it.
+# and nm-applet is a desktop environment-independent system tray GUI for it.
 exec_always --no-startup-id nm-applet
 
 # Bluetooth Manager system tray GUI
@@ -1612,7 +1650,7 @@ exec_always --no-startup-id blueman-applet
 exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
-exec_always --no-startup-id imwheel -b 45
+exec --no-startup-id imwheel -b 45
 
 # Mouse accerlation profile (xset support)
 exec_always --no-startup-id xset m 10 2
@@ -1624,7 +1662,7 @@ exec_always --no-startup-id xset r rate 300 40
 exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 
 # Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
-# Need to be complied from source mannually
+# Need to be complied from source manually
 # Conflict with i3lock since there is no cursor to lock
 #exec_always --no-startup-id hhpc -i 3
 
@@ -1649,7 +1687,7 @@ exec_always --no-startup-id $PYTHON_BIN/flashfocus
 exec_always --no-startup-id dunst
 exec_always --no-startup-id $I3_SCRIPT/i3_dunst_colorchanger.sh
 
-# KDE Connet (connect to android smartphone) in background
+# KDE Connect (connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &
 exec --no-startup-id kdeconnect-indicator &
 
@@ -1657,9 +1695,9 @@ exec --no-startup-id kdeconnect-indicator &
 exec --no-startup-id mailspring --background
 
 # Flameshot (screenshot tool)
-exec_always --no-startup-id flameshot
+#exec_always --no-startup-id flameshot
 
-# Neofetch initalization at startup
+# Neofetch initialization at startup
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
 
 # Conky (system overview and hotkey)

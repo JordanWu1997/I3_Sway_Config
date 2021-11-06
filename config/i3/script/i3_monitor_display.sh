@@ -51,4 +51,4 @@ feh --bg-fill $HOME/.config/i3/share/default_wallpaper
 
  #Reload compositor
 killall picom
-picom --config /home/jordankhwu/.config/picom/picom.conf
+picom

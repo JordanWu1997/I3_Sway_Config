@@ -1,0 +1,4 @@
+# Package library must be installed
+sudo dnf install perl-JSON-XS
+sudo dnf install perl-AnyEvent-I3.noarch
+sudo dnf install perl-Gtk2.x86_64k

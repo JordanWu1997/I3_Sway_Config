@@ -1,0 +1,70 @@
+# ~/.config/ncspot/config.toml
+# Configuration for ncspot (spotify-cli)
+# -- Manual: https://github.com/hrkfdn/ncspot#configuration
+
+# General setup
+default_keybindings = false
+use_nerdfont = true
+notify = true
+album_colum= true
+shuffle = false
+bitrate = 320
+flip_status_indicators = true
+repeat = "playlist"
+
+[keybindings]
+"?" = "help"
+"=" = "volup 1"
+"_" = "voldown 1"
+"+" = "volup 10"
+"-" = "voldown 10"
+"p" = "previous"
+"n" = "next"
+"h" = "move left 1"
+"j" = "move down 1"
+"k" = "move up 1"
+"l" = "move right 1"
+"q" = "back"
+"Esc" = "back"
+"Ctrl+q" = "quit"
+"," = "seek -1000"
+"." = "seek +1000"
+"<" = "seek -10000"
+">" = "seek +10000"
+"Space" = "playpause"
+"Ctrl+d" = "move down 10"
+"Ctrl+u" = "move up 10"
+"Home" = "move top"
+"End" = "move bottom"
+"o" = "open selected"
+"Enter" = "play"
+"f" = "similar selected"
+"a" = "goto album"
+"A" = "goto artist"
+"S" = "shuffle"
+"s" = "save"
+"Ctrl+s" = "save queue"
+"D" = "delete"
+"R" = "repeat"
+"F1" = "focus queue"
+"F2" = "focus search"
+"F3" = "focus library"
+
+[theme]
+background = "black"
+primary = "light white"
+secondary = "light white"
+title = "cyan"
+playing = "cyan"
+playing_selected = "light cyan"
+playing_bg = "black"
+highlight = "light white"
+highlight_bg = "light gray"
+error = "light white"
+error_bg = "red"
+statusbar = "black"
+statusbar_progress = "cyan"
+statusbar_bg = "cyan"
+cmdline = "light white"
+cmdline_bg = "black"
+search_match = "light red"

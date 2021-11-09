@@ -4,7 +4,7 @@
 
 # General setup
 default_keybindings = false
-use_nerdfont = true
+use_nerdfont = false
 notify = true
 album_colum= true
 shuffle = false
@@ -15,9 +15,9 @@ repeat = "playlist"
 [keybindings]
 "?" = "help"
 "=" = "volup 1"
-"_" = "voldown 1"
-"+" = "volup 10"
-"-" = "voldown 10"
+"-" = "voldown 1"
+"+" = "volup 5"
+"_" = "voldown 5"
 "p" = "previous"
 "n" = "next"
 "h" = "move left 1"
@@ -54,17 +54,17 @@ repeat = "playlist"
 background = "black"
 primary = "light white"
 secondary = "light white"
-title = "cyan"
-playing = "cyan"
-playing_selected = "light cyan"
+title = "light cyan"
+playing = "light cyan"
+playing_selected = "black"
 playing_bg = "black"
-highlight = "light white"
-highlight_bg = "light gray"
+highlight = "black"
+highlight_bg = "light cyan"
 error = "light white"
 error_bg = "red"
 statusbar = "black"
-statusbar_progress = "cyan"
-statusbar_bg = "cyan"
+statusbar_progress = "ligh cyan"
+statusbar_bg = "light cyan"
 cmdline = "light white"
 cmdline_bg = "black"
 search_match = "light red"

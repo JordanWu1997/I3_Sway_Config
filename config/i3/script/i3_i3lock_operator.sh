@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 current="$HOME/.config/i3/share/default_wallpaper"
 default="$HOME/.config/i3/share/default_thinkpad_wallpaper.png"

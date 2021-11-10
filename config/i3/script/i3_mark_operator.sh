@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr//bin/env bash
 
 # Set default border width
 if [ $# -eq 4 ]; then
@@ -15,7 +15,12 @@ echo $default_width
 i3-msg [con_mark="^.*"] border normal
 
 # Mark current window [Automark.py overwrite user-defined mark]
-if [ $1 == "mark" ]; then
+if [ -z $1 ]; then
+    echo
+    echo "Wrong Input:"
+    echo "Available Usage: [i3_mark_operation.sh] [mark/goto/swap] [i3/rofi] ([border width])"
+    echo
+elif [ $1 == "mark" ]; then
     if [ $2 == "i3" ]; then
         i3-input -F "mark %s" -l 1 -P "Mark: "
     elif [ $2 == "rofi" ]; then
@@ -49,10 +54,7 @@ elif [ $1 == "swap" ]; then
         fi
     fi
 else
-    echo
-    echo "Wrong Input:"
-    echo "Available Usage: [i3_mark_operation.sh] [mark/goto/swap] [i3/rofi] ([border width])"
-    echo
+    echo $0
 fi
 
 # Restore border for all windows

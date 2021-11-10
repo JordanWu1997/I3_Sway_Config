@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #        -lf/nf/cf color
 #            Defines the foreground color for low, normal and critical notifications respectively.

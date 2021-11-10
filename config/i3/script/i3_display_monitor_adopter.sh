@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get HDMI1 Parameter
 # Note: xrandr HDMI1 display information is added when HDMI1 is plugged
@@ -19,7 +19,9 @@ if [ $HDMI1_STATUS == 'connected' ]; then
         if [ $HDMI1_WIDTH == "520mm" ] && [ $HDMI1_HEIGHT == "290mm" ]; then
             echo "IOA 24'"
             # Locate eDP1 & HDMI1
-            $I3_SCRIPT/i3_extend_HDMI1.sh && $I3_SCRIPT/i3_shrink_eDP1.sh && xrandr \
+            $I3_SCRIPT/i3_display_operator.sh HDMI1 extend && \
+                $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && \
+                xrandr \
                 --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
                 --output eDP1 --mode 1440x810_60.00 \
                 --output HDMI1 --mode 1920x1200_50.00 --primary
@@ -28,7 +30,7 @@ if [ $HDMI1_STATUS == 'connected' ]; then
         elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
             echo "ACER 27'"
             # Locate eDP1 & HDMI1
-            $I3_SCRIPT/i3_shrink_eDP1.sh && xrandr \
+            $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && xrandr \
                 --output eDP1 --pos 0x270 --output HDMI1 --pos 1440x0 \
                 --output eDP1 --mode 1440x810_60.00 \
                 --output HDMI1 --mode 1920x1080 --primary
@@ -50,5 +52,4 @@ fi
 feh --bg-fill $HOME/.config/i3/share/default_wallpaper
 
  #Reload compositor
-killall picom
-picom
+killall picom; picom

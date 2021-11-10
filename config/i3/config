@@ -282,9 +282,11 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
+    #bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
+    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default feh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
     bindsym r exec notify-send -u low "Reset Wallpaper to Default" && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_save_favorite_wallpaper_feh.sh
+    #bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_save_favorite_wallpaper_feh.sh
+    bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_wallpaper_operator.sh save_current
     # exit
     bindsym Return mode $mode_customization
     bindsym Escape mode "default"
@@ -299,7 +301,8 @@ mode "$mode_variety" {
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)" && variety -f
     bindsym Shift+f exec notify-send -u low "Shuffle Favorite (VARIETY)" && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
-    bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_set_default_wallpaper_variety.sh
+    #bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_set_default_wallpaper_variety.sh
+    bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default variety
     bindsym q       exec notify-send -u low "Quit Variety" && variety --quit
     # exit
     bindsym Return mode "$mode_wallpaper"
@@ -316,8 +319,8 @@ mode "$mode_conky" {
     bindsym 4 mode "$mode_conky_palette_shortcut_title"
     bindsym 5 mode "$mode_conky_palette_system_item"
     bindsym 6 mode "$mode_conky_palette_system_title"
-    bindsym 7 exec $I3_SCRIPT/i3_conky_primary_only.sh
-    bindsym 8 exec $I3_SCRIPT/i3_conky_all_monitors.sh
+    bindsym 7 exec $I3_SCRIPT/i3_conky_monitor_primary_only.sh
+    bindsym 8 exec $I3_SCRIPT/i3_conky_monitor_all.sh
     # exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
@@ -388,17 +391,17 @@ mode "$mode_conky_palette_system_title" {
 }
 
 # Theme mode (pywal color theme support)
+# -- Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
 # Pywal (https://github.com/dylanaraps/pywal)
-# Installation: pip install pywal
-# Autotune Xcolor corresponding to current wallpaper to get a better theme consistency
+# -- Installation: pip install pywal
 set $mode_theme Theme: [e]nable_autotheme [d]isable_autotheme [r]eload_whole_i3 [1]reload_conky [2]reload_dunst [3]reload_xsslock [4]reload_vis [5]reload_zathura
 mode "$mode_theme" {
-    bindsym e exec $I3_SCRIPT/i3_wal_enable.sh && $I3_SCRIPT/i3_restart.sh && notify-send -u low "Auto-theme with pywal"
-    bindsym d exec $I3_SCRIPT/i3_wal_disable.sh && notify-send -u low "Disable auto-theme (kill pywal)"
-    bindsym r exec $I3_SCRIPT/i3_restart.sh && notify-send -u low "Reload i3"
+    bindsym e exec $I3_SCRIPT/i3_wal_operator.sh enable && $I3_SCRIPT/i3_wal_operator.sh restart && notify-send -u low "Auto-theme with pywal"
+    bindsym d exec $I3_SCRIPT/i3_wal_operator.sh disable && notify-send -u low "Disable auto-theme (kill pywal)"
+    bindsym r exec $I3_SCRIPT/i3_restart_i3_for_wal.sh && notify-send -u low "Reload i3"
     bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system both color3 && $I3_SCRIPT/i3_conky_colorchanger.sh hotkey both color3 && notify-send -u low "Reload conky"
     bindsym 2 exec $I3_SCRIPT/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
-    bindsym 3 exec $I3_SCRIPT/i3_xsslock.sh current && notify-send -u low "Reload xsslock (session lock)"
+    bindsym 3 exec $I3_SCRIPT/i3_xsslock_operator.sh current && notify-send -u low "Reload xsslock (session lock)"
     bindsym 4 exec $I3_SCRIPT/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     # Zathura-pywal need to be installed mannually [https://github.com/mslcarlson/zathura-pywal]
     bindsym 5 exec zathura-pywal -a 0.7 && notify-send -u low "Reload zathura (PDF viewer)"
@@ -411,8 +414,10 @@ mode "$mode_theme" {
 set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]lashfocus_mode [s]et_default_picom
 mode "$mode_picom" {
     bindsym 0 exec killall picom, mode "default"
-    bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
-    bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
+    #bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
+    #bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
+    bindsym 1 exec i3_picom_operator.sh blur, mode "default"
+    bindsym 2 exec i3_picom_operator.sh transparency, mode "default"
     bindsym f mode "$mode_flashfocus"
     bindsym s mode "$mode_set_default_picom"
     # exit
@@ -699,15 +704,6 @@ bindsym XF86MonBrightnessUp        exec --no-startup-id xbacklight -inc 5 && $re
 bindsym Mod1+XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && $refresh_i3status
 bindsym Mod1+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 10 && $refresh_i3status
 
-# Start dmenu (a program launcher) [Installation: dnf install dmenu]
-#bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16\
-    #-fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
-    #-nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that installed.
-#bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop \
-    #--dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
-
 # Rofi menu (program launcher, window manager)
 # Configure Rofi in $HOME/.config/rofi/.config
 bindsym Mod4+d            exec --no-startup-id rofi -show drun -terminal $terminal
@@ -857,26 +853,26 @@ mode "$mode_set_border" {
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
 # Mark the current window with this character [automark.py overwrites user-defined mark]
-bindsym Mod4+m exec $I3_SCRIPT/i3_mark_operation.sh mark rofi none
+bindsym Mod4+m exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none
 # Goto the window with the character
-bindsym Mod4+g exec $I3_SCRIPT/i3_mark_operation.sh goto rofi none
+bindsym Mod4+g exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
 # Swap the current window to the window with the character (focus stays)
-bindsym Mod4+semicolon exec $I3_SCRIPT/i3_mark_operation.sh swap rofi stay
+bindsym Mod4+semicolon exec $I3_SCRIPT/i3_mark_operator.sh swap rofi stay
 # Swap the current window to the window with the character (focus moves)
-bindsym Mod4+Shift+semicolon exec $I3_SCRIPT/i3_mark_operation.sh swap rofi none
+bindsym Mod4+Shift+semicolon exec $I3_SCRIPT/i3_mark_operator.sh swap rofi none
 
 # Mark mode (within titlebar mode) [use i3-msg/rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark]
 set $mode_mark Mark: [M/m]ark [G/g]oto [S/s]wap [e]nable-auto-mark [d]isable-auto-mark
 mode "$mode_mark" {
-    bindsym m       exec $I3_SCRIPT/i3_mark_operation.sh mark rofi none
-    bindsym g       exec $I3_SCRIPT/i3_mark_operation.sh goto rofi none
-    bindsym s       exec $I3_SCRIPT/i3_mark_operation.sh swap rofi none
-    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operation.sh mark i3 none
-    bindsym Shift+g exec $I3_SCRIPT/i3_mark_operation.sh goto i3 none
-    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operation.sh swap i3 none
-    bindsym e       exec i3_automark_enable.sh, mode "default"
-    bindsym d       exec i3_automark_disable.sh, mode "default"
+    bindsym m       exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none
+    bindsym g       exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
+    bindsym s       exec $I3_SCRIPT/i3_mark_operator.sh swap rofi none
+    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operator.sh mark i3 none
+    bindsym Shift+g exec $I3_SCRIPT/i3_mark_operator.sh goto i3 none
+    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operator.sh swap i3 none
+    bindsym e       exec i3_automark_operator.sh enable, mode "default"
+    bindsym d       exec i3_automark_operator.sh disable, mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "$mode_titlebar"
     bindsym Escape mode "default"
@@ -888,10 +884,6 @@ bindsym Mod4+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 
 # Enter exec command in i3 [use rofi as input]
 bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
-
-# Rename workspace [use rofi as input]
-#bindsym Mod4+Shift+w exec i3-msg rename workspace to $(rofi -dmenu -lines 0 -width 25 -p "Rename Workspace")
-#bindsym Mod4+Shift+w exec i3-input -F "rename workspace to %s" -l 1 -P "New workspace name: "
 
 # Back and Forth [Disable for i3-workspace-swap]
 workspace_auto_back_and_forth no
@@ -1093,46 +1085,46 @@ set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-
 bindsym Mod4+p       mode $mode_swap_workspace
 bindsym Mod4+Shift+p mode $mode_swap_workspace
 mode "$mode_swap_workspace" {
-    bindsym Mod4+1   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 1,  mode "default"
-    bindsym Mod4+2   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 2,  mode "default"
-    bindsym Mod4+3   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 3,  mode "default"
-    bindsym Mod4+4   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 4,  mode "default"
-    bindsym Mod4+5   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 5,  mode "default"
-    bindsym Mod4+6   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 6,  mode "default"
-    bindsym Mod4+7   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 7,  mode "default"
-    bindsym Mod4+8   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 8,  mode "default"
-    bindsym Mod4+9   exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 9,  mode "default"
-    bindsym Mod4+10  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh A 10, mode "default"
-    bindsym Mod4+F1  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 1,  mode "default"
-    bindsym Mod4+F2  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 2,  mode "default"
-    bindsym Mod4+F3  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 3,  mode "default"
-    bindsym Mod4+F4  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 4,  mode "default"
-    bindsym Mod4+F5  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 5,  mode "default"
-    bindsym Mod4+F6  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 6,  mode "default"
-    bindsym Mod4+F7  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 7,  mode "default"
-    bindsym Mod4+F8  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 8,  mode "default"
-    bindsym Mod4+F9  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 9,  mode "default"
-    bindsym Mod4+F10 exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh B 10, mode "default"
-    bindsym Ctrl+F1  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 1,  mode "default"
-    bindsym Ctrl+F2  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 2,  mode "default"
-    bindsym Ctrl+F3  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 3,  mode "default"
-    bindsym Ctrl+F4  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 4,  mode "default"
-    bindsym Ctrl+F5  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 5,  mode "default"
-    bindsym Ctrl+F6  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 6,  mode "default"
-    bindsym Ctrl+F7  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 7,  mode "default"
-    bindsym Ctrl+F8  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 8,  mode "default"
-    bindsym Ctrl+F9  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 9,  mode "default"
-    bindsym Ctrl+F10 exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh C 10, mode "default"
-    bindsym Mod1+F1  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 1,  mode "default"
-    bindsym Mod1+F2  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 2,  mode "default"
-    bindsym Mod1+F3  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 3,  mode "default"
-    bindsym Mod1+F4  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 4,  mode "default"
-    bindsym Mod1+F5  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 5,  mode "default"
-    bindsym Mod1+F6  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 6,  mode "default"
-    bindsym Mod1+F7  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 7,  mode "default"
-    bindsym Mod1+F8  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 8,  mode "default"
-    bindsym Mod1+F9  exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 9,  mode "default"
-    bindsym Mod1+F10 exec --no-startup-id $I3_SCRIPT/i3_swap_workspace.sh D 10, mode "default"
+    bindsym Mod4+1   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 1,  mode "default"
+    bindsym Mod4+2   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 2,  mode "default"
+    bindsym Mod4+3   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 3,  mode "default"
+    bindsym Mod4+4   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 4,  mode "default"
+    bindsym Mod4+5   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 5,  mode "default"
+    bindsym Mod4+6   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 6,  mode "default"
+    bindsym Mod4+7   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 7,  mode "default"
+    bindsym Mod4+8   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 8,  mode "default"
+    bindsym Mod4+9   exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 9,  mode "default"
+    bindsym Mod4+10  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single A 10, mode "default"
+    bindsym Mod4+F1  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 1,  mode "default"
+    bindsym Mod4+F2  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 2,  mode "default"
+    bindsym Mod4+F3  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 3,  mode "default"
+    bindsym Mod4+F4  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 4,  mode "default"
+    bindsym Mod4+F5  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 5,  mode "default"
+    bindsym Mod4+F6  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 6,  mode "default"
+    bindsym Mod4+F7  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 7,  mode "default"
+    bindsym Mod4+F8  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 8,  mode "default"
+    bindsym Mod4+F9  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 9,  mode "default"
+    bindsym Mod4+F10 exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single B 10, mode "default"
+    bindsym Ctrl+F1  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 1,  mode "default"
+    bindsym Ctrl+F2  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 2,  mode "default"
+    bindsym Ctrl+F3  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 3,  mode "default"
+    bindsym Ctrl+F4  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 4,  mode "default"
+    bindsym Ctrl+F5  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 5,  mode "default"
+    bindsym Ctrl+F6  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 6,  mode "default"
+    bindsym Ctrl+F7  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 7,  mode "default"
+    bindsym Ctrl+F8  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 8,  mode "default"
+    bindsym Ctrl+F9  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 9,  mode "default"
+    bindsym Ctrl+F10 exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single C 10, mode "default"
+    bindsym Mod1+F1  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 1,  mode "default"
+    bindsym Mod1+F2  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 2,  mode "default"
+    bindsym Mod1+F3  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 3,  mode "default"
+    bindsym Mod1+F4  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 4,  mode "default"
+    bindsym Mod1+F5  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 5,  mode "default"
+    bindsym Mod1+F6  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 6,  mode "default"
+    bindsym Mod1+F7  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 7,  mode "default"
+    bindsym Mod1+F8  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 8,  mode "default"
+    bindsym Mod1+F9  exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 9,  mode "default"
+    bindsym Mod1+F10 exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh single D 10, mode "default"
     # Save/Restore workspace layout
     bindsym s mode $mode_save_workspace
     bindsym r mode $mode_restore_workspace
@@ -1185,13 +1177,13 @@ mode "$mode_save_workspace" {
     bindsym Mod1+F9  exec --no-startup-id i3-resurrect save -w 39:D9,  mode "default"
     bindsym Mod1+F10 exec --no-startup-id i3-resurrect save -w 40:D10, mode "default"
     # Save all workspaces
-    bindsym s exec --no-startup-id $I3_SCRIPT/i3_save_all_workspace.sh, mode "$mode_swap_workspace"
+    bindsym s exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh save_all, mode "$mode_swap_workspace"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-# restore workspace mode
+# Restore workspace mode
 set $mode_restore_workspace Restore_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C10[Ctrl+F1~F10] D1-D10[Alt+F1~F10] [r]estore_all_workspaces
 mode "$mode_restore_workspace" {
     bindsym Mod4+1   exec --no-startup-id i3-resurrect restore -w 1:A1,   mode "default"
@@ -1235,7 +1227,7 @@ mode "$mode_restore_workspace" {
     bindsym Mod1+F9  exec --no-startup-id i3-resurrect restore -w 39:D9,  mode "default"
     bindsym Mod1+F10 exec --no-startup-id i3-resurrect restore -w 40:D10, mode "default"
     # Restore all workspaces
-    bindsym r exec --no-startup-id $I3_SCRIPT/i3_restore_all_workspace.sh, mode "$mode_swap_workspace"
+    bindsym r exec --no-startup-id $I3_SCRIPT/i3_workspace_operator.sh restore_all, mode "$mode_swap_workspace"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1257,10 +1249,8 @@ bindsym Ctrl+Mod1+r mode "$mode_resize"
 set $mode_resize Resize: [(vim-key)]:small step [(arrow-key)]:big step
 mode "$mode_resize" {
     # These bindings trigger as soon as you enter the resize mode
-    # Pressing left will shrink the window’s width.
-    # Pressing right will grow the window’s width.
-    # Pressing up will shrink the window’s height.
-    # Pressing down will grow the window’s height.
+    # Pressing left/right will shrink/grow the window’s width.
+    # Pressing up/down will shrink/grow the window’s height.
     bindsym h resize shrink width 1 px or 1 ppt
     bindsym j resize grow height 1 px or 1 ppt
     bindsym k resize shrink height 1 px or 1 ppt
@@ -1303,7 +1293,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
         #$([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
         #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
     # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
-    bindsym Return exec --no-startup-id $I3_SCRIPT/i3_i3lock.sh current, mode "default"
+    bindsym Return exec --no-startup-id $I3_SCRIPT/i3_i3lock_operator.sh current, mode "default"
     # exit mode
     bindsym Escape mode "default"
 }
@@ -1420,16 +1410,16 @@ mode "$mode_mouse_autohide" {
 set $mode_display Display: [a]Automatic [0]Arandr [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810 [P/p]Primary HDMI1/eDP1
 bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
-    bindsym a       exec --no-startup-id $I3_SCRIPT/i3_monitor_display.sh right
+    bindsym a       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
     bindsym 0       exec --no-startup-id arandr, mode "default"
     bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off --output eDP1  --auto --primary, mode "default"
     bindsym 2       exec --no-startup-id xrandr --output eDP1  --off --output HDMI1 --auto --primary, mode "default"
     bindsym 3       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1, mode "default"
     bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as eDP1, mode "default"
-    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh reset, mode "default"
-    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh extend, mode "default"
-    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh reset, mode "default"
-    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh shrink, mode "default"
+    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 reset, mode "default"
+    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend, mode "default"
+    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh reset, mode "default"
+    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh shrink, mode "default"
     bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary, mode "default"
     bindsym p       exec --no-startup-id xrandr --output eDP1 --primary, mode "default"
     # back to normal: Enter or Escape
@@ -1624,33 +1614,17 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 # ======================================================================================
 # Following commands/programs will run after I3 starts
 
-# Set additional monitor display options [now all integrated with i3_monitor_display.sh]
+# Set additional monitor display options [now all integrated with i3_display_monitor_adopter.sh]
 # -- Setting for extended HDMI1 (for 16:10 1080P monitor)
-exec_always --no-startup-id $I3_SCRIPT/i3_extend_HDMI1.sh
+exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend
 # -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
-exec_always --no-startup-id $I3_SCRIPT/i3_shrink_eDP1.sh
-
-# Set output display and primary display (use xrandr command to check) [or use arandr (GUI)]
-# label: --same-as   for mirror mode
-#        --right_of  for extend mode
-# -- General setting (arandr GUI)
-#exec --no-startup-id arandr
-# -- General setting (xrandr)
-#exec --no-startup-id xrandr --output HDMI1 --auto --primary --right-of eDP1
-# -- Setting for my dorm Acer27'
-#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1
-# -- Setting for IOA monitor
-#exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1
+exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink
 
 # Set output joint display automatically (HDMI1 connected or not)
-exec --no-startup-id $I3_SCRIPT/i3_monitor_display.sh right
+exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
 
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
-
-# Lxsession agent (load xsession initialization)
-# For now, this agent will cause mouse left/right button reversed
-#exec --no-startup-id lxsession
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -1673,11 +1647,6 @@ exec_always --no-startup-id xset r rate 300 40
 
 # Remap Caplock key to Ctrl
 exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
-
-# Hhpc (Hide cursor when idle) [https://github.com/Aktau/hhpc]
-# Need to be complied from source manually
-# Conflict with i3lock since there is no cursor to lock
-#exec_always --no-startup-id hhpc -i 3
 
 # Ibus input method (ibus-chewing support)
 # Note: Following lines must be added to .profile to set ibus as default input method
@@ -1726,34 +1695,12 @@ exec_always --no-startup-id $I3_SCRIPT/i3_automark.py
 
 # Dwindle layout (autotiling) [https://github.com/nwg-piotr/autotiling]
 # For dwindle mode (Tiling direction sequence: H -> V -> H -> V ...) support
-# Installation: pip install autotiling
+# -- Installation: pip install autotiling
 exec_always --no-startup-id $PYTHON_BIN/autotiling
-
-# Master-stack layout [https://github.com/windwp/i3-master-stack]
-# Installation: cd ~/.config/i3/; git clone https://github.com/windwp/i3-master-stack.git
-# For master-stack mode, i3_automark.py, autotiling must be DISABLED
-#exec_always --no-startup-id $HOME/.config/i3/i3-master-stack/i3_master
-# Swap to master node
-#bindsym Mod4+semicolon nop swap master
-# Go to master node
-#bindsym Mod4+m nop go master
-# Enable/disable master layout in current workspace
-#bindsym $mod+alt+m nop master toggle
-
-# Autoname workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon]
-#exec --no-startup-id $PYTHON_BIN/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json
 
 # XSS-lock (built-in)
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so they are included here as an example.
 # Modify as you see fit. xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
 # Use loginctl lock-session to lock your screen.
 #exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
-exec_always --no-startup-id $I3_SCRIPT/i3_xsslock.sh current
-
-# Set compositor for transparency support (now use picom instead)
-#exec --no-startup-id xcompmgr -c -f -n
-
-# Compositor for Xwindow [https://man.archlinux.org/man/picom.1.en] (now integrated in i3_monitor_display.sh script)
-# Picom in Fedora repository not work well [https://github.com/yshui/picom]
-# Use picom fork of jonaburg instead (need manually installed on Fedora)
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
+exec_always --no-startup-id $I3_SCRIPT/i3_xsslock_operator.sh current

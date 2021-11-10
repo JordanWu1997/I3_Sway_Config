@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Input variable and constant
 CHANGE_ITEM=$1

@@ -1496,7 +1496,7 @@ set_from_resource $c15 i3wm.color15 #ffffff
 
 # Color template for monochrome color style
 # class                 border    bground   text      indicator child_border
-client.focused          $c13      $c13      $c0       $c14      $c13
+client.focused          $c13      $c13      $c15       $c14      $c13
 client.focused_inactive $c1       $c1       $c15      $c2       $c1
 client.unfocused        $c1       $c1       $c15      $c2       $c1
 client.urgent           $c15      $c15      $c15      $c2       $c15
@@ -1562,7 +1562,7 @@ bar {
         separator  $bg
         # Color template for monochrome color style
         # item             border    bground   text
-        focused_workspace  $c5       $c13      $c0
+        focused_workspace  $c5       $c13      $c15
         active_workspace   $c5       $c3       $c15
         inactive_workspace $c5       $c3       $c15
         urgent_workspace   $c1       $c15      $c15
@@ -1609,7 +1609,7 @@ bar {
         separator  $bg
         # Color template for monochrome color style
         # item             border    bground   text
-        focused_workspace  $c5       $c13      $c0
+        focused_workspace  $c5       $c13      $c15
         active_workspace   $c5       $c3       $c15
         inactive_workspace $c5       $c3       $c15
         urgent_workspace   $c1       $c15      $c15
@@ -1644,7 +1644,7 @@ bar{
         separator  $bg
         # Color template for monochrome color style
         # item             border    bground   text
-        focused_workspace  $c5       $c13      $c0
+        focused_workspace  $c5       $c13      $c15
         active_workspace   $c5       $c3       $c15
         inactive_workspace $c5       $c3       $c15
         urgent_workspace   $c1       $c15      $c15

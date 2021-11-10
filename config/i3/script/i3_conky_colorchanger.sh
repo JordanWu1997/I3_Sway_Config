@@ -43,6 +43,10 @@ case $input_color in
         ;;
 esac
 
+# Assign default item / title color
+default_item_color="$(awk '$1~/*color3:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+default_title_color="$(awk '$1~/*color5:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+
 # Replace color in conky configuration file
 if [ "$1" == "system" ]; then
     # Conky for system
@@ -51,10 +55,10 @@ if [ "$1" == "system" ]; then
         sed -i "$col_color_item s/.*/\tcolor2 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_system"
     elif [ "$2" == "title" ]; then
         sed -i "$col_color_title s/.*/\tcolor3 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_system"
-    # Same for both
+    # Default color
     else
-        sed -i "$col_color_item s/.*/\tcolor2 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_system"
-        sed -i "$col_color_title s/.*/\tcolor3 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_system"
+        sed -i "$col_color_item s/.*/\tcolor2 \= \'\#$default_item_color\\',/" "$HOME/.config/conky/conky_config_system"
+        sed -i "$col_color_title s/.*/\tcolor3 \= \'\#$default_title_color\\',/" "$HOME/.config/conky/conky_config_system"
     fi
 elif [ "$1" == "hotkey" ]; then
     # Conky for hotkey
@@ -63,10 +67,10 @@ elif [ "$1" == "hotkey" ]; then
         sed -i "$col_color_item s/.*/\tcolor2 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_hotkey"
     elif [ "$2" == "title" ]; then
         sed -i "$col_color_title s/.*/\tcolor3 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_hotkey"
-    # Same for both
+    # Default color
     else
-        sed -i "$col_color_item s/.*/\tcolor2 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_hotkey"
-        sed -i "$col_color_title s/.*/\tcolor3 \= \'\#$output_color\\',/" "$HOME/.config/conky/conky_config_hotkey"
+        sed -i "$col_color_item s/.*/\tcolor2 \= \'\#$default_item_color\\',/" "$HOME/.config/conky/conky_config_hotkey"
+        sed -i "$col_color_title s/.*/\tcolor3 \= \'\#$default_title_color\\',/" "$HOME/.config/conky/conky_config_hotkey"
     fi
 else
     # Wrong input, send error message

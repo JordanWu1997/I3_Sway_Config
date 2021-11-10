@@ -1461,8 +1461,8 @@ exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
 # Load colors from Xresource (Pywal)
 # fallback is default value in case resource can't be loaded
 # command         name resource     fallback
-set_from_resource $fg  i3wm.color15 #ffffff
 set_from_resource $bg  i3wm.color0  #000000
+set_from_resource $fg  i3wm.color15 #ffffff
 set_from_resource $c0  i3wm.color0  #000000
 set_from_resource $c1  i3wm.color1  #cd0000
 set_from_resource $c2  i3wm.color2  #00cd00
@@ -1483,13 +1483,34 @@ set_from_resource $c15 i3wm.color15 #ffffff
 # [Comment below lines if you want original i3 container/workspace color setup]
 # Color of border, background, text, indicator, and child_border based on Xresource
 # For old color template backup, please check .config/i3/share/i3_color_template.txt
+
+# [Note for monochrome, non-monochrome color style]
+# When wallpaper/color style is monochrome, new remapped color would not change much, but
+# it will be remap from warm color to cold color as colorfulness increases. For example,
+# for a orange color tone wallpaper, new red will be grayish orange as new blue will be
+# whitish orange. The new color temperature to human eye is totally reversed to our daily
+# experience. This will cause issue when apply monochrome template to non-monochrome color
+# wallpaper/style which is remapped based on color temperature. Here I prepare two set
+# of color scheme (one for monochrome, one for non-monochrome) to solve this unavoidable
+# problem for pywal color.
+
+# Color template for monochrome color style
 # class                 border    bground   text      indicator child_border
-client.focused          $c13      $c5       $c15      $c14      $c5
-client.focused_inactive $c1       $c1       $c7       $c2       $c1
-client.unfocused        $c1       $c1       $c7       $c2       $c1
-client.urgent           $c15      $c15      $c0       $c2       $c15
-client.placeholder      $c2       $c2       $c7       $c2       $c2
+client.focused          $c13      $c13      $c0       $c14      $c13
+client.focused_inactive $c1       $c1       $c15      $c2       $c1
+client.unfocused        $c1       $c1       $c15      $c2       $c1
+client.urgent           $c15      $c15      $c15      $c2       $c15
+client.placeholder      $c2       $c2       $c15      $c2       $c2
 client.background                 $c0
+
+## Color template for non-monochrome color style
+## class                 border    bground   text      indicator child_border
+#client.focused          $c1       $c1       $c0       $c14      $c1
+#client.focused_inactive $c13      $c13      $c15      $c2       $c13
+#client.unfocused        $c13      $c13      $c15      $c2       $c13
+#client.urgent           $c15      $c15      $c15      $c2       $c15
+#client.placeholder      $c2       $c2       $c15      $c2       $c2
+#client.background                 $c0
 
 # ======================================================================================
 # All About i3bar Settings
@@ -1539,12 +1560,20 @@ bar {
         background $bg
         statusline $fg
         separator  $bg
+        # Color template for monochrome color style
         # item             border    bground   text
-        focused_workspace  $c5       $c3       $c15
-        active_workspace   $c5       $c3       $c0
-        inactive_workspace $c5       $c3       $c0
-        urgent_workspace   $c1       $c7       $c0
+        focused_workspace  $c5       $c13      $c0
+        active_workspace   $c5       $c3       $c15
+        inactive_workspace $c5       $c3       $c15
+        urgent_workspace   $c1       $c15      $c15
         binding_mode       $bg       $bg       $fg
+        ## Color template for non-monochrome color style
+        ## item             border    bground   text
+        #focused_workspace  $c5       $c3       $c0
+        #active_workspace   $c5       $c13      $c15
+        #inactive_workspace $c5       $c13      $c15
+        #urgent_workspace   $c1       $c15      $c15
+        #binding_mode       $bg       $bg       $fg
     }
 }
 
@@ -1578,12 +1607,20 @@ bar {
         background $bg
         statusline $fg
         separator  $bg
+        # Color template for monochrome color style
         # item             border    bground   text
-        focused_workspace  $c5       $c3       $c15
-        active_workspace   $c5       $c3       $c0
-        inactive_workspace $c5       $c3       $c0
-        urgent_workspace   $c1       $c7       $c0
+        focused_workspace  $c5       $c13      $c0
+        active_workspace   $c5       $c3       $c15
+        inactive_workspace $c5       $c3       $c15
+        urgent_workspace   $c1       $c15      $c15
         binding_mode       $bg       $bg       $fg
+        ## Color template for non-monochrome color style
+        ## item             border    bground   text
+        #focused_workspace  $c5       $c3       $c0
+        #active_workspace   $c5       $c13      $c15
+        #inactive_workspace $c5       $c13      $c15
+        #urgent_workspace   $c1       $c15      $c15
+        #binding_mode       $bg       $bg       $fg
     }
 }
 
@@ -1605,12 +1642,20 @@ bar{
         background $bg
         statusline $fg
         separator  $bg
+        # Color template for monochrome color style
         # item             border    bground   text
-        focused_workspace  $c5       $c3       $c15
-        active_workspace   $c5       $c3       $c0
-        inactive_workspace $c5       $c3       $c0
-        urgent_workspace   $c1       $c7       $c0
+        focused_workspace  $c5       $c13      $c0
+        active_workspace   $c5       $c3       $c15
+        inactive_workspace $c5       $c3       $c15
+        urgent_workspace   $c1       $c15      $c15
         binding_mode       $bg       $bg       $fg
+        ## Color template for non-monochrome color style
+        ## item             border    bground   text
+        #focused_workspace  $c5       $c3       $c0
+        #active_workspace   $c5       $c13      $c15
+        #inactive_workspace $c5       $c13      $c15
+        #urgent_workspace   $c1       $c15      $c15
+        #binding_mode       $bg       $bg       $fg
     }
 }
 
@@ -1756,4 +1801,3 @@ exec_always --no-startup-id $I3_SCRIPT/i3_xsslock.sh current
 # Picom in Fedora repository not work well [https://github.com/yshui/picom]
 # Use picom fork of jonaburg instead (need manually installed on Fedora)
 #exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf
-#exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_transparency.conf

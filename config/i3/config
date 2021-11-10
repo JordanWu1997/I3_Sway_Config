@@ -408,15 +408,25 @@ mode "$mode_theme" {
 }
 
 # Picom mode (animation, blur, and transparency support)
-set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]flashfocus_mode
+set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]lashfocus_mode [s]et_default_picom
 mode "$mode_picom" {
     bindsym 0 exec killall picom, mode "default"
     bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
     bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
-    bindsym p mode "mode_default_picom"
     bindsym f mode "$mode_flashfocus"
+    bindsym s mode "$mode_set_default_picom"
     # exit
     bindsym Return mode "$mode_customization"
+    bindsym Escape mode "default"
+}
+
+# Set default picom (within picom mode)
+set $mode_set_default_picom Set default picom: [1]blur [2]transparency
+mode "$mode_set_default_picom" {
+    bindsym 1 exec $I3_SCRIPT/i3_default_valuechanger.sh picom blur, mode "default"
+    bindsym 2 exec $I3_SCRIPT/i3_default_valuechanger.sh picom transparency, mode "default"
+    # exit
+    bindsym Return mode "$mode_picom"
     bindsym Escape mode "default"
 }
 
@@ -1605,7 +1615,7 @@ bar{
 }
 
 # Status bar toggle, hide or show
-bindsym Mod4+Shift+b bar mode toggle bar_base, bar mode toggle bar_base_nonprimary
+bindsym Mod4+Shift+b bar mode toggle bar_base_primary, bar mode toggle bar_base_nonprimary
 bindsym Mod4+b       bar mode toggle bar_overlay
 
 # ======================================================================================

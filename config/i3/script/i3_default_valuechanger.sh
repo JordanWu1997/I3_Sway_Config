@@ -4,6 +4,7 @@
 CHANGE_ITEM=$1
 NEW_DEFAULT_VALUE=$2
 I3_CONFIG_FILE="$HOME/.config/i3/config"
+PICOM_DIR="$HOME/.config/picom"
 
 # Default gap, border width column number in i3 configuration
 COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
@@ -33,8 +34,12 @@ elif [ $CHANGE_ITEM == "border_width" ]; then
 elif [ $CHANGE_ITEM == "titlebar_fontsize" ]; then
     sed -i "$COL_TITLEBAR_FONTSIZE s/.*/set \$default_titlebar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
     i3-msg reload
+elif [ $CHANGE_ITEM == "picom" ]; then
+    rm "$HOME/.config/picom/picom.conf"
+    ln -s "$HOME/.config/picom/picom_$NEW_DEFAULT_VALUE.conf" "$HOME/.config/picom/picom.conf"
+    i3-msg reload
 else
     echo ""
-    echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize]"
+    echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/picom]"
     echo ""
 fi

@@ -12,7 +12,7 @@ elif [ $1 == "HDMI1" ]; then
         # Add new mode to HDMI1
         xrandr --addmode HDMI1 "1920x1200_50.00"
         # Shrink HDMI1 display from 1920x1080 to 1440x810
-        xrandr --output HDMI1 --mode "1920x1200_50.00"
+        #xrandr --output HDMI1 --mode "1920x1200_50.00"
     elif [ $2 == "reset" ]; then
         xrandr --output HDMI1 --mode "1650x1080"
     else
@@ -25,7 +25,7 @@ elif [ $1 == "eDP1" ]; then
         # Add new mode to eDP1
         xrandr --addmode eDP1 "1440x810_60.00"
         # Shrink eDP1 display from 1920x1080 to 1440x810
-        xrandr --output eDP1 --mode "1440x810_60.00"
+        #xrandr --output eDP1 --mode "1440x810_60.00"
     elif [ $2 == "reset" ]; then
         xrandr --output eDP1 --mode "1920x1080"
     else

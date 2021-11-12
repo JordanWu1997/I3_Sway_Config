@@ -23,8 +23,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Display configuration for X-window
 
+For now, display configuration are all integrated with my script `i3_display_monitor_adopter.sh`
+
 Set output display and primary display (use xrandr command to check) [or use arandr (GUI)]
-- Xrandr label:
+- Xrandr label
     - \-\-same-as   for mirror mode
     - \-\-right-of  for joint mode
 - General setting (arandr GUI)
@@ -35,6 +37,12 @@ Set output display and primary display (use xrandr command to check) [or use ara
     - `exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --primary --right-of eDP1`
 - Setting for IOA monitor (24')
     - `exec --no-startup-id xrandr --output HDMI1 --mode 1920x1200 --primary --right-of eDP1`
+
+Set additional display mode for monitor
+- Extend mode for HDMI1 (for 16:10 1080P monitor)
+    - `exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend`
+- Shrink mode for eDP1 (for better visual consistency with HDMI1)
+    - `exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink`
 
 ## Lxsession agent
 
@@ -68,12 +76,18 @@ There also is the (new) i3-dmenu-desktop which only displays applications
 shipping a .desktop file. It is a wrapper around dmenu, so you need dmenu installed.
 
 - Run dmenu (application launcher) in i3
-    - `bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16\
+    - ```
+      bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16 \
         -fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
-        -nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"`
+        -nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
+        ```
+
 - Run i3-dmenu-desktop in i3
-    - `bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop\
-        --dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"`
+
+    - ```
+      bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop \
+        --dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
+        ```
 
 ## Master-stack layout
 

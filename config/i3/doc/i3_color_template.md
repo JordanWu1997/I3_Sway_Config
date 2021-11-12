@@ -1,5 +1,5 @@
 # I3WM Color Template
--  Online color palette https://thomashunter.name/i3-configurator/
+- Online color palette https://thomashunter.name/i3-configurator/
 
 Table of Contents
 =================

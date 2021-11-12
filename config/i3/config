@@ -15,7 +15,7 @@
 # --------------------------------------------------------------------------------------
 # Author: i3-config-wizard, Jordan Kuan-Hsien Wu
 # Email:  jordankhwu@gmail.com
-# Date:   2020/11/22
+# Date:   2021/11/11
 # --------------------------------------------------------------------------------------
 #
 # This modified configuration file is highly refered to link below
@@ -414,8 +414,6 @@ mode "$mode_theme" {
 set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]lashfocus_mode [s]et_default_picom
 mode "$mode_picom" {
     bindsym 0 exec killall picom, mode "default"
-    #bindsym 1 exec i3_picom_blur_enable.sh, mode "default"
-    #bindsym 2 exec i3_picom_transparency_enable.sh, mode "default"
     bindsym 1 exec i3_picom_operator.sh blur, mode "default"
     bindsym 2 exec i3_picom_operator.sh transparency, mode "default"
     bindsym f mode "$mode_flashfocus"
@@ -460,7 +458,7 @@ gaps outer $default_outer_gap
 smart_gaps inverse_outer
 
 # i3-gap [modify in mode]
-# https://github.com/Airblader/i3/wiki/Example-Configuration
+# -- https://github.com/Airblader/i3/wiki/Example-Configuration
 # Note: horiz, verti, top, right, bottom, left are all part of outer gaps
 set $mode_gaps Gaps: [o]uter [i]nner [h]orizontal [v]ertical [t]op [r]ight [b]ottom [l]eft [s]et_default_inner_gap [S]et_default_outer_gap
 set $mode_gaps_outer Outer Gaps: +|-|0|d (local) Shift + +|-|0|d (global)
@@ -695,8 +693,8 @@ bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
 # Keyboard backlight control
-# Check https://github.com/alberto-santini/i3-configuration-x1
-# Also  https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
+# -- https://github.com/alberto-santini/i3-configuration-x1
+# -- https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
 bindsym Ctrl+XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 1 && $refresh_i3status
 bindsym Ctrl+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 1 && $refresh_i3status
 bindsym XF86MonBrightnessDown      exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
@@ -751,7 +749,6 @@ bindsym Mod4+Shift+Up    move up
 bindsym Mod4+Shift+Right move right
 
 # Split in vertical/horizontal orientation
-#bindsym Mod4+c split toggle exec notify-send -u low "Toggled Split Direction"
 bindsym Mod4+q split toggle exec notify-send -u low "Toggled Split Direction"
 
 # Toggle fullscreen
@@ -885,7 +882,7 @@ bindsym Mod4+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bri
 # Enter exec command in i3 [use rofi as input]
 bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 
-# Back and Forth [Disable for i3-workspace-swap]
+# Back and Forth [DISABLE for i3-workspace-swap]
 workspace_auto_back_and_forth no
 
 # Switch to previous/next workspace
@@ -1284,7 +1281,7 @@ mode "$mode_redshift" {
     bindsym Escape mode "default"
 }
 
-# Lock mode -- i3lock
+# Lock mode (i3lock)
 bindsym Ctrl+Mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
 mode "i3lock: Return to lock/Escape to Cancel" {
     # Option1 - User defined wallpaper
@@ -1313,7 +1310,7 @@ mode "$mode_system" {
     bindsym Return mode "default"
 }
 
-# Input method - ibus
+# Input method (ibus)
 # Change ibus engine
 bindsym Ctrl+Mod1+space exec $I3_SCRIPT/i3_languagechanger.sh
 # Disable full character mode of IBUS by default
@@ -1349,7 +1346,7 @@ bindsym --whole-window Mod4+Shift+button3 floating toggle exec notify-send -u lo
 
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
-# -- xdotool must be installed
+# Note: xdotool must be installed
 set $mode_mouse Mouse emulator: [ctrl/NONE/alt/ctrl_alt+(vim-key)]:S/M/L/XL [u/i/o]:left/middle/right [m/,/.]:click-and-drag/scrolldown/scrollup [p]:autohide_mode
 bindsym Mod4+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
@@ -1531,9 +1528,9 @@ bar {
         statusline $fg
         separator  $bg
         # item             border    bground   text
-        focused_workspace  $c5       $c11      $c15
-        active_workspace   $c5       $c3       $c0
-        inactive_workspace $c5       $c3       $c0
+        focused_workspace  $c0       $c11      $c15
+        active_workspace   $c0       $c8       $c15
+        inactive_workspace $c0       $c8       $c15
         urgent_workspace   $c1       $c15      $c0
         binding_mode       $bg       $bg       $fg
     }
@@ -1570,9 +1567,9 @@ bar {
         statusline $fg
         separator  $bg
         # item             border    bground   text
-        focused_workspace  $c5       $c11      $c15
-        active_workspace   $c5       $c3       $c0
-        inactive_workspace $c5       $c3       $c0
+        focused_workspace  $c0       $c11      $c15
+        active_workspace   $c0       $c8       $c15
+        inactive_workspace $c0       $c8       $c15
         urgent_workspace   $c1       $c15      $c0
         binding_mode       $bg       $bg       $fg
     }
@@ -1597,9 +1594,9 @@ bar{
         statusline $fg
         separator  $bg
         # item             border    bground   text
-        focused_workspace  $c5       $c11      $c15
-        active_workspace   $c5       $c3       $c0
-        inactive_workspace $c5       $c3       $c0
+        focused_workspace  $c0       $c11      $c15
+        active_workspace   $c0       $c8       $c15
+        inactive_workspace $c0       $c8       $c15
         urgent_workspace   $c1       $c15      $c0
         binding_mode       $bg       $bg       $fg
     }
@@ -1614,13 +1611,8 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 # ======================================================================================
 # Following commands/programs will run after I3 starts
 
-# Set additional monitor display options [now all integrated with i3_display_monitor_adopter.sh]
-# -- Setting for extended HDMI1 (for 16:10 1080P monitor)
-exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend
-# -- Setting for shrinked eDP1 (for better visual consistency with HDMI1)
-exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink
-
-# Set output joint display automatically (HDMI1 connected or not)
+# Set output joint display automatically (HDMI1 connected or not).
+# For more options, check the display mode in this configuration
 exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
 
 # Gnome authentication (gnome software usage support)

@@ -48,8 +48,8 @@ else
     xrandr --output eDP1 --mode 1920x1080 --primary --output HDMI1 --off
 fi
 
-## Reload wallpaper
+# Reload wallpaper
 feh --bg-fill $HOME/.config/i3/share/default_wallpaper
 
- #Reload compositor
-killall picom; picom
+# Reload compositor
+$I3_SCRIPT/i3_picom_operator.sh default

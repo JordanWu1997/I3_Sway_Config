@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 # Note: For monitor in IOA, 1920x1200 maximal refresh rate is 50

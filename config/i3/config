@@ -56,25 +56,33 @@
 # Theme configuration
 # As for detailed theme and font Setup
 # -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
+# -- https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications
 #    -- for lxde: sudo dnf install lxappearance
 #    -- for gtk:  sudo dnf install gtk-chtheme
 #    -- for kde:
 #       -- for qt4: sudo dnf install qt-config
 #       -- for qt5: sudo dnf install qt5ct qt5-qtstyleplugins
+#       -- for kvantum: sudo dnf install kvantum
 
+# Check if program using GTK or QT
+# -- https://askubuntu.com/questions/840256/detect-if-an-application-uses-gtk-or-qt
+# In command line,
+#   ldd $(which PROGRAM) | grep 'gtk'  -> using GTK
+#   ldd $(which PROGRAM) | grep 'qt'   -> using QT
 # Note: program corresponding theme configuration
 # -- lxde
 #    -- nautilus, parcellite, and etc.
 # -- gtk
 #    -- brave-browser
-# -- qt4/qt5
+# -- kvantum/qt5/qt4
 #    -- mendeleydestop, okular, kde connect and etc.
 
-# Note: my current color theme setup
+# Note: my current color theme setup for arc-dark-theme
 # -- Theme
 #    -- lxappearance - Arc-Dark-solid
 #    -- gtk-chtheme - Arc-Dark-solid
-#    -- qt5 Settings - Adwaita-HighContrastInverse
+#    -- kvantum - KvArcDark
+#    -- qt5 Settings - kvantum-dark
 #    -- qt4 Config - Desktop Settings (Default)
 # -- Icon
 #    -- Light: Papirus
@@ -101,6 +109,7 @@
 # EndSection
 
 # Remap Capslock to Win/Ctrl
+#
 # Option 1 - Need root permission. In /etc/X11/xorg.conf.d/00-keyboard.conf, add the following
 #
 # Section "InputClass"
@@ -210,10 +219,10 @@ focus_on_window_activation smart
 # Popups during fullscreen mode
 popup_during_fullscreen smart
 
-# You can also use any non-zero value
-# if you would like to have a border (or 'normal')
-# Window frame width pixel (or 'normal')
-# Comment out below lines for display title as default
+# Window titlebar
+# You can use any non-zero value if you would like to have a border (or 'normal')
+# Available window frame options: width pixel (or 'normal')
+# Comment out below lines to display title as default
 for_window [class="^.*"] border $default_border_width
 new_window $default_border_width
 new_float $default_border_width
@@ -282,10 +291,8 @@ mode "$mode_wallpaper" {
     bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
     bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    #bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_set_default_wallpaper_feh.sh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
-    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default feh && rm -fr $HOME/.cache/wal && wal -i $HOME/.config/i3/share/default_wallpaper --nine
+    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default feh && rm -fr $HOME/.cache/wal && wal --nine -i $HOME/.config/i3/share/default_wallpaper
     bindsym r exec notify-send -u low "Reset Wallpaper to Default" && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    #bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_save_favorite_wallpaper_feh.sh
     bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_wallpaper_operator.sh save_current
     # exit
     bindsym Return mode $mode_customization
@@ -301,7 +308,6 @@ mode "$mode_variety" {
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)" && variety -f
     bindsym Shift+f exec notify-send -u low "Shuffle Favorite (VARIETY)" && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
-    #bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_set_default_wallpaper_variety.sh
     bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default variety
     bindsym q       exec notify-send -u low "Quit Variety" && variety --quit
     # exit
@@ -533,8 +539,8 @@ mode "$mode_gaps_horiz" {
     bindsym Shift+minus gaps horizontal all minus 5
     bindsym Shift+0     gaps horizontal all set 0
     # 16:9 for single window in single monitor
-    bindsym 1       gaps horizontal current set 48
-    bindsym Shift+1 gaps horizontal all set 48
+    bindsym 1       gaps horizontal current set 32
+    bindsym Shift+1 gaps horizontal all set 32
     # exit
     bindsym Return mode "$mode_gaps"
     bindsym Escape mode "default"
@@ -875,7 +881,10 @@ mode "$mode_mark" {
     bindsym Escape mode "default"
 }
 
-# Move all floating windows to the scratchpad and vice versa
+# Scratchpad: hide/show window (minus is "-" and plus is "+".)
+bindsym Mod4+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
+bindsym Mod4+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
+# Scratchpad: Move all floating windows to the scratchpad and vice versa
 bindsym Mod4+Shift+minus [floating] move scratchpad exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
 bindsym Mod4+Shift+plus  [class=.*] scratchpad show exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
 
@@ -1321,10 +1330,6 @@ bindsym --release Print  exec gnome-screenshot
 bindsym Mod4+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
 bindsym Mod4+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
 
-# Scratchpad: hide/show window (minus is "-" and plus is "+".)
-bindsym Mod4+minus move scratchpad exec notify-send -u low "Move Current Window To Scratchpad (Background)"
-bindsym Mod4+plus  scratchpad show exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
-
 # Use Mouse+Mod4 to drag floating windows to their wanted position
 floating_modifier Mod4
 
@@ -1443,7 +1448,7 @@ bindsym Mod4+Shift+slash exec \
 #       but it loads well when (1) enter i3 next time or (2) just simply restart i3.
 # Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
 #       16-color support than original 9-color. --nine flag for original 9-color
-exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper --nine
+exec --no-startup-id wal --nine -i $HOME/.config/i3/share/default_wallpaper
 
 # Load colors from Xresource (Pywal)
 # fallback is default value in case resource can't be loaded
@@ -1470,7 +1475,6 @@ set_from_resource $c15 i3wm.color15 #ffffff
 # [Comment below lines if you want original i3 container/workspace color setup]
 # Color of border, background, text, indicator, and child_border based on Xresource
 # For old color template backup, please check .config/i3/share/i3_color_template.txt
-
 # class                 border    bground   text      indicator child_border
 client.focused          $c13      $c13      $c15      $c14      $c13
 client.focused_inactive $c1       $c1       $c15      $c2       $c1
@@ -1554,7 +1558,7 @@ bar {
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
     -m title network_traffic sensors cpu memory \
-    pasink pasource brightness battery \
+    pasink pasource brightness time battery \
     -p home.path=/home time.format="%H:%M" \
     date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
     disk.format="{percent:05.02f}%" \
@@ -1618,8 +1622,8 @@ exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
+# NetworkManager is the most popular way to manage wireless networks on Linux.
+# Nm-applet is a desktop environment-independent system tray GUI for it.
 exec_always --no-startup-id nm-applet
 
 # Bluetooth Manager system tray GUI
@@ -1650,7 +1654,7 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 # --------------------------------------------------------------------------------------
 exec_always --no-startup-id ibus-daemon -r -d -x
 
-# Parcellite (clipboard)
+# Parcellite (clipboard manager)
 exec_always --no-startup-id parcellite
 
 # Flash focus window [https://github.com/fennerm/flashfocus]
@@ -1668,8 +1672,8 @@ exec --no-startup-id kdeconnect-indicator &
 # Mailspring (email manager) in background
 exec --no-startup-id mailspring --background
 
-# Flameshot (screenshot tool)
-#exec_always --no-startup-id flameshot
+# Flameshot (screenshot tool) in background
+exec_always --no-startup-id flameshot
 
 # Neofetch initialization at startup
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
@@ -1690,9 +1694,7 @@ exec_always --no-startup-id $I3_SCRIPT/i3_automark.py
 # -- Installation: pip install autotiling
 exec_always --no-startup-id $PYTHON_BIN/autotiling
 
-# XSS-lock (built-in)
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so they are included here as an example.
-# Modify as you see fit. xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend.
+# XSS-lock (screen lock)
+# XSS-lock grabs a logind suspend inhibit lock and uses i3lock to lock the screen.
 # Use loginctl lock-session to lock your screen.
-#exec --no-startup-id xss-lock -v --transfer-sleep-lock -- i3lock -t -f -i "$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 exec_always --no-startup-id $I3_SCRIPT/i3_xsslock_operator.sh current

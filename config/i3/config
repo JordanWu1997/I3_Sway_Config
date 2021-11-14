@@ -1533,7 +1533,7 @@ bar {
         separator  $bg
         # item             border    bground   text
         focused_workspace  $c0       $c11      $c15
-        active_workspace   $c0       $c8       $c15
+        active_workspace   $c11      $c8       $c15
         inactive_workspace $c0       $c8       $c15
         urgent_workspace   $c1       $c15      $c0
         binding_mode       $bg       $bg       $fg
@@ -1572,7 +1572,7 @@ bar {
         separator  $bg
         # item             border    bground   text
         focused_workspace  $c0       $c11      $c15
-        active_workspace   $c0       $c8       $c15
+        active_workspace   $c11      $c8       $c15
         inactive_workspace $c0       $c8       $c15
         urgent_workspace   $c1       $c15      $c0
         binding_mode       $bg       $bg       $fg
@@ -1599,7 +1599,7 @@ bar{
         separator  $bg
         # item             border    bground   text
         focused_workspace  $c0       $c11      $c15
-        active_workspace   $c0       $c8       $c15
+        active_workspace   $c11      $c8       $c15
         inactive_workspace $c0       $c8       $c15
         urgent_workspace   $c1       $c15      $c0
         binding_mode       $bg       $bg       $fg

@@ -57,27 +57,27 @@
 # As for detailed theme and font Setup
 # -- https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
 # -- https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications
-#    -- for lxde: sudo dnf install lxappearance
-#    -- for gtk:  sudo dnf install gtk-chtheme
-#    -- for kde:
+#    -- for gtk:
+#       -- for gtk2.x: sudo dnf install gtk-chtheme
+#       -- for gtk3.x: sudo dnf install lxappearance
+#    -- for qt/kde:
 #       -- for qt4: sudo dnf install qt-config
 #       -- for qt5: sudo dnf install qt5ct qt5-qtstyleplugins
-#       -- for kvantum: sudo dnf install kvantum
+#       -- for qt/kde: sudo dnf install kvantum
 
-# Check if program using GTK or QT
+# Check whether program using GTK or QT
 # -- https://askubuntu.com/questions/840256/detect-if-an-application-uses-gtk-or-qt
 # In command line,
-#   ldd $(which PROGRAM) | grep 'gtk'  -> using GTK
-#   ldd $(which PROGRAM) | grep 'qt'   -> using QT
-# Note: program corresponding theme configuration
-# -- lxde
-#    -- nautilus, parcellite, and etc.
+# -- ldd $(which PROGRAM) | grep 'gtk' -> using GTK
+# -- ldd $(which PROGRAM) | grep 'qt'  -> using QT
+
+# Example: program and it corresponding tookit
 # -- gtk
-#    -- brave-browser
-# -- kvantum/qt5/qt4
+#    -- brave-browser, nautilus, parcellite, and etc.
+# -- qt/kde
 #    -- mendeleydestop, okular, kde connect and etc.
 
-# Note: my current color theme setup for arc-dark-theme
+# My current color theme setup for arc-dark-theme
 # -- Theme
 #    -- lxappearance - Arc-Dark-solid
 #    -- gtk-chtheme - Arc-Dark-solid
@@ -316,7 +316,7 @@ mode "$mode_variety" {
 }
 
 # Conky mode (system monitor and shortcut sheet)
-set $mode_conky Conky (On Primary Display): [0]killall_conky [1]shortcut_sheet [2]system_monitor [3/4]set_shortcut_color (item/title) [5/6]set_system_color (item/title) [7/8]all_conky (primary/all)
+set $mode_conky Conky: [0]killall_conky [1]shortcut_sheet [2]system_monitor [3/4]set_shortcut_color (item/title) [5/6]set_system_color (item/title) [7/8]all_conky (primary/all)
 mode "$mode_conky" {
     bindsym 0 exec killall conky
     bindsym 1 exec conky -c $HOME/.config/conky/conky_config_hotkey
@@ -1419,9 +1419,9 @@ mode "$mode_display" {
     bindsym 3       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1, mode "default"
     bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as eDP1, mode "default"
     bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 reset, mode "default"
-    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend, mode "default"
-    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh reset, mode "default"
-    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh shrink, mode "default"
+    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend && xrandr --output HDMI1 --mode "1920x1200_50.00", mode "default"
+    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 reset, mode "default"
+    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && xrandr --output eDP1 --mode "1440x810_60.00", mode "default"
     bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary, mode "default"
     bindsym p       exec --no-startup-id xrandr --output eDP1 --primary, mode "default"
     # back to normal: Enter or Escape

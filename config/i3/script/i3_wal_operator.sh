@@ -15,7 +15,6 @@ elif [ $1 == "restart" ]; then
     # Appy changes
     picom
     i3_automark_operation.sh enable
-    i3_conky_colorchanger.sh
     i3_dunst_colorchanger.sh
 else
     echo $0

@@ -265,35 +265,35 @@ mode "$mode_customization" {
 #              Please change to where you store wallpaper directory
 #              Feel free to modify these wallpaper directories as you want
 # --------------------------------------------------------------------------------------
-#export wallpaperv="$HOME/Pictures/VARIETY_SAVED"
-#export wallpaperd="$HOME/Pictures/WALLPAPERS"
-#export wallpaperf="$wallpaperd/FAVORITES"
-#export wallpaper1="$wallpaperd/i3WM"
-#export wallpaper2="$wallpaperd/FEDORA"
-#export wallpaper3="$wallpaperd/ALMA"
-#export wallpaper4="$wallpaperd/CATS"
-#export wallpaper5="$wallpaperd/LINUX"
-#export wallpaper6="$wallpaperd/THINKPAD"
-#export wallpaper8="$wallpaperd/MISCELLANEOUS"
-#export wallpaper9="$wallpaperd/DT_WALLPAPERS"
+#export WALLPAPERV="$HOME/Pictures/VARIETY_SAVED"
+#export WALLPAPERD="$HOME/Pictures/WALLPAPERS"
+#export WALLPAPERF="$WALLPAPERD/FAVORITES"
+#export WALLPAPER1="$WALLPAPERD/i3WM"
+#export WALLPAPER2="$WALLPAPERD/FEDORA"
+#export WALLPAPER3="$WALLPAPERD/ALMA"
+#export WALLPAPER4="$WALLPAPERD/CATS"
+#export WALLPAPER5="$WALLPAPERD/LINUX"
+#export WALLPAPER6="$WALLPAPERD/THINKPAD"
+#export WALLPAPER8="$WALLPAPERD/MISCELLANEOUS"
+#export WALLPAPER9="$WALLPAPERD/DT_WALLPAPERS"
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
 set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [8]Misellaneous [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
 mode "$mode_wallpaper" {
-    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $wallpaperf -name '*.*g' | shuf -n1)
-    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)" && feh --bg-fill $(find $wallpaper1 -name '*.png' | shuf -n1)
-    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)" && feh --bg-fill $(find $wallpaper2 -name '*.png' | shuf -n1)
-    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)" && feh --bg-fill $(find $wallpaper3 -name '*.png' | shuf -n1)
-    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)" && feh --bg-fill $(find $wallpaper4 -name '*.jpg' | shuf -n1)
-    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)" && feh --bg-fill $(find $wallpaper5 -name '*.png' | shuf -n1)
-    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $wallpaper6 -name '*.png' | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $wallpaper8 -name '*.png' | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $wallpaper9 -name '*.jpg' | shuf -n1)
+    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $WALLPAPERF -name '*.*g' | shuf -n1)
+    bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)" && feh --bg-fill $(find $WALLPAPER1 -name '*.png' | shuf -n1)
+    bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)" && feh --bg-fill $(find $WALLPAPER2 -name '*.png' | shuf -n1)
+    bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)" && feh --bg-fill $(find $WALLPAPER3 -name '*.png' | shuf -n1)
+    bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)" && feh --bg-fill $(find $WALLPAPER4 -name '*.jpg' | shuf -n1)
+    bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)" && feh --bg-fill $(find $WALLPAPER5 -name '*.png' | shuf -n1)
+    bindsym 6 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $WALLPAPER6 -name '*.png' | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $WALLPAPER8 -name '*.png' | shuf -n1)
+    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $WALLPAPER9 -name '*.jpg' | shuf -n1)
     bindsym 0 mode $mode_variety
-    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default feh && rm -fr $HOME/.cache/wal && wal --nine -i $HOME/.config/i3/share/default_wallpaper
     bindsym r exec notify-send -u low "Reset Wallpaper to Default" && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
-    bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_wallpaper_operator.sh save_current
+    bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_wallpaper_operator.sh feh set_default && rm -fr $HOME/.cache/wal && wal --nine -i $HOME/.config/i3/share/default_wallpaper
+    bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_wallpaper_operator.sh feh save_current
     # exit
     bindsym Return mode $mode_customization
     bindsym Escape mode "default"
@@ -307,8 +307,8 @@ mode "$mode_variety" {
     bindsym Shift+p exec notify-send -u low "Pause Changing Wallpaper (VARIETY)" && variety --pause
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)" && variety -f
-    bindsym Shift+f exec notify-send -u low "Shuffle Favorite (VARIETY)" && feh --bg-fill $(find $wallpaperv -name "*.jpg" | shuf -n1)
-    bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_wallpaper_operator.sh set_default variety
+    bindsym Shift+f exec notify-send -u low "Shuffle Favorite (VARIETY)" && feh --bg-fill $(find $WALLPAPERV -name "*.jpg" | shuf -n1)
+    bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_wallpaper_operator.sh variety set_default && rm -fr $HOME/.cache/wal && wal --nine -i $HOME/.config/i3/share/default_wallpaper
     bindsym q       exec notify-send -u low "Quit Variety" && variety --quit
     # exit
     bindsym Return mode "$mode_wallpaper"
@@ -1296,7 +1296,7 @@ mode "i3lock: Return to lock/Escape to Cancel" {
     # Option1 - User defined wallpaper
     # use default wallpaper is assigned wallpaper directory does not exist
     #bindsym Return exec --no-startup-id i3lock -t -f -i \
-        #$([ -d "$wallpaper8" ] && echo $(find $wallpaper8 -name '*.png' | shuf -n1) || \
+        #$([ -d "$WALLPAPER8" ] && echo $(find $WALLPAPER8 -name '*.png' | shuf -n1) || \
         #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"), mode "default"
     # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
     bindsym Return exec --no-startup-id $I3_SCRIPT/i3_i3lock_operator.sh current, mode "default"
@@ -1517,16 +1517,30 @@ bar {
     tray_padding 5
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
-    -m title network_traffic sensors cpu memory \
-    pasink pasource brightness time date battery \
-    -p home.path=/home time.format="%H:%M" \
-    date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
-    disk.format="{percent:05.02f}%" \
-    pasink.percent_change=1 pasource.percent_change=1 \
-    brightness.step=1 \
-    -t i3bar-wal             # status for pywal i3bar
-    #-t i3bar-iceberg-fedora # status for original i3bar
-    # Bar color [Wal color]
+        -m \
+            title \
+            network_traffic \
+            sensors cpu memory \
+            pasink \
+            pasource \
+            brightness \
+            time \
+            date \
+            battery \
+        -p \
+            home.path=/home \
+            time.format="%H:%M" \
+            date.format="%a, %b/%d/%Y CW%V" \
+            memory.format="{percent:03.01f}%" \
+            disk.format="{percent:05.02f}%" \
+            pasink.percent_change=1 \
+            pasource.percent_change=1 \
+            brightness.step=1 \
+        -t \
+            i3bar-wal             # status for pywal i3bar
+        #-t \
+            #i3bar-iceberg-fedora # status for original i3bar
+    # Workspace color
     colors{
         background $bg
         statusline $fg
@@ -1557,15 +1571,29 @@ bar {
     tray_output none
     # Bumblebee-status
     status_command $HOME/.local/bin/bumblebee-status \
-    -m title network_traffic sensors cpu memory \
-    pasink pasource brightness time battery \
-    -p home.path=/home time.format="%H:%M" \
-    date.format="%a, %b/%d/%Y CW%V" memory.format="{percent:03.01f}%" \
-    disk.format="{percent:05.02f}%" \
-    pasink.percent_change=1 pasource.percent_change=1 \
-    brightness.step=1 \
-    -t i3bar-wal
-    # Bar color [Wal color]
+        -m \
+            title \
+            network_traffic \
+            sensors \
+            cpu \
+            memory \
+            pasink \
+            pasource \
+            brightness \
+            time \
+            battery \
+        -p \
+            home.path=/home \
+            time.format="%H:%M" \
+            date.format="%a, %b/%d/%Y CW%V" \
+            memory.format="{percent:03.01f}%" \
+            disk.format="{percent:05.02f}%" \
+            pasink.percent_change=1 \
+            pasource.percent_change=1 \
+            brightness.step=1 \
+        -t \
+            i3bar-wal
+    # Workspace color
     colors{
         background $bg
         statusline $fg
@@ -1592,7 +1620,7 @@ bar{
     workspace_buttons yes
     strip_workspace_numbers yes
     tray_output none
-    # Bar color [Wal color]
+    # Workspace color
     colors{
         background $bg
         statusline $fg

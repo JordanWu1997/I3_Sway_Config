@@ -1252,20 +1252,23 @@ bindsym Ctrl+Mod1+l resize grow width 5 px or 5 ppt
 
 # Resize window (you can also use the mouse for that)
 bindsym Ctrl+Mod1+r mode "$mode_resize"
-set $mode_resize Resize: [(vim-key)]:small step [(arrow-key)]:big step
+set $mode_resize Resize: [ctrl/NONE/alt+(vim-key)]:small/medium/large step
 mode "$mode_resize" {
-    # These bindings trigger as soon as you enter the resize mode
-    # Pressing left/right will shrink/grow the window’s width.
-    # Pressing up/down will shrink/grow the window’s height.
-    bindsym h resize shrink width 1 px or 1 ppt
-    bindsym j resize grow height 1 px or 1 ppt
-    bindsym k resize shrink height 1 px or 1 ppt
-    bindsym l resize grow width 1 px or 1 ppt
-    # same bindings, but for the arrow keys
-    bindsym Left  resize shrink width 10 px or 10 ppt
-    bindsym Down  resize grow height 10 px or 10 ppt
-    bindsym Up    resize shrink height 10 px or 10 ppt
-    bindsym Right resize grow width 10 px or 10 ppt
+    # Resize in small step
+    bindsym Ctrl+h resize shrink width 1 px or 1 ppt
+    bindsym Ctrl+j resize grow height 1 px or 1 ppt
+    bindsym Ctrl+k resize shrink height 1 px or 1 ppt
+    bindsym Ctrl+l resize grow width 1 px or 1 ppt
+    # Resize in intermediate step
+    bindsym h resize shrink width 5 px or 5 ppt
+    bindsym j resize grow height 5 px or 5 ppt
+    bindsym k resize shrink height 5 px or 5 ppt
+    bindsym l resize grow width 5 px or 5 ppt
+    # Resize in large step
+    bindsym Mod1+h resize shrink width 10 px or 10 ppt
+    bindsym Mod1+j resize grow height 10 px or 10 ppt
+    bindsym Mod1+k resize shrink height 10 px or 10 ppt
+    bindsym Mod1+l resize grow width 10 px or 10 ppt
     # back to low: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1701,7 +1704,7 @@ exec --no-startup-id kdeconnect-indicator &
 exec --no-startup-id mailspring --background
 
 # Flameshot (screenshot tool) in background
-exec_always --no-startup-id flameshot
+exec --no-startup-id flameshot
 
 # Neofetch initialization at startup
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch

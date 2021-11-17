@@ -4,6 +4,7 @@
 # -- https://github.com/a-schaefers/i3-wm-gruvbox-theme/blob/master/dunst/dunstrc
 # -- https://github.com/Kaligule/dunst-config/blob/master/reload
 # -- https://zjuyk.gitlab.io/posts/i3wm-config/
+# -- https://github.com/endeavouros-team/endeavouros-i3wm-setup/blob/main/.config/dunst/dunstrc
 
 [global]
 
@@ -25,6 +26,9 @@
     # Show how many messages are currently hidden (because of
     # notification_limit).
     indicate_hidden = yes
+
+    # Shrink window if it's smaller than the width
+    shrink = no
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
@@ -62,6 +66,9 @@
     # Alignment of message text.
     alignment = right
 
+    # Split notification into multiple lines if they don't fit into geometry
+    word_wrap = yes
+
     # Vertical alignment of message text and icon.
     vertical_alignment = center
 
@@ -90,11 +97,12 @@
 	mouse_right_click = close_current
 
     ### Misc/Advanced ###
-    shrink = no
     bounce_freq = 0
-    word_wrap = yes
-    startup_notification = true
     dmenu = /usr/bin/rofi -dmenu -p dunst:
+    title = Dunst
+    class = Dunst
+    startup_notification = true
+    verbosity = mesg
 
 [frame]
     width = 2
@@ -119,4 +127,4 @@
 [urgency_critical]
     background = "#282828"
     foreground = "#ffffff"
-    timeout = 0
+    timeout = 120

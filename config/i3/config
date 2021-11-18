@@ -765,21 +765,21 @@ bindsym Mod4+f       fullscreen toggle
 bindsym Mod4+Shift+f fullscreen toggle global
 
 # Toggle tiling / floating
-bindsym Mod4+Shift+space floating toggle exec notify-send -u low "Toggle Window [Tiling/Floating]"
+bindsym Mod4+Shift+space floating toggle; exec notify-send -u low "Toggle Window [Tiling/Floating]"
 
 # Toggle stickiness of floating window (alway on the top)
-bindsym Mod4+Shift+s sticky toggle exec notify-send -u low "Toggle Sticky For Floating Window"
+bindsym Mod4+Shift+s sticky toggle; exec notify-send -u low "Toggle Sticky For Floating Window"
 
 # Change focus between tiling / floating windows
-bindsym Mod4+space focus mode_toggle exec notify-send -u low "Toggle Focus [Tiling/Floating]"
+bindsym Mod4+space focus mode_toggle; exec notify-send -u low "Toggle Focus [Tiling/Floating]"
 
 # Change container layout (stacking, tabbed, toggle split)
-bindsym Mod4+s layout stacking             exec notify-send -u low "Stacking Mode On"
-bindsym Mod4+w layout tabbed               exec notify-send -u low "Tabbed Mode On"
-bindsym Mod4+e layout toggle splitv splith exec notify-send -u low "Toggle Layout Split"
+bindsym Mod4+s layout stacking; exec notify-send -u low "Stacking Mode On"
+bindsym Mod4+w layout tabbed; exec notify-send -u low "Tabbed Mode On"
+bindsym Mod4+e layout toggle splitv splith; exec notify-send -u low "Toggle Layout Split"
 
 # Quick change container layout (stacking, tabbed, splitv, splith)
-bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking exec notify-send -u low "Toggle Layout Mode"
+bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking; exec notify-send -u low "Toggle Layout Mode"
 
 # Titlebar toggle (locally, globally)
 bindsym Mod4+n       border toggle
@@ -1242,9 +1242,10 @@ mode "$mode_restore_workspace" {
     bindsym Escape mode "default"
 }
 
-# Reload the configuration file (Keyboard)
-# Restart i3 inplace (preserves your layout/session, can be used to update i3)
+# Reload this configuration file
 bindsym Mod4+r       reload
+
+# Restart whole i3 session
 bindsym Mod4+Shift+r restart
 
 # Resize window with hotkey
@@ -1351,9 +1352,9 @@ bindsym --release button2           kill
 bindsym --whole-window Mod4+button2 kill
 
 # The right button toggles floating
-bindsym --release button3                 floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym --border Mod4+button3             floating toggle exec notify-send -u low "Toggle Window Floating"
-bindsym --whole-window Mod4+Shift+button3 floating toggle exec notify-send -u low "Toggle Window Floating"
+bindsym --release button3                 floating toggle; exec notify-send -u low "Toggle Window Floating"
+bindsym --border Mod4+button3             floating toggle; exec notify-send -u low "Toggle Window Floating"
+bindsym --whole-window Mod4+Shift+button3 floating toggle; exec notify-send -u low "Toggle Window Floating"
 
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
@@ -1643,7 +1644,7 @@ bar{
 }
 
 # Status bar toggle, hide or show
-bindsym Mod4+Shift+b bar mode toggle bar_base_primary, bar mode toggle bar_base_nonprimary
+bindsym Mod4+Shift+b bar mode toggle bar_base_primary; bar mode toggle bar_base_nonprimary
 bindsym Mod4+b       bar mode toggle bar_overlay
 
 # ======================================================================================

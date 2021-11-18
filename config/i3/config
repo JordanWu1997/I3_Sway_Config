@@ -268,29 +268,33 @@ mode "$mode_customization" {
 #export WALLPAPERV="$HOME/Pictures/VARIETY_SAVED"
 #export WALLPAPERD="$HOME/Pictures/WALLPAPERS"
 #export WALLPAPERF="$WALLPAPERD/FAVORITES"
-#export WALLPAPER1="$WALLPAPERD/i3WM"
+#export WALLPAPER1="$WALLPAPERD/I3WM"
 #export WALLPAPER2="$WALLPAPERD/FEDORA"
 #export WALLPAPER3="$WALLPAPERD/ALMA"
 #export WALLPAPER4="$WALLPAPERD/CATS"
 #export WALLPAPER5="$WALLPAPERD/LINUX"
 #export WALLPAPER6="$WALLPAPERD/THINKPAD"
-#export WALLPAPER8="$WALLPAPERD/MISCELLANEOUS"
-#export WALLPAPER9="$WALLPAPERD/DT_WALLPAPERS"
+#export WALLPAPER7="$WALLPAPERD/MISCELLANEOUS"
+#export WALLPAPER8="$WALLPAPERD/DT_WALLPAPERS"
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [f]avorite [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [8]Misellaneous [9]DTs [0]Variety_mode [s]ave_as_default [r]estore_to_default [a]dd_to_avorite
+set $mode_wallpaper Wallpaper: [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [7]Misc [8]DTs [a]dd_to_favorite [f]avorite [v]ariety_saved [V]ariety_mode [s]ave_as_default [r]estore_default
 mode "$mode_wallpaper" {
-    bindsym f exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $WALLPAPERF -name '*.*g' | shuf -n1)
+    # Wallpapers
     bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)" && feh --bg-fill $(find $WALLPAPER1 -name '*.png' | shuf -n1)
     bindsym 2 exec notify-send -u low "Shuffle Wallpaper (FEDORA)" && feh --bg-fill $(find $WALLPAPER2 -name '*.png' | shuf -n1)
     bindsym 3 exec notify-send -u low "Shuffle Wallpaper (ALMA)" && feh --bg-fill $(find $WALLPAPER3 -name '*.png' | shuf -n1)
     bindsym 4 exec notify-send -u low "Shuffle Wallpaper (CATS)" && feh --bg-fill $(find $WALLPAPER4 -name '*.jpg' | shuf -n1)
     bindsym 5 exec notify-send -u low "Shuffle Wallpaper (LINUX)" && feh --bg-fill $(find $WALLPAPER5 -name '*.png' | shuf -n1)
     bindsym 6 exec notify-send -u low "Shuffle Wallpaper (THINKPAD)" && feh --bg-fill $(find $WALLPAPER6 -name '*.png' | shuf -n1)
-    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $WALLPAPER8 -name '*.png' | shuf -n1)
-    bindsym 9 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $WALLPAPER9 -name '*.jpg' | shuf -n1)
-    bindsym 0 mode $mode_variety
+    bindsym 7 exec notify-send -u low "Shuffle Wallpaper (MISCELLANEOUS)" && feh --bg-fill $(find $WALLPAPER7 -name '*.png' | shuf -n1)
+    bindsym 8 exec notify-send -u low "Shuffle Wallpaper (DTs)" && feh --bg-fill $(find $WALLPAPER8 -name '*.jpg' | shuf -n1)
+    # Favorites and variety
+    bindsym f       exec notify-send -u low "Shuffle Wallpaper (FAVORITE)" && feh --bg-fill $(find $WALLPAPERF -name '*.*g' | shuf -n1)
+    bindsym v       exec notify-send -u low "Shuffle Wallpaper (VARIETY_FAVORITE)" && feh --bg-fill $(find $WALLPAPERV -name "*.jpg" | shuf -n1)
+    bindsym Shift+v mode $mode_variety
+    # Options
     bindsym r exec notify-send -u low "Reset Wallpaper to Default" && feh --bg-fill $HOME/.config/i3/share/default_wallpaper
     bindsym s exec notify-send -u low "Save Current as Default" && $I3_SCRIPT/i3_wallpaper_operator.sh feh set_default && rm -fr $HOME/.cache/wal && wal --nine -i $HOME/.config/i3/share/default_wallpaper
     bindsym a exec notify-send -u low "Add current to Favorite" && $I3_SCRIPT/i3_wallpaper_operator.sh feh save_current
@@ -300,14 +304,13 @@ mode "$mode_wallpaper" {
 }
 
 # Variety mode (within wallpaper mode)
-set $mode_variety Variety: [n]ext [p]revious [F]avorite [P]ause [R]esume [A]dd_Favorite [s]ave_as_default [q]uit
+set $mode_variety Variety: [n]ext [p]revious [P]ause [R]esume [A]dd_to_favorite [s]ave_current_variety_as_default [q]uit
 mode "$mode_variety" {
     bindsym n       exec notify-send -u low "Next Wallpaper (VARIETY)" && variety -n
     bindsym p       exec notify-send -u low "Previous Wallpaper (VARIETY)" && variety -p
     bindsym Shift+p exec notify-send -u low "Pause Changing Wallpaper (VARIETY)" && variety --pause
     bindsym Shift+r exec notify-send -u low "Resume Changing Wallpaper (VARIETY)" && variety --resume
     bindsym Shift+a exec notify-send -u low "Add to Favorite (Variety)" && variety -f
-    bindsym Shift+f exec notify-send -u low "Shuffle Favorite (VARIETY)" && feh --bg-fill $(find $WALLPAPERV -name "*.jpg" | shuf -n1)
     bindsym s       exec notify-send -u low "Save current as default" && $I3_SCRIPT/i3_wallpaper_operator.sh variety set_default && rm -fr $HOME/.cache/wal && wal --nine -i $HOME/.config/i3/share/default_wallpaper
     bindsym q       exec notify-send -u low "Quit Variety" && variety --quit
     # exit
@@ -1523,7 +1526,9 @@ bar {
         -m \
             title \
             network_traffic \
-            sensors cpu memory \
+            sensors \
+            cpu \
+            memory \
             pasink \
             pasource \
             brightness \

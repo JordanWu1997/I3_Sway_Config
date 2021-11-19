@@ -902,6 +902,10 @@ bindsym Mod4+Tab       workspace next
 bindsym Mod4+Shift+Tab workspace prev
 bindsym Ctrl+Mod1+Tab  workspace back_and_forth
 
+# Add new workspace increasely/decreasely
+bindsym Mod4+grave       exec $I3_SCRIPT/i3_new_workspace.sh inc
+bindsym Mod4+Shift+grave exec $I3_SCRIPT/i3_new_workspace.sh dec
+
 # Move focus between output monitors ([/,/./])
 bindsym Mod4+bracketleft  focus output up
 bindsym Mod4+bracketright focus output down

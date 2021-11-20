@@ -4,8 +4,8 @@
 current=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
     tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
 
-# Assign new workspace
-if [ $1 == "inc" ]; then
+# Assign new workspace increasely
+if [ $2 == "inc" ]; then
     if (( $current >= 1  )) && (( $current <= 10 )) ; then
         if (( $(($current + 1)) == 11 )); then
             new="11:B1"
@@ -31,7 +31,8 @@ if [ $1 == "inc" ]; then
             new="$(( $current + 1 )):C$(( $current + 1 - 30  ))"
         fi
     fi
-elif [ $1 == "dec" ]; then
+# Assign new workspace decreasely
+elif [ $2 == "dec" ]; then
     if (( $current >= 1  )) && (( $current <= 10 )) ; then
         if (( $(($current - 1)) == 0 )); then
             new="40:D10"
@@ -61,4 +62,9 @@ elif [ $1 == "dec" ]; then
 fi
 
 # Move to new workspace
-i3-msg workspace $new
+if [ $1 == "move" ]; then
+    i3-msg workspace $new
+# Move container to new workspace
+elif [ $1 == "move_container" ]; then
+    i3-msg move container to workspace $new; i3-msg workspace $new
+fi

@@ -219,6 +219,12 @@ focus_on_window_activation smart
 # Popups during fullscreen mode
 popup_during_fullscreen smart
 
+# Container split direction (option: horizontal, vertical, auto)
+default_orientation auto
+
+# Layout mode (option: default, stacking, tabbed)
+workspace_layout default
+
 # Window titlebar
 # You can use any non-zero value if you would like to have a border (or 'normal')
 # Available window frame options: width pixel (or 'normal')
@@ -227,9 +233,11 @@ for_window [class="^.*"] border $default_border_width
 new_window $default_border_width
 new_float $default_border_width
 
-# Hide edge border if there is only one window
-#hide_edge_borders smart
-hide_edge_borders none
+# Border adjacent to screen border action
+# -- none: never hide any border
+# -- both: hide both vertical and horizontal border
+# -- smart: hide edge border when there is only one window
+hide_edge_borders both
 
 # Set windows titlebar fontsize
 font pango: DroidSansMono Nerd Font $default_titlebar_fontsize
@@ -238,9 +246,6 @@ show_marks yes
 for_window [class=".*"] title_format "%title"
 for_window [title=".* Copying.*"] title_format "File transfer in progress..."
 for_window [title=".* Moving.*"] title_format "File transfer in progress..."
-
-# Container split direction
-default_orientation horizontal
 
 # ======================================================================================
 # All About Customization
@@ -461,12 +466,23 @@ mode "$mode_flashfocus" {
 # Gaps
 gaps inner $default_inner_gap
 gaps outer $default_outer_gap
-# Disable outer gap when there is only one window
-#smart_gaps on
-# Only enable outer gap when there is only one window
+
+# Gaps action when there is only one container
+# -- on: disable gaps
+# -- inverse_outer: enable inner gaps and only-enable outer gaps
 smart_gaps inverse_outer
 
-# i3-gap [modify in mode]
+# i3-gap (shortcut for current workspace)
+bindsym Ctrl+Mod1+Shift+h gaps horizontal current minus 5
+bindsym Ctrl+Mod1+Shift+j gaps vertical current minus 5
+bindsym Ctrl+Mod1+Shift+k gaps vertical current plus 5
+bindsym Ctrl+Mod1+Shift+l gaps horizontal current plus 5
+bindsym Ctrl+Mod1+Shift+m gaps inner current minus 5
+bindsym Ctrl+Mod1+Shift+p gaps inner current plus 5
+bindsym Ctrl+Mod1+Shift+o gaps outer current set $default_outer_gap
+bindsym Ctrl+Mod1+Shift+i gaps inner current set $default_inner_gap
+
+# i3-gap (modify in mode, works for both current workspace and global workspace)
 # -- https://github.com/Airblader/i3/wiki/Example-Configuration
 # Note: horiz, verti, top, right, bottom, left are all part of outer gaps
 set $mode_gaps Gaps: [o]uter [i]nner [h]orizontal [v]ertical [t]op [r]ight [b]ottom [l]eft [s]et_default_inner_gap [S]et_default_outer_gap
@@ -1301,20 +1317,6 @@ mode "$mode_redshift" {
     bindsym 6 exec --no-startup-id "$kill_redshift redshift -P -O 6000"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-# Lock mode (i3lock)
-bindsym Ctrl+Mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
-mode "i3lock: Return to lock/Escape to Cancel" {
-    # Option1 - User defined wallpaper
-    # use default wallpaper is assigned wallpaper directory does not exist
-    #bindsym Return exec --no-startup-id i3lock -t -f -i \
-        #$([ -d "$WALLPAPER8" ] && echo $(find $WALLPAPER8 -name '*.png' | shuf -n1) || \
-        #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"); mode "default"
-    # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
-    bindsym Return exec --no-startup-id $I3_SCRIPT/i3_i3lock_operator.sh current; mode "default"
-    # exit mode
     bindsym Escape mode "default"
 }
 

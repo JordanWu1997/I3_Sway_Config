@@ -76,18 +76,36 @@ There also is the (new) i3-dmenu-desktop which only displays applications
 shipping a .desktop file. It is a wrapper around dmenu, so you need dmenu installed.
 
 - Run dmenu (application launcher) in i3
-    - ```
-      bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16 \
-        -fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
-        -nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
-        ```
+    ```
+    bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16 \
+      -fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
+      -nb "$bg" -nf "$c1" -sb "$c3" -sf "$fg"
+    ```
 
 - Run i3-dmenu-desktop in i3
+    ```
+    bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop \
+      --dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
+    ```
 
-    - ```
-      bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop \
-        --dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
-        ```
+## I3-lock
+
+- I3 lock mode with I3-lock
+    ```
+    # Lock mode (i3lock)
+    bindsym Ctrl+Mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"
+    mode "i3lock: Return to lock/Escape to Cancel" {
+        # Option1 - User defined wallpaper
+        # use default wallpaper is assigned wallpaper directory does not exist
+        #bindsym Return exec --no-startup-id i3lock -t -f -i \
+            #$([ -d "$WALLPAPER8" ] && echo $(find $WALLPAPER8 -name '*.png' | shuf -n1) || \
+            #echo "$HOME/.config/i3/share/default_i3_wallpaper.png"); mode "default"
+        # Option2 - Current default wallpaper (Must be PNG format, or use default wallpaper)
+        bindsym Return exec --no-startup-id $I3_SCRIPT/i3_i3lock_operator.sh current; mode "default"
+        # exit mode
+        bindsym Escape mode "default"
+    }
+    ```
 
 ## Master-stack layout
 
@@ -109,6 +127,7 @@ Master-stack layout keybindings
     - `bindsym $mod+alt+m nop master toggle`
 
 ## Auto-name workspace
+
 Auto-name workspace name with fancy symbols [https://github.com/cboddy/i3-workspace-names-daemon].
 For fancy symbols support, NERD font must be installed first.
 Symbols can be user-defined in `$HOME/.config/i3/share/app-icons.json`.
@@ -117,6 +136,7 @@ Symbols can be user-defined in `$HOME/.config/i3/share/app-icons.json`.
     - `exec --no-startup-id $PYTHON_BIN/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json`
 
 ## Xcompgr
+
 X-window compositor for transparency support (now use picom instead)
 But it works better in low-resource computer (e.g virtual machine)
 
@@ -124,7 +144,8 @@ But it works better in low-resource computer (e.g virtual machine)
     - `exec --no-startup-id xcompmgr -c -f -n`
 
 ## Picom
-X-window compositor for animation, transparency, blur support [https://man.archlinux.org/man/picom.1.en].
+
+X window compositor for animation, transparency, blur support [https://man.archlinux.org/man/picom.1.en].
 For now, picom function has been integrated in my `$HOME/.config/i3/script/i3_display_monitor_adopter.sh script)`.
 Unfortunately, picom in Fedora repository not work well [https://github.com/yshui/picom],
 so I use picom fork of jonaburg [https://github.com/jonaburg/picom] instead (need manually installed on Fedora)

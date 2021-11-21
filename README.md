@@ -129,15 +129,16 @@ Table of Contents
     - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - [Ctrl] + [Shift] + [Function(F#)]: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - [Alt] + [Shift] + [Function(F#)]: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
-- __Move between Workspace__
-    - [Alt] + [Tab]: Show current workspace window list
+- Move in workspace
+    - [Winkey] + ([Shift]) + [Tab]: Move to (prev)/next existing workspace
+    - [Winkey] + ([Shift]) + [Grave]: Move to (prev)/next workspace. If not exist, it will create one
+- __Move between Windows__
+    - [Alt] + [Tab]: Show all window list
 - __Manipulate Scratchpad__
     - [Winkey] + [-]: Send focus to scratchpad (background)
     - [Winkey] + [Shift] + [-]: Send all floating windows to scratchpad (background)
     - [Winkey] + [=]: Bring window in scratchpad to foreground one by one
     - [Winkey] + [Shift] + [=]: Bring all windows in scratchpad to foreground
-- __Lock screen__
-    - [Crtl] + [Alt] + [Shift] + [l]: Lock screen with xss-lock
 
 ### Mode Usage
 - __System mode ([Win] + [Shift] + [Esc])__

@@ -343,14 +343,14 @@ mode "$mode_conky" {
 # Palette mode (color palette for conky shortcut item)
 set $mode_conky_palette_shortcut_item Color for conky shortcut item: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_shortcut_item" {
-    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color0, mode "$mode_conky"
-    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color1, mode "$mode_conky"
-    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color2, mode "$mode_conky"
-    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color3, mode "$mode_conky"
-    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color4, mode "$mode_conky"
-    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color5, mode "$mode_conky"
-    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color6, mode "$mode_conky"
-    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color0; mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color1; mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color2; mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color3; mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color4; mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color5; mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color6; mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey item color7; mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -359,14 +359,14 @@ mode "$mode_conky_palette_shortcut_item" {
 # Palette mode (color palette for conky shortcut title)
 set $mode_conky_palette_shortcut_title Color for conky shortcut title: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_shortcut_title" {
-    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color0, mode "$mode_conky"
-    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color1, mode "$mode_conky"
-    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color2, mode "$mode_conky"
-    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color3, mode "$mode_conky"
-    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color4, mode "$mode_conky"
-    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color5, mode "$mode_conky"
-    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color6, mode "$mode_conky"
-    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color0; mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color1; mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color2; mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color3; mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color4; mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color5; mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color6; mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh hotkey title color7; mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -375,14 +375,14 @@ mode "$mode_conky_palette_shortcut_title" {
 # Palette mode (color palette for conky system item)
 set $mode_conky_palette_system_item Color for conky system item: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_system_item" {
-    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color0, mode "$mode_conky"
-    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color1, mode "$mode_conky"
-    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color2, mode "$mode_conky"
-    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color3, mode "$mode_conky"
-    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color4, mode "$mode_conky"
-    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color5, mode "$mode_conky"
-    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color6, mode "$mode_conky"
-    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color0; mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color1; mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color2; mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color3; mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color4; mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color5; mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color6; mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh system item color7; mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -391,14 +391,14 @@ mode "$mode_conky_palette_system_item" {
 # Palette mode (color palette for conky system title)
 set $mode_conky_palette_system_title Color for conky system title: [1]black [2]red [3]green [4]yellow [5]blue [6]magenta [7]cyan [8]white
 mode "$mode_conky_palette_system_title" {
-    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color0, mode "$mode_conky"
-    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color1, mode "$mode_conky"
-    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color2, mode "$mode_conky"
-    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color3, mode "$mode_conky"
-    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color4, mode "$mode_conky"
-    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color5, mode "$mode_conky"
-    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color6, mode "$mode_conky"
-    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color7, mode "$mode_conky"
+    bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color0; mode "$mode_conky"
+    bindsym 2 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color1; mode "$mode_conky"
+    bindsym 3 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color2; mode "$mode_conky"
+    bindsym 4 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color3; mode "$mode_conky"
+    bindsym 5 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color4; mode "$mode_conky"
+    bindsym 6 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color5; mode "$mode_conky"
+    bindsym 7 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color6; mode "$mode_conky"
+    bindsym 8 exec $I3_SCRIPT/i3_conky_colorchanger.sh system title color7; mode "$mode_conky"
     # exit
     bindsym Return mode "$mode_conky"
     bindsym Escape mode "default"
@@ -1415,8 +1415,8 @@ mode "$mode_mouse" {
 set $mode_mouse_autohide Mouse autohide: [e]nable_mouse_autohide [d]isable_mouse_autohide
 mode "$mode_mouse_autohide" {
     # Cursor autohide [hhpc need to be installed]
-    bindsym e exec "hhpc -i 5", mode "default"
-    bindsym d exec "killall hhpc", mode "default"
+    bindsym e exec "hhpc -i 5"; mode "default"
+    bindsym d exec "killall hhpc"; mode "default"
     # exit
     bindsym Return mode "$mode_mouse"
     bindsym Escape mode "default"
@@ -1429,17 +1429,17 @@ set $mode_display Display: [a]Automatic [0]Arandr [1]eDP1 Only [2]HDMI1 Only [3]
 bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
     bindsym a       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
-    bindsym 0       exec --no-startup-id arandr, mode "default"
-    bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off --output eDP1  --auto --primary, mode "default"
-    bindsym 2       exec --no-startup-id xrandr --output eDP1  --off --output HDMI1 --auto --primary, mode "default"
-    bindsym 3       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --right-of eDP1, mode "default"
-    bindsym 4       exec --no-startup-id xrandr --output eDP1  --auto --output HDMI1 --auto --primary --same-as eDP1, mode "default"
-    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 reset, mode "default"
-    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend && xrandr --output HDMI1 --mode "1920x1200_50.00", mode "default"
-    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 reset, mode "default"
-    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && xrandr --output eDP1 --mode "1440x810_60.00", mode "default"
-    bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary, mode "default"
-    bindsym p       exec --no-startup-id xrandr --output eDP1 --primary, mode "default"
+    bindsym 0       exec --no-startup-id arandr; mode "default"
+    bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off --output eDP1 --auto --primary; mode "default"
+    bindsym 2       exec --no-startup-id xrandr --output eDP1 --off --output HDMI1 --auto --primary; mode "default"
+    bindsym 3       exec --no-startup-id xrandr --output eDP1 --auto --output HDMI1 --auto --primary --right-of eDP1; mode "default"
+    bindsym 4       exec --no-startup-id xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1; mode "default"
+    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 reset; mode "default"
+    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend && xrandr --output HDMI1 --mode "1920x1200_50.00"; mode "default"
+    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 reset; mode "default"
+    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && xrandr --output eDP1 --mode "1440x810_60.00"; mode "default"
+    bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary; mode "default"
+    bindsym p       exec --no-startup-id xrandr --output eDP1 --primary; mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"

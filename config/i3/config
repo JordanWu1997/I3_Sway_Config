@@ -79,11 +79,11 @@
 
 # My current color theme setup for arc-dark-theme
 # -- Theme
-#    -- lxappearance - Arc-Dark-solid
-#    -- gtk-chtheme - Arc-Dark-solid
-#    -- kvantum - KvArcDark
-#    -- qt5 Settings - kvantum-dark
-#    -- qt4 Config - Desktop Settings (Default)
+#    -- lxappearance: Arc-Dark-solid
+#    -- gtk-chtheme: Arc-Dark-solid
+#    -- kvantum: KvArcDark
+#    -- qt5 Settings: kvantum-dark
+#    -- qt4 Config: Desktop Settings (Default)
 # -- Icon
 #    -- Light: Papirus
 #    -- Dark: Papirus-Dark
@@ -241,11 +241,9 @@ hide_edge_borders both
 
 # Set windows titlebar fontsize
 font pango: DroidSansMono Nerd Font $default_titlebar_fontsize
+for_window [class=".*"] title_format "%title"
 title_align center
 show_marks yes
-for_window [class=".*"] title_format "%title"
-for_window [title=".* Copying.*"] title_format "File transfer in progress..."
-for_window [title=".* Moving.*"] title_format "File transfer in progress..."
 
 # ======================================================================================
 # All About Customization
@@ -699,7 +697,7 @@ bindsym Ctrl+Mod1+minus exec --no-startup-id brave-browser
 bindsym Ctrl+Mod1+equal exec --no-startup-id firefox
 
 # Use pactl to adjust volume in PulseAudio.
-# Check https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
+# -- https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
 # For advanced modification, check pulsemxier or alsamixer
 set $refresh_i3status "killall -SIGUSR1 i3status"
 bindsym XF86AudioMute             exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status

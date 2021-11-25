@@ -21,6 +21,39 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # Context
 
+## Bind numpad key
+
+Binding `numpad` key in i3 needs additional settings [https://unix.stackexchange.com/questions/566566/binding-numpad-keys-on-i3-dont-work].
+`Numlock` key (`Mod2` key) must be specified in every keybindings related to `numpad` key.
+Also, if you want to map `shift + numpad key`, both `Mod2` and `shift` are needed in every keybindings.
+
+- `Numpad` key in i3
+    ```
+    Mod2+KP_1
+    Mod2+KP_2
+    Mod2+KP_3
+    Mod2+KP_4
+    Mod2+KP_5
+    Mod2+KP_6
+    Mod2+KP_7
+    Mod2+KP_8
+    Mod2+KP_9
+    Mod2+KP_0
+    ```
+- `Shift+Numpad` key in i3
+    ```
+    Mod2+Shift+KP_End
+    Mod2+Shift+KP_Down
+    Mod2+Shift+KP_Next
+    Mod2+Shift+KP_Left
+    Mod2+Shift+KP_Begin
+    Mod2+Shift+KP_Right
+    Mod2+Shift+KP_Home
+    Mod2+Shift+KP_Up
+    Mod2+Shift+KP_Prior
+    Mod2+Shift+KP_Insert
+    ```
+
 ## Display configuration for X-window
 
 For now, display configuration are all integrated with my script `i3_display_monitor_adopter.sh`

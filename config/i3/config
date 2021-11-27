@@ -1426,18 +1426,18 @@ mode "$mode_mouse_autohide" {
 set $mode_display Display: [a]Automatic [0]Arandr [1]eDP1 Only [2]HDMI1 Only [3]eDP1+HDMI1 Joint [4]eDP1+HDMI1 Mirror [H/h]HDMI1 1920x1080/1920x1200 [E/e]eDP1 1920x1080/1440x810 [P/p]Primary HDMI1/eDP1
 bindsym Mod4+Shift+x mode "$mode_display"
 mode "$mode_display" {
-    bindsym a       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
+    bindsym a       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh auto
     bindsym 0       exec --no-startup-id arandr; mode "default"
-    bindsym 1       exec --no-startup-id xrandr --output HDMI1 --off --output eDP1 --auto --primary; mode "default"
-    bindsym 2       exec --no-startup-id xrandr --output eDP1 --off --output HDMI1 --auto --primary; mode "default"
-    bindsym 3       exec --no-startup-id xrandr --output eDP1 --auto --output HDMI1 --auto --primary --right-of eDP1; mode "default"
-    bindsym 4       exec --no-startup-id xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1; mode "default"
-    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 reset; mode "default"
-    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend && xrandr --output HDMI1 --mode "1920x1200_50.00"; mode "default"
-    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 reset; mode "default"
-    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && xrandr --output eDP1 --mode "1440x810_60.00"; mode "default"
-    bindsym Shift+p exec --no-startup-id xrandr --output HDMI1 --primary; mode "default"
-    bindsym p       exec --no-startup-id xrandr --output eDP1 --primary; mode "default"
+    bindsym 1       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option eDP1_only; mode "default"
+    bindsym 2       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option HDMI1_only; mode "default"
+    bindsym 3       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option eDP1_HDMI1_joint; mode "default"
+    bindsym 4       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option eDP1_HDMI1_mirror; mode "default"
+    bindsym h       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option HDMI1_extend; mode "default"
+    bindsym Shift+h exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 default; mode "default"
+    bindsym e       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option eDP1_shrink; mode "default"
+    bindsym Shift+e exec --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 default; mode "default"
+    bindsym p       exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option eDP1_primary; mode "default"
+    bindsym Shift+p exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh option HDMI1_primary; mode "default"
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1514,7 +1514,7 @@ bar {
     mode dock
     # Bar output display
     output primary
-    # Height in pixels (Only for i3-gaps)
+    # Height in pixels (ONLY for i3-gaps)
     height 25
     # Modifier (show bar when pressing)
     modifier none
@@ -1553,9 +1553,7 @@ bar {
             pasource.percent_change=1 \
             brightness.step=1 \
         -t \
-            i3bar-wal             # status for pywal i3bar
-        #-t \
-            #i3bar-iceberg-fedora # status for original i3bar
+            i3bar-wal
     # Workspace color
     colors{
         background $bg
@@ -1661,7 +1659,7 @@ bindsym Mod4+b       bar mode toggle bar_overlay
 
 # Set output joint display automatically (HDMI1 connected or not).
 # For more options, check the display mode in this configuration
-exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh right
+exec --no-startup-id $I3_SCRIPT/i3_display_monitor_adopter.sh auto
 
 # Gnome authentication (gnome software usage support)
 exec_always --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
@@ -1721,10 +1719,6 @@ exec --no-startup-id flameshot
 
 # Neofetch initialization at startup
 exec_always --no-startup-id rm -fr $HOME/.cache/thumbnails/neofetch
-
-# Conky (system overview and hotkey)
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_hotkey
-#exec --no-startup-id conky -c $HOME/.config/conky/conky_config_system
 
 # Battery warning [https://github.com/rjekker/i3-battery-popup]
 exec --no-startup-id $I3_SCRIPT/i3_battery-popup.sh -N -L 30

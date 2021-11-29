@@ -898,7 +898,7 @@ mode "$mode_mark" {
     bindsym Escape mode "default"
 }
 
-# Scratchpad: hide/show window (minus is "-" and plus is "+".)
+# Scratchpad: hide/show window (minus is "-" key but plus is actually "=" key.)
 bindsym Mod4+minus move scratchpad; exec notify-send -u low "Move Current Window To Scratchpad (Background)"
 bindsym Mod4+plus  scratchpad show; exec notify-send -u low "Bring Scratchpad Window Foreground One-By-One"
 # Scratchpad: Move all floating windows to the scratchpad and vice versa
@@ -1301,18 +1301,17 @@ mode "$mode_resize" {
 # Redshift mode
 # -- https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
 bindsym Mod4+Shift+z mode "$mode_redshift"
-set $mode_redshift Redshift: [a]uto [r]eset [1] 3000K [2] 3500K [3] 4000K [4] 4500K [5] 5000K [6] 5500K [7] 6000K
+set $mode_redshift Redshift: [a]uto [r]eset [1] 3000K [2] 3500K [3] 4000K [4] 4500K [5] 5000K [6] 5500K
 set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
-    bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5000:3500"
+    bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5500:4000"
     bindsym r exec --no-startup-id "$kill_redshift redshift -x"
     bindsym 1 exec --no-startup-id "$kill_redshift redshift -P -O 3000"
     bindsym 2 exec --no-startup-id "$kill_redshift redshift -P -O 3500"
     bindsym 3 exec --no-startup-id "$kill_redshift redshift -P -O 4000"
     bindsym 4 exec --no-startup-id "$kill_redshift redshift -P -O 4500"
     bindsym 5 exec --no-startup-id "$kill_redshift redshift -P -O 5000"
-    bindsym 5 exec --no-startup-id "$kill_redshift redshift -P -O 5500"
-    bindsym 6 exec --no-startup-id "$kill_redshift redshift -P -O 6000"
+    bindsym 6 exec --no-startup-id "$kill_redshift redshift -P -O 5500"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1669,7 +1668,7 @@ exec_always --no-startup-id nm-applet
 # Bluetooth Manager system tray GUI
 exec_always --no-startup-id blueman-applet
 
-# Startup numlock on (sudo dnf install numlockx)
+# Startup numlock on [sudo dnf install numlockx]
 exec_always --no-startup-id numlockx on
 
 # Imwheel (modify mouse wheel speed)
@@ -1683,6 +1682,11 @@ exec_always --no-startup-id xset r rate 300 40
 
 # Remap Caplock key to Ctrl
 exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
+
+# Trackpad gesture (libinput-gesture support)
+# -- https://github.com/bulletmark/libinput-gestures
+# Need to be compiled mannually
+exec_always --no-startup-id libinput-gestures-setup start
 
 # Ibus input method (ibus-chewing support)
 # Note: Following lines must be added to .profile to set ibus as default input method
@@ -1726,7 +1730,7 @@ exec --no-startup-id $I3_SCRIPT/i3_battery-popup.sh -N -L 30
 exec_always --no-startup-id $I3_SCRIPT/i3_automark.py
 
 # Dwindle layout (autotiling) [https://github.com/nwg-piotr/autotiling]
-# For dwindle mode (Tiling direction sequence: H -> V -> H -> V ...) support
+# For dwindle mode (tiling direction sequence: H -> V -> H -> V ...) support
 # -- Installation: pip install autotiling
 exec_always --no-startup-id $PYTHON_BIN/autotiling
 

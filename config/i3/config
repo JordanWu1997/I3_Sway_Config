@@ -412,7 +412,7 @@ mode "$mode_theme" {
     bindsym d exec $I3_SCRIPT/i3_wal_operator.sh disable && notify-send -u low "Disable auto-theme (kill pywal)"
     bindsym r exec $I3_SCRIPT/i3_restart_i3_for_wal.sh && notify-send -u low "Reload i3"
     bindsym 1 exec $I3_SCRIPT/i3_conky_colorchanger.sh system both color3 && $I3_SCRIPT/i3_conky_colorchanger.sh hotkey both color3 && notify-send -u low "Reload conky"
-    bindsym 2 exec $I3_SCRIPT/i3_dunst_colorchanger.sh && notify-send -u low "Reload dunst (notifier)"
+    bindsym 2 exec $I3_SCRIPT/i3_dunst_walcolor.sh && notify-send -u low "Reload dunst (notifier)"
     bindsym 3 exec $I3_SCRIPT/i3_xsslock_operator.sh current && notify-send -u low "Reload xsslock (session lock)"
     bindsym 4 exec $I3_SCRIPT/i3_vis_colorchanger.sh && notify-send -u low "Reload vis (cli-equalizer)"
     # Zathura-pywal need to be installed mannually [https://github.com/mslcarlson/zathura-pywal]
@@ -1706,8 +1706,7 @@ exec_always --no-startup-id parcellite
 exec_always --no-startup-id $PYTHON_BIN/flashfocus
 
 # Dunst (notification with wal color theme support)
-exec_always --no-startup-id dunst
-exec_always --no-startup-id $I3_SCRIPT/i3_dunst_colorchanger.sh
+exec_always --no-startup-id $I3_SCRIPT/i3_dunst_walcolor.sh
 
 # KDE Connect (connect to android smartphone) in background
 exec --no-startup-id /usr/libexec/kdeconnectd &

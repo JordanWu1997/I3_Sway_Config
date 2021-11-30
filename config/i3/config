@@ -161,7 +161,7 @@ set $terminal i3-sensible-terminal
 set $default_titlebar_fontsize 12
 
 # Setup border width (set normal to show window titlebar)
-set $default_border_width pixel 2
+set $default_border_width pixel 3
 
 # Setup gap width (only for i3-gap, set 0 to reduce to original i3)
 set $default_inner_gap 10
@@ -237,7 +237,7 @@ new_float $default_border_width
 # -- none: never hide any border
 # -- both: hide both vertical and horizontal border
 # -- smart: hide edge border when there is only one window
-hide_edge_borders both
+hide_edge_borders none
 
 # Set windows titlebar fontsize
 font pango: DroidSansMono Nerd Font $default_titlebar_fontsize
@@ -835,11 +835,13 @@ mode "$mode_titlebar_font" {
 }
 
 # Border mode (within titlebar mode)
-set $mode_border Border: [n]o_border [1]pix [2]pix [5]pix 1[0]pix [N]ormal [t]oggle [r]estore_to_default [s]et_new_fault
+set $mode_border Border: [n]o_border [1]pix [2]pix [3]pix [4]pix [5]pix 1[0]pix [N]ormal [t]oggle [r]estore_to_default [s]et_new_fault
 mode "$mode_border" {
     bindsym n       border none
     bindsym 1       border pixel 1
     bindsym 2       border pixel 2
+    bindsym 3       border pixel 3
+    bindsym 4       border pixel 4
     bindsym 5       border pixel 5
     bindsym 0       border pixel 10
     bindsym Shift+n border normal
@@ -858,11 +860,13 @@ mode "$mode_border" {
 }
 
 # Set border width mode (within border mode)
-set $mode_set_border Width pixel value: [n]o_border [1]pix [2]pix [5]pix 1[0]pix [N]ormal
+set $mode_set_border Width pixel value: [n]o_border [1]pix [2]pix [3]pix [4]pix [5]pix 1[0]pix [N]ormal
 mode "$mode_set_border" {
     bindsym n       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 0; mode "default"
     bindsym 1       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 1; mode "default"
     bindsym 2       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 2; mode "default"
+    bindsym 3       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 3; mode "default"
+    bindsym 4       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 4; mode "default"
     bindsym 5       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 5; mode "default"
     bindsym 0       exec $I3_SCRIPT/i3_default_valuechanger.sh border_width 10; mode "default"
     bindsym Shift+n exec $I3_SCRIPT/i3_default_valuechanger.sh border_width normal; mode "default"
@@ -1344,7 +1348,7 @@ bindsym --release Print  exec gnome-screenshot
 bindsym Mod4+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
 bindsym Mod4+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
 
-# Dunst (dunstctl)
+# Dunst notifier (dunstctl)
 bindsym Ctrl+space       exec dunstctl close
 bindsym Ctrl+Shift+space exec dunstctl close-all
 bindsym Ctrl+grave       exec dunstctl history-pop

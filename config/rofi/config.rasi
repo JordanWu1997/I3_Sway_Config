@@ -59,4 +59,13 @@ configuration {
     /*Color theme (wal)*/
     theme: "~/.cache/wal/colors-rofi-dark.rasi";
 
+    /*Key shortcut*/
+	kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+Shift+h";
+	kb-remove-to-eol: "Control+Shift+k";
+	kb-accept-entry: "Return,KP_Enter";
+	kb-row-left: "Control+h";
+	kb-row-right: "Control+l";
+	kb-row-up: "Up,Control+k,Control+p";
+	kb-row-down: "Down,Control+j,Control+n";
+
 }

@@ -8,8 +8,8 @@ Table of Contents
 * [Table of Contents](#table-of-contents)
    * [Demo Current Customization Result for i3](#demo-current-customization-result-for-i3)
    * [Information for my i3 Configuration](#information-for-my-i3-configuration)
-      * [Basic Programs for i3](#basic-programs-for-i3)
-      * [Auto-start Programs for i3](#auto-start-programs-for-i3)
+      * [My i3 Environment](#my-i3-environment)
+      * [Auto-start in Background Programs for i3 Environment](#auto-start-in-background-programs-for-i3-environment)
       * [Wallpapers](#wallpapers)
    * [First Time Usage for i3](#first-time-usage-for-i3)
       * [Configuration deployer](#configuration-deployer)
@@ -22,14 +22,14 @@ Table of Contents
       * [Mode Usage](#mode-usage)
    * [Reference](#reference)
 
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)ence)
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Demo Current Customization Result for i3
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
 
 ## Information for my i3 Configuration
 
-### Basic Programs for i3
+### My i3 Environment
 - Shell: [fish](https://github.com/fish-shell/fish-shell) + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty)
 - Launcher: [rofi](https://github.com/davatorium/rofi)
@@ -39,7 +39,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)ence)
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status)
 - Text Editor: [neovim](https://github.com/neovim/neovim) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 
-### Auto-start Programs for i3
+### Auto-start in Background Programs for i3 Environment
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window

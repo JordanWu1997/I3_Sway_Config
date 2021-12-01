@@ -161,7 +161,7 @@ set $terminal i3-sensible-terminal
 set $default_titlebar_fontsize 12
 
 # Setup border width (set normal to show window titlebar)
-set $default_border_width pixel 3
+set $default_border_width pixel 2
 
 # Setup gap width (only for i3-gap, set 0 to reduce to original i3)
 set $default_inner_gap 10

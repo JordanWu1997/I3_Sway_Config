@@ -7,9 +7,13 @@ Table of Contents
 * [I3_Sway_Config](#i3_sway_config)
 * [Table of Contents](#table-of-contents)
    * [Demo Current Customization Result for i3](#demo-current-customization-result-for-i3)
-   * [Preparation for i3](#preparation-for-i3)
+   * [Information for my i3 Configuration](#information-for-my-i3-configuration)
+      * [Basic Programs for i3](#basic-programs-for-i3)
+      * [Auto-start Programs for i3](#auto-start-programs-for-i3)
+      * [Wallpapers](#wallpapers)
    * [First Time Usage for i3](#first-time-usage-for-i3)
-   * [Autostart Programs for i3](#autostart-programs-for-i3)
+      * [Configuration deployer](#configuration-deployer)
+      * [Optional Configuration](#optional-configuration)
    * [Keybinding Sheet for i3](#keybinding-sheet-for-i3)
       * [Prefix: [Winkey]](#prefix-winkey)
       * [Prefix: [Winkey] + [Shift]](#prefix-winkey--shift)
@@ -18,64 +22,27 @@ Table of Contents
       * [Mode Usage](#mode-usage)
    * [Reference](#reference)
 
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)ence)
+
 ## Demo Current Customization Result for i3
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
 
-## Preparation for i3
-1. Software list
+## Information for my i3 Configuration
+
+### Basic Programs for i3
 - Shell: [fish](https://github.com/fish-shell/fish-shell) + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty)
 - Launcher: [rofi](https://github.com/davatorium/rofi)
-- Theme configurator: [pywal](https://github.com/dylanaraps/pywal)
+- Theme configurer: [pywal](https://github.com/dylanaraps/pywal)
 - Xcompositor: [picom](https://github.com/jonaburg/picom)
 - Notification: [dunst](https://github.com/dunst-project/dunst)
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status)
 - Text Editor: [neovim](https://github.com/neovim/neovim) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 
-2. Wallpapers
-- Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
-- Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
-- [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
-- [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
-
-## First Time Usage for i3
-1. $HOME/.profile (PATH/VARIABLES)
-- Add PATH and I3_BIN to ~/.profile
-    ```
-    # Add following lines to ~/.profile
-    export PATH=$HOME/.config/i3/bin:$PATH
-    export PATH=$HOME/.local/bin:$PATH
-    export I3_BIN=$HOME/.config/i3/bin
-    ```
-
-2. $HOME/.config (CONFIGURATION)
-- Link/copy config directories/files under ~/.config
-    ```
-    # Link or copy following lines to ~/.config
-    # If is already a config file in ~/config, remove it first
-    cd ~/.config/ && rm -fr i3 kitty dunst ranger rofi picom bumblebee-status vis conky
-    ln -s ~/Desktop/I3_Sway_Config/config/i3
-    ln -s ~/Desktop/I3_Sway_Config/config/kitty/
-    ln -s ~/Desktop/I3_Sway_Config/config/dunst
-    ln -s ~/Desktop/I3_Sway_Config/config/ranger
-    ln -s ~/Desktop/I3_Sway_Config/config/rofi
-    ln -s ~/Desktop/I3_Sway_Config/config/picom
-    ln -s ~/Desktop/I3_Sway_Config/config/bumblebee-status
-    ln -s ~/Desktop/I3_Sway_Config/config/vis
-    ln -s ~/Desktop/I3_Sway_Config/config/conky
-    ```
-
-3. $HOME/dotfile (SHELL CONFIGURATION)
-- Add following lines for pywal color support for bash/zsh/fish
-    ```
-    # Add following line to .bashrc/.zshrc/config.fish
-    [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
-    ```
-
-## Autostart Programs for i3
+### Auto-start Programs for i3
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
-- [conky](https://github.com/brndnmtthws/conky): system monitor for Xwindow
+- [conky](https://github.com/brndnmtthws/conky): system monitor for X window
 - [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome software support
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manger
@@ -92,6 +59,31 @@ Table of Contents
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): Xcompositor for blur, transparency, animation support
 
+### Wallpapers
+- Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
+- Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
+- [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
+- [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
+
+## First Time Usage for i3
+
+### Configuration deployer
+- Run deployer in git repository `config/i3/script/i3_config_deployer.sh`
+- Including
+    - __Add Environment Variables__
+        - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
+        - Add `I3_SCRIPT` in `"$HOME/.profile`
+    - __Backup Old Configuration and Link New Configuration__
+        - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
+        - Link configuration in git repository `config/*` to `$HOME/.config` directory
+
+### Optional Configuration
+- [Optional] Add following lines for pywal color support for bash/zsh/fish, no need for kitty terminal emulator
+    ```
+    # Add following line to .bashrc/.zshrc/config.fish
+    [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
+    ```
+
 ## Keybinding Sheet for i3
 - Cheat sheet format, color theme here is the same as i3 user guide
 
@@ -104,7 +96,7 @@ Table of Contents
 ### Prefix: [Ctrl] + [Alt]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
 - __Program shortcut (1~9, 0, -, =)__
-    - All following shortcuts can be modified in config, modify as you wish
+    - All following shortcuts can be modified in config file, modify as you wish
         - 1: [Neovim (text editor)](https://neovim.io/)
         - 2: [Ranger (file manager)](https://github.com/ranger/ranger)
         - 3: [Pulsemixer (sound manager)](https://pypi.org/project/pulsemixer/)
@@ -120,60 +112,60 @@ Table of Contents
 
 ### Miscellaneous
 - __Go to Workspace__
-    - [Winkey] + [Number(#)]: Go to workspace number # (A#) in monitor 1 (eDP1)
-    - [Winkey] + [Function(F#)]: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
-    - [Ctrl] + [Function(#)]: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-    - [Alt] + [Function(#)]: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Winkey] + [Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
+    - `[Winkey] + [Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
+    - `[Ctrl] + [Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - `[Alt] + [Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - __Send to Workspace__
-    - [Winkey] + [Shift] + [Number(#)]: Send to workspace number # (A#) in monitor 1 (eDP1)
-    - [Winkey] + [Shift] + [Function(F#)]: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
-    - [Ctrl] + [Shift] + [Function(F#)]: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-    - [Alt] + [Shift] + [Function(F#)]: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Winkey] + [Shift] + [Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
+    - `[Winkey] + [Shift] + [Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
+    - `[Ctrl] + [Shift] + [Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - `[Alt] + [Shift] + [Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - Move in workspace
-    - [Winkey] + ([Shift]) + [Tab]: Move to (prev)/next existing workspace
-    - [Winkey] + ([Shift]) + [Grave]: Move to (prev)/next workspace. If not exist, it will create one
+    - `[Winkey] + ([Shift]) + [Tab]`: Move to (prev)/next existing workspace
+    - `[Winkey] + ([Shift]) + [Grave]`: Move to (prev)/next workspace. If the workspace not exist, it will create one
 - __Move between Windows__
-    - [Alt] + [Tab]: Show all window list
+    - `[Alt] + [Tab]`: Show all window list
 - __Manipulate Scratchpad__
-    - [Winkey] + [-]: Send focus to scratchpad (background)
-    - [Winkey] + [Shift] + [-]: Send all floating windows to scratchpad (background)
-    - [Winkey] + [=]: Bring window in scratchpad to foreground one by one
-    - [Winkey] + [Shift] + [=]: Bring all windows in scratchpad to foreground
+    - `[Winkey] + [-]`: Send focus to scratchpad (background)
+    - `[Winkey] + [Shift] + [-]`: Send all floating windows to scratchpad (background)
+    - `[Winkey] + [=]`: Bring window in scratchpad to foreground one by one
+    - `[Winkey] + [Shift] + [=]`: Bring all windows in scratchpad to foreground
 
 ### Mode Usage
-- __System mode ([Win] + [Shift] + [Esc])__
+- __System mode (`[Winkey] + [Shift] + [Esc]`)__
     - system command, e.g. exit, poweroff, reboot, lock, hibernate
-- __Display mode ([Win] + [Shift] + [x])__
+- __Display mode (`[Winkey] + [Shift] + [x]`)__
     - deal with dual monitor, e.g. joint monitor, mirror monitor
-- __Mouse mode ([Win] + [Shift] + [m])__
+- __Mouse mode (`[Winkey] + [Shift] + [m]`)__
     - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
-- __Red shift mode ([Win] + [Shift] + [z])__
+- __Red shift mode (`[Winkey] + [Shift] + [z]`)__
     - screen color temperature tuner
-- __Resize mode ([Ctrl] + [Alt] + [r])__
+- __Resize mode (`[Ctrl] + [Alt] + [r]`)__
     - resize focus window
-- __Gap mode ([Win] + [Shift] + [g])__
+- __Gap mode (`[Winkey] + [Shift] + [g]`)__
     - modify i3 gaps, e.g. inner gaps, outer gaps
-- __Title bar mode ([Win] + [Shift] + [t])__
+- __Title bar mode (`[Winkey] + [Shift] + [t]`)__
     - modify i3 title bar, e.g. hide/show title bar, mark window
-        - __Border mode ([b])__
+        - __Border mode (`[b]`)__
             - modify i3 border
-        - __Mark mode ([m])__
+        - __Mark mode (`[m]`)__
             - mark window, automark function
-- __Swap mode ([Win] + [Shift] + [p])__
+- __Swap mode (`[Winkey] + [Shift] + [p]`)__
     - swap i3 workspace (destination selector)
-        - __Save_workspace mode ([s])__
+        - __Save_workspace mode (`[s]`)__
             - Save workspace layout
-        - __Restore_workspace mode ([r])__
+        - __Restore_workspace mode (`[r]`)__
             - Restore workspace layout
-- __Customization mode ([Win] + [Shift] + [c])__
+- __Customization mode (`[Winkey] + [Shift] + [c]`)__
     - customize i3wm, e.g. wallpaper, theme, xcompositor
-        - __Conky mode ([c])__
+        - __Conky mode (`[c]`)__
             - system_conky, hotkey_conky, color of conky
-        - __Picom mode ([p])__
+        - __Picom mode (`[p]`)__
             - blur, transparency support, also flashfocus
-        - __Theme mode ([t])__
+        - __Theme mode (`[t]`)__
             - auto-theme with pywal, reload after auto-theming
-        - __Wallpaper mode ([w])__
+        - __Wallpaper mode (`[w]`)__
             - select wallpaper, set default wallpaper
 
 ## Reference

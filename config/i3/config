@@ -1464,10 +1464,14 @@ bindsym Mod4+Shift+slash exec \
 # -- https://www.reddit.com/r/i3wm/comments/9gp9s1/how_to_make_pywal_change_border_colors/
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
-# Note: for now, wal colors won't be loaded by below i3 color at the first time setup,
-#       but it loads well when (1) enter i3 next time or (2) just simply restart i3.
-# Note: here pyway is sonjiku/pywal which is forked from dylanaraps/pywal. it provides
-#       16-color support than original 9-color. --nine flag for original 9-color
+
+# Note: Sometimes wal colors won't be loaded by i3 the first time setup. if it happens,
+#       try (1) logout and enter i3 again (2) just simply restart whole i3.
+# Note: Original pywal only provides 9-color (basic 8-colors + light dark) template, but
+#       sometimes light dark is not set well. Try sonjiku/pywal to provide better template.
+# Note: sonjiku/pywal [https://github.com/sonjiku/pywal] provides both 9-color and 16-color
+#       template. But 16-color template uses interpolation for dark colors, this makes it
+#       too faint for other TUI applications.
 exec --no-startup-id wal --nine -i $HOME/.config/i3/share/default_wallpaper
 
 # Load colors from Xresource (Pywal)
@@ -1689,8 +1693,11 @@ exec_always --no-startup-id xset m 10 2
 # Short repeat key waiting time and faster repeat key rate (xset support)
 exec_always --no-startup-id xset r rate 300 40
 
-# Remap Caplock key to Ctrl
-exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
+# Caplocks key remapping (setxkbmap support)
+# -- Option 1 - Remap Caplock key to Ctrl
+#exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
+# -- Option 2 - Swap Caplock key and Ctrl
+exec_always --no-startup-id setxkbmap -option "ctrl:swapcaps"
 
 # Trackpad gesture (libinput-gesture support)
 # -- https://github.com/bulletmark/libinput-gestures

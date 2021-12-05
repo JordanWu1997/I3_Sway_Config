@@ -65,6 +65,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
 - [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 
+### Theme and Fonts
+- [Optional] Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
+- [Optional] Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
+- [Optional] GUI Font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
+- [Optional] TUI Font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
+
 ## First Time Usage for i3
 
 ### Configuration deployer
@@ -141,6 +147,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
 - __Red shift mode (`[Winkey] + [Shift] + [z]`)__
     - screen color temperature tuner
+- __Dunst mode (`[Winkey] + [Shift] +[v]`)__
+    - dunst actions, including stop and resume dunst
 - __Resize mode (`[Ctrl] + [Alt] + [r]`)__
     - resize focus window
 - __Gap mode (`[Winkey] + [Shift] + [g]`)__

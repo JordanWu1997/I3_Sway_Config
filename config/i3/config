@@ -729,7 +729,6 @@ bindsym Mod1+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 10 && $r
 # Configure Rofi in $HOME/.config/rofi/.config
 bindsym Mod4+d            exec --no-startup-id rofi -show drun -terminal $terminal
 bindsym Mod4+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
-bindsym Mod4+Shift+Return exec --no-startup-id rofi -show run -terminal $terminal
 bindsym Mod1+Tab          exec --no-startup-id rofi -show window -terminal $terminal -columns 1
 bindsym Ctrl+Mod1+d       exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
 
@@ -876,10 +875,9 @@ mode "$mode_set_border" {
 }
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
-# Mark the current window with this character [automark.py overwrites user-defined mark]
-bindsym Mod4+m exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none
 # Goto the window with the character
-bindsym Mod4+g exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
+bindsym Mod4+g          exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
+bindsym Mod4+apostrophe exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
 # Swap the current window to the window with the character (focus stays)
 bindsym Mod4+semicolon exec $I3_SCRIPT/i3_mark_operator.sh swap rofi stay
 # Swap the current window to the window with the character (focus moves)
@@ -908,9 +906,6 @@ bindsym Mod4+plus  scratchpad show; exec notify-send -u low "Bring Scratchpad Wi
 # Scratchpad: Move all floating windows to the scratchpad and vice versa
 bindsym Mod4+Shift+minus [floating] move scratchpad; exec notify-send -u low "Move All Floating Windows To Scratchpad (Background)"
 bindsym Mod4+Shift+plus  [class=.*] scratchpad show; exec notify-send -u low "Bring All Scratchpad Windows To Foreground"
-
-# Enter exec command in i3 [use rofi as input]
-bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")
 
 # Back and Forth [DISABLE for i3-workspace-swap]
 workspace_auto_back_and_forth no
@@ -1321,7 +1316,7 @@ mode "$mode_redshift" {
     bindsym Escape mode "default"
 }
 
-# System manager (Keyboard)
+# System manager mode
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff
 bindsym Mod4+Shift+Escape mode "$mode_system"
 mode "$mode_system" {
@@ -1336,6 +1331,23 @@ mode "$mode_system" {
     bindsym Return mode "default"
 }
 
+# Dunst notifier mode
+set $mode_dunst Dunst: [c]lose [o]pen_context [h]istory-pop [C]lose_all [p]ause_dunst [r]esume_dunst
+bindsym Mod4+Shift+v mode "$mode_dunst"
+mode "$mode_dunst" {
+    bindsym c       exec dunstctl close
+    bindsym o       exec dunstctl context
+    bindsym h       exec history-pop
+    bindsym Shift+c exec dunstctl close-all
+    bindsym p       exec dunstctl set-paused true
+    bindsym r       exec dunstctl set-paused false
+    # exit mode
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+bindsym Ctrl+space       exec dunstctl close
+bindsym Ctrl+Shift+space exec dunstctl history-pop
+
 # Input method (ibus)
 # Change ibus engine
 bindsym Ctrl+Mod1+space exec $I3_SCRIPT/i3_languagechanger.sh
@@ -1347,11 +1359,6 @@ bindsym Shift+space exec notify-send -u low "IBUS full character mode is disable
 bindsym --release Print  exec gnome-screenshot
 bindsym Mod4+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
 bindsym Mod4+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
-
-# Dunst notifier (dunstctl)
-bindsym Ctrl+space       exec dunstctl close
-bindsym Ctrl+Shift+space exec dunstctl close-all
-bindsym Ctrl+grave       exec dunstctl history-pop
 
 # Use Mouse+Mod4 to drag floating windows to their wanted position
 floating_modifier Mod4

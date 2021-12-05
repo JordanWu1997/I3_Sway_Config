@@ -185,3 +185,8 @@ so I use picom fork of jonaburg [https://github.com/jonaburg/picom] instead (nee
 
 - Run in i3
     - `exec_always --no-startup-id /usr/local/bin/picom --config $HOME/.config/picom/picom_blur.conf`
+
+## I3-msg
+
+- Execute command in i3 using i3-msg with rofi as input
+    - `bindsym Mod4+Shift+i exec i3-msg $(rofi -dmenu -lines 0 -p "i3 command (i3-msg)")`

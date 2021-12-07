@@ -122,14 +122,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Winkey] + [Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl] + [Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt] + [Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
-- __Send to Workspace__
+- __Send Window to Workspace__
     - `[Winkey] + [Shift] + [Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey] + [Shift] + [Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl] + [Shift] + [Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt] + [Shift] + [Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
-- Move in workspace
-    - `[Winkey] + ([Shift]) + [Tab]`: Move to (prev)/next existing workspace
-    - `[Winkey] + ([Shift]) + [Grave]`: Move to (prev)/next workspace. If the workspace not exist, it will create one
+    - `[Ctrl] + [Alt] + ([Shift]) + [Grave]`: Send to (prev)/next workspace
 - __Move between Windows__
     - `[Alt] + [Tab]`: Show all window list
 - __Manipulate Scratchpad__
@@ -148,7 +146,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Red shift mode (`[Winkey] + [Shift] + [z]`)__
     - screen color temperature tuner
 - __Dunst mode (`[Winkey] + [Shift] +[v]`)__
-    - dunst actions, including stop and resume dunst
+    - dunst actions, including stopping or resuming dunst
 - __Resize mode (`[Ctrl] + [Alt] + [r]`)__
     - resize focus window
 - __Gap mode (`[Winkey] + [Shift] + [g]`)__
@@ -158,7 +156,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Border mode (`[b]`)__
             - modify i3 border
         - __Mark mode (`[m]`)__
-            - mark window, automark function
+            - mark window, auto-mark function
 - __Swap mode (`[Winkey] + [Shift] + [p]`)__
     - swap i3 workspace (destination selector)
         - __Save_workspace mode (`[s]`)__
@@ -172,7 +170,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Picom mode (`[p]`)__
             - blur, transparency support, also flashfocus
         - __Theme mode (`[t]`)__
-            - auto-theme with pywal, reload after auto-theming
+            - auto-theme with pywal and applications reloading after auto-theming
         - __Wallpaper mode (`[w]`)__
             - select wallpaper, set default wallpaper
 

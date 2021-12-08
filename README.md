@@ -38,10 +38,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Notification: [dunst](https://github.com/dunst-project/dunst)
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status)
 - Text Editor: [neovim](https://github.com/neovim/neovim) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 
 ### Auto-start in Background Programs for i3 Environment
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
+- [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
 - [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome software support
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
@@ -135,6 +137,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Winkey] + [Shift] + [-]`: Send all floating windows to scratchpad (background)
     - `[Winkey] + [=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey] + [Shift] + [=]`: Bring all windows in scratchpad to foreground
+- __Change Gap Size__
+    - `[Ctrl] + [Alt] + [h/l]`: Dec/Inc horizontal outer gap size
+    - `[Ctrl] + [Alt] + [j/k]`: Dec/Inc vertical outer gap size
+    - `[Ctrl] + [Alt] + [m/p]`: Dec/Inc inner gap size
+    - `[Ctrl] + [Alt] + [o]`: Restore to default outer gap size
+    - `[Ctrl] + [Alt] + [i]`: Restore to default inner gap size
 
 ### Mode Usage
 - __System mode (`[Winkey] + [Shift] + [Esc]`)__

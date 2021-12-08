@@ -139,7 +139,7 @@
 # -- https://www.reddit.com/r/i3wm/comments/cqefj3/mapping_symbols/
 
 # ======================================================================================
-# All About Mod Key Settings And I3 Varaibles
+# All About Mod Key Settings And I3 Variables
 # ======================================================================================
 # Setup i3 key and some variables
 
@@ -700,14 +700,14 @@ bindsym Ctrl+Mod1+equal exec --no-startup-id firefox
 # -- https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
 # For advanced modification, check pulsemxier or alsamixer
 set $refresh_i3status "killall -SIGUSR1 i3status"
-bindsym XF86AudioMute             exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym Ctrl+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1%  && $refresh_i3status
-bindsym Ctrl+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%  && $refresh_i3status
-bindsym XF86AudioRaiseVolume      exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%  && $refresh_i3status
-bindsym XF86AudioLowerVolume      exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%  && $refresh_i3status
-bindsym Mod1+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym Mod1+XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMicMute          exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioMute             exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym Ctrl+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%  && $refresh_i3status
+bindsym Ctrl+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%  && $refresh_i3status
+bindsym XF86AudioRaiseVolume      exec pactl set-sink-volume @DEFAULT_SINK@ +5%  && $refresh_i3status
+bindsym XF86AudioLowerVolume      exec pactl set-sink-volume @DEFAULT_SINK@ -5%  && $refresh_i3status
+bindsym Mod1+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym Mod1+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMicMute          exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Media player control
 bindsym XF86AudioPlay  exec playerctl play
@@ -718,19 +718,19 @@ bindsym XF86AudioPrev  exec playerctl previous
 # Keyboard backlight control
 # -- https://github.com/alberto-santini/i3-configuration-x1
 # -- https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
-bindsym Ctrl+XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 1 && $refresh_i3status
-bindsym Ctrl+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 1 && $refresh_i3status
-bindsym XF86MonBrightnessDown      exec --no-startup-id xbacklight -dec 5 && $refresh_i3status
-bindsym XF86MonBrightnessUp        exec --no-startup-id xbacklight -inc 5 && $refresh_i3status
-bindsym Mod1+XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && $refresh_i3status
-bindsym Mod1+XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 10 && $refresh_i3status
+bindsym Ctrl+XF86MonBrightnessDown exec xbacklight -dec 1 && $refresh_i3status
+bindsym Ctrl+XF86MonBrightnessUp   exec xbacklight -inc 1 && $refresh_i3status
+bindsym XF86MonBrightnessDown      exec xbacklight -dec 5 && $refresh_i3status
+bindsym XF86MonBrightnessUp        exec xbacklight -inc 5 && $refresh_i3status
+bindsym Mod1+XF86MonBrightnessDown exec xbacklight -dec 10 && $refresh_i3status
+bindsym Mod1+XF86MonBrightnessUp   exec xbacklight -inc 10 && $refresh_i3status
 
-# Rofi menu (program launcher, window manager)
-# Configure Rofi in $HOME/.config/rofi/.config
-bindsym Mod4+d            exec --no-startup-id rofi -show drun -terminal $terminal
-bindsym Mod4+Shift+d      exec --no-startup-id rofi -show run -terminal $terminal
-bindsym Mod1+Tab          exec --no-startup-id rofi -show window -terminal $terminal -columns 1
-bindsym Ctrl+Mod1+d       exec --no-startup-id rofi -show keys -terminal $terminal -columns 1
+# Rofi window switcher [can be configured in $HOME/.config/rofi/config.rasi]
+bindsym Mod4+d                exec rofi -show drun -terminal $terminal
+bindsym Mod4+Shift+d          exec rofi -show run -terminal $terminal
+bindsym Mod1+Tab              exec rofi -show window -terminal $terminal -columns 1
+bindsym Ctrl+Mod1+d           exec rofi -show file-browser -terminal $terminal
+bindsym Ctrl+Mod1+Shift+slash exec rofi -show keys -terminal $terminal -columns 1
 
 # Start a terminal
 bindsym Mod4+Return   exec $terminal
@@ -770,9 +770,6 @@ bindsym Mod4+Shift+Down  move down
 bindsym Mod4+Shift+Up    move up
 bindsym Mod4+Shift+Right move right
 
-# Split in vertical/horizontal orientation
-bindsym Mod4+q split toggle; exec notify-send -u low "Toggled Split Direction"
-
 # Toggle fullscreen
 bindsym Mod4+f       fullscreen toggle
 bindsym Mod4+Shift+f fullscreen toggle global
@@ -780,19 +777,22 @@ bindsym Mod4+Shift+f fullscreen toggle global
 # Toggle tiling / floating
 bindsym Mod4+Shift+space floating toggle; exec notify-send -u low "Toggle Window [Tiling/Floating]"
 
-# Toggle stickiness of floating window (alway on the top)
+# Toggle stickiness of floating window (always on the top)
 bindsym Mod4+Shift+s sticky toggle; exec notify-send -u low "Toggle Sticky For Floating Window"
 
 # Change focus between tiling / floating windows
 bindsym Mod4+space focus mode_toggle; exec notify-send -u low "Toggle Focus [Tiling/Floating]"
+
+# Quick change container layout (stacking, tabbed, splitv, splith)
+bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking; exec notify-send -u low "Toggle Layout Mode"
 
 # Change container layout (stacking, tabbed, toggle split)
 bindsym Mod4+s layout stacking; exec notify-send -u low "Stacking Mode On"
 bindsym Mod4+w layout tabbed; exec notify-send -u low "Tabbed Mode On"
 bindsym Mod4+e layout toggle splitv splith; exec notify-send -u low "Toggle Layout Split"
 
-# Quick change container layout (stacking, tabbed, splitv, splith)
-bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking; exec notify-send -u low "Toggle Layout Mode"
+# Change split direction (vertical, horizontal)
+bindsym Mod4+q split toggle; exec notify-send -u low "Toggled Split Direction"
 
 # Titlebar toggle (locally, globally)
 bindsym Mod4+n       border toggle
@@ -915,7 +915,7 @@ bindsym Mod4+Tab       workspace next
 bindsym Mod4+Shift+Tab workspace prev
 bindsym Ctrl+Mod1+Tab  workspace back_and_forth
 
-# Add new workspace increasely/decreasely
+# Add new workspace increasingly/decreasingly
 bindsym Mod4+grave            exec $I3_SCRIPT/i3_new_workspace.sh move inc
 bindsym Mod4+Shift+grave      exec $I3_SCRIPT/i3_new_workspace.sh move dec
 bindsym Ctrl+Mod1+grave       exec $I3_SCRIPT/i3_new_workspace.sh move_container inc
@@ -1301,16 +1301,15 @@ mode "$mode_resize" {
 # -- https://confluence.jaytaala.com/display/TKB/Redshift+on+i3wm
 bindsym Mod4+Shift+z mode "$mode_redshift"
 set $mode_redshift Redshift: [a]uto [r]eset [1] 3000K [2] 3500K [3] 4000K [4] 4500K [5] 5000K [6] 5500K
-set $kill_redshift pkill -9 redshift;
 mode "$mode_redshift" {
-    bindsym a exec --no-startup-id "$kill_redshift redshift -P -t 5500:4000"
-    bindsym r exec --no-startup-id "$kill_redshift redshift -x"
-    bindsym 1 exec --no-startup-id "$kill_redshift redshift -P -O 3000"
-    bindsym 2 exec --no-startup-id "$kill_redshift redshift -P -O 3500"
-    bindsym 3 exec --no-startup-id "$kill_redshift redshift -P -O 4000"
-    bindsym 4 exec --no-startup-id "$kill_redshift redshift -P -O 4500"
-    bindsym 5 exec --no-startup-id "$kill_redshift redshift -P -O 5000"
-    bindsym 6 exec --no-startup-id "$kill_redshift redshift -P -O 5500"
+    bindsym a exec pkill -9 redshift; exec redshift -P -t 5500:4000
+    bindsym r exec pkill -9 redshift; exec redshift -x
+    bindsym 1 exec pkill -9 redshift; exec redshift -P -O 3000
+    bindsym 2 exec pkill -9 redshift; exec redshift -P -O 3500
+    bindsym 3 exec pkill -9 redshift; exec redshift -P -O 4000
+    bindsym 4 exec pkill -9 redshift; exec redshift -P -O 4500
+    bindsym 5 exec pkill -9 redshift; exec redshift -P -O 5000
+    bindsym 6 exec pkill -9 redshift; exec redshift -P -O 5500
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -1320,12 +1319,12 @@ mode "$mode_redshift" {
 set $mode_system System: [l]ock [e]xit [s]uspend [h]ibernate [r]eboot [p]oweroff
 bindsym Mod4+Shift+Escape mode "$mode_system"
 mode "$mode_system" {
-    bindsym l exec --no-startup-id loginctl lock-session; mode "default"
-    bindsym r exec --no-startup-id systemctl reboot; mode "default"
-    bindsym p exec --no-startup-id systemctl poweroff; mode "default"
-    bindsym e exec --no-startup-id i3-msg exit; mode "default"
-    bindsym s exec --no-startup-id i3-msg suspend; mode "default"
-    bindsym h exec --no-startup-id i3-msg hibernate; mode "default"
+    bindsym l exec loginctl lock-session; mode "default"
+    bindsym r exec systemctl reboot; mode "default"
+    bindsym p exec systemctl poweroff; mode "default"
+    bindsym e exec i3-msg exit; mode "default"
+    bindsym s exec i3-msg suspend; mode "default"
+    bindsym h exec i3-msg hibernate; mode "default"
     # exit mode
     bindsym Escape mode "default"
     bindsym Return mode "default"
@@ -1472,7 +1471,7 @@ bindsym Mod4+Shift+slash exec \
 
 # Startup wallpaper (auto theme with pywal, use wal instead of old feh)
 
-# Note: Sometimes wal colors won't be loaded by i3 the first time setup. if it happens,
+# Note: Sometimes wal colors won't be loaded by i3 the first time setup. If it happens,
 #       try (1) logout and enter i3 again (2) just simply restart whole i3.
 # Note: Original pywal only provides 9-color (basic 8-colors + light dark) template, but
 #       sometimes light dark is not set well. Try sonjiku/pywal to provide better template.
@@ -1708,7 +1707,7 @@ exec_always --no-startup-id setxkbmap -option "ctrl:nocaps"
 
 # Trackpad gesture (libinput-gesture support)
 # -- https://github.com/bulletmark/libinput-gestures
-# Need to be compiled mannually
+# Need to be compiled manually
 exec_always --no-startup-id libinput-gestures-setup start
 
 # Ibus input method (ibus-chewing support)

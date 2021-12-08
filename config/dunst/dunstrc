@@ -6,6 +6,9 @@
 # -- https://zjuyk.gitlab.io/posts/i3wm-config/
 # -- https://github.com/endeavouros-team/endeavouros-i3wm-setup/blob/main/.config/dunst/dunstrc
 
+# Note:
+# Dunst also run /etc/dunst/dunstrc config
+
 [global]
 
     ### Display ###
@@ -98,7 +101,8 @@
 
     ### Misc/Advanced ###
     bounce_freq = 0
-    dmenu = /usr/bin/rofi -dmenu -p dunst:
+    dmenu = /usr/bin/rofi -dmenu -p dunst
+    browser = /usr/bin/brave-browser
     title = Dunst
     class = Dunst
     startup_notification = true

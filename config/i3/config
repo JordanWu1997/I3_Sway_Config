@@ -251,7 +251,7 @@ show_marks yes
 # Customization includes wallpaper, theme, and visual effects (e.g. blur/animation)
 
 # Customization mode (wrapper for wallpaper_mode, theme mode, and picom_mode)
-set $mode_customization Customization: [c]onky_mode [p]icom_mode [t]heme_mode [w]allpaper_mode
+set $mode_customization Customization: [c]onky [p]icom [t]heme [w]allpaper
 bindsym Mod4+Shift+c mode "$mode_customization"
 mode "$mode_customization" {
     bindsym c mode $mode_conky
@@ -282,7 +282,7 @@ mode "$mode_customization" {
 # --------------------------------------------------------------------------------------
 
 # Wallpaper mode (feh is much faster than variety)
-set $mode_wallpaper Wallpaper: [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [7]Misc [8]DTs [a]dd_to_favorite [f]avorite [v]ariety_saved [V]ariety_mode [s]ave_as_default [r]estore_default
+set $mode_wallpaper Wallpaper: [1]I3WM [2]Fedora [3]ALMA [4]Cats [5]Linux [6]Thinkpad [7]Misc [8]DTs [a]dd_to_favorite [f]avorite [v]ariety_saved [V]ariety [s]ave_as_default [r]estore_default
 mode "$mode_wallpaper" {
     # Wallpapers
     bindsym 1 exec notify-send -u low "Shuffle Wallpaper (I3WM)" && feh --bg-fill $(find $WALLPAPER1 -name '*.png' | shuf -n1)
@@ -423,7 +423,7 @@ mode "$mode_theme" {
 }
 
 # Picom mode (animation, blur, and transparency support)
-set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]lashfocus_mode [s]et_default_picom
+set $mode_picom Picom (Xcompositor): [0]no_effect [1]blur [2]transparency [f]lashfocus [s]et_default_picom
 mode "$mode_picom" {
     bindsym 0 exec killall picom; mode "default"
     bindsym 1 exec i3_picom_operator.sh blur; mode "default"
@@ -461,7 +461,7 @@ mode "$mode_flashfocus" {
 # ======================================================================================
 # Comment out this session if you are using original i3
 
-# Gaps
+# Set default gaps size
 gaps inner $default_inner_gap
 gaps outer $default_outer_gap
 
@@ -802,7 +802,7 @@ bindsym Ctrl+Mod1+n  [class="^.*"] border normal
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
 bindsym Mod4+Shift+t mode "$mode_titlebar"
-set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree_mode [b]order_mode [m]ark_mode
+set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree [b]order [m]ark
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Default title name"
@@ -1108,10 +1108,21 @@ bindsym Mod1+Shift+F8  move container to workspace $ws38
 bindsym Mod1+Shift+F9  move container to workspace $ws39
 bindsym Mod1+Shift+F10 move container to workspace $ws40
 
-# Swap workspace mode
-set $mode_swap_workspace Swap_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C10[Ctrl+F1~F10] D1-D10[Alt+F1~F10] Load/Save_Workspace: [s]ave_workspace [r]estore_workspace
-bindsym Mod4+p       mode $mode_swap_workspace
-bindsym Mod4+Shift+p mode $mode_swap_workspace
+# Workspace mode
+set $mode_workspace Workspace: [p] swap_workspace [s] save_workspace [r] restore_workspace
+bindsym Mod4+Shift+p mode $mode_workspace
+mode "$mode_workspace" {
+    bindsym p mode $mode_swap_workspace
+    bindsym s mode $mode_save_workspace
+    bindsym r mode $mode_restore_workspace
+    # exit mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Swap workspace mode (integrated with workspace mode)
+set $mode_swap_workspace Swap workspace: [Win+1~10]:A1-A10 [Win+F1~F10]:B1-B10 [Ctrl+F1~F10]:C1-C10 [Alt+F1~F10]:D1-D10
+bindsym Mod4+p mode $mode_swap_workspace
 mode "$mode_swap_workspace" {
     bindsym Mod4+1   exec $I3_SCRIPT/i3_workspace_operator.sh single A 1; mode "default"
     bindsym Mod4+2   exec $I3_SCRIPT/i3_workspace_operator.sh single A 2; mode "default"
@@ -1153,16 +1164,13 @@ mode "$mode_swap_workspace" {
     bindsym Mod1+F8  exec $I3_SCRIPT/i3_workspace_operator.sh single D 8; mode "default"
     bindsym Mod1+F9  exec $I3_SCRIPT/i3_workspace_operator.sh single D 9; mode "default"
     bindsym Mod1+F10 exec $I3_SCRIPT/i3_workspace_operator.sh single D 10; mode "default"
-    # Save/Restore workspace layout
-    bindsym s mode $mode_save_workspace
-    bindsym r mode $mode_restore_workspace
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
-# Save workspace mode
-set $mode_save_workspace Save_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C10[Ctrl+1~10] D1-D10[Alt+F1~F10] [s]ave_all_workspaces
+# Save workspace mode (within workspace mode)
+set $mode_save_workspace Save workspace: [Win+1~10]:A1-A10 [Win+F1~F10]:B1-B10 [Ctrl+1~10]:C1-C10 [Alt+F1~F10]:D1-D10 [s]ave_all_workspaces
 mode "$mode_save_workspace" {
     bindsym Mod4+1   exec i3-resurrect save -w 1:A1; mode "default"
     bindsym Mod4+2   exec i3-resurrect save -w 2:A2; mode "default"
@@ -1205,14 +1213,14 @@ mode "$mode_save_workspace" {
     bindsym Mod1+F9  exec i3-resurrect save -w 39:D9; mode "default"
     bindsym Mod1+F10 exec i3-resurrect save -w 40:D10; mode "default"
     # Save all workspaces
-    bindsym s exec $I3_SCRIPT/i3_workspace_operator.sh save_all; mode "$mode_swap_workspace"
+    bindsym s exec $I3_SCRIPT/i3_workspace_operator.sh save_all; mode "$mode_workspace"
     # exit mode: "Enter" or "Escape"
-    bindsym Return mode "default"
+    bindsym Return mode "$mode_workspace"
     bindsym Escape mode "default"
 }
 
-# Restore workspace mode
-set $mode_restore_workspace Restore_Workspace: A1-A10[Win+1~10] B1-B10[Win+F1~F10] C1-C10[Ctrl+F1~F10] D1-D10[Alt+F1~F10] [r]estore_all_workspaces
+# Restore workspace mode (within workspace mode)
+set $mode_restore_workspace Restore workspace: [Win+1~10]:A1-A10 [Win+F1~F10]:B1-B10 [Ctrl+F1~F10]:C1-C10 [Alt+F1~F10]:D1-D10 [r]estore_all_workspaces
 mode "$mode_restore_workspace" {
     bindsym Mod4+1   exec i3-resurrect restore -w 1:A1; mode "default"
     bindsym Mod4+2   exec i3-resurrect restore -w 2:A2; mode "default"
@@ -1255,9 +1263,9 @@ mode "$mode_restore_workspace" {
     bindsym Mod1+F9  exec i3-resurrect restore -w 39:D9; mode "default"
     bindsym Mod1+F10 exec i3-resurrect restore -w 40:D10; mode "default"
     # Restore all workspaces
-    bindsym r exec $I3_SCRIPT/i3_workspace_operator.sh restore_all; mode "$mode_swap_workspace"
+    bindsym r exec $I3_SCRIPT/i3_workspace_operator.sh restore_all; mode "$mode_workspace"
     # exit mode: "Enter" or "Escape"
-    bindsym Return mode "default"
+    bindsym Return mode "$mode_workspace"
     bindsym Escape mode "default"
 }
 
@@ -1380,7 +1388,7 @@ bindsym --whole-window Mod4+Shift+button3 floating toggle; exec notify-send -u l
 # Mouse emulation by keyboard mapping
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # Note: xdotool must be installed
-set $mode_mouse Mouse emulator: [ctrl/NONE/alt/ctrl_alt+(vim-key)]:S/M/L/XL [u/i/o]:left/middle/right [m/,/.]:click-and-drag/scrolldown/scrollup [p]:autohide_mode
+set $mode_mouse Mouse emulator: [ctrl/NONE/alt/ctrl_alt+(vim-key)]:S/M/L/XL [(Shift)+u/i/o]:(hold) left/middle/right [,/.]:scrolldown/scrollup [p]:autohide
 bindsym Mod4+Shift+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
@@ -1407,14 +1415,16 @@ mode "$mode_mouse" {
     bindsym u exec "xdotool click 1"
     bindsym i exec "xdotool click 2"
     bindsym o exec "xdotool click 3"
+    # click and hold: left mid right
+    bindsym Shift+u exec "xdotool mousedown 1"
+    bindsym Shift+i exec "xdotool mousedown 2"
+    bindsym Shift+o exec "xdotool mousedown 3"
     # click: scroll wheel up/down
     bindsym comma  exec "xdotool click 4"
     bindsym period exec "xdotool click 5"
-    # click and drag: left
-    bindsym m exec "xdotool mousedown 1"
     # mouse autohide mode
     bindsym p mode "$mode_mouse_autohide"
-    # redefine kill window in mouse mode
+    # Enable i3 kill-window in mouse mode
     bindsym Mod4+Shift+q kill
     # exit mouse mode
     bindsym Escape mode "default"

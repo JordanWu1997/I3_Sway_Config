@@ -697,33 +697,32 @@ bindsym Ctrl+Mod1+minus exec --no-startup-id brave-browser
 bindsym Ctrl+Mod1+equal exec --no-startup-id firefox
 
 # Use pactl to adjust volume in PulseAudio.
-# -- https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
 # For advanced modification, check pulsemxier or alsamixer
-set $refresh_i3status "killall -SIGUSR1 i3status"
-bindsym XF86AudioMute             exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym Ctrl+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%  && $refresh_i3status
-bindsym Ctrl+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%  && $refresh_i3status
-bindsym XF86AudioRaiseVolume      exec pactl set-sink-volume @DEFAULT_SINK@ +5%  && $refresh_i3status
-bindsym XF86AudioLowerVolume      exec pactl set-sink-volume @DEFAULT_SINK@ -5%  && $refresh_i3status
-bindsym Mod1+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym Mod1+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMicMute          exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioMute             exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym Ctrl+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym Ctrl+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
+bindsym XF86AudioRaiseVolume      exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume      exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym Mod1+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10%
+bindsym Mod1+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioMicMute          exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # Media player control
 bindsym XF86AudioPlay  exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioStop  exec playerctl stop
 bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
 # Keyboard backlight control
 # -- https://github.com/alberto-santini/i3-configuration-x1
 # -- https://askubuntu.com/questions/715306/xbacklight-no-outputs-have-backlight-property-no-sys-class-backlight-folder
-bindsym Ctrl+XF86MonBrightnessDown exec xbacklight -dec 1 && $refresh_i3status
-bindsym Ctrl+XF86MonBrightnessUp   exec xbacklight -inc 1 && $refresh_i3status
-bindsym XF86MonBrightnessDown      exec xbacklight -dec 5 && $refresh_i3status
-bindsym XF86MonBrightnessUp        exec xbacklight -inc 5 && $refresh_i3status
-bindsym Mod1+XF86MonBrightnessDown exec xbacklight -dec 10 && $refresh_i3status
-bindsym Mod1+XF86MonBrightnessUp   exec xbacklight -inc 10 && $refresh_i3status
+bindsym Ctrl+XF86MonBrightnessDown exec xbacklight -dec 1
+bindsym Ctrl+XF86MonBrightnessUp   exec xbacklight -inc 1
+bindsym XF86MonBrightnessDown      exec xbacklight -dec 5
+bindsym XF86MonBrightnessUp        exec xbacklight -inc 5
+bindsym Mod1+XF86MonBrightnessDown exec xbacklight -dec 10
+bindsym Mod1+XF86MonBrightnessUp   exec xbacklight -inc 10
 
 # Rofi window switcher [can be configured in $HOME/.config/rofi/config.rasi]
 bindsym Mod4+d                exec rofi -show drun -terminal $terminal
@@ -1109,7 +1108,7 @@ bindsym Mod1+Shift+F9  move container to workspace $ws39
 bindsym Mod1+Shift+F10 move container to workspace $ws40
 
 # Workspace mode
-set $mode_workspace Workspace: [p] swap_workspace [s] save_workspace [r] restore_workspace
+set $mode_workspace Workspace: swa[p]_workspace [s]ave_workspace [r]estore_workspace
 bindsym Mod4+Shift+p mode $mode_workspace
 mode "$mode_workspace" {
     bindsym p mode $mode_swap_workspace

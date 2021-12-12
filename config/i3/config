@@ -782,16 +782,16 @@ bindsym Mod4+Shift+s sticky toggle; exec notify-send -u low "Toggle Sticky For F
 # Change focus between tiling / floating windows
 bindsym Mod4+space focus mode_toggle; exec notify-send -u low "Toggle Focus [Tiling/Floating]"
 
-# Quick change container layout (stacking, tabbed, splitv, splith)
-bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking; exec notify-send -u low "Toggle Layout Mode"
+# Change container layout (stacking, tabbed, splitv, splith)
+bindsym Mod4+Shift+e layout toggle splitv splith tabbed stacking; exec notify-send -u low "Toggle Tiling Layout"
 
 # Change container layout (stacking, tabbed, toggle split)
-bindsym Mod4+s layout stacking; exec notify-send -u low "Stacking Mode On"
-bindsym Mod4+w layout tabbed; exec notify-send -u low "Tabbed Mode On"
-bindsym Mod4+e layout toggle splitv splith; exec notify-send -u low "Toggle Layout Split"
+bindsym Mod4+s layout stacking; exec notify-send -u low "Stacking Layout On"
+bindsym Mod4+w layout tabbed; exec notify-send -u low "Tabbed Layout On"
+bindsym Mod4+e layout toggle splitv splith; exec notify-send -u low "Toggle Tiling Layout Split (h/v)"
 
 # Change split direction (vertical, horizontal)
-bindsym Mod4+q split toggle; exec notify-send -u low "Toggled Split Direction"
+bindsym Mod4+q split toggle; exec notify-send -u low "Toggle Split Direction (h/v)"
 
 # Titlebar toggle (locally, globally)
 bindsym Mod4+n       border toggle
@@ -915,10 +915,10 @@ bindsym Mod4+Shift+Tab workspace prev
 bindsym Ctrl+Mod1+Tab  workspace back_and_forth
 
 # Add new workspace increasingly/decreasingly
-bindsym Mod4+grave            exec $I3_SCRIPT/i3_new_workspace.sh move inc
-bindsym Mod4+Shift+grave      exec $I3_SCRIPT/i3_new_workspace.sh move dec
-bindsym Ctrl+Mod1+grave       exec $I3_SCRIPT/i3_new_workspace.sh move_container inc
-bindsym Ctrl+Mod1+Shift+grave exec $I3_SCRIPT/i3_new_workspace.sh move_container dec
+bindsym Mod4+grave       exec $I3_SCRIPT/i3_new_workspace.sh move inc
+bindsym Mod4+Shift+grave exec $I3_SCRIPT/i3_new_workspace.sh move dec
+bindsym Mod1+grave       exec $I3_SCRIPT/i3_new_workspace.sh move_container inc
+bindsym Mod1+Shift+grave exec $I3_SCRIPT/i3_new_workspace.sh move_container dec
 
 # Move focus between output monitors ([/,/./])
 bindsym Mod4+bracketleft  focus output up

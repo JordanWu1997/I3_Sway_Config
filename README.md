@@ -129,7 +129,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Winkey] + [Shift] + [Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl] + [Shift] + [Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt] + [Shift] + [Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
-    - `[Ctrl] + [Alt] + ([Shift]) + [Grave]`: Send to (prev)/next workspace
+    - `[Alt] + ([Shift]) + [Grave]`: Send to (prev)/next workspace
 - __Move between Windows__
     - `[Alt] + [Tab]`: Show all window list
 - __Manipulate Scratchpad__

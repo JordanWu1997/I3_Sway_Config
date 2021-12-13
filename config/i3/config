@@ -804,7 +804,7 @@ bindsym Mod4+Shift+t mode "$mode_titlebar"
 set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree [b]order [m]ark
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
-    bindsym d title_format "%title"; exec notify-send -u low "Default title name"
+    bindsym d title_format "%title"; exec notify-send -u low "Restore Default Title Name"
     bindsym s [class="^.*"] border normal; exec notify-send -u low "Show All Titlebars"
     bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
     bindsym t exec gtk-tree-watch.pl; mode "default"
@@ -1108,12 +1108,12 @@ bindsym Mod1+Shift+F9  move container to workspace $ws39
 bindsym Mod1+Shift+F10 move container to workspace $ws40
 
 # Workspace mode
-set $mode_workspace Workspace: swa[p]_workspace [s]ave_workspace [r]estore_workspace
+set $mode_workspace Workspace: [r]estore_workspace [s]ave_workspace [S]wap_workspace
 bindsym Mod4+Shift+p mode $mode_workspace
 mode "$mode_workspace" {
-    bindsym p mode $mode_swap_workspace
-    bindsym s mode $mode_save_workspace
-    bindsym r mode $mode_restore_workspace
+    bindsym r       mode $mode_restore_workspace
+    bindsym s       mode $mode_save_workspace
+    bindsym Shift+s mode $mode_swap_workspace
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"

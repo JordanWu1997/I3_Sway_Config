@@ -809,8 +809,13 @@ set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Restore Default Title Name"
+<<<<<<< HEAD
     bindsym s [all] border normal; exec notify-send -u low "Show All Titlebars"
     bindsym h [all] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
+=======
+    bindsym s [class="^.*"] border normal; exec notify-send -u low "Show All Titlebars"
+    bindsym h [class="^.*"] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
+>>>>>>> 0edc3a48b61ca433fd9b066d08aac61d40ee4645
     bindsym t exec gtk-tree-watch.pl; mode "default"
     bindsym f mode "$mode_titlebar_font"
     bindsym b mode "$mode_border"

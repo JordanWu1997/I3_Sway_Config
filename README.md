@@ -4,13 +4,18 @@ Backup for my I3WM(Xorg), SwayWM(Wayland), and other applications configuration
 Table of Contents
 =================
 
+<details open>
+<summary>Click to expand!</summary>
+
 * [I3_Sway_Config](#i3_sway_config)
 * [Table of Contents](#table-of-contents)
-   * [Demo Current Customization Result for i3](#demo-current-customization-result-for-i3)
+* [Context](#context)
+   * [Demo Current Customization](#demo-current-customization)
    * [Information for my i3 Configuration](#information-for-my-i3-configuration)
       * [My i3 Environment](#my-i3-environment)
-      * [Auto-start in Background Programs for i3 Environment](#auto-start-in-background-programs-for-i3-environment)
+      * [Programs Auto-start in Background for i3 Environment](#programs-auto-start-in-background-for-i3-environment)
       * [Wallpapers](#wallpapers)
+      * [Theme and Fonts](#theme-and-fonts)
    * [First Time Usage for i3](#first-time-usage-for-i3)
       * [Configuration deployer](#configuration-deployer)
       * [Optional Configuration](#optional-configuration)
@@ -24,12 +29,29 @@ Table of Contents
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
-## Demo Current Customization Result for i3
+</details>
+
+# Context
+<details open>
+<summary>Click to expand!</summary>
+
+## Demo Current Customization
+<details open>
+<summary>Click to expand!</summary>
+
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
+![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
+
+</details>
 
 ## Information for my i3 Configuration
+<details open>
+<summary>Click to expand!</summary>
 
 ### My i3 Environment
+<details open>
+<summary>Click to expand!</summary>
+
 - Shell: [fish](https://github.com/fish-shell/fish-shell) + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty)
 - Launcher: [rofi](https://github.com/davatorium/rofi)
@@ -40,7 +62,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Text Editor: [neovim](https://github.com/neovim/neovim) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 
-### Auto-start in Background Programs for i3 Environment
+</details>
+
+### Programs Auto-start in Background for i3 Environment
+<details open>
+<summary>Click to expand!</summary>
+
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
@@ -61,19 +88,33 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): Xcompositor for blur, transparency, animation support
 
+</details>
+
 ### Wallpapers
+<details open>
+<summary>Click to expand!</summary>
+
 - Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
 - Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
 - [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
 - [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 
+</details>
+
 ### Theme and Fonts
+<details open>
+<summary>Click to expand!</summary>
+
 - [Optional] Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
 - [Optional] Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
 - [Optional] GUI Font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
 - [Optional] TUI Font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
 
+</details>
+
 ## First Time Usage for i3
+<details>
+<summary>Click to expand!</summary>
 
 ### Configuration deployer
 - Run deployer in git repository `config/i3/script/i3_config_deployer.sh`
@@ -92,7 +133,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
     ```
 
+</details>
+
 ## Keybinding Sheet for i3
+<details>
+<summary>Click to expand!</summary>
+
 - Cheat sheet format, color theme here is the same as i3 user guide
 
 ### Prefix: [Winkey]
@@ -184,7 +230,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Wallpaper mode (`[w]`)__
             - select wallpaper, set default wallpaper
 
+</details>
+
 ## Reference
+<details>
+<summary>Click to expand!</summary>
+
 - https://i3wm.org/docs/userguide.html
 - https://github.com/levinit/i3wm-config
 - https://www.itread01.com/p/142448.html
@@ -196,3 +247,6 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - https://pypi.org/project/i3-workspace-swap/
 - https://github.com/rjekker/i3-battery-popup
 - https://github.com/lincheney/i3-automark
+
+</details>
+</details>

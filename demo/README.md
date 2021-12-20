@@ -7,3 +7,4 @@
 ![alt_text](../demo/MY_I3WM_WAL_DEMO_03.png)
 ![alt_text](../demo/MY_I3WM_WAL_DEMO_04.png)
 ![alt_text](../demo/MY_I3WM_WAL_DEMO_05.png)
+![alt_text](../demo/MY_I3WM_WAL_DEMO_06.png)

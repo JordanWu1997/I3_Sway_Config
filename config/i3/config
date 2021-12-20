@@ -1375,7 +1375,7 @@ bindsym --release Print  exec gnome-screenshot
 bindsym Mod4+Print       exec notify-send -u low "Gnome Screenshot" && gnome-screenshot -i
 bindsym Mod4+Shift+Print exec notify-send -u low "Flameshot Screenshot" && flameshot gui -p $HOME/Pictures/
 
-# Use Mouse+Mod4 to drag floating windows to their wanted position
+# Use Mouse+Mod4 to drag floating windows
 floating_modifier Mod4
 
 # Focus follow mouse cursor

@@ -195,22 +195,22 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - system command, e.g. exit, poweroff, reboot, lock, hibernate
 - __Display mode (`[Winkey] + [Shift] + [x]`)__
     - deal with dual monitor, e.g. joint monitor, mirror monitor
-- __Mouse mode (`[Winkey] + [Shift] + [m]`)__
-    - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
 - __Red shift mode (`[Winkey] + [Shift] + [z]`)__
     - screen color temperature tuner
 - __Dunst mode (`[Winkey] + [Shift] +[v]`)__
     - dunst actions, including stopping or resuming dunst
+- __Mouse mode (`[Ctrl] + [Alt] + [m]`)__
+    - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
 - __Resize mode (`[Ctrl] + [Alt] + [r]`)__
     - resize focus window
 - __Gap mode (`[Winkey] + [Shift] + [g]`)__
     - modify i3 gaps, e.g. inner gaps, outer gaps
 - __Title bar mode (`[Winkey] + [Shift] + [t]`)__
-    - modify i3 title bar, e.g. hide/show title bar, mark window
+    - modify i3 title bar, e.g. hide/show title bar, font, border
         - __Border mode (`[b]`)__
             - modify i3 border
-        - __Mark mode (`[m]`)__
-            - mark window, auto-mark function
+- __Mark mode (`[Winkey]` + `[Shift]` + `[m]`)__
+    - mark window, goto/swap marked window, auto-mark function
 - __Workspace mode (`[Winkey] + [Shift] + [p]`)__
     - manipulate i3 workspace, e.g. swap, save, restore
         - __Swap_workspace mode (`[p]`)__

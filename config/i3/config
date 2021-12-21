@@ -805,7 +805,7 @@ bindsym Ctrl+Mod1+n  [all] border normal
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
 bindsym Mod4+Shift+t mode "$mode_titlebar"
-set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree [b]order [m]ark
+set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree [b]order
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Restore Default Title Name"
@@ -814,7 +814,6 @@ mode "$mode_titlebar" {
     bindsym t exec gtk-tree-watch.pl; mode "default"
     bindsym f mode "$mode_titlebar_font"
     bindsym b mode "$mode_border"
-    bindsym m mode "$mode_mark"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -878,28 +877,28 @@ mode "$mode_set_border" {
 }
 
 # Mark mode [add i3/rofi to use i3-msg/rofi as input]
+# Mark current window with the character
+bindsym Mod4+m exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none
 # Goto the window with the character
-bindsym Mod4+g          exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
 bindsym Mod4+apostrophe exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
 # Swap the current window to the window with the character (focus stays)
 bindsym Mod4+semicolon exec $I3_SCRIPT/i3_mark_operator.sh swap rofi stay
 # Swap the current window to the window with the character (focus moves)
 bindsym Mod4+Shift+semicolon exec $I3_SCRIPT/i3_mark_operator.sh swap rofi none
 
-# Mark mode (within titlebar mode) [use i3-msg/rofi as input]
-# Automark windows [https://github.com/lincheney/i3-automark]
-set $mode_mark Mark: [M/m]ark [G/g]oto [S/s]wap [e]nable-auto-mark [d]isable-auto-mark
+# Mark mode [use rofi as input]
+# Automark windows [https://github.com/lincheney/i3-automark] is required
+set $mode_mark Mark: [m]ark [']goto [']swap [/]show [e]nable-auto-mark [d]isable-auto-mark
+bindsym Mod4+Shift+m mode $mode_mark
 mode "$mode_mark" {
-    bindsym m       exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none
-    bindsym g       exec $I3_SCRIPT/i3_mark_operator.sh goto rofi none
-    bindsym s       exec $I3_SCRIPT/i3_mark_operator.sh swap rofi none
-    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operator.sh mark i3 none
-    bindsym Shift+g exec $I3_SCRIPT/i3_mark_operator.sh goto i3 none
-    bindsym Shift+m exec $I3_SCRIPT/i3_mark_operator.sh swap i3 none
-    bindsym e       exec i3_automark_operator.sh enable; mode "default"
-    bindsym d       exec i3_automark_operator.sh disable; mode "default"
+    bindsym m          exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none; mode "default"
+    bindsym apostrophe exec $I3_SCRIPT/i3_mark_operator.sh show_then_goto rofi none; mode "default"
+    bindsym semicolon  exec $I3_SCRIPT/i3_mark_operator.sh show_then_swap rofi none; mode "default"
+    bindsym slash      exec $I3_SCRIPT/i3_mark_operator.sh show rofi none
+    bindsym e          exec i3_automark_operator.sh enable; mode "default"
+    bindsym d          exec i3_automark_operator.sh disable; mode "default"
     # exit mode: "Enter" or "Escape"
-    bindsym Return mode "$mode_titlebar"
+    bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
@@ -1397,7 +1396,7 @@ bindsym --whole-window Mod4+Shift+button3 floating toggle; exec notify-send -u l
 # -- https://www.reddit.com/r/i3wm/comments/ltjoaa/tip_mouse_emulation_using_hjkl/
 # Note: xdotool must be installed
 set $mode_mouse Mouse emulator: [ctrl/NONE/alt/ctrl_alt+(vim-key)]:S/M/L/XL [(Shift)+u/i/o]:(hold) left/middle/right [,/.]:scrolldown/scrollup [p]:autohide
-bindsym Mod4+Shift+m mode "$mode_mouse"
+bindsym Ctrl+Mod1+m mode "$mode_mouse"
 mode "$mode_mouse" {
     # left up down right --smaller steps
     bindsym Ctrl+h exec "xdotool mousemove_relative -- -2 0"

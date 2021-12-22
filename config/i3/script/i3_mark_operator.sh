@@ -22,8 +22,9 @@ case $1 in
         i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
             /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
             /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
-            rofi -dmenu -select -p 'Show [Mark]'
+            rofi -dmenu -sort -select -p 'Show [Mark]'
         ;;
+
     # Mark current window
     "mark")
         if [ $2 == "i3" ]; then
@@ -34,6 +35,7 @@ case $1 in
             i3-input -F "mark %s" -l 1 -P "Mark: "
         fi
         ;;
+
     # Goto mark window
     "goto")
         if [ $2 == "i3" ]; then
@@ -48,10 +50,11 @@ case $1 in
         mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
             /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
             /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
-            rofi -dmenu -select -p 'Goto Window [Mark]')"
+            rofi -dmenu -sort -auto-select -p 'Goto Window [Mark]')"
         mark_mark=$(echo $mark_title | awk '{print $1}')
         i3-msg [con_mark="$mark_mark"] focus
         ;;
+
     # Swap current window to mark window but remain focus
     "swap")
         if [ $2 == "i3" ]; then
@@ -64,11 +67,12 @@ case $1 in
         elif [ $2 == "rofi" ]; then
             mark_title="$(rofi -dmenu -columns 10 -lines 2 -width 35 -select \
                 -input ~/.config/i3/share/i3_automark_list.txt -p 'Swapto [Mark]')"
+            mark_mark=$(echo $mark_title | awk '{print $1}')
             # Keep focus stay in current container
             if [ $3 == "stay" ]; then
-                i3-msg "swap container with mark $mark_title, [con_mark=$mark_title] focus"
+                i3-msg "swap container with mark $mark_mark, [con_mark=$mark_mark] focus"
             else
-                i3-msg "swap container with mark $mark_title"
+                i3-msg "swap container with mark $mark_mark"
             fi
         fi
         ;;
@@ -76,16 +80,17 @@ case $1 in
         mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
             /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
             /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
-            rofi -dmenu -select -p 'Swapto [Mark]')"
+            rofi -dmenu -sort -auto-select --only-match -p 'Swapto [Mark]')"
+        mark_mark=$(echo $mark_title | awk '{print $1}')
         # Keep focus stay in current container
         if [ $3 == "stay" ]; then
-            i3-msg "swap container with mark $mark_title, [con_mark=$mark_title] focus"
+            i3-msg "swap container with mark $mark_mark, [con_mark=$mark_mark] focus"
         else
-            i3-msg "swap container with mark $mark_title"
+            i3-msg "swap container with mark $mark_mark"
         fi
         ;;
 
-        # Print usage
+    # Print usage
     *)
         echo
         echo "Wrong Input: $0"

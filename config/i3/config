@@ -335,8 +335,8 @@ mode "$mode_conky" {
     bindsym 4 mode "$mode_conky_palette_shortcut_title"
     bindsym 5 mode "$mode_conky_palette_system_item"
     bindsym 6 mode "$mode_conky_palette_system_title"
-    bindsym 7 exec $I3_SCRIPT/i3_conky_monitor_primary_only.sh
-    bindsym 8 exec $I3_SCRIPT/i3_conky_monitor_all.sh
+    bindsym 7 exec $I3_SCRIPT/i3_conky_monitor_display.sh primary
+    bindsym 8 exec $I3_SCRIPT/i3_conky_monitor_display.sh all
     # exit
     bindsym Return mode "$mode_customization"
     bindsym Escape mode "default"
@@ -805,15 +805,15 @@ bindsym Ctrl+Mod1+n  [all] border normal
 # Titlebar mode
 # Gtk-tree-watch [https://github.com/sciurus/i3tree]
 bindsym Mod4+Shift+t mode "$mode_titlebar"
-set $mode_titlebar Titlebar: [s]how_title [n]ew_name [d]efault_name [f]ontsize [h]ide_title [t]ree [b]order
+set $mode_titlebar Titlebar: [n]ew_name [d]efault_name [s]how_title [h]ide_title [f]ontsize [b]order [t]ree
 mode "$mode_titlebar" {
     bindsym n exec i3-msg title_format $(rofi -dmenu -lines 0 -p "New title name")
     bindsym d title_format "%title"; exec notify-send -u low "Restore Default Title Name"
     bindsym s [all] border normal; exec notify-send -u low "Show All Titlebars"
     bindsym h [all] border $default_border_width; exec notify-send -u low "Hide All Titlebars"
-    bindsym t exec gtk-tree-watch.pl; mode "default"
     bindsym f mode "$mode_titlebar_font"
     bindsym b mode "$mode_border"
+    bindsym t exec gtk-tree-watch.pl; mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -888,15 +888,16 @@ bindsym Mod4+Shift+semicolon exec $I3_SCRIPT/i3_mark_operator.sh swap rofi none
 
 # Mark mode [use rofi as input]
 # Automark windows [https://github.com/lincheney/i3-automark] is required
-set $mode_mark Mark: [m]ark [']goto [']swap [/]show [e]nable-auto-mark [d]isable-auto-mark
+set $mode_mark Mark: [m]ark [']goto [semi-colon/colon]swap_and_move/stay [/]show [e]nable_automark [d]isable_automark
 bindsym Mod4+Shift+m mode $mode_mark
 mode "$mode_mark" {
-    bindsym m          exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none; mode "default"
-    bindsym apostrophe exec $I3_SCRIPT/i3_mark_operator.sh show_then_goto rofi none; mode "default"
-    bindsym semicolon  exec $I3_SCRIPT/i3_mark_operator.sh show_then_swap rofi none; mode "default"
-    bindsym slash      exec $I3_SCRIPT/i3_mark_operator.sh show rofi none
-    bindsym e          exec i3_automark_operator.sh enable; mode "default"
-    bindsym d          exec i3_automark_operator.sh disable; mode "default"
+    bindsym m                exec $I3_SCRIPT/i3_mark_operator.sh mark rofi none; mode "default"
+    bindsym apostrophe       exec $I3_SCRIPT/i3_mark_operator.sh show_then_goto rofi none; mode "default"
+    bindsym Shift+semicolon  exec $I3_SCRIPT/i3_mark_operator.sh show_then_swap rofi none; mode "default"
+    bindsym semicolon        exec $I3_SCRIPT/i3_mark_operator.sh show_then_swap rofi stay; mode "default"
+    bindsym slash            exec $I3_SCRIPT/i3_mark_operator.sh show rofi none
+    bindsym e                exec i3_automark_operator.sh enable; mode "default"
+    bindsym d                exec i3_automark_operator.sh disable; mode "default"
     # exit mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"

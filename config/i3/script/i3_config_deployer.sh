@@ -17,7 +17,7 @@ echo 'export I3_SCRIPT=$HOME/.config/i3/script' >> $profile
 # Link/copy config directories/files under ~/.config
 USER_CONFIG_DIR="$HOME/.config"
 NEW_CONFIG_DIR="$HOME/Desktop/I3_Sway_Config/config"
-USER_CONFIG_BACkUP="$HOME/.config_backup"
+USER_CONFIG_BACKUP="$HOME/.config_backup"
 USER_CONFIG_LIST=(cava conky dunst i3 kitty ncspot \
                   neofetch picom ranger rofi spotify-tui \
                   zathura vis bumblebee-status flashfocus)

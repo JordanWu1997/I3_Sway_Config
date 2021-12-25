@@ -21,12 +21,26 @@ USER_CONFIG_BACKUP="$HOME/.config_backup"
 USER_CONFIG_LIST=(cava conky dunst i3 kitty ncspot \
                   neofetch picom ranger rofi spotify-tui \
                   zathura vis bumblebee-status flashfocus)
+
 mkdir $USER_CONFIG_BACKUP
 for config in ${USER_CONFIG_LIST[@]};
 do
     mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP
-    ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
-    #cp -fr $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
+    case $1 in
+        "link")
+            ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
+            ;;
+        "copy")
+            cp -fr $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
+            ;;
+        *)
+            echo
+            echo "Wrong input: $0"
+            echo "Usage: ./i3_config_deployer.sh [options]"
+            echo "Available option: link/copy"
+            echo
+            break
+    esac
 done
 
 # ----------------------------------------------------------------------------

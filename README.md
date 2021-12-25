@@ -107,8 +107,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 - [Optional] Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
 - [Optional] Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
-- [Optional] GUI Font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
-- [Optional] TUI Font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
+- [Optional] GUI font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
+- [Optional] TUI font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
 
 </details>
 

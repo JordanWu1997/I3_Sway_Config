@@ -26,6 +26,7 @@ for config in ${USER_CONFIG_LIST[@]};
 do
     mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP
     ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
+    #cp -fr $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
 done
 
 # ----------------------------------------------------------------------------

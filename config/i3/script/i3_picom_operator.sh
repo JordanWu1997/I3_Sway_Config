@@ -7,10 +7,10 @@ case $1 in
         i3-msg exec "picom"
         ;;
     "blur")
-        i3-msg exec "picom --config ${HOME}/.config/picom/picom_blur.conf"
+        i3-msg exec "picom --config $HOME/.config/picom/picom_blur.conf"
         ;;
     "transparency")
-        i3-msg exec "picom --config ${HOME}/.config/picom/picom_transparency.conf"
+        i3-msg exec "picom --config $HOME/.config/picom/picom_transparency.conf"
         ;;
     *)
         echo $0

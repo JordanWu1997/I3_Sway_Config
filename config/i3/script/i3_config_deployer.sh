@@ -9,23 +9,23 @@
 # Add following lines to ~/.profile
 profile="$HOME/.profile"
 export PATH=$HOME/.config/i3/script:$PATH >> $profile
-cat 'export I3_SCRIPT=$HOME/.config/i3/script' >> $profile
+echo 'export I3_SCRIPT=$HOME/.config/i3/script' >> $profile
 
 # ----------------------------------------------------------------------------
 # Link config directories to $HOME/.config/*
 # ----------------------------------------------------------------------------
 # Link/copy config directories/files under ~/.config
-user_config_dir="$HOME/.config"
-new_config_dir="$HOME/Desktop/I3_Sway_Config/config"
-user_config_backup="$HOME/.config_backup"
-user_config_list=(cava conky dunst i3 kitty ncspot \
+USER_CONFIG_DIR="$HOME/.config"
+NEW_CONFIG_DIR="$HOME/Desktop/I3_Sway_Config/config"
+USER_CONFIG_BACkUP="$HOME/.config_backup"
+USER_CONFIG_LIST=(cava conky dunst i3 kitty ncspot \
                   neofetch picom ranger rofi spotify-tui \
-                  zathura vis bumblebee-status)
-mkdir $user_config_backup
-for config in ${user_config_list[@]};
+                  zathura vis bumblebee-status flashfocus)
+mkdir $USER_CONFIG_BACKUP
+for config in ${USER_CONFIG_LIST[@]};
 do
-    mv $user_config_dir/$config $user_config_backup
-    ln -s $new_config_dir/$config $user_config_dir/$config
+    mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP
+    ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
 done
 
 # ----------------------------------------------------------------------------

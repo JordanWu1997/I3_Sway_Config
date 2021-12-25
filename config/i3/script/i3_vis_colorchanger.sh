@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Generates vis colour file
 
 # source the current wal colour scheme

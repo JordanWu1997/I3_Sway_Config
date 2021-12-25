@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
-current="$HOME/.config/i3/share/default_wallpaper"
-default="$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
+CURRENT="$HOME/.config/i3/share/default_wallpaper"
+DEFAULT="$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 
-if ( file $current | grep -q PNG ); then
-    [ -f $current.png ] && rm -f $current.png
-    i3lock -t -f -i $current
+if ( file $CURRENT | grep -q PNG ); then
+    [ -f $CURRENT.png ] && rm -f $CURRENT.png
+    i3lock -t -f -i $CURRENT
 else
     case $1 in
         "default")
-            i3lock -t -f -i $default
+            i3lock -t -f -i $DEFAULT
             ;;
         "current")
-            [ ! -f $current.png ] && mogrify -resize 1920x1080 -format png $current
-            i3lock -t -f -i $current.png
+            [ ! -f $CURRENT.png ] && mogrify -resize 1920x1080 -format png $CURRENT
+            i3lock -t -f -i $CURRENT.png
             ;;
         *)
-            i3lock -t -f -i $default
+            i3lock -t -f -i $DEFAULT
     esac
 fi

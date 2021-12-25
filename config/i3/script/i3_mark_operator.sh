@@ -2,14 +2,14 @@
 
 # Set default border width
 if [ $# -eq 4 ]; then
-    default_width=$4
+    DEFAULT_WIDTH=$4
 elif [ $# -eq 5 ] && [ $4 == 'pixel' ]; then
-    default_width="$4 $5"
+    DEFAULT_WIDTH="$4 $5"
 else
-    default_width=$(awk '$0~/default_border_width/ {print $3,$4}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_WIDTH=$(awk '$0~/default_border_width/ {print $3,$4}' $HOME/.config/i3/config | awk 'NR==1')
 fi
 
-echo $default_width
+echo $DEFAULT_WIDTH
 
 # Show titlebar for all windows
 i3-msg [con_mark="^.*"] border normal
@@ -99,4 +99,4 @@ case $1 in
 esac
 
 # Restore border for all windows
-i3-msg [con_mark="^.*"] border $default_width
+i3-msg [con_mark="^.*"] border $DEFAULT_WIDTH

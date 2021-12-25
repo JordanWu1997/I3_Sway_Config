@@ -5,7 +5,7 @@ case $1 in
         awk 'NR==2 {print $4}' ~/.fehbg | xargs -I {} wal -i {} --nine
         ;;
     "disable")
-        rm -rf ${HOME}/.cache/wal
+        rm -rf $HOME/.cache/wal
         ;;
     "restart")
         # Kill picom/flashfocus

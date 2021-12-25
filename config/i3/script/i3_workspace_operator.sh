@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Swap workspace with i3-workspace-swap
-# Installation: pip install i3-workspace-swap
-i3-workspace-swap -d "$WPNM"
-
 case $1 in
     "save_all")
         i3-resurrect save -w 1:A1

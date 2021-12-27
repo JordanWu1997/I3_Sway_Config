@@ -224,7 +224,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Conky mode (`[c]`)__
             - system_conky, hotkey_conky, color of conky
         - __Picom mode (`[p]`)__
-            - blur, transparency support, also flashfocus
+            - blur, transparency support
+        - __Flashfocus mode (`[f]`)__
+            - flash for overall program in picom blur, transparency and opaque
         - __Theme mode (`[t]`)__
             - auto-theme with pywal and applications reloading after auto-theming
         - __Wallpaper mode (`[w]`)__

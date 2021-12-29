@@ -4,4 +4,5 @@
 /config/flashfocus/flashfocus.yml
 /config/spotify-tui/.spotify_token_cache.json
 /config/spotify-tui/client.yml
+/config/ncspot/userstate.cbor
 /config/vis/vis.log

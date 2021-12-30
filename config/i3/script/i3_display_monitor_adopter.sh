@@ -13,7 +13,7 @@ echo HDMI1 HxW: $HDMI1_HEIGHT, $HDMI1_WIDTH
 # Reload conky after monitor display is set
 reload_conky () {
     # Reload conky
-    killall conky
+    killall conky; sleep 1
     i3-msg exec "conky -c $HOME/.config/conky/conky_config_hotkey"
     i3-msg exec "conky -c $HOME/.config/conky/conky_config_system"
 }

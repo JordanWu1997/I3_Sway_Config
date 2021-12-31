@@ -7,9 +7,14 @@
 # Environment variables
 # ----------------------------------------------------------------------------
 # Add following lines to ~/.profile
-profile="$HOME/.profile"
-export PATH=$HOME/.config/i3/script:$PATH >> $profile
-echo 'export I3_SCRIPT=$HOME/.config/i3/script' >> $profile
+PROFILE="$HOME/.profile"
+
+echo ''                                           >> $PROFILE
+echo '# ========== I3WM Environments ===========' >> $PROFILE
+echo 'export I3_SCRIPT=""$HOME/.config/i3/script' >> $PROFILE
+echo 'export PATH="$I3_SCRIPT:$PATH"'             >> $PROFILE
+echo '# ========================================' >> $PROFILE
+echo ''                                           >> $PROFILE
 
 # ----------------------------------------------------------------------------
 # Link config directories to $HOME/.config/*

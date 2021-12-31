@@ -232,6 +232,22 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Wallpaper mode (`[w]`)__
             - select wallpaper, set default wallpaper
 
+### Touchpad Usage
+- __3-finger gesture__
+    - __Swipe up__
+        - Toggle window full-screen mode
+    - __Swipe down__
+        - Toggle floating mode
+    - __Swipe left__
+        - Go to previous workspace
+    - __Swipe right__
+        - Go to next workspace
+- __4-finger gesture__
+    - __Pinch out__
+        - Bring scratchpad window to foreground
+    - __Pinch in__
+        - Send window to scratchpad
+
 </details>
 
 ## Reference

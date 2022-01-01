@@ -23,7 +23,7 @@
 # ======================================================================================
 # Setup i3 key and some variables
 
-# Setup mod (Prefix)#
+# Setup mod (Prefix)
 # Mod1: alt, Mod4: win
 
 # Setup monitor order according to frequent-usage priority

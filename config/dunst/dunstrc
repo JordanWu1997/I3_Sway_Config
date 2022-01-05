@@ -19,9 +19,9 @@
     ### Geometry ###
 
     # Geometry = Width x Height Offset (dunst version < 1.7)
-    geometry = "540x60-25-25"
+    geometry = "480x60-25-25"
     # Geometry (dunst version >= 1.7)
-    #width = (0, 540)
+    #width = (0, 480)
     #height = 60
     #origin = "bottom-right"
     #offset = 25x25
@@ -45,11 +45,15 @@
     # Horizontal padding.
     horizontal_padding = 8
 
+    # Frame color and width
+    frame_color = "#2e9ef4"
+    frame_width = 2
+
     # Define a color for the separator.
     separator_color = frame
 
     # Sort messages by urgency.
-    sort = yes
+    sort = no
 
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
     idle_threshold = 120
@@ -63,6 +67,7 @@
 
     # Allow a small subset of html markup in notifications
     markup = full
+    plain_text = no
 
     # The format of the message.
     format = "<b>%a:</b> <b>%s</b>\n%b"
@@ -113,16 +118,19 @@
 
     background = "#282828"
     foreground = "#ffffff"
+    frame_color = "#2e9ef4"
     timeout = 5
 
 [urgency_normal]
 
     background = "#282828"
     foreground = "#ffffff"
+    frame_color = "#2e9ef4"
     timeout = 10
 
 [urgency_critical]
 
     background = "#282828"
     foreground = "#ffffff"
+    frame_color = "#2e9ef4"
     timeout = 120

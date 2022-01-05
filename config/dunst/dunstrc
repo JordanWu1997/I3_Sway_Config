@@ -13,16 +13,18 @@
 
     ### Display ###
 
-    # Which monitor should the notifications be displayed on.
-    monitor = 2
-
     # Display notification on focused monitor.
     follow = mouse
 
     ### Geometry ###
 
-    # Width x Height Offset
+    # Geometry = Width x Height Offset (dunst version < 1.7)
     geometry = "540x60-25-25"
+    # Geometry (dunst version >= 1.7)
+    #width = (0, 540)
+    #height = 60
+    #origin = "bottom-right"
+    #offset = 25x25
 
     ### Progress bar ###
 
@@ -61,7 +63,6 @@
 
     # Allow a small subset of html markup in notifications
     markup = full
-    allow_markup = yes
 
     # The format of the message.
     format = "<b>%a:</b> <b>%s</b>\n%b"
@@ -100,35 +101,28 @@
 	mouse_right_click = close_current
 
     ### Misc/Advanced ###
-    bounce_freq = 0
     dmenu = /usr/bin/rofi -dmenu -p dunst
     browser = /usr/bin/brave-browser
     title = Dunst
     class = Dunst
+
+    # Dunst version < 1.7
     startup_notification = true
-    verbosity = mesg
-
-[frame]
-    width = 2
-    color = "#2e9ef4"
-
-#[shortcuts]
-    #close = ctrl+space
-    #close_all = ctrl+shift+space
-    #history = ctrl+grave
-    #context = ctrl+shift+period
 
 [urgency_low]
+
     background = "#282828"
     foreground = "#ffffff"
     timeout = 5
 
 [urgency_normal]
+
     background = "#282828"
     foreground = "#ffffff"
     timeout = 10
 
 [urgency_critical]
+
     background = "#282828"
     foreground = "#ffffff"
     timeout = 120

@@ -5,11 +5,11 @@
         "separator-block-width": 0,
         "separator": "",
         "warning": {
-            "fg": "color4",
+            "fg": "color11",
             "bg": "color0"
 		    },
     	"critical": {
-            "fg": "color3",
+            "fg": "color11",
             "bg": "color0"
     		},
         "fg": "cursor",
@@ -18,11 +18,11 @@
     },
     "battery": {
         "charged": {
-            "fg": "color2",
+            "fg": "color11",
             "bg": "color0"
         },
         "charging": {
-            "fg": "color7",
+            "fg": "color15",
             "bg": "color0"
         }
     }

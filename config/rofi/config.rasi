@@ -18,19 +18,18 @@ configuration {
     icon-theme: "Papirus";
 
     /*Fullscreen*/
-    /*fullscreen: true;*/
+    fullscreen: false;
 
-    /*Padding (empty region around input pallette, preset in wal)*/
-    /*padding: 375;*/
+    /*Padding (empty region around input pallette, preset in wal)*/ /*padding: 375;*/
 
     /*Width (no effect when fullscreen is enable, preset in wal)*/
     width: 1200;
 
     /*Number of lines (no effect when fullscreen is enable)*/
-    lines: 12;
+    /*lines: 11;*/
 
     /*Number of columns*/
-    columns: 2;
+    /*columns: 2;*/
 
     /*Border width*/
     bw: 0;

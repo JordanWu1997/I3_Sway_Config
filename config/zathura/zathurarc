@@ -6,6 +6,8 @@ set guioptions 'shv'
 set selection-clipboard clipboard
 set scroll-page-aware "true"
 set sandbox none
+map <C-j> zoom in
+map <C-k> zoom out
 
 ### zathura-pywal ###
 # Allow recolor
@@ -18,35 +20,35 @@ set recolor-keephue "false"
 set recolor-reverse-video "false"
 
 # Command line completion entries
-set completion-fg "#bfbfbf"
-set completion-bg "#010101"
+set completion-fg "#808182"
+set completion-bg "#020406"
 
 # Command line completion group elements
-set completion-group-fg "#7D412B"
-set completion-group-bg "#010101"
+set completion-group-fg "#24436e"
+set completion-group-bg "#020406"
 
 # Current command line completion element
-set completion-highlight-fg "#010101"
-set completion-highlight-bg "#bfbfbf"
+set completion-highlight-fg "#020406"
+set completion-highlight-bg "#808182"
 
 # Default foreground/background color
-set default-bg rgba(1,1,1,0.7)
+set default-bg rgba(2,4,6,0.7)
 
 # Input bar
-set inputbar-fg "#bfbfbf"
-set inputbar-bg "#010101"
+set inputbar-fg "#808182"
+set inputbar-bg "#020406"
 
 # Notification
-set notification-fg "#bfbfbf"
-set notification-bg "#010101"
+set notification-fg "#808182"
+set notification-bg "#020406"
 
 # Error notification
-set notification-error-fg "#bfbfbf"
-set notification-error-bg "#4C2C21"
+set notification-error-fg "#808182"
+set notification-error-bg "#33435a"
 
 # Warning notification
-set notification-warning-fg "#bfbfbf"
-set notification-warning-bg "#4C2C21"
+set notification-warning-fg "#808182"
+set notification-warning-bg "#33435a"
 
 # Tab - TODO
 # set tabbar-fg
@@ -57,25 +59,25 @@ set notification-warning-bg "#4C2C21"
 # set tabbar-focus-bg
 
 # Status bar
-set statusbar-fg "#bfbfbf"
-set statusbar-bg "#010101"
+set statusbar-fg "#808182"
+set statusbar-bg "#020406"
 
 # Highlighting parts of the document (e.g. show search results)
-set highlight-color "#7D412B"
-set highlight-active-color "#7D412B"
+set highlight-color "#24436e"
+set highlight-active-color "#24436e"
 
 # Represent light/dark colors in recoloring mode
 set recolor-lightcolor rgba(0,0,0,0)
-set recolor-darkcolor "#bfbfbf"
+set recolor-darkcolor "#808182"
 
 # "Loading..." text
-set render-loading-fg "#bfbfbf"
-set render-loading-bg "#010101"
+set render-loading-fg "#808182"
+set render-loading-bg "#020406"
 
 # Index mode
-set index-fg "#bfbfbf"
-set index-bg "#010101"
+set index-fg "#808182"
+set index-bg "#020406"
 
 # Selected element in index mode
-set index-active-fg "#010101"
-set index-active-bg "#bfbfbf"
+set index-active-fg "#020406"
+set index-active-bg "#808182"

@@ -47,11 +47,38 @@ case $INPUT_COLOR in
     color7)
         OUTPUT_COLOR="$(awk '$1~/*color7:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
         ;;
+    color8)
+        OUTPUT_COLOR="$(awk '$1~/*color8:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color9)
+        OUTPUT_COLOR="$(awk '$1~/*color9:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color10)
+        OUTPUT_COLOR="$(awk '$1~/*color10:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color11)
+        OUTPUT_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color12)
+        OUTPUT_COLOR="$(awk '$1~/*color12:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color13)
+        OUTPUT_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color14)
+        OUTPUT_COLOR="$(awk '$1~/*color14:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    color15)
+        OUTPUT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+        ;;
+    *)
+        echo No color is assigned, use default one instead.
+        ;;
 esac
 
 # Assign default item / title color
-DEFAULT_ITEM_COLOR="$(awk '$1~/*color3:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-DEFAULT_TITLE_COLOR="$(awk '$1~/*color5:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 
 # Replace color in conky configuration file
 case $1 in

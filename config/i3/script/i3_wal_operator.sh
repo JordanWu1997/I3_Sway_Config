@@ -16,7 +16,7 @@ case $1 in
         # Appy changes
         picom
         i3_automark_operation.sh enable
-        i3_dunst_colorchanger.sh
+        i3_dunst_colorchanger.sh both
         ;;
     *)
 esac

@@ -40,7 +40,7 @@ conky.config = {
 	draw_shades = true,
 	font = 'DroidSanMono Nerd Font:size=10',
 	gap_x = 35,
-	gap_y = 60,
+	gap_y = 35,
 	minimum_width = 230,
 	maximum_width = 230,
 	no_buffers = true,
@@ -83,8 +83,8 @@ ${color2}Wifi-Dw     ${alignr}${color}${downspeed wlp3s0}/s   ${alignr}Tot ${tot
 ${color2}Wifi-Up	 ${alignr}${color}${upspeed wlp3s0}/s   ${alignr}Tot ${totalup wlp3s0}${endif}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Disk]${font}${voffset 5}
 ${color2}Used / Free ${alignr}${color}${fs_used /home} / ${fs_size /home}
-${color2}IO Read ${color}${alignr}${diskio_read /dev/sda} / s
-${color2}IO Write ${color}${alignr}${diskio_write /dev/sda} / s
+${color2}Disk IO Read ${color}${alignr}${diskio_read /dev/sda} / s
+${color2}Disk IO Write ${color}${alignr}${diskio_write /dev/sda} / s
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Memory]${font}${voffset 5}
 ${color2}Memory ${alignr}${color} ${mem} / ${memmax}
 ${color2}Swap ${alignr}${color} ${swap} / ${swapmax}

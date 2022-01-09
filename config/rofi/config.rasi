@@ -67,10 +67,12 @@ configuration {
     fullscreen: true;
 
     /*Padding (empty region around input pallette, preset in wal)*/
-    padding: 300;
+    /*padding: 300;*/
+    padding: 28% 16%;
 
     /*Width (no effect when fullscreen is enable, preset in wal)*/
-    width: 1200;
+    /*width: 1200;*/
+    width: 63%;
 
 }
 

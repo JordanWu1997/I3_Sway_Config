@@ -30,7 +30,7 @@ case $1 in
         if [ $2 == "i3" ]; then
             i3-input -F "mark %s" -l 1 -P "Mark: "
         elif [ $2 == "rofi" ]; then
-            i3-msg mark $(rofi -dmenu -lines 0 -width 35 -p 'Mark')
+            i3-msg mark $(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -p 'Mark')
         else
             i3-input -F "mark %s" -l 1 -P "Mark: "
         fi
@@ -41,9 +41,9 @@ case $1 in
         if [ $2 == "i3" ]; then
             i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto Window [Mark]: "
         elif [ $2 == "rofi" ]; then
-            i3-msg [con_mark="$(rofi -dmenu -columns 10 -lines 2 -width 35 -select \
-                -input ~/.config/i3/share/i3_automark_list.txt -p \
-                'Goto Window [Mark]')"] focus
+            i3-msg [con_mark="$(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' \
+                -select -input ~/.config/i3/share/i3_automark_list.txt \
+                -p 'Goto Window [Mark]')"] focus
         fi
         ;;
     "show_then_goto")
@@ -65,7 +65,7 @@ case $1 in
                 i3-input -F "swap container with mark %s" -l 1 -P "Swapto [Mark]: "
             fi
         elif [ $2 == "rofi" ]; then
-            mark_title="$(rofi -dmenu -columns 10 -lines 2 -width 35 -select \
+            mark_title="$(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -select \
                 -input ~/.config/i3/share/i3_automark_list.txt -p 'Swapto [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}')
             # Keep focus stay in current container

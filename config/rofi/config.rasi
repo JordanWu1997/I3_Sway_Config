@@ -49,7 +49,7 @@ configuration {
 
 }
 
-@theme "~/.cache/wal/colors-rofi-dark.rasi"
+@import "~/.cache/wal/colors-rofi-dark.rasi"
 
 #listview {
 
@@ -71,5 +71,12 @@ configuration {
 
     /*Width (no effect when fullscreen is enable, preset in wal)*/
     width: 1200;
+
+}
+
+#scrollbar {
+
+    width: 0px;
+    handle-width: 0px;
 
 }

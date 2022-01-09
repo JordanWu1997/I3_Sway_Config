@@ -1,41 +1,56 @@
 #!/usr/bin/env bash
 
-# Dunst options
-#   -lf/nf/cf color
-#       Defines the foreground color for low, normal and critical notifications respectively.
-#
-#   -lb/nb/cb color
-#       Defines the background color for low, normal and critical notifications respectively.
-#
-#   -lfr/nfr/cfr color
-#       Defines the frame color for low, normal and critical notifications respectively.
+DUNST_CONFIG="$HOME/.config/dunst/dunstrc"
+WAL_COLOR="$HOME/.cache/wal/colors"
 
-[ -f "$HOME/.cache/wal/colors.sh" ] && . "$HOME/.cache/wal/colors.sh"
+BG_COLOR_COL=$(awk '$0~/background/ {print NR}' $DUNST_CONFIG)
+FG_COLOR_COL=$(awk '$0~/foreground/ {print NR}' $DUNST_CONFIG)
+FRAME_COLOR_COL=$(awk '$0~/frame_color/ {print NR}' $DUNST_CONFIG)
 
-pidof dunst && killall dunst
+WAL_COLOR3="$(awk 'NR==4' $WAL_COLOR)"
+WAL_COLOR12="$(awk 'NR==13' $WAL_COLOR)"
+WAL_COLOR15="$(awk 'NR==16' $WAL_COLOR)"
 
-# Template for monochrome color style
-dunst \
-    -lf  "${color15:-#ffffff}" \
-    -lb  "${color1:-#000000}" \
-    -lfr "${color12:-#2e9ef4}" \
-    -nf  "${color15:-#ffffff}" \
-    -nb  "${color1:-#000000}" \
-    -nfr "${color12:-#2e9ef4}" \
-    -cf  "${color15:-#ffffff}" \
-    -cb  "${color1:-#000000}" \
-    -cfr "${color12:-#2e9ef4}" \
-    > /dev/null 2>&1 &
-
-## Template for non-monochrome color style
-#dunst \
-    #-lf  "${color0:-#ffffff}" \
-    #-lb  "${color1:-#000000}" \
-    #-lfr "${color12:-#2e9ef4}" \
-    #-nf  "${color0:-#ffffff}" \
-    #-nb  "${color1:-#000000}" \
-    #-nfr "${color12:-#2e9ef4}" \
-    #-cf  "${color0:-#ffffff}" \
-    #-cb  "${color1:-#000000}" \
-    #-cfr "${color12:-#2e9ef4}" \
-    #> /dev/null 2>&1 &
+case $1 in
+    "wal_color")
+        # Background: wal color3 (Yellow)
+        for col in $BG_COLOR_COL; do
+            echo $col
+            sed -i "$col s/.*/\tbackground \= \"$WAL_COLOR3\"/" "$DUNST_CONFIG"
+        done
+        # Foreground: wal color15 (White)
+        for col in $FG_COLOR_COL; do
+            sed -i "$col s/.*/\tforeground \= \"$WAL_COLOR15\"/" "$DUNST_CONFIG"
+        done
+        # Frame: wal color12 (Magenta)
+        for col in $FRAME_COLOR_COL; do
+            sed -i "$col s/.*/\tframe_color \= \"$WAL_COLOR12\"/" "$DUNST_CONFIG"
+        done
+        ;;
+    "reload")
+        # Reload dunst
+        pidof dunst && killall dunst
+        dunst > /dev/null 2>&1 &
+        notify-send -u low "dunst is up and running"
+        ;;
+    "both")
+        # Background: wal color3 (Yellow)
+        for col in $BG_COLOR_COL; do
+            sed -i "$col s/.*/    background \= \"$WAL_COLOR3\"/" "$DUNST_CONFIG"
+        done
+        # Foreground: wal color15 (White)
+        for col in $FG_COLOR_COL; do
+            sed -i "$col s/.*/    foreground \= \"$WAL_COLOR15\"/" "$DUNST_CONFIG"
+        done
+        # Frame: wal color12 (Magenta)
+        for col in $FRAME_COLOR_COL; do
+            sed -i "$col s/.*/    frame_color \= \"$WAL_COLOR12\"/" "$DUNST_CONFIG"
+        done
+        # Reload dunst
+        pidof dunst && killall dunst
+        dunst > /dev/null 2>&1 &
+        notify-send -u low "dunst is up and running"
+        ;;
+    *)
+        echo Available option: wal_color/reload/both
+esac

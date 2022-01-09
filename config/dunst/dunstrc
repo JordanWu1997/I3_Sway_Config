@@ -22,18 +22,16 @@
     geometry = "480x60-25-25"
     # Geometry (dunst version >= 1.7)
     #width = (0, 480)
-    #height = 60
-    #origin = "bottom-right"
-    #offset = 25x25
+    width = 480
+    height = 60
+    origin = "bottom-right"
+    offset = 25x25
 
     ### Progress bar ###
 
     # Show how many messages are currently hidden (because of
     # notification_limit).
     indicate_hidden = yes
-
-    # Shrink window if it's smaller than the width
-    shrink = no
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
@@ -46,7 +44,7 @@
     horizontal_padding = 8
 
     # Frame color and width
-    frame_color = "#2e9ef4"
+    frame_color = "#AD4C2D"
     frame_width = 2
 
     # Define a color for the separator.
@@ -67,7 +65,6 @@
 
     # Allow a small subset of html markup in notifications
     markup = full
-    plain_text = no
 
     # The format of the message.
     format = "<b>%a:</b> <b>%s</b>\n%b"
@@ -112,25 +109,27 @@
     class = Dunst
 
     # Dunst version < 1.7
-    startup_notification = true
+    #startup_notification = true
+    #plain_text = no
+    #shrink = no
 
 [urgency_low]
 
-    background = "#282828"
-    foreground = "#ffffff"
-    frame_color = "#2e9ef4"
+    background = "#953515"
+    foreground = "#bfbfbf"
+    frame_color = "#AD4C2D"
     timeout = 5
 
 [urgency_normal]
 
-    background = "#282828"
-    foreground = "#ffffff"
-    frame_color = "#2e9ef4"
+    background = "#953515"
+    foreground = "#bfbfbf"
+    frame_color = "#AD4C2D"
     timeout = 10
 
 [urgency_critical]
 
-    background = "#282828"
-    foreground = "#ffffff"
-    frame_color = "#2e9ef4"
+    background = "#953515"
+    foreground = "#bfbfbf"
+    frame_color = "#AD4C2D"
     timeout = 120

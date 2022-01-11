@@ -52,7 +52,7 @@ keybindings:
   jump_to_artist_album: "A"
   manage_devices: "d"
   decrease_volume: "-"
-  increase_volume: "+"
+  increase_volume: "="
   toggle_playback: " "
   seek_backwards: "<"
   seek_forwards: ">"

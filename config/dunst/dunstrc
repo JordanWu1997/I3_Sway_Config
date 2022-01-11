@@ -70,7 +70,7 @@
 	format = "<b>%a:</b> <b>%s</b>\n%b"
 
 	# Alignment of message text.
-	alignment = left
+	alignment = right
 
 	# Split notification into multiple lines if they don't fit into Geometry
 	word_wrap = yes
@@ -97,20 +97,20 @@
 	sticky_history = yes
 
 	### Mouse action ###
-	#mouse_left_click = do_action, close_current
+	mouse_left_click = do_action, close_current
 	mouse_middle_click = close_all
 	mouse_right_click = close_current
 
 	### Misc/Advanced ###
-	#dmenu = /usr/bin/rofi -dmenu -p dunst
+	dmenu = /usr/bin/rofi -dmenu -p dunst
 	browser = /usr/bin/brave-browser
 	title = Dunst
 	class = Dunst
 
 	### Dunst version < 1.7 ###
-	#startup_notification = true
-	##plain_text = no
-	#shrink = yes
+	startup_notification = true
+	plain_text = no
+	shrink = yes
 
 [urgency_low]
 

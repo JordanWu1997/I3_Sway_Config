@@ -32,7 +32,7 @@ reload_dunst () {
     pidof dunst && killall dunst
     dunst > /dev/null 2>&1 &
     sleep 1
-    notify-send -u low "dunst is up and running"
+    notify-send -u low "dunst" "dunst is up and running"
 }
 
 case $1 in

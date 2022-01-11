@@ -9,10 +9,10 @@ INPUT_ENGINE=`ibus engine`
 
 case $INPUT_ENGINE in
     $EN_IBUS)
-        notify-send "[ibus-CH]: Chinese (chewing)"
+        notify-send "[ibus-CH]" "Chinese (chewing)"
         ibus engine $CH_IBUS
         ;;
     $CH_IBUS)
-        notify-send "[ibus-EN]: English (xkb:us::eng)"
+        notify-send "[ibus-EN]" "English (xkb:us::eng)"
         ibus engine $EN_IBUS
 esac

@@ -4,7 +4,7 @@
 # source the current wal colour scheme
 source $HOME/.cache/wal/colors.sh
 
-#assign the variables in the wal scheme in vis' format
+# assign the variables in the wal scheme in vis' format
 cat > $HOME/.config/vis/colors/wal <<CONF
 $color1
 $color2

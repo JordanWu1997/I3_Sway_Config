@@ -211,6 +211,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - modify i3 border
 - __Mark mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - mark window, goto/swap marked window, auto-mark function
+- __Window layout mode (`[Winkey]` + `[Shift]` + `[w]`)__
+    - change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
 - __Workspace mode (`[Winkey] + [Shift] + [p]`)__
     - manipulate i3 workspace, e.g. swap, save, restore
         - __Swap_workspace mode (`[p]`)__

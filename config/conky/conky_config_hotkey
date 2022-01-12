@@ -89,6 +89,7 @@ ${color2}bring WD to FG ${alignr}${color}[S]+([Shift])+[=]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Function / Mode]${font}${voffset 5}
 ${color2}customization ${alignr}${color}[S]+[Shift]+[c]
 ${color2}gap mode ${alignr}${color}[S]+[Shift]+[g]
+${color2}WD layout mode ${alignr}${color}[S]+[Shift]+[w]
 ${color2}workspace mode ${alignr}${color}[S]+[Shift]+[p]
 ${color2}titlebar mode ${alignr}${color}[S]+[Shift]+[t]
 ${color2}mark mode ${alignr}${color}[S]+[Shift]+[m]

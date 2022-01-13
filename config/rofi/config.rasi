@@ -83,3 +83,7 @@ configuration {
     handle-width: 0px;
 
 }
+
+#element-icon {
+    size: 2.0ch;
+}

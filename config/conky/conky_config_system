@@ -19,45 +19,58 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 conky.config = {
-	own_window_transparent = true,
-	use_xft = true,
-	xftalpha = 1.0,
+
+-- Window Settings
+	own_window = true,
+	own_window_argb_value = 128,
 	own_window_argb_visual = true,
-	own_window_argb_value = 0,
-	double_buffer = true,
+	own_window_class = 'Conky',
+	own_window_colour = '#010101',
+	own_window_transparent = false,
+	own_window_title = 'i3_conky_system',
+	own_window_type = 'override',
+
+-- Position --
 	alignment = 'top_right',
-	background = true,
-	border_width = 2,
-	cpu_avg_samples = 2,
-	default_color = '#bfbfbf',
-	color2 = '#953515',
-	color3 = '#D94922',
-	default_outline_color = '#FFFFFF',
-	default_shade_color = '#000000',
-	draw_borders = false,
-	draw_graph_borders = true,
-	draw_outline = false,
-	draw_shades = true,
-	font = 'DroidSanMono Nerd Font:size=10',
 	gap_x = 35,
 	gap_y = 35,
 	minimum_width = 230,
 	maximum_width = 230,
+
+-- Font --
+	use_xft = true,
+	xftalpha = 1.0,
+	font = 'DroidSanMono Nerd Font:size=10',
+	uppercase = false,
+	use_spacer = 'none',
+	extra_newline = false,
+
+-- Graphical --
+	default_color = '#bfbfbf',
+	color2 = '#953515',
+	color3 = '#D94922',
+	own_window_colour = '#010101',
+	default_outline_color = '#FFFFFF',
+	default_shade_color = '#000000',
+	border_width = 2,
+	stippled_borders = 0,
+	draw_borders = false,
+	draw_graph_borders = true,
+	draw_outline = false,
+	draw_shades = true,
+
+-- Miscellanous --
+	background = true,
+	cpu_avg_samples = 2,
 	no_buffers = true,
 	out_to_console = false,
 	out_to_stderr = false,
-	extra_newline = false,
-	own_window = true,
-	own_window_class = 'Conky',
-	own_window_type = 'override',
-	stippled_borders = 0,
 	update_interval = 1.0,
-	uppercase = false,
-	use_spacer = 'none',
 	show_graph_scale = false,
 	show_graph_range = false,
-	top_name_width = 16
-}
+	double_buffer = true,
+};
+
 conky.text = [[
 ${color}${hr 2}
 ${voffset 50}${alignc}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 230x104}

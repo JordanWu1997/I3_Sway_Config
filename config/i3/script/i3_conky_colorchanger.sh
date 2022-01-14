@@ -6,11 +6,13 @@ case $1 in
         COL_COLOR_TEXT=$(awk '$0~/default_color/ {print NR}' $HOME/.config/conky/conky_config_system | awk 'NR==1')
         COL_COLOR_ITEM=$(awk '$0~/color2/ {print NR}' $HOME/.config/conky/conky_config_system | awk 'NR==1')
         COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $HOME/.config/conky/conky_config_system | awk 'NR==1')
+        COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $HOME/.config/conky/conky_config_system | awk 'NR==1')
         ;;
     "hotkey")
         COL_COLOR_TEXT=$(awk '$0~/default_color/ {print NR}' $HOME/.config/conky/conky_config_hotkey | awk 'NR==1')
         COL_COLOR_ITEM=$(awk '$0~/color2/ {print NR}' $HOME/.config/conky/conky_config_hotkey | awk 'NR==1')
         COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $HOME/.config/conky/conky_config_hotkey | awk 'NR==1')
+        COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $HOME/.config/conky/conky_config_hotkey | awk 'NR==1')
         ;;
     # Wrong input, send error message
     *)
@@ -67,8 +69,7 @@ case $INPUT_COLOR in
         ;;
     color14)
         OUTPUT_COLOR="$(awk '$1~/*color14:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-        ;;
-    color15)
+        ;; color15)
         OUTPUT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
         ;;
     *)
@@ -79,6 +80,7 @@ esac
 # Assign default item / title color
 DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 
 # Replace color in conky configuration file
 case $1 in
@@ -93,6 +95,7 @@ case $1 in
         else
             sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$DEFAULT_ITEM_COLOR\\',/" "$HOME/.config/conky/conky_config_system"
             sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$HOME/.config/conky/conky_config_system"
+            sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$HOME/.config/conky/conky_config_system"
         fi
         ;;
     # Conky for hotkey
@@ -106,6 +109,7 @@ case $1 in
         else
             sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$DEFAULT_ITEM_COLOR\\',/" "$HOME/.config/conky/conky_config_hotkey"
             sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$HOME/.config/conky/conky_config_hotkey"
+            sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$HOME/.config/conky/conky_config_hotkey"
         fi
         ;;
     # Wrong input, send error message

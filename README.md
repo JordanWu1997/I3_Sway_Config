@@ -179,16 +179,16 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Move between Windows__
     - `[Alt] + [Tab]`: Show all window list
 - __Manipulate Scratchpad__
-    - `[Winkey] + [-]`: Send focus to scratchpad (background)
+    - `[Winkey] + [-]`: Send focused window to scratchpad (background)
     - `[Winkey] + [Shift] + [-]`: Send all floating windows to scratchpad (background)
     - `[Winkey] + [=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey] + [Shift] + [=]`: Bring all windows in scratchpad to foreground
 - __Change Gap Size__
-    - `[Ctrl] + [Alt] + [h/l]`: Dec/Inc horizontal outer gap size
-    - `[Ctrl] + [Alt] + [j/k]`: Dec/Inc vertical outer gap size
-    - `[Ctrl] + [Alt] + [m/p]`: Dec/Inc inner gap size
-    - `[Ctrl] + [Alt] + [o]`: Restore to default outer gap size
-    - `[Ctrl] + [Alt] + [i]`: Restore to default inner gap size
+    - `[Ctrl] + [Alt] + [Shift] + [h/l]`: Dec/Inc horizontal outer gap size
+    - `[Ctrl] + [Alt] + [Shift] + [j/k]`: Dec/Inc vertical outer gap size
+    - `[Ctrl] + [Alt] + [Shift] + [m/p]`: Dec/Inc inner gap size
+    - `[Ctrl] + [Alt] + [Shift] + [o]`: Restore to default outer gap size
+    - `[Ctrl] + [Alt] + [Shift] + [i]`: Restore to default inner gap size
 
 ### Mode Usage
 - __System mode (`[Winkey] + [Shift] + [Esc]`)__
@@ -202,7 +202,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Mouse mode (`[Ctrl] + [Alt] + [m]`)__
     - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
 - __Resize mode (`[Ctrl] + [Alt] + [r]`)__
-    - resize focus window
+    - resize focused window
 - __Gap mode (`[Winkey] + [Shift] + [g]`)__
     - modify i3 gaps, e.g. inner gaps, outer gaps
 - __Title bar mode (`[Winkey] + [Shift] + [t]`)__
@@ -235,7 +235,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - select wallpaper, set default wallpaper
 
 ### Touchpad Usage
+- __2-finger gesture__
+    - __Tap__
+        - Right key click
+    - __Swipe__
+        - Scroll
 - __3-finger gesture__
+    - __Tap__
+        - Middle key click
     - __Swipe up__
         - Toggle window full-screen mode
     - __Swipe down__

@@ -5,7 +5,7 @@ Table of Contents
 =================
 
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 * [I3_Sway_Config](#i3_sway_config)
 * [Table of Contents](#table-of-contents)
@@ -37,11 +37,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # Context
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 ## Demo Current Customization
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
 ![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
@@ -50,11 +50,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Information for my i3 Configuration
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 ### My i3 Environment
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 - i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
 - Shell: [fish](https://github.com/fish-shell/fish-shell) `3.3.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
@@ -71,7 +71,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ### Programs Auto-start in Background for i3 Environment
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
@@ -97,7 +97,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ### Wallpapers
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 - Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
 - Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
@@ -108,7 +108,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ### Theme and Fonts
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 - [Optional] Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
 - [Optional] Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
@@ -118,8 +118,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## First Time Usage for i3
-<details>
-<summary>Click to expand!</summary>
+<details open>
+<summary>Click to expand/shrink</summary>
 
 ### Configuration deployer
 - Run deployer in this git repository `./config/i3/script/i3_config_deployer.sh`
@@ -141,12 +141,15 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## Mode Usage for i3
-<details>
-<summary>Click to expand!</summary>
+<details open>
+<summary>Click to expand/shrink</summary>
 
 - i3 has built-in mode function which overwrites current keybinding with preset mode keybinding.
 - When mode is on, mode keybinding instruction shows on i3 status bar.
 - Press `Esc` key to exit mode.
+- This part configuration can be configured in
+    - `./config/i3/configs/i3_custom.config`
+    - `./config/i3/configs/i3_mode.config`
 
 ### Mode Usage
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
@@ -165,7 +168,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - Modify i3 gaps, e.g. inner gaps, outer gaps
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
     - Modify i3 title bar, e.g. hide/show title bar, font, border
-        - __Border mode (`[b]`)__
+        - __Border Mode (`[b]`)__
             - Modify i3 border
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
@@ -195,10 +198,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## Mouse Usage for i3
-<details>
-<summary>Click to expand!</summary>
+<details open>
+<summary>Click to expand/shrink</summary>
 
 - Although keyboard-driven workflow is favored in i3, keeping mouse function does not harm anything
+- This part configuration can be configured in
+    - `./config/i3/configs/i3_bindkey.config`
 
 ### Touchpad Usage
 - __2-finger Gesture__
@@ -227,12 +232,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Middle Key__
     - __Click Title Bar__
         - Kill current window
-    - __[`Winkey`] + Click__
+    - __`[Winkey]` + Click__
         - Kill current window
 - __Right Key__
     - __Click Title Bar__
         - Toggle floating mode
-    - __[`Winkey`] + Click__
+    - __`[Winkey]` + Click__
         - Toggle floating mode
 - __Scroll Wheel__
     - __Scroll Up/Down__
@@ -241,10 +246,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## Keybinding Sheet for i3
-<details>
-<summary>Click to expand!</summary>
+<details open>
+<summary>Click to expand/shrink</summary>
 
 - Cheat sheet format, color theme here is the same as i3 user guide
+- All following keybinding can be modified in configuration file (`./config/i3/configs/i3_bindkey.config`)
 
 ### Prefix: [Winkey]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
@@ -255,19 +261,18 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ### Prefix: [Ctrl] + [Alt]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
 - __Program shortcut (1~9, 0, -, =)__
-    - All following shortcuts can be modified in configuration file (`./config/i3/configs/i3_bindkey.config`)
-        - 1: [Neovim (text editor)](https://neovim.io/)
-        - 2: [Ranger (file manager)](https://github.com/ranger/ranger)
-        - 3: [Pulsemixer (sound manager)](https://pypi.org/project/pulsemixer/)
-        - 4: [Htop (system monitor)](https://htop.dev/)
-        - 5: [Nmtui (network manager)](https://developer.gnome.org/NetworkManager/stable/nmtui.html)
-        - 6: [Cava (visualizer)](https://github.com/karlstav/cava)
-        - 7: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
-        - 8: [Zathura (document viewer)](https://github.com/pwmt/zathura)
-        - 9: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
-        - 0: [Nautilus (gui file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
-        - -: [Brave browser (web browser)](https://brave.com/)
-        - =: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
+    - `1`: [Neovim (text editor)](https://neovim.io/)
+    - `2`: [Ranger (file manager)](https://github.com/ranger/ranger)
+    - `3`: [Pulsemixer (sound manager)](https://pypi.org/project/pulsemixer/)
+    - `4`: [Htop (system monitor)](https://htop.dev/)
+    - `5`: [Nmtui (network manager)](https://developer.gnome.org/NetworkManager/stable/nmtui.html)
+    - `6`: [Cava (visualizer)](https://github.com/karlstav/cava)
+    - `7`: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
+    - `8`: [Zathura (document viewer)](https://github.com/pwmt/zathura)
+    - `9`: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
+    - `0`: [Nautilus (gui file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
+    - `-`: [Brave browser (web browser)](https://brave.com/)
+    - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 
 ### Miscellaneous
 - __Go to Workspace__
@@ -295,15 +300,15 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
 - __Screenshot__
-    - [`PrintScreen`]: Flameshot (screenshot tool)
-    - [`Winkey`] + [`PrintScreen`]: Gnome-screenshot for current window
-    - [`Winkey`] + [`Shift`] + [`PrintScreen`]: Gnome-screenshot interactively
+    - `[PrtSc]`: Flameshot (screenshot tool)
+    - `[Winkey]` + `[PrtSc]`: Gnome-screenshot for current window
+    - `[Winkey]` + `[Shift]` + `[PrtSc]`: Gnome-screenshot interactively
 
 </details>
 
 ## Reference
 <details open>
-<summary>Click to expand!</summary>
+<summary>Click to expand/shrink</summary>
 
 - https://i3wm.org/docs/userguide.html
 - https://github.com/levinit/i3wm-config

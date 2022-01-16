@@ -13,18 +13,22 @@ Table of Contents
    * [Demo Current Customization](#demo-current-customization)
    * [Information for my i3 Configuration](#information-for-my-i3-configuration)
       * [My i3 Environment](#my-i3-environment)
-      * [Programs Auto-start in Background for i3 Environment](#programs-auto-start-in-background-for-i3-environment)
+      * [Programs Auto-start in Background for i3 Environment](#programs-auto-start-in-background-for-i3-enviroment)
       * [Wallpapers](#wallpapers)
       * [Theme and Fonts](#theme-and-fonts)
    * [First Time Usage for i3](#first-time-usage-for-i3)
       * [Configuration deployer](#configuration-deployer)
       * [Optional Configuration](#optional-configuration)
+   * [Mode Usage for i3](#mode-usage-for-i3)
+      * [Mode Usage](#mode-usage)
+   * [Mouse Usage for i3](#mouse-usage-for-i3)
+      * [Touchpad Usage](#touchpad-usage)
+      * [Mouse Usage](#mouse-usage)
    * [Keybinding Sheet for i3](#keybinding-sheet-for-i3)
       * [Prefix: [Winkey]](#prefix-winkey)
       * [Prefix: [Winkey] + [Shift]](#prefix-winkey--shift)
       * [Prefix: [Ctrl] + [Alt]](#prefix-ctrl--alt)
       * [Miscellaneous](#miscellaneous)
-      * [Mode Usage](#mode-usage)
    * [Reference](#reference)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
@@ -117,7 +121,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand!</summary>
 
 ### Configuration deployer
-- Run deployer in git repository `config/i3/script/i3_config_deployer.sh`
+- Run deployer in this git repository `./config/i3/script/i3_config_deployer.sh`
 - Including
     - __Add Environment Variables__
         - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
@@ -132,6 +136,106 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     # Add following line to .bashrc/.zshrc/config.fish
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
     ```
+
+</details>
+
+## Mode Usage for i3
+<details>
+<summary>Click to expand!</summary>
+
+- i3 has built-in mode function which overwrites current keybinding with preset mode keybinding.
+- When mode is on, mode keybinding instruction shows on i3 status bar.
+- Press `Esc` key to exit mode.
+
+### Mode Usage
+- __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
+    - System command, e.g. exit, power off, reboot, lock, hibernate
+- __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
+    - Deal with dual monitor, e.g. joint monitor, mirror monitor
+- __Red Shift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
+    - Screen color temperature tuner
+- __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
+    - Dunst actions, including stopping or resuming dunst
+- __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
+    - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
+- __Resize Mode (`[Ctrl]` + `[Alt]` + `[r]`)__
+    - Resize focused window
+- __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
+    - Modify i3 gaps, e.g. inner gaps, outer gaps
+- __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
+    - Modify i3 title bar, e.g. hide/show title bar, font, border
+        - __Border mode (`[b]`)__
+            - Modify i3 border
+- __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
+    - Mark window, go to/swap marked window, auto-mark function
+- __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
+    - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
+- __Workspace Mode (`[Winkey]` + `[Shift]` + `[p]`)__
+    - Manipulate i3 workspace, e.g. swap, save, restore
+        - __Swap Workspace Mode (`[p]`)__
+            - Swap workspace
+        - __Save Workspace Mode (`[s]`)__
+            - Save workspace layout
+        - __Restore Workspace Mode (`[r]`)__
+            - Restore workspace layout
+- __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
+    - Customize i3wm, e.g. wallpaper, theme, xcompositor
+        - __Conky Mode (`[c]`)__
+            - System_conky, hotkey_conky, color of conky
+        - __Picom Mode (`[p]`)__
+            - Blur, transparency support
+        - __Flashfocus Mode (`[f]`)__
+            - Flash for overall program in picom blur, transparency and opaque
+        - __Theme Mode (`[t]`)__
+            - Auto-theme with pywal and reload applications after auto-theming
+        - __Wallpaper Mode (`[w]`)__
+            - Select wallpaper, set default wallpaper
+
+</details>
+
+## Mouse Usage for i3
+<details>
+<summary>Click to expand!</summary>
+
+- Although keyboard-driven workflow is favored in i3, keeping mouse function does not harm anything
+
+### Touchpad Usage
+- __2-finger Gesture__
+    - __Tap__
+        - Right key click
+    - __Swipe__
+        - Scroll
+- __3-finger Gesture__
+    - __Tap__
+        - Middle key click
+    - __Swipe Up__
+        - Toggle window full-screen mode
+    - __Swipe Down__
+        - Toggle floating mode
+    - __Swipe Left__
+        - Go to previous workspace
+    - __Swipe Right__
+        - Go to next workspace
+- __4-finger Gesture__
+    - __Pinch Out__
+        - Bring scratchpad window to foreground
+    - __Pinch In__
+        - Send window to scratchpad
+
+### Mouse Usage
+- __Middle Key__
+    - __Click Title Bar__
+        - Kill current window
+    - __[`Winkey`] + Click__
+        - Kill current window
+- __Right Key__
+    - __Click Title Bar__
+        - Toggle floating mode
+    - __[`Winkey`] + Click__
+        - Toggle floating mode
+- __Scroll Wheel__
+    - __Scroll Up/Down__
+        - Toggle floating mode
 
 </details>
 
@@ -150,7 +254,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ### Prefix: [Ctrl] + [Alt]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
 - __Program shortcut (1~9, 0, -, =)__
-    - All following shortcuts can be modified in config file, modify as you wish
+    - All following shortcuts can be modified in configuration file (`./config/i3/configs/i3_bindkey.config`)
         - 1: [Neovim (text editor)](https://neovim.io/)
         - 2: [Ranger (file manager)](https://github.com/ranger/ranger)
         - 3: [Pulsemixer (sound manager)](https://pypi.org/project/pulsemixer/)
@@ -166,101 +270,38 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ### Miscellaneous
 - __Go to Workspace__
-    - `[Winkey] + [Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
-    - `[Winkey] + [Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
-    - `[Ctrl] + [Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-    - `[Alt] + [Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
+    - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
+    - `[Ctrl]` + `[Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - `[Alt]` + `[Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - __Send Window to Workspace__
-    - `[Winkey] + [Shift] + [Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
-    - `[Winkey] + [Shift] + [Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
-    - `[Ctrl] + [Shift] + [Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-    - `[Alt] + [Shift] + [Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
-    - `[Alt] + ([Shift]) + [Grave]`: Send to (prev)/next workspace
+    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
+    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
+    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Alt]` + (`[Shift]`) + `[Grave]`: Send to (prev)/next workspace
 - __Move between Windows__
-    - `[Alt] + [Tab]`: Show all window list
+    - `[Alt]` + `[Tab]`: Show all window list
 - __Manipulate Scratchpad__
-    - `[Winkey] + [-]`: Send focused window to scratchpad (background)
-    - `[Winkey] + [Shift] + [-]`: Send all floating windows to scratchpad (background)
-    - `[Winkey] + [=]`: Bring window in scratchpad to foreground one by one
-    - `[Winkey] + [Shift] + [=]`: Bring all windows in scratchpad to foreground
+    - `[Winkey]` + `[-]`: Send focused window to scratchpad (background)
+    - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
+    - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
+    - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground
 - __Change Gap Size__
-    - `[Ctrl] + [Alt] + [Shift] + [h/l]`: Dec/Inc horizontal outer gap size
-    - `[Ctrl] + [Alt] + [Shift] + [j/k]`: Dec/Inc vertical outer gap size
-    - `[Ctrl] + [Alt] + [Shift] + [m/p]`: Dec/Inc inner gap size
-    - `[Ctrl] + [Alt] + [Shift] + [o]`: Restore to default outer gap size
-    - `[Ctrl] + [Alt] + [Shift] + [i]`: Restore to default inner gap size
-
-### Mode Usage
-- __System mode (`[Winkey] + [Shift] + [Esc]`)__
-    - system command, e.g. exit, poweroff, reboot, lock, hibernate
-- __Display mode (`[Winkey] + [Shift] + [x]`)__
-    - deal with dual monitor, e.g. joint monitor, mirror monitor
-- __Red shift mode (`[Winkey] + [Shift] + [z]`)__
-    - screen color temperature tuner
-- __Dunst mode (`[Winkey] + [Shift] +[v]`)__
-    - dunst actions, including stopping or resuming dunst
-- __Mouse mode (`[Ctrl] + [Alt] + [m]`)__
-    - mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
-- __Resize mode (`[Ctrl] + [Alt] + [r]`)__
-    - resize focused window
-- __Gap mode (`[Winkey] + [Shift] + [g]`)__
-    - modify i3 gaps, e.g. inner gaps, outer gaps
-- __Title bar mode (`[Winkey] + [Shift] + [t]`)__
-    - modify i3 title bar, e.g. hide/show title bar, font, border
-        - __Border mode (`[b]`)__
-            - modify i3 border
-- __Mark mode (`[Winkey]` + `[Shift]` + `[m]`)__
-    - mark window, goto/swap marked window, auto-mark function
-- __Window layout mode (`[Winkey]` + `[Shift]` + `[w]`)__
-    - change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
-- __Workspace mode (`[Winkey] + [Shift] + [p]`)__
-    - manipulate i3 workspace, e.g. swap, save, restore
-        - __Swap_workspace mode (`[p]`)__
-            - Swap workspace
-        - __Save_workspace mode (`[s]`)__
-            - Save workspace layout
-        - __Restore_workspace mode (`[r]`)__
-            - Restore workspace layout
-- __Customization mode (`[Winkey] + [Shift] + [c]`)__
-    - customize i3wm, e.g. wallpaper, theme, xcompositor
-        - __Conky mode (`[c]`)__
-            - system_conky, hotkey_conky, color of conky
-        - __Picom mode (`[p]`)__
-            - blur, transparency support
-        - __Flashfocus mode (`[f]`)__
-            - flash for overall program in picom blur, transparency and opaque
-        - __Theme mode (`[t]`)__
-            - auto-theme with pywal and applications reloading after auto-theming
-        - __Wallpaper mode (`[w]`)__
-            - select wallpaper, set default wallpaper
-
-### Touchpad Usage
-- __2-finger gesture__
-    - __Tap__
-        - Right key click
-    - __Swipe__
-        - Scroll
-- __3-finger gesture__
-    - __Tap__
-        - Middle key click
-    - __Swipe up__
-        - Toggle window full-screen mode
-    - __Swipe down__
-        - Toggle floating mode
-    - __Swipe left__
-        - Go to previous workspace
-    - __Swipe right__
-        - Go to next workspace
-- __4-finger gesture__
-    - __Pinch out__
-        - Bring scratchpad window to foreground
-    - __Pinch in__
-        - Send window to scratchpad
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[h/l]`: Decrease/Increase horizontal outer gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[j/k]`: Decrease/Increase vertical outer gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[m/p]`: Decrease/Increase inner gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
+- __Screenshot__
+    - [`PrintScreen`]: Run flameshot (screenshot tool)
+    - [`Winkey`] + [`PrintScreen`]: Run gnome-screenshot for current window
+    - [`Winkey`] + [`Shift`] + [`PrintScreen`]: Run gnome-screenshot interactively
 
 </details>
 
 ## Reference
-<details>
+<details open>
 <summary>Click to expand!</summary>
 
 - https://i3wm.org/docs/userguide.html

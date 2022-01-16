@@ -56,15 +56,16 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand!</summary>
 
-- Shell: [fish](https://github.com/fish-shell/fish-shell) + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish)
-- Terminal: [kitty](https://github.com/kovidgoyal/kitty)
-- Launcher: [rofi](https://github.com/davatorium/rofi)
-- Theme configurer: [pywal](https://github.com/dylanaraps/pywal)
-- Xcompositor: [picom](https://github.com/jonaburg/picom)
-- Notification: [dunst](https://github.com/dunst-project/dunst)
-- Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status)
-- Text Editor: [neovim](https://github.com/neovim/neovim) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
-- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
+- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.3.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
+- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.21.2`
+- Launcher: [rofi](https://github.com/davatorium/rofi) `1.6.1`
+- Theme configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
+- Xcompositor: [picom](https://github.com/jonaburg/picom) `vgit-a8555`
+- Notification: [dunst](https://github.com/dunst-project/dunst) `1.6.1`
+- Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
+- Text Editor: [neovim](https://github.com/neovim/neovim) `0.5.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.1c` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 
 </details>
 
@@ -294,9 +295,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
 - __Screenshot__
-    - [`PrintScreen`]: Run flameshot (screenshot tool)
-    - [`Winkey`] + [`PrintScreen`]: Run gnome-screenshot for current window
-    - [`Winkey`] + [`Shift`] + [`PrintScreen`]: Run gnome-screenshot interactively
+    - [`PrintScreen`]: Flameshot (screenshot tool)
+    - [`Winkey`] + [`PrintScreen`]: Gnome-screenshot for current window
+    - [`Winkey`] + [`Shift`] + [`PrintScreen`]: Gnome-screenshot interactively
 
 </details>
 

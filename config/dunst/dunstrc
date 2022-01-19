@@ -44,7 +44,7 @@
 	horizontal_padding = 8
 
 	# Frame color and width
-	frame_color = "#6A696D"
+	frame_color = "#AD4C2D"
 	frame_width = 2
 
 	# Define a color for the separator.
@@ -114,21 +114,21 @@
 
 [urgency_low]
 
-	background = "#516971"
-	foreground = "#c0c0c0"
-	frame_color = "#6A696D"
+	background = "#953515"
+	foreground = "#bfbfbf"
+	frame_color = "#AD4C2D"
 	timeout = 5
 
 [urgency_normal]
 
-	background = "#516971"
-	foreground = "#c0c0c0"
-	frame_color = "#6A696D"
+	background = "#953515"
+	foreground = "#bfbfbf"
+	frame_color = "#AD4C2D"
 	timeout = 10
 
 [urgency_critical]
 
-	background = "#516971"
-	foreground = "#c0c0c0"
-	frame_color = "#6A696D"
+	background = "#953515"
+	foreground = "#bfbfbf"
+	frame_color = "#AD4C2D"
 	timeout = 120

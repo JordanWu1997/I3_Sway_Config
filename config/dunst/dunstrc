@@ -21,8 +21,7 @@
 	# Geometry = Width x Height Offset (dunst version < 1.7)
 	geometry = "640x60-25-25"
 	# Geometry (dunst version >= 1.7)
-	#width = (0, 640)
-	width = 640
+    width = (0, 640)
 	height = 60
 	origin = "bottom-right"
 	offset = 25x25
@@ -108,9 +107,10 @@
 	class = Dunst
 
 	### Dunst version < 1.7 ###
-	startup_notification = true
-	plain_text = no
-	shrink = yes
+	#startup_notification = true
+	#plain_text = no
+	#width = 640
+	#shrink = yes
 
 [urgency_low]
 

@@ -6,3 +6,4 @@
 /config/spotify-tui/client.yml
 /config/ncspot/userstate.cbor
 /config/vis/vis.log
+/config/ranger/plugins/__pycache__

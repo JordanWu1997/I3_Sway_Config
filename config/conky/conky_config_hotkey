@@ -32,15 +32,15 @@ conky.config = {
 
 -- Position --
 	alignment = 'bottom_left',
-	gap_x = 35,
-	gap_y = 35,
-	minimum_width = 230,
-	maximum_width = 230,
+	gap_x = 30,
+	gap_y = 30,
+	minimum_width = 200,
+	maximum_width = 200,
 
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=10',
+	font = 'DroidSanMono Nerd Font:size=8',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
@@ -72,14 +72,14 @@ conky.config = {
 };
 
 conky.text = [[
-${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[System Command]${font}${voffset 5}
+${alignc}${color3}${font DroidSanMono Nerd Font:size=11}[System Command]${font}${voffset 5}
 ${color2}open terminal ${alignr}${color}[S]+[Enter]
 ${color2}system option ${alignr}${color}[S]+[Shift]+[Esc]
 ${color2}reload/restart i3 ${alignr}${color}[S]+([Shift])+[r]
 ${color2}application (rofi) ${alignr}${color}[S]+([Shift])+[d]
 ${color2}window selector (rofi) ${alignr}${color}[Alt]+[Tab]
 ${color2}bindkey map (rofi) ${alignr}${color}[S]+[Shift]+[/]
-${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Workspace / Window]${font}${voffset 5}
+${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=11}[Workspace / Window]${font}${voffset 5}
 ${color2}navigate to WS ${alignr}${color}[S]+[(F)\#]
 ${color2}send WD to WS ${alignr}${color}[S]+[Shift]+[(F)\#]
 ${color2}kill focused WD ${alignr}${color}[S]+[Shift]+[q]
@@ -94,12 +94,12 @@ ${color2}focus children WD ${alignr}${color}[S]+[Shift]+[a]
 ${color2}mark current WD ${alignr}${color}[S]+[m]
 ${color2}goto marked WD ${alignr}${color}[S]+[Esc/']
 ${color2}swap marked WD  ${alignr}${color}[S]+([Shift])+[;]
-${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Floating / Scratchpad]${font}${voffset 5}
+${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=11}[Floating / Scratchpad]${font}${voffset 5}
 ${color2}floating toggle ${alignr}${color}[S]+[Shift]+[Space]
 ${color2}floating focus toggle ${alignr}${color}[S]+[Space]
 ${color2}send WD to SP ${alignr}${color}[S]+([Shift])+[-]
 ${color2}bring WD to FG ${alignr}${color}[S]+([Shift])+[=]
-${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Function / Mode]${font}${voffset 5}
+${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=11}[Function / Mode]${font}${voffset 5}
 ${color2}customization ${alignr}${color}[S]+[Shift]+[c]
 ${color2}gap mode ${alignr}${color}[S]+[Shift]+[g]
 ${color2}WD layout mode ${alignr}${color}[S]+[Shift]+[w]
@@ -112,7 +112,7 @@ ${color2}redshift mode ${alignr}${color}[S]+[Shift]+[z]
 ${color2}resize mode ${alignr}${color}[Ctrl]+[Alt]+[r]
 ${color2}mouse mode ${alignr}${color}[Ctrl]+[Alt]+[m]
 ${voffset 5}${color}${hr 2}${voffset 5}
-${voffset 0}${color}${font Roboto:size=30}${alignc}${time %l}:${time %M} ${time %p}${font}
+${voffset 0}${color}${font Roboto:size=28}${alignc}${time %l}:${time %M} ${time %p}${font}
 ${voffset 0}${color2}${font Roboto:size=11}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
 ${voffset 5}${color}${hr 2}${voffset 5}
 ]]

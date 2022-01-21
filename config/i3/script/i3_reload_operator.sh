@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Conky (system monitor & shortcut table)
-i3_conky_colorchanger.sh system both; sleep 1
-i3_conky_colorchanger.sh hotkey both; sleep 1
+i3_conky_colorchanger.sh system all; sleep 1
+i3_conky_colorchanger.sh bindkey all; sleep 1
 notify-send -u low "Theme Mode" "Reload conky"
 
 # Dunst (notifier)

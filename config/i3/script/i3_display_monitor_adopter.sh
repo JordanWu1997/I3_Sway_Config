@@ -14,7 +14,7 @@ echo HDMI1 HxW: $HDMI1_HEIGHT, $HDMI1_WIDTH
 reload_conky () {
     # Reload conky
     killall conky; sleep 1
-    i3-msg exec "conky -c $HOME/.config/conky/conky_config_hotkey"
+    i3-msg exec "conky -c $HOME/.config/conky/conky_config_bindkey"
     i3-msg exec "conky -c $HOME/.config/conky/conky_config_system"
 }
 

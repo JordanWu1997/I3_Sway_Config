@@ -1,4 +1,4 @@
--- vim: ts=7 sw=4 noet ai cindent syntax=lua
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
 --[[
 Conky, a system monitor, based on torsmo
 Any original torsmo code is licensed under the BSD license
@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 conky.config = {
 
--- Window Settings
+-- Window Settings --
 	own_window = true,
 	own_window_argb_value = 128,
 	own_window_argb_visual = true,

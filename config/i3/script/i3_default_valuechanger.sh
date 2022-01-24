@@ -54,4 +54,5 @@ case $CHANGE_ITEM in
         echo ""
         echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/picom/flashfocus]"
         echo ""
+        ;;
 esac

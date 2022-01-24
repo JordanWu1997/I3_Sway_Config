@@ -185,7 +185,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
     - Customize i3wm, e.g. wallpaper, theme, xcompositor
         - __Conky Mode (`[c]`)__
-            - System_conky, hotkey_conky, color of conky
+            - System_monitor, i3 bindkey sheet, conky color palette
         - __Picom Mode (`[p]`)__
             - Blur, transparency support
         - __Flashfocus Mode (`[f]`)__

@@ -17,5 +17,6 @@ else
             ;;
         *)
             i3lock -t -f -i $DEFAULT
+            ;;
     esac
 fi

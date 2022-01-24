@@ -14,4 +14,5 @@ case $1 in
         ;;
     *)
         echo $0
+        ;;
 esac

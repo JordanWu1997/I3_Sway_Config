@@ -22,6 +22,7 @@ case $1 in
                 ;;
             "save_current")
                 cp $VARIETY_WALLPAPER $WALLPAPERV
+                ;;
         esac
         ;;
     "feh")
@@ -32,8 +33,10 @@ case $1 in
                 ;;
             "save_current")
                 cp $FEH_WALLPAPER $WALLPAPERF
+                ;;
         esac
         ;;
     *)
         echo $0
+        ;;
 esac

@@ -15,4 +15,5 @@ case $INPUT_ENGINE in
     $CH_IBUS)
         notify-send "[ibus-EN]" "English (xkb:us::eng)"
         ibus engine $EN_IBUS
+        ;;
 esac

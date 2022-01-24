@@ -61,6 +61,7 @@ case $2 in
             fi
 
         fi
+        ;;
 esac
 
 # Workspace action
@@ -71,5 +72,7 @@ case $1 in
         ;;
     # Move container to new workspace
     "move_container")
-        i3-msg move container to workspace $NEW; i3-msg workspace $NEW
+        i3-msg move container to workspace $NEW
+        i3-msg workspace $NEW
+        ;;
 esac

@@ -112,5 +112,6 @@ case $1 in
         i3-workspace-swap -d "$WPNM"
         ;;
     *)
-    echo $0
+        echo $0
+        ;;
 esac

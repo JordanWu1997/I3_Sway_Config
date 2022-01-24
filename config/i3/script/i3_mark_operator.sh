@@ -96,6 +96,7 @@ case $1 in
         echo "Wrong Input: $0"
         echo "Available Usage: [i3_mark_operation.sh] [mark/goto/swap/show_then_goto/show_then_swap] [i3/rofi] ([border width])"
         echo
+        ;;
 esac
 
 # Restore border for all windows

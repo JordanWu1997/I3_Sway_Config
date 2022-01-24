@@ -11,10 +11,9 @@ WAL_COLOR3="$(awk 'NR==4' $WAL_COLOR)"
 WAL_COLOR12="$(awk 'NR==13' $WAL_COLOR)"
 WAL_COLOR15="$(awk 'NR==16' $WAL_COLOR)"
 
-wal_color () {
+load_wal_color () {
     # Background: wal color3 (Yellow)
     for col in $BG_COLOR_COL; do
-        echo $col
         sed -i "$col s/.*/\tbackground \= \"$WAL_COLOR3\"/" "$DUNST_CONFIG"
     done
     # Foreground: wal color15 (White)
@@ -32,20 +31,21 @@ reload_dunst () {
     pidof dunst && killall dunst
     dunst > /dev/null 2>&1 &
     sleep 1
-    notify-send -u low "dunst" "dunst is up and running"
+    notify-send -u low "Dunst" "Dunst is up and running"
 }
 
 case $1 in
-    "wal_color")
-        wal_color
+    "load_wal_color")
+        load_wal_color
         ;;
     "reload")
         reload_dunst
         ;;
     "both")
-        wal_color
+        load_wal_color
         reload_dunst
         ;;
     *)
-        echo Available option: wal_color/reload/both
+        echo Available option: load_wal_color/reload/both
+        ;;
 esac

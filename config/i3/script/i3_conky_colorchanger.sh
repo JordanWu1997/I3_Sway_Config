@@ -66,7 +66,6 @@ case $3 in
     opac100)
         OUTPUT_VALUE=256
         ;;
-
 esac
 
 # Assign default item / title color

@@ -92,29 +92,27 @@ ${color2}CPU-Thread-2 ${alignr}${color}${cpu cpu2}%    ${alignr}${exec awk '/cpu
 ${color2}CPU-Thread-3 ${alignr}${color}${cpu cpu3}%    ${alignr}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${color2}CPU-Thread-4 ${alignr}${color}${cpu cpu4}%    ${alignr}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${color3}[Processes] ${hr 2}${color}
-${color2}Command ${alignr}${color}CPU%  MEM%
-${color2}${top name 1} ${alignr}${color}${top cpu 1}% ${alignr}${top mem 1}%
-${color2}${top name 2} ${alignr}${color}${top cpu 2}% ${alignr}${top mem 2}%
-${color2}${top name 3} ${alignr}${color}${top cpu 3}% ${alignr}${top mem 3}%
-${color2}${top name 4} ${alignr}${color}${top cpu 4}% ${alignr}${top mem 4}%
-${color2}${top name 5} ${alignr}${color}${top cpu 5}% ${alignr}${top mem 5}%
-${color2}${top name 6} ${alignr}${color}${top cpu 6}% ${alignr}${top mem 6}%
+${color2}Command ${alignr}CPU%  MEM%${color}
+	${top name 1} ${alignr}${color}${top cpu 1}% ${alignr}${top mem 1}%
+	${top name 2} ${alignr}${color}${top cpu 2}% ${alignr}${top mem 2}%
+	${top name 3} ${alignr}${color}${top cpu 3}% ${alignr}${top mem 3}%
+	${top name 4} ${alignr}${color}${top cpu 4}% ${alignr}${top mem 4}%
 ${color3}[Network] ${hr 2}${color}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
 ${color2}enp0s20f0u2u2u4
-	${color}Down ${downspeed enp0s20f0u2u2u4}/s ${alignr}Up ${upspeed enp0s20f0u2u2u4}/s
-	${color}Total ${totaldown enp0s20f0u2u2u4} ${alignr}Total ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
+		${color}Down ${downspeed enp0s20f0u2u2u4}/s ${alignr}Up ${upspeed enp0s20f0u2u2u4}/s
+		${color}Total ${totaldown enp0s20f0u2u2u4} ${alignr}Total ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
 ${color2}enp0s31f6
-	${color}Down ${downspeed enp0s31f6}/s ${alignr}Up ${upspeed enp0s31f6}/s
-	${color}Total ${totaldown enp0s31f6} ${alignr}Total ${totalup enp0s31f6}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
+		${color}Down ${downspeed enp0s31f6}/s ${alignr}Up ${upspeed enp0s31f6}/s
+		${color}Total ${totaldown enp0s31f6} ${alignr}Total ${totalup enp0s31f6}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
 ${color2}wlp3s0
-	${color}Down ${downspeed wlp3s0}/s ${alignr}Up ${upspeed wlp3s0}/s
-	${color}Total ${totaldown wlp3s0} ${alignr}Total ${totalup wlp3s0}${endif}
+		${color}Down ${downspeed wlp3s0}/s ${alignr}Up ${upspeed wlp3s0}/s
+		${color}Total ${totaldown wlp3s0} ${alignr}Total ${totalup wlp3s0}${endif}
 ${color2}IP Address
-	${color}External IP ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
-	${color}Gateway IP ${alignr}${color}${gw_ip}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
-	${color}Internal IP (ethe) ${alignr}${color}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
-	${color}Internal IP (ethe) ${alignr}${color}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
-	${color}Internal IP (ethe) ${alignr}${color}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
-	${color}Internal IP (wifi) ${alignr}${color}${exec ip a | grep inet | grep wlp | grep -vw lo | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}
+		${color}External IP ${alignr}${color}${exec wget http://ipinfo.io/ip -qO -}
+		${color}Gateway IP ${alignr}${color}${gw_ip}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
+		${color}Internal IP (ethe) ${alignr}${color}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
+		${color}Internal IP (ethe) ${alignr}${color}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
+		${color}Internal IP (ethe) ${alignr}${color}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
+		${color}Internal IP (wifi) ${alignr}${color}${exec ip a | grep inet | grep wlp | grep -vw lo | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}
 ${color3}${hr 2}
 ]]

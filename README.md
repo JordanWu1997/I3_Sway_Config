@@ -1,5 +1,5 @@
 # I3_Sway_Config
-Backup for my I3WM(Xorg), SwayWM(Wayland), and other applications configuration
+Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>, and other applications configuration
 
 Table of Contents
 =================
@@ -59,12 +59,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
 - Shell: [fish](https://github.com/fish-shell/fish-shell) `3.3.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.21.2`
-- Launcher: [rofi](https://github.com/davatorium/rofi) `1.6.1`
+- Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.2`
 - Theme configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
-- Xcompositor: [picom](https://github.com/jonaburg/picom) `vgit-a8555`
-- Notification: [dunst](https://github.com/dunst-project/dunst) `1.6.1`
+- Xcompositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
+- Notification: [dunst](https://github.com/dunst-project/dunst) `1.7.3`
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
-- Text Editor: [neovim](https://github.com/neovim/neovim) `0.5.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Text Editor: [neovim](https://github.com/neovim/neovim) `0.6.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.1c` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 
 </details>
@@ -201,7 +201,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Although keyboard-driven workflow is favored in i3, keeping mouse function does not harm anything
+- Although keyboard-driven workflow is favored in i3, keeping mouse function harms nothing
 - This part configuration can be configured in
     - `./config/i3/configs/i3_bindkey.config`
 
@@ -240,7 +240,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - __`[Winkey]` + Click__
         - Toggle floating mode
 - __Scroll Wheel__
-    - __Scroll Up/Down__
+    - __Scroll Up/Down Title Bar__
         - Toggle floating mode
 
 </details>
@@ -250,7 +250,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - Cheat sheet format, color theme here is the same as i3 user guide
-- All following keybinding can be modified in configuration file (`./config/i3/configs/i3_bindkey.config`)
+- All following keybindings can be modified in configuration file (`./config/i3/configs/i3_bindkey.config`)
 
 ### Prefix: [Winkey]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")

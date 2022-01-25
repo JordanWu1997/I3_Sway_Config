@@ -109,4 +109,5 @@ ${color2}quick resize ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}quick mark window ${alignr}${color}[S]+[m]
 ${color2}goto window with mark ${alignr}${color}[S]+[w]
 ${color2}swap window with mark ${alignr}${color}[S]+[;]
+${color3}${hr 2}
 ]]

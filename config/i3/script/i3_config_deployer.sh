@@ -83,12 +83,12 @@ sudo dnf install ibus ibus-chewing
 ################
 
 # Picom [https://github.com/jonaburg/picom]
-cd $HOME/Desktop
 sudo dnf install meson gcc ninja-build cmake libev-devel xcb-util-devel \
                  libX11-devel xcb-util-renderutil-devel xcb-util-image \
                  xcb-util-image-devel xcb-util-renderutil-devel pixman-devel \
                  uthash-devel libconfig-devel pcre-devel mesa-libGL-devel \
                  dbus-devel libXext-devel
+cd $HOME/Desktop
 git clone https://github.com/jonaburg/picom.git
 cd picom
 git submodule update --init --recursive
@@ -102,6 +102,7 @@ sudo ninja -C build
 # X-window tools
 sudo dnf install xrandr arandr imwheel xdotool xset numlockx libinput \
                  xbacklight i3lock xss-lock screenkey flameshot feh redshift
+
 # hhpc
 cd $HOME/Desktop
 git clone https://github.com/aktau/hhpc.git
@@ -117,10 +118,9 @@ sudo dnf install pavucontrol pulseaudio
 python -m pip install pulsemixer
 
 # Cava/Vis [https://github.com/dpayne/cli-visualizer]
-cd $HOME/Desktop
 sudo dnf install cava
 dnf install fftw-devel ncurses-devel pulseaudio-libs-devel cmake
-cd ~/Desktop
+cd $HOME/Desktop
 git clone https://github.com/dpayne/cli-visualizer.git
 cd cli-visualizer
 sudo ./install.sh
@@ -150,6 +150,7 @@ sudo dnf install i3-gaps
 
 # i3 tools
 python -m pip install autotiling pywal flashfocus i3-workspace-swap i3-resurrect
+sudo dnf install dunst rofi
 
 ##########
 # i3-bar #
@@ -195,4 +196,4 @@ cd $HOME/Desktop
 sudo dnf install zathura okular
 git clone https://github.com/mlscarlson/zathura-pywal.git
 cd zathura-pywal
-sudo make installathura-pywal
+sudo make install

@@ -32,8 +32,8 @@ conky.config = {
 
 -- Position --
 	alignment = 'bottom_left',
-	gap_x = 25,
-	gap_y = 25,
+	gap_x = 30,
+	gap_y = 30,
 	minimum_width = 230,
 	maximum_width = 230,
 
@@ -105,9 +105,9 @@ ${color2}redshift mode ${alignr}${color}[S]+[Shift]+[z]
 ${color2}resize mode ${alignr}${color}[Ctrl]+[Alt]+[r]
 ${color2}mouse mode ${alignr}${color}[Ctrl]+[Alt]+[m]
 ${color3}[Miscellaneous] ${hr 2}
-${color2}quick resize ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
-${color2}quick mark window ${alignr}${color}[S]+[m]
-${color2}goto window with mark ${alignr}${color}[S]+[w]
-${color2}swap window with mark ${alignr}${color}[S]+[;]
+${color2}resize WD ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
+${color2}mark WD ${alignr}${color}[S]+[m]
+${color2}goto WD with mark ${alignr}${color}[S]+[']
+${color2}swap WD with mark ${alignr}${color}[S]+[;]
 ${color3}${hr 2}
 ]]

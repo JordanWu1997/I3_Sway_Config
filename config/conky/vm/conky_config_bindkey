@@ -32,8 +32,8 @@ conky.config = {
 
 -- Position --
 	alignment = 'bottom_left',
-	gap_x = 25,
-	gap_y = 25,
+	gap_x = 30,
+	gap_y = 30,
 	minimum_width = 230,
 	maximum_width = 230,
 

@@ -130,6 +130,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - __Backup Old Configuration and Link New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
         - Link configuration in git repository `config/*` to `$HOME/.config` directory
+    - __Install Programs for Work Environment__
 
 ### Optional Configuration
 - [Optional] Add following lines for pywal color support for bash/zsh/fish, no need for kitty terminal emulator

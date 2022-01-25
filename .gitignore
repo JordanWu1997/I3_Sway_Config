@@ -1,6 +1,9 @@
 /config/i3/share/default_wallpaper.png
 /config/zathura/zathurarc.bak
 /config/picom/picom.conf
+/config/conky/picom.conf
+/config/conky/conky_config_bindkey
+/config/conky/conky_config_system
 /config/flashfocus/flashfocus.yml
 /config/spotify-tui/.spotify_token_cache.json
 /config/spotify-tui/client.yml

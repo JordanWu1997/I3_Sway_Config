@@ -6,6 +6,7 @@ NEW_DEFAULT_VALUE=$2
 I3_CONFIG_FILE="$HOME/.config/i3/config"
 PICOM_DIR="$HOME/.config/picom"
 FLASHFOCUS_DIR="$HOME/.config/flashfocus"
+CONKY_DIR="$HOME/.config/conky"
 
 # Default gap, border width column number in i3 configuration
 COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
@@ -41,18 +42,27 @@ case $CHANGE_ITEM in
         ;;
     "picom")
         rm "$HOME/.config/picom/picom.conf"
-        ln -s "$HOME/.config/picom/picom_$NEW_DEFAULT_VALUE.conf" "$HOME/.config/picom/picom.conf"
+        ln -s "$PICOM_DIR/picom_$NEW_DEFAULT_VALUE.conf" "$PICOM_DIR/picom.conf"
         i3-msg reload
         ;;
     "flashfocus")
         rm "$HOME/.config/flashfocus/flashfocus.yml"
-        ln -s "$HOME/.config/flashfocus/flashfocus_$NEW_DEFAULT_VALUE.yml" "$HOME/.config/flashfocus/flashfocus.yml"
+        ln -s "$FLASHFOCUS_DIR/flashfocus_$NEW_DEFAULT_VALUE.yml" "$FLASHFOCUS_DIR/flashfocus.yml"
         killall flashfocus
         i3-msg exec flashfocus
         ;;
+    "conky")
+        rm "$CONKY_DIR/conky_config_bindkey"
+        rm "$CONKY_DIR/conky_config_system"
+        ln -s "$CONKY_DIR/$NEW_DEFAULT_VALUE/conky_config_bindkey" "$CONKY_DIR/conky_config_bindkey"
+        ln -s "$CONKY_DIR/$NEW_DEFAULT_VALUE/conky_config_system" "$CONKY_DIR/conky_config_system"
+        killall conky
+        i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
+        i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+        ;;
     *)
         echo ""
-        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/picom/flashfocus]"
+        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/picom/flashfocus/conky]"
         echo ""
         ;;
 esac

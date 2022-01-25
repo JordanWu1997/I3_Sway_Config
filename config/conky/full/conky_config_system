@@ -69,6 +69,7 @@ conky.config = {
 	show_graph_scale = false,
 	show_graph_range = false,
 	double_buffer = true,
+
 };
 
 conky.text = [[

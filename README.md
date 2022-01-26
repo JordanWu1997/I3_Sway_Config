@@ -1,5 +1,6 @@
 # I3_Sway_Config
-Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>, and configuration of applications for working environment
+Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>,
+and configuration of applications for the working environment in X11
 
 Table of Contents
 =================
@@ -77,9 +78,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
-- [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome software support
-- [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
-- [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manger
+- [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome-software support
+- [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network-manager
+- [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
 - [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing
 - [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): Xsession lock
@@ -91,7 +92,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
 - [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto mark i3 window
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
-- [jonaburg/picom](https://github.com/jonaburg/picom): Xcompositor for blur, transparency, animation support
+- [jonaburg/picom](https://github.com/jonaburg/picom): X11 compositor for blur, transparency, animation support
 
 </details>
 
@@ -145,10 +146,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- i3 has built-in mode function which overwrites current keybinding with preset mode keybinding
-- When mode is on, mode keybinding instruction shows on i3 status bar
-- Press `Esc` key to exit mode
-- This part configuration can be configured in
+- i3 has a built-in mode function that overwrites current keybinding with preset mode keybinding
+- When i3 mode is on, mode keybinding instruction shows on the i3 status bar
+- Press the `Esc` key to exit mode
+- This part configuration can be found in
     - `./config/i3/configs/i3_custom.config`
     - `./config/i3/configs/i3_mode.config`
 
@@ -202,8 +203,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Although keyboard-driven workflow is favored in i3, keeping mouse function has no harm
-- This part configuration can be configured in
+- Although the keyboard-driven workflow is favored in i3, keeping mouse function has no harm
+- This part configuration can be found in
     - `./config/i3/configs/i3_bindkey.config`
 
 ### Touchpad Usage
@@ -250,7 +251,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Cheat sheet format, color theme here is the same as i3 user guide
+- Cheatsheet format, color theme here is the same as the i3 user guide
 - All following keybindings can be configured in
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`
@@ -266,14 +267,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Program shortcut (1~9, 0, -, =)__
     - `1`: [Neovim (text editor)](https://neovim.io/)
     - `2`: [Ranger (file manager)](https://github.com/ranger/ranger)
-    - `3`: [Pulsemixer (sound manager)](https://pypi.org/project/pulsemixer/)
+    - `3`: [Pulsemixer (audio manager)](https://pypi.org/project/pulsemixer/)
     - `4`: [Htop (system monitor)](https://htop.dev/)
     - `5`: [Nmtui (network manager)](https://developer.gnome.org/NetworkManager/stable/nmtui.html)
-    - `6`: [Cava (visualizer)](https://github.com/karlstav/cava)
+    - `6`: [Cava (audio visualizer)](https://github.com/karlstav/cava)
     - `7`: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
     - `8`: [Zathura (document viewer)](https://github.com/pwmt/zathura)
     - `9`: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
-    - `0`: [Nautilus (gui file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
+    - `0`: [Nautilus (GUI file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 
@@ -294,7 +295,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Move between Windows__
     - `[Alt]` + `[Tab]`: Show all window list
 - __Manipulate Scratchpad__
-    - `[Winkey]` + `[-]`: Send focused window to scratchpad (background)
+    - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground
@@ -306,7 +307,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
 - __Screenshot__
     - `[PrtSc]`: Flameshot (screenshot tool)
-    - `[Winkey]` + `[PrtSc]`: Gnome-screenshot for current window
+    - `[Winkey]` + `[PrtSc]`: Gnome-screenshot for the current window
     - `[Winkey]` + `[Shift]` + `[PrtSc]`: Gnome-screenshot interactive mode
 
 </details>
@@ -326,6 +327,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - https://pypi.org/project/i3-workspace-swap/
 - https://github.com/rjekker/i3-battery-popup
 - https://github.com/lincheney/i3-automark
+- https://www.youtube.com/watch?v=j1I63wGcvU4&list=PL5ze0DjYv5DbCv9vNEzFmP6sU7ZmkGzcf
 
 </details>
 </details>

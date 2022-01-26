@@ -93,7 +93,7 @@ configuration {
 
     /*Width (no effect when fullscreen is enable, preset in wal)*/
     /*width: 1200;*/
-    width: 63%;
+    /*width: 63%;*/
 
 }
 

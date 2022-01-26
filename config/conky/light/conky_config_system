@@ -74,8 +74,8 @@ conky.config = {
 
 conky.text = [[
 ${color3}[Distro] ${hr 2}
-${voffset 30}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 230x104}${color}
-${voffset 25}${color3}[System] ${hr 2}${color}
+${voffset 40}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 230x104}${color}
+${voffset 20}${color3}[System Info] ${hr 2}${color}
 ${color2}Kernel ${alignr}${color}${kernel}
 ${color2}Local Hostname ${alignr}${color}${nodename}
 ${color2}Local Uptime ${alignr}${color}${uptime}

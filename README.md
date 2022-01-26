@@ -1,5 +1,5 @@
 # I3_Sway_Config
-Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>, and other applications configuration
+Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>, and configuration of applications for working environment
 
 Table of Contents
 =================
@@ -145,9 +145,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- i3 has built-in mode function which overwrites current keybinding with preset mode keybinding.
-- When mode is on, mode keybinding instruction shows on i3 status bar.
-- Press `Esc` key to exit mode.
+- i3 has built-in mode function which overwrites current keybinding with preset mode keybinding
+- When mode is on, mode keybinding instruction shows on i3 status bar
+- Press `Esc` key to exit mode
 - This part configuration can be configured in
     - `./config/i3/configs/i3_custom.config`
     - `./config/i3/configs/i3_mode.config`
@@ -202,7 +202,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Although keyboard-driven workflow is favored in i3, keeping mouse function harms nothing
+- Although keyboard-driven workflow is favored in i3, keeping mouse function has no harm
 - This part configuration can be configured in
     - `./config/i3/configs/i3_bindkey.config`
 
@@ -251,7 +251,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - Cheat sheet format, color theme here is the same as i3 user guide
-- All following keybindings can be modified in configuration file (`./config/i3/configs/i3_bindkey.config`)
+- All following keybindings can be configured in
+    - `./config/i3/configs/i3_bindkey.config`
+    - `./config/i3/configs/i3_workspace.config`
 
 ### Prefix: [Winkey]
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
@@ -281,6 +283,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl]` + `[Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt]` + `[Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Winkey]` + (`[Shift]`)` + [Tab]`: Go to (prev)/next workspace
+    - `[Alt]` + (`[Shift]`)` + [Tab]`: Go to (prev)/next workspace (create one if it does not exist)
 - __Send Window to Workspace__
     - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
@@ -303,7 +307,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Screenshot__
     - `[PrtSc]`: Flameshot (screenshot tool)
     - `[Winkey]` + `[PrtSc]`: Gnome-screenshot for current window
-    - `[Winkey]` + `[Shift]` + `[PrtSc]`: Gnome-screenshot interactively
+    - `[Winkey]` + `[Shift]` + `[PrtSc]`: Gnome-screenshot interactive mode
 
 </details>
 

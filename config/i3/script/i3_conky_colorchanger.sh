@@ -81,7 +81,7 @@ case $1 in
     "system")
         CONFIGS[0]="$HOME/.config/conky/full/conky_config_system"
         CONFIGS[1]="$HOME/.config/conky/light/conky_config_system"
-        CONFIGS[2]="$HOME/.config/conky/vm/conky_config_system"
+        CONFIGS[2]="$HOME/.config/conky/minimal/conky_config_system"
         for config in ${CONFIGS[@]}; do
             COL_COLOR_TEXT=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_ITEM=$(awk '$0~/color2/ {print NR}' $config | awk 'NR==1')
@@ -118,7 +118,7 @@ case $1 in
     "bindkey")
         CONFIGS[0]="$HOME/.config/conky/full/conky_config_bindkey"
         CONFIGS[1]="$HOME/.config/conky/light/conky_config_bindkey"
-        CONFIGS[2]="$HOME/.config/conky/vm/conky_config_bindkey"
+        CONFIGS[2]="$HOME/.config/conky/minimal/conky_config_bindkey"
         for config in ${CONFIGS[@]}; do
             COL_COLOR_TEXT=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_ITEM=$(awk '$0~/color2/ {print NR}' $config | awk 'NR==1')

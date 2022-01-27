@@ -73,7 +73,9 @@ select option in \
 do
     case $option in
         'link')
-            [ ! -d $USER_CONFIG_BACKUP ] && mkdir $USER_CONFIG_BACKUP
+            [ ! -d $USER_CONFIG_BACKUP ] && \
+                mkdir $USER_CONFIG_BACKUP || \
+                mv $USER_CONFIG_BACKUP $USER_CONFIG_BACKUP$(date +_%Y%m%d_%H%M%S)
             for config in ${USER_CONFIG_LIST[@]}
             do
                 echo "$USER_CONFIG_DIR/$config linked ..."
@@ -85,7 +87,9 @@ do
             break
             ;;
         'copy')
-            [ ! -d $USER_CONFIG_BACKUP ] && mkdir $USER_CONFIG_BACKUP
+            [ ! -d $USER_CONFIG_BACKUP ] && \
+                mkdir $USER_CONFIG_BACKUP || \
+                mv $USER_CONFIG_BACKUP $USER_CONFIG_BACKUP$(date +_%Y%m%d_%H%M%S)
             for config in ${USER_CONFIG_LIST[@]}
             do
                 echo "$USER_CONFIG_DIR/$config copied ..."

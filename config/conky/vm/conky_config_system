@@ -27,7 +27,7 @@ conky.config = {
 	own_window_class = 'Conky',
 	own_window_colour = '#010101',
 	own_window_transparent = false,
-	own_window_title = 'i3_conky_bindkey_light',
+	own_window_title = 'i3_conky_system_vm',
 	own_window_type = 'override',
 
 -- Position --

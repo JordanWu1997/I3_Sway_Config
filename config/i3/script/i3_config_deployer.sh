@@ -73,34 +73,40 @@ select option in \
 do
     case $option in
         'link')
-            [ ! -d $USER_CONFIG_BACKUP ] && \
-                mkdir $USER_CONFIG_BACKUP || \
+            if [ ! -d $USER_CONFIG_BACKUP ]; then
+                mkdir $USER_CONFIG_BACKUP
+            else
                 mv $USER_CONFIG_BACKUP $USER_CONFIG_BACKUP$(date +_%Y%m%d_%H%M%S)
+                mkdir $USER_CONFIG_BACKUP
+            fi
             for config in ${USER_CONFIG_LIST[@]}
             do
+                mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP/
+                #echo "ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR"
+                /usr/bin/ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR
                 echo "$USER_CONFIG_DIR/$config linked ..."
-                mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP
-                ln -s $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
             done
             echo "Linking configuration done ..."
             echo "Old local configuration files have been moved to $USER_CONFIG_BACKUP"
             break
             ;;
         'copy')
-            [ ! -d $USER_CONFIG_BACKUP ] && \
-                mkdir $USER_CONFIG_BACKUP || \
+            if [ ! -d $USER_CONFIG_BACKUP ]; then
+                mkdir $USER_CONFIG_BACKUP
+            else
                 mv $USER_CONFIG_BACKUP $USER_CONFIG_BACKUP$(date +_%Y%m%d_%H%M%S)
+                mkdir $USER_CONFIG_BACKUP
+            fi
             for config in ${USER_CONFIG_LIST[@]}
             do
-                echo "$USER_CONFIG_DIR/$config copied ..."
-                mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP
+                mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP/
                 cp -fr $NEW_CONFIG_DIR/$config $USER_CONFIG_DIR/$config
+                echo "$USER_CONFIG_DIR/$config copied ..."
             done
             echo "Copying configuration done ..."
             echo "Old local configuration files have been moved to $USER_CONFIG_BACKUP"
             break
             ;;
-
         'pass')
             echo "Copying/Linking configuration passed ..."
             break
@@ -308,7 +314,7 @@ section3_greetings () {
 }
 
 section3_greetings
-echo "Do you want to install needed package/tool for working enviroment variables ?"
+echo "Do you want to install needed package/tool for working enviroment ?"
 select option in \
     'yes' \
     'no'

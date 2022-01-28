@@ -52,9 +52,9 @@ done
 NEW_CONFIG_DIR="$HOME/Desktop/I3_Sway_Config/config"
 USER_CONFIG_DIR="$HOME/.config"
 USER_CONFIG_BACKUP="$HOME/.config_backup"
-USER_CONFIG_LIST=(bumblebee-status cava conky dunst flashfocus glow i3 kitty \
-                  libinput-gestures.conf ncspot neofetch picom ranger rofi \
-                  spotify-tui vis zathura)
+USER_CONFIG_LIST=( bumblebee-status cava conky dunst flashfocus glow i3 kitty \
+                   libinput-gestures.conf ncspot neofetch picom ranger rofi \
+                   spotify-tui vis zathura )
 
 section2_greetings () {
     echo

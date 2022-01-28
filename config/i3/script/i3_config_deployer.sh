@@ -51,7 +51,7 @@ done
 # Link/copy config directories/files under ~/.config
 NEW_CONFIG_DIR="$HOME/Desktop/I3_Sway_Config/config"
 USER_CONFIG_DIR="$HOME/.config"
-USER_CONFIG_BACKUP="$HOME/.config_backup"
+USER_CONFIG_BACKUP="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
 USER_CONFIG_LIST=( bumblebee-status cava conky dunst flashfocus glow i3 kitty \
                    libinput-gestures.conf ncspot neofetch picom ranger rofi \
                    spotify-tui vis zathura )
@@ -73,12 +73,7 @@ select option in \
 do
     case $option in
         'link')
-            if [ ! -d $USER_CONFIG_BACKUP ]; then
-                mkdir $USER_CONFIG_BACKUP
-            else
-                mv $USER_CONFIG_BACKUP $USER_CONFIG_BACKUP$(date +_%Y%m%d_%H%M%S)
-                mkdir $USER_CONFIG_BACKUP
-            fi
+            mkdir $USER_CONFIG_BACKUP
             for config in ${USER_CONFIG_LIST[@]}
             do
                 mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP/
@@ -91,12 +86,7 @@ do
             break
             ;;
         'copy')
-            if [ ! -d $USER_CONFIG_BACKUP ]; then
-                mkdir $USER_CONFIG_BACKUP
-            else
-                mv $USER_CONFIG_BACKUP $USER_CONFIG_BACKUP$(date +_%Y%m%d_%H%M%S)
-                mkdir $USER_CONFIG_BACKUP
-            fi
+            mkdir $USER_CONFIG_BACKUP
             for config in ${USER_CONFIG_LIST[@]}
             do
                 mv $USER_CONFIG_DIR/$config $USER_CONFIG_BACKUP/
@@ -216,7 +206,7 @@ install_i3_gap_packages () {
     # Bumblebee-status [https://github.com/tobi-wan-kenobi/bumblebee-status]
     cd $HOME/Desktop
     python -m pip install bumblebee-status i3ipc utils
-    sudo dnf install python-netifaces lm_sensors pulseaudio-utils
+    sudo dnf install python-netifaces lm_sensors pulseaudio-utils python3-psutil
 }
 
 # Theme
@@ -264,6 +254,16 @@ install_editor_tool_packages () {
     sudo make install
 }
 
+# Python tools
+install_python_tool_packages () {
+    echo
+    echo "Python tool package including:"
+    echo "-- pynvim: neovim python plugin"
+    echo "-- ipdb: python debugger"
+    echo "-- jedi: python autocompletion"
+    python -m pip install pynvim ipdb jedi
+}
+
 # Misc tools
 install_misc_tool_packages () {
     echo
@@ -290,6 +290,7 @@ install_misc_tool_packages () {
 
 
 PACKAGE_LIST=( install_terminal_package \
+               install_python_tool_packages \
                install_input_method_package \
                install_xcompositor_package \
                install_xwindow_tool_package \

@@ -93,7 +93,7 @@ ${color2}resize WD ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}focus parent WD ${alignr}${color}[S]+[a]
 ${color2}focus children WD ${alignr}${color}[S]+[Shift]+[a]
 ${color2}mark current WD ${alignr}${color}[S]+[m]
-${color2}goto marked WD ${alignr}${color}[S]+[Esc/']
+${color2}goto marked WD ${alignr}${color}[S]+[Esc/g/']
 ${color2}swap marked WD  ${alignr}${color}[S]+([Shift])+[;]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Floating / Scratchpad]${font}${voffset 5}
 ${color2}floating toggle ${alignr}${color}[S]+[Shift]+[Space]

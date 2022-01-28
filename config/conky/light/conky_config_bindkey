@@ -107,7 +107,7 @@ ${color2}mouse mode ${alignr}${color}[Ctrl]+[Alt]+[m]
 ${color3}[Miscellaneous] ${hr 2}
 ${color2}resize WD ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}mark focused WD ${alignr}${color}[S]+[m]
-${color2}goto WD with mark ${alignr}${color}[S]+[Esc/']
+${color2}goto WD with mark ${alignr}${color}[S]+[Esc/g/']
 ${color2}swap WD with mark ${alignr}${color}[S]+[;]
 ${color3}${hr 2}
 ]]

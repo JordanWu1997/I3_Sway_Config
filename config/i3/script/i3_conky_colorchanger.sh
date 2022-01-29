@@ -66,6 +66,9 @@ case $3 in
     opac100)
         OUTPUT_VALUE=256
         ;;
+    *)
+        OUTPUT_VALUE=$3
+        ;;
 esac
 
 # Assign default item / title color
@@ -74,6 +77,7 @@ DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/
 DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_COLOR_TEXT="$(awk '$1~/*color15/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_BG_OPAC=128
+DEFAULT_GAP_Y=30
 
 # Replace color in conky configuration file
 case $1 in
@@ -88,6 +92,7 @@ case $1 in
             COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_BG_OPAC=$(awk '$0~/own_window_argb_value/ {print NR}' $config | awk 'NR==1')
+            COL_GAP_Y=$(awk '$0~/gap_y/ {print NR}' $config | awk 'NR==1')
             case $2 in
                 "text")
                     sed -i "$COL_COLOR_TEXT s/.*/\tdefault_color \= \'\#$OUTPUT_VALUE\\',/" "$config"
@@ -104,12 +109,16 @@ case $1 in
                 "bg_opacity")
                     sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $OUTPUT_VALUE,/" "$config"
                     ;;
+                "gap_y")
+                    sed -i "$COL_GAP_Y s/.*/\tgap_y \= $OUTPUT_VALUE,/" "$config"
+                    ;;
                 *)
                     sed -i "$COL_COLOR_TEXT s/.*/\tdefault_color \= \'\#$DEFAULT_COLOR_TEXT\\',/" "$config"
                     sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$DEFAULT_ITEM_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $DEFAULT_BG_OPAC,/" "$config"
+                    sed -i "$COL_GAP_Y s/.*/\tgap_y \= $DEFAULT_GAP_Y,/" "$config"
                     ;;
             esac
         done

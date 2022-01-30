@@ -50,6 +50,7 @@ configuration {
     kb-custom-10: "";
 
     /*Key shortcut*/
+    kb-cancel: "Escape,Control+g,Control+c,Control+bracketleft";
     kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+Shift+h";
     kb-remove-to-eol: "Control+Shift+k";
     kb-accept-entry: "!Alt-Tab,Return,KP_Enter,Alt+space,Control+space";

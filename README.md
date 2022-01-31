@@ -1,10 +1,12 @@
 # I3_Sway_Config
 Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>,
-and configuration of applications for the working environment in X11
+and configurations of applications for the working environment in X11
+
+<details open>
+<summary>Click to expand/shrink</summary>
 
 Table of Contents
 =================
-
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -134,12 +136,16 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - __Install Programs for Work Environment__
 
 ### Optional Configuration
+<details>
+<summary>Click to expand/shrink</summary>
+
 - [Optional] Add following lines for pywal color support for bash/zsh/fish, no need for kitty terminal emulator
     ```
     # Add following line to .bashrc/.zshrc/config.fish
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
     ```
 
+</details>
 </details>
 
 ## Mode Usage for i3
@@ -154,6 +160,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `./config/i3/configs/i3_mode.config`
 
 ### Mode Usage
+<details open>
+<summary>Click to expand/shrink</summary>
+
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
@@ -198,6 +207,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - Select wallpaper, set default wallpaper
 
 </details>
+</details>
 
 ## Mouse Usage for i3
 <details open>
@@ -208,6 +218,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `./config/i3/configs/i3_bindkey.config`
 
 ### Touchpad Usage
+<details open>
+<summary>Click to expand/shrink</summary>
+
 - __2-finger Gesture__
     - __Tap__
         - Right key click
@@ -226,11 +239,16 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - Go to next workspace
 - __4-finger Gesture__
     - __Pinch Out__
-        - Bring scratchpad window to foreground
+        - Bring window in scratchpad to foreground
     - __Pinch In__
         - Send window to scratchpad
 
+</details>
+
 ### Mouse Usage
+<details open>
+<summary>Click to expand/shrink</summary>
+
 - __Middle Key__
     - __Click Title Bar__
         - Kill current window
@@ -246,23 +264,37 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - Toggle floating mode
 
 </details>
+</details>
 
 ## Keybinding Sheet for i3
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Cheatsheet format, color theme here is the same as the i3 user guide
+- Cheat sheet format, color theme here is the same as the i3 user guide
 - All following keybindings can be configured in
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`
 
 ### Prefix: [Winkey]
+<details open>
+<summary>Click to expand/shrink</summary>
+
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
 
+</details>
+
 ### Prefix: [Winkey] + [Shift]
+<details open>
+<summary>Click to expand/shrink</summary>
+
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win_shift.png "Title")
 
+</details>
+
 ### Prefix: [Ctrl] + [Alt]
+<details open>
+<summary>Click to expand/shrink</summary>
+
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
 - __Program shortcut (1~9, 0, -, =)__
     - `1`: [Neovim (text editor)](https://neovim.io/)
@@ -278,7 +310,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 
+</details>
+
 ### Miscellaneous
+<details open>
+<summary>Click to expand/shrink</summary>
+
 - __Go to Workspace__
     - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
@@ -286,15 +323,17 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Alt]` + `[Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
     - `[Winkey]` + (`[Shift]`)` + [Tab]`: Go to (prev)/next workspace
     - `[Alt]` + (`[Shift]`)` + [Tab]`: Go to (prev)/next workspace (create one if it does not exist)
+    - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next workspace (create one if it does not exist)
 - __Send Window to Workspace__
     - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send to (prev)/next workspace
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
 - __Move between Windows__
-    - `[Alt]` + `[Tab]`: Show all window list
-- __Manipulate Scratchpad__
+    - `[Alt]` + (`[Shift]`) + `[Tab]`: Show all window list on (current)/all displays
+    - __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
@@ -311,23 +350,24 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Winkey]` + `[Shift]` + `[PrtSc]`: Gnome-screenshot interactive mode
 
 </details>
+</details>
 
 ## Reference
 <details open>
 <summary>Click to expand/shrink</summary>
 
 - https://i3wm.org/docs/userguide.html
-- https://github.com/levinit/i3wm-config
-- https://www.itread01.com/p/142448.html
-- https://medium.com/@mudrii/archlinux-tutorial-part-3-i3-configuration-and-op
-- https://github.com/alberto-santini/i3-configuration-x1
-- https://segmentfault.com/a/1190000022083424
 - https://github.com/Airblader/i3 (i3-gap)
+- https://github.com/levinit/i3wm-config (written in Chinese)
+- https://www.itread01.com/p/142448.html (written in Chinese)
+- https://segmentfault.com/a/1190000022083424 (written in Chinese)
+- https://github.com/alberto-santini/i3-configuration-x1
 - https://pypi.org/project/i3-resurrect/
 - https://pypi.org/project/i3-workspace-swap/
 - https://github.com/rjekker/i3-battery-popup
 - https://github.com/lincheney/i3-automark
 - https://www.youtube.com/watch?v=j1I63wGcvU4&list=PL5ze0DjYv5DbCv9vNEzFmP6sU7ZmkGzcf
 
+</details>
 </details>
 </details>

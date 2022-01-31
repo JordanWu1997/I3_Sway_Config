@@ -25,7 +25,7 @@ conky.config = {
 	own_window_argb_value = 128,
 	own_window_argb_visual = true,
 	own_window_class = 'Conky',
-	own_window_colour = '#010101',
+	own_window_colour = '#050509',
 	own_window_transparent = false,
 	own_window_title = 'i3_conky_bindkey_light',
 	own_window_type = 'override',
@@ -46,9 +46,9 @@ conky.config = {
 	extra_newline = false,
 
 -- Graphical --
-	default_color = '#bfbfbf',
-	color2 = '#953515',
-	color3 = '#D94922',
+	default_color = '#c0c0c1',
+	color2 = '#7D66C0',
+	color3 = '#D37692',
 	own_window_colour = '#010101',
 	default_outline_color = '#FFFFFF',
 	default_shade_color = '#000000',

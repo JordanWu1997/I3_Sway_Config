@@ -22,7 +22,7 @@ conky.config = {
 
 -- Window Settings --
 	own_window = true,
-	own_window_argb_value = 128,
+	own_window_argb_value = 64,
 	own_window_argb_visual = true,
 	own_window_class = 'Conky',
 	own_window_colour = '#010101',

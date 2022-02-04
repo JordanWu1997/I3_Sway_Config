@@ -76,7 +76,7 @@ DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/w
 DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_COLOR_TEXT="$(awk '$1~/*color15/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-DEFAULT_BG_OPAC=128
+DEFAULT_BG_OPAC=64
 DEFAULT_GAP_Y=30
 
 # Replace color in conky configuration file

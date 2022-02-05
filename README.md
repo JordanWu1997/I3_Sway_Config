@@ -2,9 +2,6 @@
 Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>,
 and configurations of applications for the working environment in X11
 
-<details open>
-<summary>Click to expand/shrink</summary>
-
 Table of Contents
 =================
 <details open>
@@ -13,26 +10,26 @@ Table of Contents
 * [I3_Sway_Config](#i3_sway_config)
 * [Table of Contents](#table-of-contents)
 * [Context](#context)
-   * [Demo Current Customization](#demo-current-customization)
-   * [Information for my i3 Configuration](#information-for-my-i3-configuration)
-      * [My i3 Environment](#my-i3-environment)
-      * [Programs Auto-start in Background for i3 Environment](#programs-auto-start-in-background-for-i3-enviroment)
-      * [Wallpapers](#wallpapers)
-      * [Theme and Fonts](#theme-and-fonts)
-   * [First Time Usage for i3](#first-time-usage-for-i3)
-      * [Configuration distributor](#configuration-distributor)
-      * [Optional Configuration](#optional-configuration)
-   * [Mode Usage for i3](#mode-usage-for-i3)
-      * [Mode Usage](#mode-usage)
-   * [Mouse Usage for i3](#mouse-usage-for-i3)
-      * [Touchpad Usage](#touchpad-usage)
-      * [Mouse Usage](#mouse-usage)
-   * [Keybinding Sheet for i3](#keybinding-sheet-for-i3)
-      * [Prefix: [Winkey]](#prefix-winkey)
-      * [Prefix: [Winkey] + [Shift]](#prefix-winkey--shift)
-      * [Prefix: [Ctrl] + [Alt]](#prefix-ctrl--alt)
-      * [Miscellaneous](#miscellaneous)
-   * [Reference](#reference)
+   * [Section 1 - Demo Current Customization](#section-1---demo-current-customization)
+   * [Section 2 - Details of i3 Environment](#section-2---details-of-i3-environment)
+      * [1. My i3 Environment](#1-my-i3-environment)
+      * [2. Programs Auto-start in Background for i3 Environment](#2-programs-auto-start-in-background-for-i3-environment)
+      * [3. Wallpapers](#3-wallpapers)
+      * [4. Theme and Fonts](#4-theme-and-fonts)
+   * [Section 3 - First Time Usage for i3](#section-3---first-time-usage-for-i3)
+      * [1. Configuration distributor](#1-configuration-distributor)
+      * [2. Optional Configuration](#2-optional-configuration)
+   * [Section 4 - Mode Usage for i3](#section-4---mode-usage-for-i3)
+      * [1. Mode Usage](#1-mode-usage)
+   * [Section 5 - Mouse Usage for i3](#section-5---mouse-usage-for-i3)
+      * [1. Touchpad Usage](#1-touchpad-usage)
+      * [2. Mouse Usage](#2-mouse-usage)
+   * [Section 6 - Keybinding Sheet for i3](#section-6---keybinding-sheet-for-i3)
+      * [1. Prefix: Winkey](#1-prefix-winkey)
+      * [2. Prefix: Winkey + Shift](#2-prefix-winkey--shift)
+      * [3. Prefix: Ctrl + Alt](#3-prefix-ctrl--alt)
+      * [4. Miscellaneous](#4-miscellaneous)
+   * [Reference for i3 Setup](#reference-for-i3-setup)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -42,7 +39,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-## Demo Current Customization
+## Section 1 - Demo Current Customization
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -51,7 +48,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-## Details of i3 Environment
+## Section 2 - Details of i3 Environment
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -121,7 +118,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 </details>
 
-## First Time Usage for i3
+## Section 3 - First Time Usage for i3
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -154,7 +151,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 </details>
 
-## Mode Usage for i3
+## Section 4 - Mode Usage for i3
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -215,7 +212,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 </details>
 
-## Mouse Usage for i3
+## Section 5 - Mouse Usage for i3
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -272,7 +269,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 </details>
 
-## Keybinding Sheet for i3
+## Section 6 - Keybinding Sheet for i3
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -281,7 +278,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`
 
-### 1. Prefix: [Winkey]
+### 1. Prefix: Winkey
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -289,7 +286,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### 2. Prefix: [Winkey] + [Shift]
+### 2. Prefix: Winkey + Shift
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -297,7 +294,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### 3. Prefix: [Ctrl] + [Alt]
+### 3. Prefix: Ctrl + Alt
 <details open>
 <summary>Click to expand/shrink</summary>
 

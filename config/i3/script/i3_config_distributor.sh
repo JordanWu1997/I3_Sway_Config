@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# This shell script is to deploy my i3 configuration and work environment
+# This shell script is to distribute my i3 configuration and work environment
 # ============================================================================
 
 # ----------------------------------------------------------------------------

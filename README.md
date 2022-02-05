@@ -20,7 +20,7 @@ Table of Contents
       * [Wallpapers](#wallpapers)
       * [Theme and Fonts](#theme-and-fonts)
    * [First Time Usage for i3](#first-time-usage-for-i3)
-      * [Configuration deployer](#configuration-deployer)
+      * [Configuration distributor](#configuration-distributor)
       * [Optional Configuration](#optional-configuration)
    * [Mode Usage for i3](#mode-usage-for-i3)
       * [Mode Usage](#mode-usage)
@@ -51,12 +51,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-## Information for my i3 Configuration
-<details open>
+## Details of i3 Environment
+<details>
 <summary>Click to expand/shrink</summary>
 
-### My i3 Environment
-<details open>
+### 1. My i3 Environment
+<details>
 <summary>Click to expand/shrink</summary>
 
 - i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
@@ -72,8 +72,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Programs Auto-start in Background for i3 Environment
-<details open>
+### 2. Programs Auto-start in Background for i3 Environment
+<details>
 <summary>Click to expand/shrink</summary>
 
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
@@ -98,8 +98,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Wallpapers
-<details open>
+### 3. Wallpapers
+<details>
 <summary>Click to expand/shrink</summary>
 
 - Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
@@ -109,8 +109,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Theme and Fonts
-<details open>
+### 4. Theme and Fonts
+<details>
 <summary>Click to expand/shrink</summary>
 
 - [Optional] Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
@@ -119,13 +119,17 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [Optional] TUI font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
 
 </details>
+</details>
 
 ## First Time Usage for i3
-<details open>
+<details>
 <summary>Click to expand/shrink</summary>
 
-### Configuration deployer
-- Run deployer in this git repository `./config/i3/script/i3_config_deployer.sh`
+### 1. Configuration distributor
+<details>
+<summary>Click to expand/shrink</summary>
+
+- Run distributor in this git repository `./config/i3/script/i3_config_distributor.sh`
 - Including
     - __Add Environment Variables__
         - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
@@ -135,7 +139,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - Link configuration in git repository `config/*` to `$HOME/.config` directory
     - __Install Programs for Work Environment__
 
-### Optional Configuration
+</details>
+
+### 2. Optional Configuration
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -149,7 +155,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## Mode Usage for i3
-<details open>
+<details>
 <summary>Click to expand/shrink</summary>
 
 - i3 has a built-in mode function that overwrites current keybinding with preset mode keybinding
@@ -159,8 +165,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `./config/i3/configs/i3_custom.config`
     - `./config/i3/configs/i3_mode.config`
 
-### Mode Usage
-<details open>
+### 1. Mode Usage
+<details>
 <summary>Click to expand/shrink</summary>
 
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
@@ -210,15 +216,15 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## Mouse Usage for i3
-<details open>
+<details>
 <summary>Click to expand/shrink</summary>
 
 - Although the keyboard-driven workflow is favored in i3, keeping mouse function has no harm
 - This part configuration can be found in
     - `./config/i3/configs/i3_bindkey.config`
 
-### Touchpad Usage
-<details open>
+### 1. Touchpad Usage
+<details>
 <summary>Click to expand/shrink</summary>
 
 - __2-finger Gesture__
@@ -245,8 +251,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Mouse Usage
-<details open>
+### 2. Mouse Usage
+<details>
 <summary>Click to expand/shrink</summary>
 
 - __Middle Key__
@@ -267,7 +273,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ## Keybinding Sheet for i3
-<details open>
+<details>
 <summary>Click to expand/shrink</summary>
 
 - Cheat sheet format, color theme here is the same as the i3 user guide
@@ -275,7 +281,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`
 
-### Prefix: [Winkey]
+### 1. Prefix: [Winkey]
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -283,7 +289,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Prefix: [Winkey] + [Shift]
+### 2. Prefix: [Winkey] + [Shift]
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -291,7 +297,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Prefix: [Ctrl] + [Alt]
+### 3. Prefix: [Ctrl] + [Alt]
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -312,8 +318,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 </details>
 
-### Miscellaneous
-<details open>
+### 4. Miscellaneous
+<details>
 <summary>Click to expand/shrink</summary>
 
 - __Go to Workspace__
@@ -352,8 +358,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 </details>
 
-## Reference
-<details open>
+## Reference for i3 Setup
+<details>
 <summary>Click to expand/shrink</summary>
 
 - https://i3wm.org/docs/userguide.html

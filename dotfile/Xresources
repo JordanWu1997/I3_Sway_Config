@@ -1,22 +1,5 @@
 !# Bigger cursorsize
 Xcursor.size: 48
 
-!# Define color (Xterm)
-!*.background: #000000
-!*.foreground: #ffffff
-!*.color0:     #3f3f3f
-!*.color8:     #7f7f7f
-!*.color1:     #cd0000
-!*.color9:     #ff0000
-!*.color2:     #00cd00
-!*.color10:    #00ff00
-!*.color3:     #cdcd00
-!*.color11:    #ffff00
-!*.color4:     #1167b1
-!*.color12:    #2a9df4
-!*.color5:     #cd00cd
-!*.color13:    #ff00ff
-!*.color6:     #00cdcd
-!*.color14:    #00ffff
-!*.color7:     #e5e5e5
-!*.color15:    #ffffff
+!# Pywal color scheme
+#include "$HOME/.cache/wal/colors.Xresources"

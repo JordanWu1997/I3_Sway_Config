@@ -63,6 +63,13 @@ configuration {
 
     /*Width (no effect when fullscreen is enable, preset in wal)*/
     width: 25%;
+
+    /*Border width*/
+    border: 2;
+
+    /*Border color*/
+    border-color: @selected-active-background;
+
 }
 
 #scrollbar {

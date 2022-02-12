@@ -73,10 +73,9 @@ conky.config = {
 };
 
 conky.text = [[
-${color}${hr 2}
+${color3}[Distro] ${hr 2}
 ${voffset 50}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 3,0 -s 230x104}
-${color}${hr 2}
-${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[Information]${font}${voffset 5}
+${voffset 5}${color3}[Information] ${hr 2}
 ${color2}Kernel ${alignr}${color}${kernel}
 ${color2}Local Hostname ${alignr}${color}${nodename}
 ${color2}Machine Uptime ${alignr}${color}${uptime}
@@ -89,12 +88,12 @@ ${color2}Internal IP ${alignr}${color}${exec ip a | grep inet | grep enp | grep 
 ${color2}Gateway IP ${alignr}${color}${gw_ip}
 ${color2}Ethe-Dw ${alignr}${color}${downspeed enp0s3}/s   ${alignr}Tot ${totaldown enp0s3}
 ${color2}Ethe-Up ${alignr}${color}${upspeed enp0s3}/s   ${alignr}Tot ${totalup enp0s3}
-${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=13}[System Monitor]${font}${voffset 5}
+${voffset 5}${color3}[System Monitor] ${hr 2}
 ${color2}Command ${alignr}${color}CPU      ${alignr}MEM
 ${color2}${top name 1} ${alignr}${color}${top cpu 1}     ${alignr}${top mem 1}
 ${color2}${top name 2} ${alignr}${color}${top cpu 2}     ${alignr}${top mem 2}
 ${color2}${top name 3} ${alignr}${color}${top cpu 3}     ${alignr}${top mem 3}
 ${color2}${top name 4} ${alignr}${color}${top cpu 4}     ${alignr}${top mem 4}
 ${color2}${top name 5} ${alignr}${color}${top cpu 5}     ${alignr}${top mem 5}
-${voffset 5}${color}${hr 2}${voffset 5}
+${color3}${hr 2}
 ]]

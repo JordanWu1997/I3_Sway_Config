@@ -94,20 +94,20 @@ ${color2}focus children ${alignr}${color}[S]+[Shift]+[a]
 ${color3}[Floating / Scratchpad] ${hr 2}
 ${color2}floating toggle ${alignr}${color}[S]+[Shift]+[Space]
 ${color2}focus toggle ${alignr}${color}[S]+[Space]
-${color2}sticky toggle ${alignr}${color}[S]+[Shift]+[s]
 ${color2}send WD to scratchpad ${alignr}${color}[S]+[-]
 ${color2}bring WD to foreground ${alignr}${color}[S]+[=]
 ${color3}[Function / Mode] ${hr 2}
 ${color2}custimization ${alignr}${color}[S]+[Shift]+[c]
-${color2}gap mode ${alignr}${color}[S]+[Shift]+[g]
 ${color2}titlebar mode ${alignr}${color}[S]+[Shift]+[t]
 ${color2}display mode ${alignr}${color}[S]+[Shift]+[x]
-${color2}resize mode ${alignr}${color}[Ctrl]+[Alt]+[r]
 ${color2}mouse mode ${alignr}${color}[Ctrl]+[Alt]+[m]
 ${color3}[Miscellaneous] ${hr 2}
 ${color2}resize WD ${alignr}${color}[Ctrl]+[Alt]+[vim-key]
 ${color2}mark focused WD ${alignr}${color}[S]+[m]
 ${color2}goto WD with mark ${alignr}${color}[S]+[Esc/g/']
 ${color2}swap WD with mark ${alignr}${color}[S]+[;]
+${color3}[Datetime] ${hr 2}${voffset 2}
+${voffset 0}${color2}${font Roboto:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${voffset 0}${color}${font Roboto:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}
 ${color3}${hr 2}
 ]]

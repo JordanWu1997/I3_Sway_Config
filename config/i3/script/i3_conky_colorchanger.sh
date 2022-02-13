@@ -72,10 +72,11 @@ case $3 in
 esac
 
 # Assign default item / title color
+DEFAULT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+DEFAULT_TEXT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-DEFAULT_COLOR_TEXT="$(awk '$1~/*color15/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
 DEFAULT_BG_OPAC=64
 DEFAULT_GAP_Y=30
 
@@ -87,15 +88,19 @@ case $1 in
         CONFIGS[1]="$HOME/.config/conky/light/conky_config_system"
         CONFIGS[2]="$HOME/.config/conky/minimal/conky_config_system"
         for config in ${CONFIGS[@]}; do
-            COL_COLOR_TEXT=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
+            COL_DEFAULT_COLOR=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
+            COL_TEXT_COLOR=$(awk '$0~/color1/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_ITEM=$(awk '$0~/color2/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_BG_OPAC=$(awk '$0~/own_window_argb_value/ {print NR}' $config | awk 'NR==1')
             COL_GAP_Y=$(awk '$0~/gap_y/ {print NR}' $config | awk 'NR==1')
             case $2 in
+                "default")
+                    sed -i "$COL_DEFAULT_COLOR s/.*/\tdefault_color \= \'\#$OUTPUT_VALUE\\',/" "$config"
+                    ;;
                 "text")
-                    sed -i "$COL_COLOR_TEXT s/.*/\tdefault_color \= \'\#$OUTPUT_VALUE\\',/" "$config"
+                    sed -i "$COL_TEXT_COLOR s/.*/\tcolor1 \= \'\#$OUTPUT_VALUE\\',/" "$config"
                     ;;
                 "item")
                     sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$OUTPUT_VALUE\\',/" "$config"
@@ -113,7 +118,8 @@ case $1 in
                     sed -i "$COL_GAP_Y s/.*/\tgap_y \= $OUTPUT_VALUE,/" "$config"
                     ;;
                 *)
-                    sed -i "$COL_COLOR_TEXT s/.*/\tdefault_color \= \'\#$DEFAULT_COLOR_TEXT\\',/" "$config"
+                    sed -i "$COL_DEFAULT_COLOR s/.*/\tdefault_color \= \'\#$DEFAULT_COLOR\\',/" "$config"
+                    sed -i "$COL_TEXT_COLOR s/.*/\tcolor1 \= \'\#$DEFAULT_TEXT_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$DEFAULT_ITEM_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"
@@ -129,14 +135,18 @@ case $1 in
         CONFIGS[1]="$HOME/.config/conky/light/conky_config_bindkey"
         CONFIGS[2]="$HOME/.config/conky/minimal/conky_config_bindkey"
         for config in ${CONFIGS[@]}; do
-            COL_COLOR_TEXT=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
+            COL_DEFAULT_COLOR=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
+            COL_TEXT_COLOR=$(awk '$0~/color1/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_ITEM=$(awk '$0~/color2/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $config | awk 'NR==1')
             COL_COLOR_BG_OPAC=$(awk '$0~/own_window_argb_value/ {print NR}' $config | awk 'NR==1')
             case $2 in
+                "default")
+                    sed -i "$COL_DEFAULT_COLOR s/.*/\tdefault_color \= \'\#$OUTPUT_VALUE\\',/" "$config"
+                    ;;
                 "text")
-                    sed -i "$COL_COLOR_TEXT s/.*/\tdefault_color \= \'\#$OUTPUT_VALUE\\',/" "$config"
+                    sed -i "$COL_TEXT_COLOR s/.*/\tcolor1 \= \'\#$OUTPUT_VALUE\\',/" "$config"
                     ;;
                 "item")
                     sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$OUTPUT_VALUE\\',/" "$config"
@@ -151,7 +161,8 @@ case $1 in
                     sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $OUTPUT_VALUE,/" "$config"
                     ;;
                 *)
-                    sed -i "$COL_COLOR_TEXT s/.*/\tdefault_color \= \'\#$DEFAULT_COLOR_TEXT\\',/" "$config"
+                    sed -i "$COL_DEFAULT_COLOR s/.*/\tdefault_color \= \'\#$DEFAULT_COLOR\\',/" "$config"
+                    sed -i "$COL_TEXT_COLOR s/.*/\tcolor1 \= \'\#$DEFAULT_TEXT_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_ITEM s/.*/\tcolor2 \= \'\#$DEFAULT_ITEM_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$config"
                     sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"

@@ -57,7 +57,7 @@ This modified configuration file is highly refered to link below
 - i3-resurrect (https://pypi.org/project/i3-resurrect/)
 - Installation: `pip install i3-resurrect`
 
-### Automatic rename workspace with icons [conflict with save workspace]
+### Automatic rename workspace with icons [conflict with i3-resurrect]
 - i3-workspace-names-daemon (https://github.com/cboddy/i3-workspace-names-daemon)
 - Awesome font and icons (https://origin.fontawesome.com/icons?d=gallery)
 

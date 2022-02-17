@@ -79,24 +79,23 @@ ${voffset 20}${color3}[System Info] ${hr 2}${color1}
 ${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}
 ${color2}Local Uptime ${alignr}${color1}${uptime}
-${color3}[Storage] ${hr 2}${color1}
-${color2}Root (Used/All) ${alignr}${color1}${fs_used /} / ${fs_size /}
-${color2}Home (Used/All) ${alignr}${color1}${fs_used /home} / ${fs_size /home}
+${color3}[Processor] ${hr 2}${color1}
+${color2}Fanspeed / Temp ${alignr}${color1}${ibm_fan} RPM / ${ibm_temps 0} °C
+${color2}Usage / Freq ${alignr}${color1}${cpu}% ${alignr}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
+${voffset -5}${color2}${hr 1}
+${color2}Top ${alignr}${color1}CPU  MEM
+${voffset -5}${color2}${hr 1}
+${color2}${top name 1} ${alignr}${color1}${top cpu 1} ${alignr}${top mem 1}
+${color2}${top name 2} ${alignr}${color1}${top cpu 2} ${alignr}${top mem 2}
+${color2}${top name 3} ${alignr}${color1}${top cpu 3} ${alignr}${top mem 3}
+${color2}${top name 4} ${alignr}${color1}${top cpu 4} ${alignr}${top mem 4}
+${color2}${top name 5} ${alignr}${color1}${top cpu 4} ${alignr}${top mem 4}
 ${color3}[Memory] ${hr 2}${color1}
 ${color2}RAM (Used/All) ${alignr}${color1} ${mem} / ${memmax}
 ${color2}Swap (Used/All) ${alignr}${color1} ${swap} / ${swapmax}
-${color3}[CPU] ${hr 2}${color1}
-${color2}Fanspeed / Temp ${alignr}${color1}${ibm_fan} RPM / ${ibm_temps 0} °C
-${color2}CPU-Thread-1 ${alignr}${color1}${cpu cpu1}%    ${alignr}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
-${color2}CPU-Thread-2 ${alignr}${color1}${cpu cpu2}%    ${alignr}${exec awk '/cpu MHz/{i++}i==2{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
-${color2}CPU-Thread-3 ${alignr}${color1}${cpu cpu3}%    ${alignr}${exec awk '/cpu MHz/{i++}i==3{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
-${color2}CPU-Thread-4 ${alignr}${color1}${cpu cpu4}%    ${alignr}${exec awk '/cpu MHz/{i++}i==4{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
-${color3}[Processes] ${hr 2}${color1}
-${color2}Command ${alignr}CPU%  MEM%${color1}
-	${top name 1} ${alignr}${color1}${top cpu 1}% ${alignr}${top mem 1}%
-	${top name 2} ${alignr}${color1}${top cpu 2}% ${alignr}${top mem 2}%
-	${top name 3} ${alignr}${color1}${top cpu 3}% ${alignr}${top mem 3}%
-	${top name 4} ${alignr}${color1}${top cpu 4}% ${alignr}${top mem 4}%
+${color3}[Disk] ${hr 2}${color1}
+${color2}Root (Used/All) ${alignr}${color1}${fs_used /} / ${fs_size /}
+${color2}Home (Used/All) ${alignr}${color1}${fs_used /home} / ${fs_size /home}
 ${color3}[Network] ${hr 2}${color1}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
 ${color2}enp0s20f0u2u2u4
 		${color1}Down ${downspeed enp0s20f0u2u2u4}/s ${alignr}Up ${upspeed enp0s20f0u2u2u4}/s

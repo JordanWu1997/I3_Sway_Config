@@ -86,8 +86,6 @@ ${color2}Disk ${alignr}${color1}${fs_used /home} / ${fs_size /home}
 ${color2}IO R/W ${color1}${alignr}${diskio_read /dev/sda} / s ${color1}${alignr}${diskio_write /dev/sda} / s
 ${color2}Internal IP ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
 ${color2}Gateway IP ${alignr}${color1}${gw_ip}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s3}/s   ${alignr}Tot ${totaldown enp0s3}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s3}/s   ${alignr}Tot ${totalup enp0s3}
 ${voffset 5}${color3}[System Monitor] ${hr 2}
 ${voffset -5}${color2}${hr 1}
 ${color2}Top ${alignr}${color1}CPU      ${alignr}MEM

@@ -1,3 +1,4 @@
+# -- vim: ts=4 sw=4 noet ai cindent syntax=lua
 # ~/.config/dunst/dunstrc
 #
 # This dunst configuration is based on:
@@ -24,8 +25,8 @@
 	# Geometry (dunst version >= 1.7)
     width = (0, 640)
 	height = 320
-    origin = "bottom-right"
-    offset = 25x25
+	origin = "bottom-right"
+	offset = 25x25
 
 	### Progress bar ###
 
@@ -53,7 +54,7 @@
 	# Sort messages by urgency.
 	sort = no
 
-	# Don't remove messages, if the user is idle (no mouse or keyboard input)
+	# Do not remove messages, if the user is idle (no mouse or keyboard input)
 	idle_threshold = 120
 
 	### Text ###
@@ -72,7 +73,7 @@
 	# Alignment of message text.
 	alignment = right
 
-	# Split notification into multiple lines if they don't fit into Geometry
+	# Split notification into multiple lines if they do not fit into Geometry
 	word_wrap = yes
 
 	# Vertical alignment of message text and icon.
@@ -100,6 +101,10 @@
 	mouse_left_click = do_action, close_current
 	mouse_middle_click = close_all
 	mouse_right_click = close_current
+
+	### Icon ###
+	min_icon_size = 30
+	max_icon_size = 100
 
 	### Misc/Advanced ###
 	dmenu = /usr/bin/rofi -dmenu -p dunst

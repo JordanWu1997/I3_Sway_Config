@@ -40,20 +40,20 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=10',
+	font = 'DroidSanMono Nerd Font:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
 
 -- Graphical --
-	default_color = '#bfbfbf',
+	default_color = '#953515',
 	color1 = '#bfbfbf',
 	color2 = '#953515',
 	color3 = '#D94922',
 	own_window_colour = '#010101',
 	default_outline_color = '#FFFFFF',
 	default_shade_color = '#000000',
-	border_width = 2,
+	border_width = 1,
 	stippled_borders = 0,
 	draw_borders = false,
 	draw_graph_borders = true,

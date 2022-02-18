@@ -39,20 +39,20 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=10',
+	font = 'DroidSanMono Nerd Font:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
 
 -- Graphical --
-	default_color = '#bfbfbf',
+	default_color = '#953515',
 	color1 = '#bfbfbf',
 	color2 = '#953515',
 	color3 = '#D94922',
 	own_window_colour = '#010101',
 	default_outline_color = '#FFFFFF',
 	default_shade_color = '#000000',
-	border_width = 2,
+	border_width = 1,
 	stippled_borders = 0,
 	draw_borders = false,
 	draw_graph_borders = true,
@@ -73,23 +73,23 @@ conky.config = {
 };
 
 conky.text = [[
-${color3}[Distro] ${hr 2}
-${voffset 40}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 230x104}${color1}
+${voffset 5}${color3}[Distro] ${hr 2}
+${voffset 35}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 230x104}${color1}
 ${voffset 20}${color3}[System Info] ${hr 2}${color1}
 ${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}
 ${color2}Local Uptime ${alignr}${color1}${uptime}
 ${color3}[Processor] ${hr 2}${color1}
-${color2}Fanspeed / Temp ${alignr}${color1}${ibm_fan} RPM / ${ibm_temps 0} °C
-${color2}Usage / Freq ${alignr}${color1}${cpu}% ${alignr}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
+${color2}Fan / Temp. ${alignr}${color1}${ibm_fan} RPM / ${ibm_temps 0} °C
+${color2}Usage / Freq. ${alignr}${color1}${cpu}% / ${alignr}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${voffset -5}${color2}${hr 1}
-${color2}Top ${alignr}${color1}CPU  MEM
+${color2}Top ${alignr}${color1}CPU		${alignr}${color1}MEM
 ${voffset -5}${color2}${hr 1}
-${color2}${top name 1} ${alignr}${color1}${top cpu 1} ${alignr}${top mem 1}
-${color2}${top name 2} ${alignr}${color1}${top cpu 2} ${alignr}${top mem 2}
-${color2}${top name 3} ${alignr}${color1}${top cpu 3} ${alignr}${top mem 3}
-${color2}${top name 4} ${alignr}${color1}${top cpu 4} ${alignr}${top mem 4}
-${color2}${top name 5} ${alignr}${color1}${top cpu 4} ${alignr}${top mem 4}
+${color2}${top name 1} ${alignr}${color1}${top cpu 1}	${alignr}${top mem 1}
+${color2}${top name 2} ${alignr}${color1}${top cpu 2}	${alignr}${top mem 2}
+${color2}${top name 3} ${alignr}${color1}${top cpu 3}	${alignr}${top mem 3}
+${color2}${top name 4} ${alignr}${color1}${top cpu 4}	${alignr}${top mem 4}
+${color2}${top name 5} ${alignr}${color1}${top cpu 5}	${alignr}${top mem 5}
 ${color3}[Memory] ${hr 2}${color1}
 ${color2}RAM (Used/All) ${alignr}${color1} ${mem} / ${memmax}
 ${color2}Swap (Used/All) ${alignr}${color1} ${swap} / ${swapmax}

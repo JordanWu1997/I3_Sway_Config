@@ -39,20 +39,20 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=10',
+	font = 'DroidSanMono Nerd Font:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
 
 -- Graphical --
-	default_color = '#bfbfbf',
+	default_color = '#953515',
 	color1 = '#bfbfbf',
 	color2 = '#953515',
 	color3 = '#D94922',
 	own_window_colour = '#010101',
 	default_outline_color = '#FFFFFF',
 	default_shade_color = '#000000',
-	border_width = 2,
+	border_width = 1,
 	stippled_borders = 0,
 	draw_borders = false,
 	draw_graph_borders = true,
@@ -73,27 +73,31 @@ conky.config = {
 };
 
 conky.text = [[
-${color3}[Distro] ${hr 2}
-${voffset 50}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 3,0 -s 230x104}
+${voffset 5}${color3}[Distro] ${hr 2}
+${voffset 45}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 3,0 -s 230x104}
 ${voffset 5}${color3}[Information] ${hr 2}
 ${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}
 ${color2}Machine Uptime ${alignr}${color1}${uptime}
-${color2}CPU ${alignr}${color1}${cpu cpu1}%  ${alignr}${color1}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
+${voffset -5}${color2}${hr 1}
+${color2}Processor ${alignr}${color1}${cpu}% / ${alignr}${color1}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${color2}Memory ${alignr}${color1} ${mem} / ${memmax}
 ${color2}Swap ${alignr}${color1} ${swap} / ${swapmax}
-${color2}Disk ${alignr}${color1}${fs_used /home} / ${fs_size /home}
-${color2}IO R/W ${color1}${alignr}${diskio_read /dev/sda} / s ${color1}${alignr}${diskio_write /dev/sda} / s
-${color2}Internal IP ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
+${voffset -5}${color2}${hr 1}
+${color2}Disk Usage ${alignr}${color1}${fs_used /home} / ${fs_size /home}
+${color2}Disk IO R/W ${color1}${alignr}${diskio_read /dev/sda} / s ${color1}${alignr}${diskio_write /dev/sda} / s
+${voffset -5}${color2}${hr 1}
+${color2}External IP ${alignr}${color1}${exec wget http://ipinfo.io/ip -qO -}
 ${color2}Gateway IP ${alignr}${color1}${gw_ip}
+${color2}Internal IP ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
 ${voffset 5}${color3}[System Monitor] ${hr 2}
 ${voffset -5}${color2}${hr 1}
-${color2}Top ${alignr}${color1}CPU      ${alignr}MEM
+${color2}Top ${alignr}${color1}CPU		${alignr}MEM
 ${voffset -5}${color2}${hr 1}
-${color2}${top name 1} ${alignr}${color1}${top cpu 1}     ${alignr}${top mem 1}
-${color2}${top name 2} ${alignr}${color1}${top cpu 2}     ${alignr}${top mem 2}
-${color2}${top name 3} ${alignr}${color1}${top cpu 3}     ${alignr}${top mem 3}
-${color2}${top name 4} ${alignr}${color1}${top cpu 4}     ${alignr}${top mem 4}
-${color2}${top name 5} ${alignr}${color1}${top cpu 5}     ${alignr}${top mem 5}
+${color2}${top name 1} ${alignr}${color1}${top cpu 1}	${alignr}${top mem 1}
+${color2}${top name 2} ${alignr}${color1}${top cpu 2}	${alignr}${top mem 2}
+${color2}${top name 3} ${alignr}${color1}${top cpu 3}	${alignr}${top mem 3}
+${color2}${top name 4} ${alignr}${color1}${top cpu 4}	${alignr}${top mem 4}
+${color2}${top name 5} ${alignr}${color1}${top cpu 5}	${alignr}${top mem 5}
 ${color3}${hr 2}
 ]]

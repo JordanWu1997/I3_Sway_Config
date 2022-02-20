@@ -99,4 +99,4 @@ fi
 
 # Restore border for all windows
 echo $DEFAULT_WIDTH
-i3-msg [con_mark="^.*"] border $DEFAULT_WIDTH
+i3-msg "[all] border $DEFAULT_WIDTH; [floating] border normal"

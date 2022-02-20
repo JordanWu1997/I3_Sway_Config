@@ -96,9 +96,13 @@ ${color2}focus children WD ${alignr}${color1}[S]+[Shift]+[a]
 ${color2}mark current WD ${alignr}${color1}[S]+[m]
 ${color2}goto marked WD ${alignr}${color1}[S]+[Esc/g/']
 ${color2}swap marked WD  ${alignr}${color1}[S]+([Shift])+[;]
+${color2}toggle WD titlebar ${alignr}${color1}[S]+([Shift])+[n]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=12}[Floating / Scratchpad]${font}${voffset 5}
 ${color2}floating toggle ${alignr}${color1}[S]+[Shift]+[Space]
 ${color2}floating focus toggle ${alignr}${color1}[S]+[Space]
+${color2}move floating WD ${alignr}${color1}[left-click] titlebar
+${color2}kill floating WD ${alignr}${color1}[middle-click] titlebar
+${color2}resize floating WD ${alignr}${color1}[right-click] titlebar
 ${color2}send WD to SP ${alignr}${color1}[S]+([Shift])+[-]
 ${color2}bring WD to FG ${alignr}${color1}[S]+([Shift])+[=]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:size=12}[Function / Mode]${font}${voffset 5}

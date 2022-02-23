@@ -29,7 +29,7 @@ case $2 in
             if (( $(($CURRENT + 1)) == 41 )); then
                 NEW="1:A1"
             else
-                NEW="$(( $CURRENT + 1 )):C$(( $CURRENT + 1 - 30  ))"
+                NEW="$(( $CURRENT + 1 )):D$(( $CURRENT + 1 - 30  ))"
             fi
         fi
         ;;

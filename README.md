@@ -263,7 +263,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - __`[Winkey]` + Click__
         - Toggle floating mode
 - __Scroll Wheel__
-    - __Scroll Up/Down Title Bar__
+    - __Scroll Up Title Bar__
+        - Send to scratchpad
+    - __Scroll Down Title Bar__
         - Toggle floating mode
 
 </details>

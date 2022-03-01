@@ -118,21 +118,21 @@
 
 [urgency_low]
 
-	background = "#6f270f"
+	background = "#953515"
 	foreground = "#bfbfbf"
 	frame_color = "#AD4C2D"
 	timeout = 5
 
 [urgency_normal]
 
-	background = "#6f270f"
+	background = "#953515"
 	foreground = "#bfbfbf"
 	frame_color = "#AD4C2D"
 	timeout = 10
 
 [urgency_critical]
 
-	background = "#6f270f"
+	background = "#953515"
 	foreground = "#bfbfbf"
 	frame_color = "#AD4C2D"
 	timeout = 120

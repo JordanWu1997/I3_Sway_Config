@@ -65,7 +65,7 @@ set $default_outer_gap 0
 #       too faint for other TUI applications.
 
 # Startup-Wal (DO NOT MOVE current and following line unless you know what you are doing)
-exec --no-startup-id wal -i $HOME/.config/i3/share/default_wallpaper
+exec --no-startup-id wal --nine -i $HOME/.config/i3/share/default_wallpaper
 
 # Load colors from Xresource (Pywal)
 # fallback is default value in case resource can't be loaded

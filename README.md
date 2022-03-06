@@ -167,7 +167,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
-    - System command, e.g. exit, power off, reboot, lock, hibernate
+    - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with dual monitor, e.g. joint monitor, mirror monitor
 - __Red Shift Mode (`[Winkey]` + `[Shift]` + `[z]`)__

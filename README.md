@@ -198,6 +198,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - Restore workspace layout
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
     - Customize i3wm, e.g. wallpaper, theme, xcompositor
+        - __Border Mode (`[b]`)__
+            - Container border color scheme
         - __Conky Mode (`[c]`)__
             - System_monitor, i3 bindkey sheet, conky color palette
         - __Picom Mode (`[p]`)__
@@ -208,6 +210,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - Auto-theme with pywal and reload applications after auto-theming
         - __Wallpaper Mode (`[w]`)__
             - Select wallpaper, set default wallpaper
+- __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
+    - Show/hide i3bar, set default i3bar status (show/hide), reload i3bar
 
 </details>
 </details>

@@ -36,4 +36,9 @@ case $1 in
             i3-msg "bar mode hide $BAR_ID"
         fi
         ;;
+    "bar_reload")
+        i3-msg exec 'killall i3bar; sleep 1'
+        i3-msg exec 'i3bar -b bar_base'
+        i3-msg exec 'i3bar -b bar_overlay'
+        ;;
 esac

@@ -30,7 +30,7 @@ bar_spacing = 1
 # Note: there is a minimum total bandwidth of 43Mhz x number of bars.
 # Cava will automatically increase the higher cutoff if a too low band is specified.
 lower_cutoff_freq = 100
-higher_cutoff_freq = 15000
+higher_cutoff_freq = 18000
 
 # FFT buffer is set in the exponent of 2 and must be between 8 - 16, 8 = 256, 16 = 65536
 # this is the audio buffer used to create the spectrum

@@ -366,6 +366,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - https://i3wm.org/docs/userguide.html
+- https://wiki.archlinux.org/title/I3
 - https://github.com/Airblader/i3 (i3-gap)
 - https://github.com/levinit/i3wm-config (written in Chinese)
 - https://www.itread01.com/p/142448.html (written in Chinese)

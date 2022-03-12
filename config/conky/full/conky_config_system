@@ -117,6 +117,7 @@ ${color2}Gateway IP ${alignr}${color1}${gw_ip}${if_existing /sys/class/net/enp0s
 ${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u3u2u3/operstate up}
 ${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
 ${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
+${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u5/operstate unknown}
 ${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
 ${color2}Internal IP (wifi) ${alignr}${color1}${exec ip a | grep inet | grep wlp | grep -vw lo | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}
 ${voffset -5}${color2}${hr 1}
@@ -129,7 +130,9 @@ ${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u2u2u4}/s   ${alignr}${tot
 ${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s31f6}/s   ${alignr}${totaldown enp0s31f6}
 ${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s31f6}/s   ${alignr}${totalup enp0s31f6}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
 ${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u1}/s   ${alignr}${totaldown enp0s20f0u1}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u1}/s   ${alignr}${totalup enp0s20f0u1}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
+${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u1}/s   ${alignr}${totalup enp0s20f0u1}${endif}${if_existing /sys/class/net/enp0s20f0u5/operstate unknown}
+${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u5}/s   ${alignr}${totaldown enp0s20f0u5}
+${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u5}/s   ${alignr}${totalup enp0s20f0u5}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
 ${color2}Wifi-Dw ${alignr}${color1}${downspeed wlp3s0}/s   ${alignr}${totaldown wlp3s0}
 ${color2}Wifi-Up ${alignr}${color1}${upspeed wlp3s0}/s   ${alignr}${totalup wlp3s0}${endif}
 ${voffset 12}

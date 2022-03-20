@@ -26,7 +26,7 @@ case $1 in
         sed -i "$COL_WIN3 s/.*/client.unfocused        \$c1     \$c1     \$c7     \$c1     \$c1/" "$WINDOW_CONFIG"
         sed -i "$COL_WIN4 s/.*/client.urgent           \$c0     \$c15    \$c0     \$c15    \$c15/" "$WINDOW_CONFIG"
         sed -i "$COL_WIN5 s/.*/client.placeholder      \$c1     \$c1     \$c15    \$c9     \$c1/" "$WINDOW_CONFIG"
-        sed -i "$COL_WIN6 s/.*/client.background               \$c0/" "$WINDOW_CONFIG"
+        sed -i "$COL_WIN6 s/.*/client.background               \$transp/" "$WINDOW_CONFIG"
         ;;
     "dirchromatic")
         # Set window decoration
@@ -35,7 +35,7 @@ case $1 in
         sed -i "$COL_WIN3 s/.*/client.unfocused        \$c1     \$c1     \$c7     \$c12    \$c1/" "$WINDOW_CONFIG"
         sed -i "$COL_WIN4 s/.*/client.urgent           \$c0     \$c15    \$c0     \$c15    \$c0/" "$WINDOW_CONFIG"
         sed -i "$COL_WIN5 s/.*/client.placeholder      \$c1     \$c1     \$c15    \$c14    \$c1/" "$WINDOW_CONFIG"
-        sed -i "$COL_WIN6 s/.*/client.background               \$c0/" "$WINDOW_CONFIG"
+        sed -i "$COL_WIN6 s/.*/client.background               \$transp/" "$WINDOW_CONFIG"
         ;;
 esac
 

@@ -102,7 +102,10 @@ ${color2}enp0s20f0u2u2u4
 		${color1}Total ${totaldown enp0s20f0u2u2u4} ${alignr}Total ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}
 ${color2}enp0s20f0u2u2u3
 		${color1}Down ${downspeed enp0s20f0u2u2u3}/s ${alignr}Up ${upspeed enp0s20f0u2u2u3}/s
-		${color1}Total ${totaldown enp0s20f0u2u2u3} ${alignr}Total ${totalup enp0s20f0u2u2u3}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
+		${color1}Total ${totaldown enp0s20f0u2u2u3} ${alignr}Total ${totalup enp0s20f0u2u2u3}${endif}${if_existing /sys/class/net/enp0s20f0u3u2u3/operstate up}
+${color2}enp0s20f0u3u2u3
+		${color1}Down ${downspeed enp0s30f0u2u2u3}/s ${alignr}Up ${upspeed enp0s30f0u2u2u3}/s
+		${color1}Total ${totaldown enp0s30f0u2u2u3} ${alignr}Total ${totalup enp0s30f0u2u2u3}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
 ${color2}enp0s31f6
 		${color1}Down ${downspeed enp0s31f6}/s ${alignr}Up ${upspeed enp0s31f6}/s
 		${color1}Total ${totaldown enp0s31f6} ${alignr}Total ${totalup enp0s31f6}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}

@@ -96,7 +96,10 @@ ${color2}Swap (Used/All) ${alignr}${color1} ${swap} / ${swapmax}
 ${color3}[Disk] ${hr 2}${color1}
 ${color2}Root (Used/All) ${alignr}${color1}${fs_used /} / ${fs_size /}
 ${color2}Home (Used/All) ${alignr}${color1}${fs_used /home} / ${fs_size /home}
-${color3}[Network] ${hr 2}${color1}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
+${color3}[Network] ${hr 2}${color1}${if_existing /sys/class/net/enp0s20f0u5/operstate unknown}
+${color2}enp0s20f0u5
+		${color1}Down ${downspeed enp0s20f0u5}/s ${alignr}Up ${upspeed enp0s20f0u5}/s
+		${color1}Total ${totaldown enp0s20f0u5} ${alignr}Total ${totalup enp0s20f0u5}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
 ${color2}enp0s20f0u2u2u4
 		${color1}Down ${downspeed enp0s20f0u2u2u4}/s ${alignr}Up ${upspeed enp0s20f0u2u2u4}/s
 		${color1}Total ${totaldown enp0s20f0u2u2u4} ${alignr}Total ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}

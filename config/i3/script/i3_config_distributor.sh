@@ -11,11 +11,19 @@
 PROFILE="$HOME/.profile"
 
 add_enviroment_variables () {
-    echo ''                                           >> $PROFILE
-    echo '# ========== I3WM Environments ===========' >> $PROFILE
-    echo 'export I3_SCRIPT=""$HOME/.config/i3/script' >> $PROFILE
-    echo 'export PATH="$I3_SCRIPT:$PATH"'             >> $PROFILE
-    echo '# ========================================' >> $PROFILE
+    echo ''                                               >> $PROFILE
+    echo '# =========== I3_SCRIPT Variables ============' >> $PROFILE
+    echo 'export I3_SCRIPT=""$HOME/.config/i3/script'     >> $PROFILE
+    echo '# ============================================' >> $PROFILE
+    echo ''                                               >> $PROFILE
+    echo '# ============ I3_SHARE Variables ============' >> $PROFILE
+    echo 'export WALLPAPERI3="$HOME/.config/i3/share"'    >> $PROFILE
+    echo '# ============================================' >> $PROFILE
+    echo ''                                               >> $PROFILE
+    echo '# ============ I3WM Environments =============' >> $PROFILE
+    echo 'export PATH="$I3_SCRIPT:$PATH"'                 >> $PROFILE
+    echo '# ============================================' >> $PROFILE
+    echo ''                                               >> $PROFILE
 }
 
 section1_greetings () {

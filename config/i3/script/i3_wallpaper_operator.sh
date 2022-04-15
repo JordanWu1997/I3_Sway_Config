@@ -17,8 +17,12 @@ case $1 in
     "variety")
         case $2 in
             "set_default")
-                rm -f $DEFAULT_WALLPAPER
-                cp $VARIETY_WALLPAPER $DEFAULT_WALLPAPER
+                if [[ $VARIETY_WALLPAPER != $DEFAULT_WALLPAPER ]]; then
+                    rm -f $DEFAULT_WALLPAPER
+                    cp $VARIETY_WALLPAPER $DEFAULT_WALLPAPER
+                else
+                    notify-send -u low "Wallpaper" "Already saved as default wallpaper"
+                fi
                 ;;
             "save_current")
                 cp $VARIETY_WALLPAPER $WALLPAPERV
@@ -28,8 +32,12 @@ case $1 in
     "feh")
         case $2 in
             "set_default")
-                rm -f $DEFAULT_WALLPAPER
-                cp $FEH_WALLPAPER $DEFAULT_WALLPAPER
+                if [[  $FEH_WALLPAPER != $DEFAULT_WALLPAPER ]]; then
+                    rm -f $DEFAULT_WALLPAPER
+                    cp $FEH_WALLPAPER $DEFAULT_WALLPAPER
+                else
+                    notify-send -u low "Wallpaper" "Already saved as default wallpaper"
+                fi
                 ;;
             "save_current")
                 cp $FEH_WALLPAPER $WALLPAPERF

@@ -73,9 +73,9 @@ conky.config = {
 };
 
 conky.text = [[
-${voffset 5}${color3}[Distro] ${hr 2}
+${voffset 5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[Distro] ${hr 2}${font}
 ${voffset 45}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 3,0 -s 230x104}
-${voffset 5}${color3}[Information] ${hr 2}
+${voffset 5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[Information] ${hr 2}${font}
 ${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}
 ${color2}Machine Uptime ${alignr}${color1}${uptime}
@@ -90,7 +90,7 @@ ${voffset -5}${color2}${hr 1}
 ${color2}External IP ${alignr}${color1}${exec wget http://ipinfo.io/ip -qO -}
 ${color2}Gateway IP ${alignr}${color1}${gw_ip}
 ${color2}Internal IP ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
-${voffset 5}${color3}[System Monitor] ${hr 2}
+${voffset 5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[System Monitor] ${hr 2}${font}
 ${voffset -5}${color2}${hr 1}
 ${color2}Top ${alignr}${color1}CPU		${alignr}MEM
 ${voffset -5}${color2}${hr 1}

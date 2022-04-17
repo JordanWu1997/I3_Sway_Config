@@ -75,7 +75,7 @@ conky.config = {
 
 conky.text = [[
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[System Command] ${hr 2}${font}
-${color2}open terminal ${alignr}${color1}[S]+[Enter]
+${color2}open terminal ${alignr}${color1}[S]+([Shift])+[Enter]
 ${color2}system option ${alignr}${color1}[S]+[Shift]+[Esc]
 ${color2}reload/restart i3 ${alignr}${color1}[S]+([Shift])+[r]
 ${color2}application (rofi) ${alignr}${color1}[S]+([Shift])+[d]
@@ -108,7 +108,7 @@ ${color2}mark focused WD ${alignr}${color1}[S]+[m]
 ${color2}goto WD with mark ${alignr}${color1}[S]+[Esc/g/']
 ${color2}swap WD with mark ${alignr}${color1}[S]+[;]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Datetime] ${hr 2}${voffset 2}${font}
-${color2}${font Roboto:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
-${color1}${font Roboto:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}
+${color2}${font DroidSanMono Nerd Font:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${color1}${font DroidSanMono Nerd Font:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}
 ${color3}${hr 2}
 ]]

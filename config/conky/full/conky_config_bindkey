@@ -119,6 +119,6 @@ ${color2}resize mode ${alignr}${color1}[Ctrl]+[Alt]+[r]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
 ${voffset 5}${color3}${hr 2}${voffset 5}
 ${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignc}${time %l}:${time %M} ${time %p}${font}
-${voffset 4}${color2}${font DroidSanMono Nerd Font:bold:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${voffset 4}${color2}${font DroidSanMono Nerd Font:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
 ${voffset 5}${color3}${hr 2}${voffset 5}
 ]]

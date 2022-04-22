@@ -1,6 +1,6 @@
 # I3_Sway_Config
 Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>,
-and configurations of applications for the working environment in X11
+and configurations of applications for the working environment in Xorg, <s>Wayland</s>
 
 Table of Contents
 =================

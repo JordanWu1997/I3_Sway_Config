@@ -138,5 +138,5 @@ ${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u5}/s   ${alignr}${total
 ${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u5}/s   ${alignr}${totalup enp0s20f0u5}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
 ${color2}Wifi-Dw ${alignr}${color1}${downspeed wlp3s0}/s   ${alignr}${totaldown wlp3s0}
 ${color2}Wifi-Up ${alignr}${color1}${upspeed wlp3s0}/s   ${alignr}${totalup wlp3s0}${endif}
-${voffset 12}
+${voffset 0}
 ]]

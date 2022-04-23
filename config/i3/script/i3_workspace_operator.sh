@@ -149,7 +149,7 @@ case $1 in
             tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
         # Assign new workspace decreasely
         if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
-            if (( $(($CURRENT - 2)) == 0 )); then
+            if (( $(($CURRENT - 1)) == 0 )); then
                 PREV="40:D10"
             else
                 PREV="$(( $CURRENT - 1 )):A$(( $CURRENT - 1 - 0  ))"

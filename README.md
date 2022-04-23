@@ -333,9 +333,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Go to Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next workspace
     - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
-    - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Tab]`: Swap (prev)/next workspace (create one if it does not exist)
-    - `[Ctrl]`+`[Alt]`+`[Tab]`: Go to next workspace back and forth
+    - `[Winkey]` + `[Ctrl]` + `[Tab]`: Go to next workspace back and forth
     - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next workspace (create one if it does not exist)
+- __Swap Workspace (Relatively)__
+    - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap (prev)/next workspace (create one if it does not exist)
 - __Send Window to Workspace (Absolutely)__
     - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1), Note: # < 11
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: # < 11

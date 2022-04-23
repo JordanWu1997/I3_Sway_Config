@@ -4,8 +4,8 @@
 CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
     tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
 
-# Assign new workspace increasely
 case $2 in
+    # Assign new workspace increasely
     "inc")
         if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
             if (( $(($CURRENT + 1)) == 11 )); then

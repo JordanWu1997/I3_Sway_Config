@@ -111,6 +111,70 @@ case $1 in
         # Installation: pip install i3-workspace-swap
         i3-workspace-swap -d "$WPNM"
         ;;
+    "swap_next")
+        # Load current workspace
+        CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
+            tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+        # Assign new workspace increasely
+        if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
+            if (( $(($CURRENT + 1)) == 11 )); then
+                NEXT="11:B1"
+            else
+                NEXT="$(( $CURRENT + 1 )):A$(( $CURRENT + 1 - 0  ))"
+            fi
+        elif (( $CURRENT >= 11 )) && (( $CURRENT <= 20 )) ; then
+            if (( $(($CURRENT + 1)) == 21 )); then
+                NEXT="21:C1"
+            else
+                NEXT="$(( $CURRENT + 1 )):B$(( $CURRENT + 1 - 10  ))"
+            fi
+        elif (( $CURRENT >= 21 )) && (( $CURRENT <= 30 )) ; then
+            if (( $(($CURRENT + 1)) == 31 )); then
+                NEXT="31:D1"
+            else
+                NEXT="$(( $CURRENT + 1 )):C$(( $CURRENT + 1 - 20  ))"
+            fi
+        elif (( $CURRENT >= 31 )) && (( $CURRENT <= 40 )) ; then
+            if (( $(($CURRENT + 1)) == 41 )); then
+                NEXT="1:A1"
+            else
+                NEXT="$(( $CURRENT + 1 )):D$(( $CURRENT + 1 - 30  ))"
+            fi
+        fi
+        i3-workspace-swap -d "$NEXT"
+        ;;
+    "swap_prev")
+        # Load current workspace
+        CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
+            tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+        # Assign new workspace decreasely
+        if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
+            if (( $(($CURRENT - 2)) == 0 )); then
+                PREV="40:D10"
+            else
+                PREV="$(( $CURRENT - 1 )):A$(( $CURRENT - 1 - 0  ))"
+            fi
+        elif (( $CURRENT >= 11 )) && (( $CURRENT <= 20 )) ; then
+            if (( $(($CURRENT - 1)) == 10 )); then
+                PREV="10:A10"
+            else
+                PREV="$(( $CURRENT - 1 )):B$(( $CURRENT - 1 - 10  ))"
+            fi
+        elif (( $CURRENT >= 21 )) && (( $CURRENT <= 30 )) ; then
+            if (( $(($CURRENT - 1)) == 20 )); then
+                PREV="20:B10"
+            else
+                PREV="$(( $CURRENT - 1 )):C$(( $CURRENT - 1 - 20  ))"
+            fi
+        elif (( $CURRENT >= 31 )) && (( $CURRENT <= 40 )) ; then
+            if (( $(($CURRENT - 1)) == 30 )); then
+                PREV="30:C10"
+            else
+                PREV="$(( $CURRENT - 1 )):D$(( $CURRENT - 1 - 30  ))"
+            fi
+        fi
+        i3-workspace-swap -d "$PREV"
+        ;;
     *)
         echo $0
         ;;

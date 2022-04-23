@@ -325,19 +325,23 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details>
 <summary>Click to expand/shrink</summary>
 
-- __Go to Workspace__
+- __Go to Workspace (Absolutely)__
     - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl]` + `[Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt]` + `[Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
-    - `[Winkey]` + (`[Shift]`)` + [Tab]`: Go to (prev)/next workspace
-    - `[Alt]` + (`[Shift]`)` + [Tab]`: Go to (prev)/next workspace (create one if it does not exist)
+- __Go to Workspace (Relatively)__
+    - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next workspace
+    - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
+    - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Tab]`: Swap (prev)/next workspace (create one if it does not exist)
+    - `[Ctrl]`+`[Alt]`+`[Tab]`: Go to next workspace back and forth
     - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next workspace (create one if it does not exist)
-- __Send Window to Workspace__
-    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1)
-    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1)
-    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+- __Send Window to Workspace (Absolutely)__
+    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1), Note: # < 11
+    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: # < 11
+    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: # < 11
+    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: # < 11
+- __Send Window to Workspace (Relatively)__
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send to (prev)/next workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
 - __Move between Windows__

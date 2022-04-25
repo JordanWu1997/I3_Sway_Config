@@ -137,7 +137,7 @@ include ./configs/i3_custom.config
 # ======================================================================================
 # All About i3bar Settings
 # ======================================================================================
-# Start i3bar to display a workspace bar
+# Start i3bar to display a status/workspace bar
 
 include ./configs/i3_bar.config
 

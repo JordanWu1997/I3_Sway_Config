@@ -57,12 +57,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
-- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.3.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
+- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.21.2`
-- Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.2`
+- Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
 - Theme configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
 - Xcompositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
-- Notification: [dunst](https://github.com/dunst-project/dunst) `1.7.3`
+- Notification: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
 - Text Editor: [neovim](https://github.com/neovim/neovim) `0.6.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.1c` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)

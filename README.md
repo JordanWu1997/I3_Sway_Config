@@ -92,6 +92,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto mark i3 window
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X11 compositor for blur, transparency, animation support
+- [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
 
 </details>
 

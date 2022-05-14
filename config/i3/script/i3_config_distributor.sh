@@ -164,18 +164,15 @@ install_xwindow_tool_package () {
     echo
     echo "X-window tool package including:"
     echo "-- Display manager: xrandr, arandr, xbacklight, redshift, i3lock, xss-lock"
-    echo "-- Mouse cursor: imwheel, libinput, hhpc"
+    echo "-- Mouse cursor: imwheel, libinput, unclutter-xfixes"
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
     echo "-- System monitor: conky"
     echo "Installation requires sudo permission"
     # X-window tools
-    sudo dnf install xrandr arandr imwheel xdotool xset numlockx libinput \
-                     xbacklight i3lock xss-lock screenkey redshift conky
-    # hhpc
-    cd $HOME/Desktop
-    git clone https://github.com/aktau/hhpc.git
-    cd hhpc
-    sudo make
+    sudo dnf install xrandr arandr xbacklight redshift i3lock xss-lock \
+                     imwheel libinput unclutter-xfixes \
+                     xdotool xset numlock screenkey \
+                     conky
 }
 
 # Audio tools

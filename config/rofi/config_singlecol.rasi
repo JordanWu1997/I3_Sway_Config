@@ -1,4 +1,4 @@
-/*~/.config/rofi/config.rasi*/
+/*~/.config/rofi/config_singlecol.rasi*/
 
 configuration {
 
@@ -79,7 +79,7 @@ configuration {
     /*lines: 11;*/
 
     /*Number of columns*/
-    columns: 3;
+    columns: 1;
 
 }
 

@@ -1,4 +1,4 @@
-/*~/.config/rofi/config.rasi*/
+/*~/.config/rofi/config_i3mark.rasi*/
 
 configuration {
 
@@ -36,8 +36,8 @@ configuration {
     /*Key shortcut*/
     kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+Shift+h";
     kb-remove-to-eol: "Control+Shift+k";
-    kb-accept-entry: "!Alt-Tab,Return,KP_Enter,Alt+space,Control+space";
-    kb-row-up: "Up,Alt+k,Control+k,Control+p";
+    kb-accept-entry: "!Alt+ISO_Left_Tab,!Alt-Tab,Return,KP_Enter,Alt+space,Control+space";
+    kb-row-up: "Alt+ISO_Left_Tab,Up,Alt+k,Control+k,Control+p";
     kb-row-down: "Alt+Tab,Down,Alt+j,Control+j,Control+n";
     kb-row-left: "Alt+h,Control+h";
     kb-row-right: "Alt+l,Control+l";

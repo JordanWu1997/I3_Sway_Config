@@ -25,7 +25,6 @@ conky.config = {
 	own_window_argb_value = 64,
 	own_window_argb_visual = true,
 	own_window_class = 'Conky',
-	own_window_colour = '#010101',
 	own_window_transparent = false,
 	own_window_title = 'i3_conky_bindkey_light',
 	own_window_type = 'override',
@@ -78,9 +77,9 @@ ${color3}${font DroidSanMono Nerd Font:bold:size=9}[System Command] ${hr 2}${fon
 ${color2}open terminal ${alignr}${color1}[S]+([Shift])+[Enter]
 ${color2}system option ${alignr}${color1}[S]+[Shift]+[Esc]
 ${color2}reload/restart i3 ${alignr}${color1}[S]+([Shift])+[r]
-${color2}application (rofi) ${alignr}${color1}[S]+([Shift])+[d]
-${color2}window selector (rofi) ${alignr}${color1}[Alt]+[Tab]
-${color2}bindkey map (rofi) ${alignr}${color1}[S]+[Shift]+[/]
+${color2}app./exec. launcher ${alignr}${color1}[S]+([Shift])+[d]
+${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab]
+${color2}bindkey cheatsheet ${alignr}${color1}[S]+[Shift]+[/]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Workspace / Window] ${hr 2}${font}
 ${color2}navigate to WS ${alignr}${color1}[S]+[(F)\#]
 ${color2}send WD to WS ${alignr}${color1}[S]+[Shift]+[(F)\#]

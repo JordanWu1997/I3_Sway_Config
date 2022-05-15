@@ -1,0 +1,30 @@
+/*~/.config/feh/keys*/
+
+# Unset default keymapping
+next_img
+prev_img
+zoom_fit
+zoom_in
+zoom_out
+scroll_right
+scroll_left
+scroll_up
+scroll_down
+reload_plus
+reload_minus
+
+# Default keymapping
+# [</>]: Rotate image 90 degree (counter)clockwise
+# [_]: Flip image vertically
+# [|]: Flip image horizontally (mirror)
+
+# Customize keymapping
+zoom_fit plus
+zoom_in equal
+zoom_out minus
+scroll_up Up j
+scroll_down Down k
+scroll_left Left h
+scroll_right Right l
+next_img n
+prev_img p

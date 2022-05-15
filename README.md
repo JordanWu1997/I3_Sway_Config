@@ -60,7 +60,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.21.2`
 - Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
-- Theme configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
+- Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
 - Xcompositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
 - Notification: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`

@@ -383,6 +383,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - https://github.com/rjekker/i3-battery-popup
 - https://github.com/lincheney/i3-automark
 - https://www.youtube.com/watch?v=j1I63wGcvU4&list=PL5ze0DjYv5DbCv9vNEzFmP6sU7ZmkGzcf
+- https://regolith-linux.org/
+- https://arcolinux.com/
 
 </details>
 </details>

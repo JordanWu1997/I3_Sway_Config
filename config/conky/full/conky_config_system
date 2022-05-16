@@ -112,7 +112,7 @@ ${voffset -5}${color2}${hr 1}
 ${color2}Read ${alignr}${color1}${diskio_read /dev/sda}/s
 ${color2}Write ${alignr}${color1}${diskio_write /dev/sda}/s
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Network]${font}${voffset 5}${color1}
-${color2}External IP ${alignr}${color1}${execi 60 curl ipinfo.io/ip}
+${color2}External IP ${alignr}${color1}${execi 5 curl ipinfo.io/ip}
 ${color2}Gateway IP ${alignr}${color1}${gw_ip}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
 ${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}
 ${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u3u2u3/operstate up}

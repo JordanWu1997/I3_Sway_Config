@@ -98,6 +98,13 @@ configuration {
 
 }
 
+#inputbar {
+
+    /*Inputbar component*/
+    children: [prompt,textbox-prompt-colon,entry,num-filtered-rows];
+
+}
+
 #scrollbar {
 
     /*Scrollbar width*/

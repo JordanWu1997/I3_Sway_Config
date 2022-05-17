@@ -56,6 +56,13 @@ configuration {
 
 }
 
+#inputbar {
+
+    /*Inputbar component*/
+    children: [prompt,textbox-prompt-colon,entry];
+
+}
+
 #window {
 
     /*Fullscreen*/

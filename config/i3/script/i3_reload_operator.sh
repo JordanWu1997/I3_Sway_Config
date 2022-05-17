@@ -23,3 +23,6 @@ notify-send -u low "Theme Mode" "Reload zathura (PDF viewer)"
 
 # Restart i3
 i3-msg restart
+
+# Reload picom
+$I3_SCRIPT/i3_picom_operator.sh default

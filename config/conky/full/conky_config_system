@@ -33,8 +33,8 @@ conky.config = {
 	alignment = 'top_right',
 	gap_x = 30,
 	gap_y = 30,
-	minimum_width = 230,
-	maximum_width = 230,
+	minimum_width = 240,
+	maximum_width = 240,
 
 -- Font --
 	use_xft = true,
@@ -74,14 +74,14 @@ conky.config = {
 
 conky.text = [[
 ${color3}${hr 2}
-${voffset 48}${alignc}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 230x104}
+${voffset 48}${alignc}${image ~/.config/i3/share/fedora_logo_darkbackground.png -p +5,0 -s 240x105}
 ${voffset 10}${color3}${hr 2}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Information]${font}${voffset 5}
 ${voffset 5}${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}
 ${color2}Machine Uptime ${alignr}${color1}${uptime}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Processor]${font}${voffset 5}
-${alignr}${color1}${exec lscpu | grep 'Model name' | cut -c 52-100}
+${alignc}${color1}${exec cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq | awk -F ' CPU ' '{print $1,$2}'}${font}
 ${color2}Temp. / Fan ${alignr}${color1}${ibm_temps 0} °C / ${alignr}${color1}${ibm_fan} RPM
 ${color2}Usage / Freq. ${alignr}${color1}${cpu} % / ${alignr}${color1}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${color2}Processes (Running) ${alignr}${color1}${processes} (${running_processes})
@@ -102,7 +102,7 @@ ${color2}${top_mem name 1} ${alignr}${color1}${top_mem cpu 1}	${alignr}${top mem
 ${color2}${top_mem name 2} ${alignr}${color1}${top_mem cpu 2}	${alignr}${top mem 2}
 ${color2}${top_mem name 3} ${alignr}${color1}${top_mem cpu 3}	${alignr}${top mem 3}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Graphics]${font}${voffset 5}
-${alignr}${color1}${exec lspci | grep VGA | cut -c 36-68}
+${alignc}${color1}${exec lspci | grep VGA | awk -F 'VGA compatible controller: ' '{print $2}' | cut -d '(' -f 1} ${font}
 ${color2}GPU Freq. ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card0/gt_cur_freq_mhz)} MHz / ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card0/gt_max_freq_mhz)} MHz
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Disk]${font}${voffset 5}
 ${color2}Disk Usage ${alignr}${color1}${fs_used /home} / ${fs_size /home}

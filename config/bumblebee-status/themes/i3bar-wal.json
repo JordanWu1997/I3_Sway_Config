@@ -1,7 +1,14 @@
 {
-    "icons": [ "awesome-fonts" ],
-    "colors": ["wal"],
+    "icons": [
+        "awesome-fonts"
+    ],
+    "colors": [
+        "wal"
+    ],
     "defaults": {
+        "fg": "cursor",
+        "bg": "color0",
+        "default-separators": false,
         "separator-block-width": 0,
         "separator": "",
         "warning": {
@@ -11,18 +18,15 @@
     	"critical": {
             "fg": "color11",
             "bg": "color0"
-    		},
-        "fg": "cursor",
-
-        "bg": "color0"
+    		}
     },
     "battery": {
         "charged": {
-            "fg": "color11",
+            "fg": "color15",
             "bg": "color0"
         },
         "charging": {
-            "fg": "color15",
+            "fg": "color11",
             "bg": "color0"
         }
     }

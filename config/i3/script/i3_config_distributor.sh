@@ -187,7 +187,7 @@ install_audio_tool_package () {
     python -m pip install pulsemixer
     # Cava/Vis [https://github.com/dpayne/cli-visualizer]
     sudo dnf install cava
-    dnf install fftw-devel ncurses-devel pulseaudio-libs-devel cmake
+    sudo dnf install fftw-devel ncurses-devel pulseaudio-libs-devel cmake
     cd $HOME/Desktop
     git clone https://github.com/dpayne/cli-visualizer.git
     cd cli-visualizer

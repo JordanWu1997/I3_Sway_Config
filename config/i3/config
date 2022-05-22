@@ -22,6 +22,7 @@
 # All About Mod Key Settings And I3 Variables
 # ======================================================================================
 # Setup i3 key and some variables
+# DO NOT MOVE/REMOVE lines within this session unless you know what you are doing
 
 # Setup mod (Prefix)
 # Mod1: alt, Mod4: win
@@ -46,7 +47,7 @@ set $default_titlebar_fontsize 12
 # Setup border width (set normal to show window titlebar)
 set $default_border_width pixel 2
 
-# Setup gap width (only for i3-gap, set 0 to reduce to original i3)
+# Setup gap width (only for i3-gap, set 0 to reduce to original gapless i3)
 set $default_inner_gap 10
 set $default_outer_gap 0
 

@@ -13,6 +13,7 @@ COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/c
 COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
@@ -40,6 +41,10 @@ case $CHANGE_ITEM in
         sed -i "$COL_TITLEBAR_FONTSIZE s/.*/set \$default_titlebar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
+    "i3bar_fontsize")
+        sed -i "$COL_I3BAR_FONTSIZE s/.*/set \$default_i3bar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
     "picom")
         rm "$HOME/.config/picom/picom.conf"
         ln -s "$PICOM_DIR/picom_$NEW_DEFAULT_VALUE.conf" "$PICOM_DIR/picom.conf"
@@ -62,7 +67,7 @@ case $CHANGE_ITEM in
         ;;
     *)
         echo ""
-        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/picom/flashfocus/conky]"
+        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky]"
         echo ""
         ;;
 esac

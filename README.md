@@ -182,9 +182,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
     - Modify i3 gaps, e.g. inner gaps, outer gaps
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
-    - Modify i3 title bar, e.g. hide/show title bar, font, border
-        - __Border Mode (`[b]`)__
-            - Modify i3 border
+    - Modify i3 title bar, e.g. hide/show title bar, fontsize
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
@@ -200,7 +198,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
     - Customize i3wm, e.g. wallpaper, theme, xcompositor
         - __Border Mode (`[b]`)__
-            - Container border color scheme
+            - Window container border width, color scheme and edge border option
         - __Conky Mode (`[c]`)__
             - System_monitor, i3 bindkey sheet, conky color palette
         - __Picom Mode (`[p]`)__
@@ -211,8 +209,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - Auto-theme with pywal and reload applications after auto-theming
         - __Wallpaper Mode (`[w]`)__
             - Select wallpaper, set default wallpaper
+        - __Variety Mode (`[v]`)__
+            - Variety wallpaper selector, set default wallpaper
 - __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
-    - Show/hide i3bar, set default i3bar status (show/hide), reload i3bar
+    - Show/hide i3bar, reload i3bar, set default i3bar status (show/hide), bar fontsize
 
 </details>
 </details>

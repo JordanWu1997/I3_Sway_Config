@@ -37,6 +37,9 @@ set $monitor4 VIRTUAL2
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile
 set $terminal i3-sensible-terminal
 
+# Setup i3bar fontsize
+set $default_i3bar_fontsize 12
+
 # Setup titlebar fontsize
 set $default_titlebar_fontsize 12
 

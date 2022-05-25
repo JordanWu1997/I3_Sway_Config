@@ -50,14 +50,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ### Features in My Configuration
 - [x] __Dwindle Layout__: split window automatically. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
-- [x] __Window Auto-mark__: move/swap window more easily. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
+- [x] __Window Auto-mark__: auto-mark window for moving/swapping. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
 - [x] __Pywal Integration__: change color theme based on wallpaper. Check [Section 2](#section-2---details-of-i3-environment)
 - [x] __Keyboard-driven Working Environment__: Check [Section 2](#section-2---details-of-i3-environment) and `.config/`
 - [x] __Customized Rofi__: easy-to-use selector/launcher. Check [Section 2](#section-2---details-of-i3-environment) and `./config/rofi/`
 - [x] __Customized Conky__: system monitor and keybinding hinter. Check [Section 2](#section-2---details-of-i3-environment), and `./config/conky/`
 - [x] __Configuration Distributor Script__: use this configuration easily. Check [Section 3](#section-3---first-time-usage-for-i3) and `./config/i3/script/`
-- [x] __Various Mode Usage__: organized related functions in mode to keep keybinding simple. Check [Section 4](#section-4---mode-usage-for-i3)
-- [x] __Mouse/Trackpad Usage__: let mouse/trackpad do more things. Check [Section 5](#section-5---mouse-usage-for-i3)
+- [x] __Various Mode Usage__: organize related functions into modes to keep keybinding simple. Check [Section 4](#section-4---mode-usage-for-i3)
+- [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. Check [Section 5](#section-5---mouse-usage-for-i3)
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__. Check [Section 6](#section-6---keybinding-sheet-for-i3)
 
 </details>

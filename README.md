@@ -49,16 +49,17 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
 
 ### Features in My Configuration
-- [x] __Dwindle Layout__: split window automatically. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
-- [x] __Window Auto-mark__: auto-mark window for moving/swapping. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
-- [x] __Pywal Integration__: change color theme based on wallpaper. Check [Section 2](#section-2---details-of-i3-environment)
-- [x] __Keyboard-driven Working Environment__: Check [Section 2](#section-2---details-of-i3-environment) and `.config/`
-- [x] __Customized Rofi__: easy-to-use selector/launcher. Check [Section 2](#section-2---details-of-i3-environment) and `./config/rofi/`
-- [x] __Customized Conky__: system monitor and keybinding hinter. Check [Section 2](#section-2---details-of-i3-environment), and `./config/conky/`
-- [x] __Configuration Distributor Script__: use this configuration easily. Check [Section 3](#section-3---first-time-usage-for-i3) and `./config/i3/script/`
-- [x] __Various Mode Usage__: organize related functions into modes to keep keybinding simple. Check [Section 4](#section-4---mode-usage-for-i3)
-- [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. Check [Section 5](#section-5---mouse-usage-for-i3)
-- [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__. Check [Section 6](#section-6---keybinding-sheet-for-i3)
+- [x] __Dwindle Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`)
+- [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`)
+- [x] __Pywal Integration__: change color theme based on wallpaper. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment) and `./config/`)
+- [x] __Customized Rofi__: easy-to-use selector/launcher. (Check [Section 2](#section-2---details-of-i3-environment) and `./config/rofi/`)
+- [x] __Customized Conky__: system monitor and keybinding hinter. (Check [Section 2](#section-2---details-of-i3-environment), and `./config/conky/`)
+- [x] __Configuration Distributor Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3) and `./config/i3/script/`)
+- [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
+- [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
+- [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
+- [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
 
 </details>
 
@@ -78,9 +79,13 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Text Editor: [neovim](https://github.com/neovim/neovim) `0.6.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
 - Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
-- X compositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
+- GTK Theme Changer: [lxappearance](https://github.com/lxde/lxappearance)
+- X Compositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
 - Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
-- File Manager: [ranger](https://github.com/ranger/ranger) `1.9.3`
+- GUI File Manager: [Nautilus](https://gitlab.gnome.org/GNOME/nautilus)
+- TUI File Manager: [ranger](https://github.com/ranger/ranger) `1.9.3`
+- Web Browser: [Brave browser](https://brave.com/) + [vimium](https://vimium.github.io/)
+- PDF viewer: [zathura](https://github.com/pwmt/zathura) + [zathura-pywal](https://github.com/GideonWolfe/Zathura-Pywal)
 
 </details>
 
@@ -97,16 +102,16 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
 - [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing
-- [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): Xsession lock
+- [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): X session lock
 - [parcellite](https://github.com/rickyrockrat/parcellite): clipboard applet
 - [flashfocus](https://github.com/fennerm/flashfocus): flash when changing focus
-- [dunst](https://github.com/dunst-project/dunst): notification
+- [dunst](https://github.com/dunst-project/dunst): notification daemon
 - [kdeconnectd](https://community.kde.org/KDEConnect): mobile phone connector
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
-- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto mark i3 window (overwrite existing mark)
-- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
-- [jonaburg/picom](https://github.com/jonaburg/picom): X11 compositor for blur, transparency, animation support
+- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto-mark i3 window (overwrite existing mark)
+- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 container (Horizontal -> Vertical -> Horizontal -> ...)
+- [jonaburg/picom](https://github.com/jonaburg/picom): X compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
 
 </details>
@@ -115,10 +120,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
+- Fedora 33/34 Built-in Logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 - Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
-- Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
-- [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
+- Default Lock Screen Wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
+- [Optional] More Wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
 
 </details>
 
@@ -128,8 +133,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 - Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
 - Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
-- GUI font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
-- TUI font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
+- GUI Font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
+- TUI Font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
 
 </details>
 </details>
@@ -143,14 +148,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - Run distributor in this git repository `./config/i3/script/i3_config_distributor.sh`
-- Including
+- Includes
     - __Add Environment Variables__
         - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
         - Add `I3_SCRIPT` in `$HOME/.profile`
         - Add `WALLPAPERI3` in `$HOME/.profile`
     - __Backup Old Configuration and Link New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
-        - Link configuration in git repository `config/*` to `$HOME/.config` directory
+        - Link configuration in git repository `./config/*` to `$HOME/.config` directory
     - __Install Programs for Work Environment__
 
 </details>
@@ -178,6 +183,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - This part configuration can be found in
     - `./config/i3/configs/i3_mode.config`
     - `./config/i3/configs/i3_custom.config`
+    - `./config/i3/configs/i3_bar.config`
 
 ### 1. Mode Usage
 <details open>
@@ -237,9 +243,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details>
 <summary>Click to expand/shrink</summary>
 
-- Although the keyboard-driven workflow is favored in i3, keeping mouse function has no harm
+- Although the keyboard-driven workflow is favored in i3, there is no harm in keeping mouse function
 - This part configuration can be found in
     - `./config/i3/configs/i3_bindkey.config`
+    - `./config/i3/configs/i3_mode.config`
 
 ### 1. Touchpad Usage
 <details open>
@@ -300,6 +307,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - All following keybindings can be configured in
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`
+    - `./config/i3/configs/i3_custom.config`
+    - `./config/i3/configs/i3_gap.config`
+    - `./config/i3/configs/i3_mode.config`
+    - `./config/i3/configs/i3_bar.config`
 
 ### 1. Prefix: Winkey
 <details open>
@@ -322,7 +333,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
-- __Program shortcut (1~9, 0, -, =)__
+- __Program shortcut (`[Ctrl]`+`[Alt]`+[`1`~`9`,`0`,`-`,`=`])__
     - `1`: [Neovim (text editor)](https://neovim.io/)
     - `2`: [Ranger (file manager)](https://github.com/ranger/ranger)
     - `3`: [Pulsemixer (audio manager)](https://pypi.org/project/pulsemixer/)
@@ -335,6 +346,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `0`: [Nautilus (GUI file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
+- __Program shortcut in floating mode (`[Ctrl]`+`[Alt]`+[`Shift`]+[`1`~`7`])__
 
 </details>
 

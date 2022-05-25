@@ -71,10 +71,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
+- Display Manager: [GNOME display manager (GDM)](https://gitlab.gnome.org/GNOME/gdm)
 - i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
-- Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
+- Status Bar: [i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.25.0`
-- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
+- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7` + [starship](https://starship.rs/) `1.2.1`
 - Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.2a` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Text Editor: [neovim](https://github.com/neovim/neovim) `0.6.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
@@ -374,8 +375,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Send Window to Workspace (Relatively)__
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send to (prev)/next workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
-- __Move between Windows__
-    - `[Alt]` + (`[Shift]`) + `[Tab]`: Show all window list on (current)/all displays
+- __List Windows__
+    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all window on (current)/all displays
+    - `[Winkey]` + `[t]`: Vimium-like tab operation. List all window on all displays
 - __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)

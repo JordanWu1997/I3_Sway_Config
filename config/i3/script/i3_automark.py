@@ -8,7 +8,11 @@ import sys
 import time
 import itertools
 
-class SocketClosedException(Exception): pass
+
+class SocketClosedException(Exception):
+    pass
+
+
 MARKS = '1234567890qwertyuiop'
 
 COMMANDS = [
@@ -35,6 +39,7 @@ EVENTS = [
     'tick',
 ]
 
+
 def recv(sock, length):
     buf = b''
     while length:
@@ -44,6 +49,7 @@ def recv(sock, length):
         buf += data
         length -= len(data)
     return buf
+
 
 def send_msg(sock, command, payload=''):
     payload = payload.encode('utf-8')
@@ -55,9 +61,11 @@ def send_msg(sock, command, payload=''):
         if type == command:
             if command == 'run_command':
                 response = response[0]
-            if isinstance(response, dict) and not response.get('success', True):
+            if isinstance(response,
+                          dict) and not response.get('success', True):
                 raise Exception(response.get('error'))
             return response
+
 
 def read_msg(sock):
     reply = recv(sock, 14)
@@ -70,15 +78,20 @@ def read_msg(sock):
         type = COMMANDS[type]
     return type, json.loads(recv(sock, length))
 
+
 def refresh_all_marks(sock, marks):
     # sort left to right, top to bottom
-    workspaces = sorted(send_msg(sock, 'get_workspaces'), key=lambda w: (w['rect']['y'], w['rect']['x']))
+    workspaces = sorted(send_msg(sock, 'get_workspaces'),
+                        key=lambda w: (w['rect']['y'], w['rect']['x']))
     visible_ws = [w['name'] for w in workspaces if w['visible']]
     tree = send_msg(sock, 'get_tree')
 
-    windows = itertools.chain.from_iterable(get_windows(tree, workspace) for workspace in visible_ws)
+    windows = itertools.chain.from_iterable(
+        get_windows(tree, workspace) for workspace in visible_ws)
     for mark, id in zip(marks, windows):
-        send_msg(sock, 'run_command', '[con_id="{}"] mark --replace {}'.format(id, mark))
+        send_msg(sock, 'run_command',
+                 '[con_id="{}"] mark --replace {}'.format(id, mark))
+
 
 def get_windows(node, workspace):
     if node['window']:
@@ -91,21 +104,26 @@ def get_windows(node, workspace):
         for child in node['nodes'] + node['floating_nodes']:
             yield from get_windows(child, workspace)
 
+
 if __name__ == '__main__':
     no_socket_counter = 0
     marks = sys.argv[1] if len(sys.argv) > 1 else MARKS
     while True:
         try:
-            socketpath = subprocess.check_output(['i3', '--get-socketpath']).rstrip(b'\n')
+            socketpath = subprocess.check_output(['i3', '--get-socketpath'
+                                                  ]).rstrip(b'\n')
             with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
                 sock.connect(socketpath)
                 no_socket_counter = 0
 
-                send_msg(sock, 'subscribe', json.dumps(['workspace', 'output', 'window']))
+                send_msg(sock, 'subscribe',
+                         json.dumps(['workspace', 'output', 'window']))
                 refresh_all_marks(sock, marks)
                 while True:
                     type, event = read_msg(sock)
-                    if type in {'workspace', 'output'} or (type == 'window' and event['change'] in {'new', 'close', 'move'}):
+                    if type in {'workspace', 'output'
+                                } or (type == 'window' and event['change']
+                                      in {'new', 'close', 'move', 'focus'}):
                         refresh_all_marks(sock, marks)
 
         except SocketClosedException:

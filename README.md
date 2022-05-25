@@ -1,6 +1,7 @@
 # I3_Sway_Config
 Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>,
-and configurations of applications for the working environment in Xorg, <s>Wayland</s>
+and configurations of applications for the working environment in Xorg, <s>Wayland</s>.
+For now, some functions do not work in Wayland, still searching for alternatives in Wayland.
 
 Table of Contents
 =================
@@ -11,6 +12,7 @@ Table of Contents
 * [Table of Contents](#table-of-contents)
 * [Context](#context)
    * [Section 1 - Demo Current Customization](#section-1---demo-current-customization)
+      * [Features in My Configuration](#features-in-my-configuration)
    * [Section 2 - Details of i3 Environment](#section-2---details-of-i3-environment)
       * [1. My i3 Environment](#1-my-i3-environment)
       * [2. Programs Auto-start in Background for i3 Environment](#2-programs-auto-start-in-background-for-i3-environment)
@@ -46,6 +48,18 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![alt text](./demo/MY_I3WM_WAL_DEMO_03.png "Title")
 ![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
 
+### Features in My Configuration
+- [x] __Dwindle Layout__: split window automatically. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
+- [x] __Window Auto-mark__: move/swap window more easily. Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`
+- [x] __Pywal Integration__: change color theme based on wallpaper. Check [Section 2](#section-2---details-of-i3-environment)
+- [x] __Keyboard-driven Working Environment__: Check [Section 2](#section-2---details-of-i3-environment) and `.config/`
+- [x] __Customized Rofi__: easy-to-use selector/launcher. Check [Section 2](#section-2---details-of-i3-environment) and `./config/rofi/`
+- [x] __Customized Conky__: system monitor and keybinding hinter. Check [Section 2](#section-2---details-of-i3-environment), and `./config/conky/`
+- [x] __Configuration Distributor Script__: use this configuration easily. Check [Section 3](#section-3---first-time-usage-for-i3) and `./config/i3/script/`
+- [x] __Various Mode Usage__: organized related functions in mode to keep keybinding simple. Check [Section 4](#section-4---mode-usage-for-i3)
+- [x] __Mouse/Trackpad Usage__: let mouse/trackpad do more things. Check [Section 5](#section-5---mouse-usage-for-i3)
+- [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__. Check [Section 6](#section-6---keybinding-sheet-for-i3)
+
 </details>
 
 ## Section 2 - Details of i3 Environment
@@ -53,24 +67,25 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 ### 1. My i3 Environment
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
-- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
-- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.21.2`
-- Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
-- Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
-- Xcompositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
-- Notification: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
 - Status Bar: [default i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
+- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.25.0`
+- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7`
+- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.2a` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
 - Text Editor: [neovim](https://github.com/neovim/neovim) `0.6.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
-- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.1c` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
+- Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
+- X compositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
+- Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
+- File Manager: [ranger](https://github.com/ranger/ranger) `1.9.3`
 
 </details>
 
 ### 2. Programs Auto-start in Background for i3 Environment
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
@@ -89,7 +104,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [kdeconnectd](https://community.kde.org/KDEConnect): mobile phone connector
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
-- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto mark i3 window
+- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto mark i3 window (overwrite existing mark)
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto tiling i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X11 compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
@@ -97,24 +112,24 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ### 3. Wallpapers
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
+- Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 - Default Wallpapers: [Arc Dark Fedora Wallpaper](https://www.reddit.com/r/Fedora/comments/8zji6j/by_request_clean_and_simple_arc_dark_fedora/)
 - Default Lock screen wallpaper: [Thinkpad Trackpoint Wallpaper](https://www.wallpaperflare.com/thinkpad-lenovo-full-frame-close-up-no-people-pattern-indoors-wallpaper-hivip)
 - [Optional] More wallpapers from dt: [Wallpapers](https://gitlab.com/dwt1/wallpapers)
-- [Optional] Fedora 33/34 built-in logo: [Logos](https://en.wikipedia.org/wiki/Fedora_(operating_system))
 
 </details>
 
 ### 4. Theme and Fonts
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
-- [Optional] Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
-- [Optional] Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
-- [Optional] GUI font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
-- [Optional] TUI font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
+- Theme: [Arc-Dark-solid](https://github.com/horst3180/arc-theme)
+- Icon: [Papirus dark](https://www.gnome-look.org/p/1166289/)
+- GUI font: [SAN regular](https://fonts.google.com/specimen/Open+Sans)
+- TUI font: [DroidSansMono Nerd Font Bold](https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf)
 
 </details>
 </details>
@@ -124,14 +139,15 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 ### 1. Configuration distributor
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - Run distributor in this git repository `./config/i3/script/i3_config_distributor.sh`
 - Including
     - __Add Environment Variables__
         - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
-        - Add `I3_SCRIPT` in `"$HOME/.profile`
+        - Add `I3_SCRIPT` in `$HOME/.profile`
+        - Add `WALLPAPERI3` in `$HOME/.profile`
     - __Backup Old Configuration and Link New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
         - Link configuration in git repository `config/*` to `$HOME/.config` directory
@@ -140,10 +156,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ### 2. Optional Configuration
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
-- [Optional] Add following lines for pywal color support for bash/zsh/fish, no need for kitty terminal emulator
+- [Optional] Add following lines for pywal color support for bash/zsh/fish, no NEED for kitty terminal emulator
     ```
     # Add following line to .bashrc/.zshrc/config.fish
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
@@ -160,11 +176,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - When i3 mode is on, mode keybinding instruction shows on the i3 status bar
 - Press the `Esc` key to exit mode
 - This part configuration can be found in
-    - `./config/i3/configs/i3_custom.config`
     - `./config/i3/configs/i3_mode.config`
+    - `./config/i3/configs/i3_custom.config`
 
 ### 1. Mode Usage
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
@@ -181,8 +197,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - Resize focused window
 - __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
     - Modify i3 gaps, e.g. inner gaps, outer gaps
+- __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
+    - Show/hide i3bar, reload i3bar, set default i3bar status (show/hide), bar font size
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
-    - Modify i3 title bar, e.g. hide/show title bar, fontsize
+    - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
@@ -196,23 +214,21 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Restore Workspace Mode (`[r]`)__
             - Restore workspace layout
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
-    - Customize i3wm, e.g. wallpaper, theme, xcompositor
+    - Customize i3wm, e.g. wallpaper, theme, X compositor
         - __Border Mode (`[b]`)__
             - Window container border width, color scheme and edge border option
         - __Conky Mode (`[c]`)__
-            - System_monitor, i3 bindkey sheet, conky color palette
+            - System monitor, i3 bindkey sheet, conky color palette
         - __Picom Mode (`[p]`)__
             - Blur, transparency support
         - __Flashfocus Mode (`[f]`)__
-            - Flash for overall program in picom blur, transparency and opaque
+            - Flash window with picom (Mode: blur, transparency and opaque)
         - __Theme Mode (`[t]`)__
             - Auto-theme with pywal and reload applications after auto-theming
         - __Wallpaper Mode (`[w]`)__
             - Select wallpaper, set default wallpaper
         - __Variety Mode (`[v]`)__
             - Variety wallpaper selector, set default wallpaper
-- __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
-    - Show/hide i3bar, reload i3bar, set default i3bar status (show/hide), bar fontsize
 
 </details>
 </details>
@@ -226,7 +242,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `./config/i3/configs/i3_bindkey.config`
 
 ### 1. Touchpad Usage
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - __2-finger Gesture__
@@ -254,7 +270,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ### 2. Mouse Usage
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - __Middle Key__
@@ -323,14 +339,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details>
 
 ### 4. Miscellaneous
-<details>
+<details open>
 <summary>Click to expand/shrink</summary>
 
 - __Go to Workspace (Absolutely)__
     - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
-    - `[Ctrl]` + `[Function(#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-    - `[Alt]` + `[Function(#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+    - `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - __Go to Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next workspace
     - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
@@ -339,16 +355,16 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Swap Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap (prev)/next workspace (create one if it does not exist)
 - __Send Window to Workspace (Absolutely)__
-    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1), Note: # < 11
-    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: # < 11
-    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: # < 11
-    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: # < 11
+    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
+    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
+    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
+    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
 - __Send Window to Workspace (Relatively)__
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send to (prev)/next workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
 - __Move between Windows__
     - `[Alt]` + (`[Shift]`) + `[Tab]`: Show all window list on (current)/all displays
-    - __Manipulate Scratchpad__
+- __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one

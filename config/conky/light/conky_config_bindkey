@@ -103,9 +103,9 @@ ${color2}display mode ${alignr}${color1}[S]+[Shift]+[x]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Miscellaneous] ${hr 2}${font}
 ${color2}resize WD ${alignr}${color1}[Ctrl]+[Alt]+[vim-key]
-${color2}mark focused WD ${alignr}${color1}[S]+[m]
-${color2}goto WD with mark ${alignr}${color1}[S]+[Esc/g/']
-${color2}swap WD with mark ${alignr}${color1}[S]+[;]
+${color2}mark current WD ${alignr}${color1}[S]+[m]
+${color2}goto marked WD ${alignr}${color1}[S]+([Shift])+[']
+${color2}swap marked WD ${alignr}${color1}[S]+([Shift])+[;]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Datetime] ${hr 2}${voffset 2}${font}
 ${color2}${font DroidSanMono Nerd Font:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
 ${color1}${font DroidSanMono Nerd Font:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}

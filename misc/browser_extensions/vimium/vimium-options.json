@@ -22,10 +22,6 @@
       "passKeys": ""
     },
     {
-      "pattern": "https?://www.youtube.com/*",
-      "passKeys": "f m 1 2 3 4 5 6 7 8 9"
-    },
-    {
       "pattern": "http://novnc.distrotest.net/*",
       "passKeys": ""
     },
@@ -72,6 +68,10 @@
     {
       "pattern": "https?://www.theviminator.com/*",
       "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.youtube.com/*",
+      "passKeys": "f m"
     }
   ],
   "filterLinkHints": false,

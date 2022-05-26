@@ -121,6 +121,7 @@ if __name__ == '__main__':
                 refresh_all_marks(sock, marks)
                 while True:
                     type, event = read_msg(sock)
+                    print(event['change'])
                     if type in {'workspace', 'output'
                                 } or (type == 'window' and event['change']
                                       in {'new', 'close', 'move', 'focus'}):

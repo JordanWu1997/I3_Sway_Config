@@ -1,0 +1,138 @@
+# -- vim: ts=4 sw=4 noet ai cindent syntax=lua
+# ~/.config/dunst/dunstrc
+#
+# This dunst configuration is based on:
+# -- https://github.com/a-schaefers/i3-wm-gruvbox-theme/blob/master/dunst/dunstrc
+# -- https://github.com/Kaligule/dunst-config/blob/master/reload
+# -- https://zjuyk.gitlab.io/posts/i3wm-config/
+# -- https://github.com/endeavouros-team/endeavouros-i3wm-setup/blob/main/.config/dunst/dunstrc
+
+# Note:
+# Dunst also run /etc/dunst/dunstrc config
+
+[global]
+
+	### Display ###
+
+	# Display notification on focused monitor.
+	follow = mouse
+
+	### Geometry ###
+
+	# Geometry = Width x Height Offset (dunst version < 1.7)
+	#geometry = "640x60-25-25"
+	#shrink = yes
+	# Geometry (dunst version >= 1.7)
+    width = (0, 640)
+	height = 320
+	origin = "bottom-right"
+	offset = 25x25
+
+	### Progress bar ###
+
+	# Show how many messages are currently hidden (because of
+	# notification_limit).
+	indicate_hidden = yes
+
+	# Draw a line of "separator_height" pixel height between two
+	# notifications.
+	separator_height = 2
+
+	# Padding between text and separator.
+	padding = 8
+
+	# Horizontal padding.
+	horizontal_padding = 8
+
+	# Frame color and width
+    frame_color = "#282a36"
+	frame_width = 2
+
+	# Define a color for the separator.
+	separator_color = frame
+
+	# Sort messages by urgency.
+	sort = no
+
+	# Do not remove messages, if the user is idle (no mouse or keyboard input)
+	idle_threshold = 120
+
+	### Text ###
+	font = "DroidSansMono Nerd Font 12"
+
+	# The spacing between lines.  If the height is smaller than the
+	# font height, it will get raised to the font height.
+	line_height = 0
+
+	# Allow a small subset of html markup in notifications
+	markup = full
+
+	# The format of the message.
+	format = "<b>%a:</b> <b>%s</b>\n%b"
+
+	# Alignment of message text.
+	alignment = right
+
+	# Split notification into multiple lines if they do not fit into Geometry
+	word_wrap = yes
+
+	# Vertical alignment of message text and icon.
+	vertical_alignment = center
+
+	# Show age of message if message is older than show_age_threshold seconds.
+	show_age_threshold = 60
+
+	# Ignore newlines '\n' in notifications.
+	ignore_newline = no
+
+	# Stack together notifications with the same content
+	stack_duplicates = true
+
+	# Hide the count of stacked notifications with the same content
+	hide_duplicate_count = false
+
+	# Display indicators for URLs (U) and actions (A).
+	show_indicators = yes
+
+	### History ###
+	sticky_history = yes
+
+	### Mouse action ###
+	mouse_left_click = do_action, close_current
+	mouse_middle_click = close_all
+	mouse_right_click = close_current
+
+	### Icon ###
+	min_icon_size = 30
+	max_icon_size = 100
+
+	### Misc/Advanced ###
+	dmenu = /usr/bin/rofi -dmenu -p dunst
+	browser = /usr/bin/brave-browser
+	title = Dunst
+	class = Dunst
+
+	### Dunst version < 1.7 ###
+	#startup_notification = true
+	#plain_text = no
+
+[urgency_low]
+
+    background = "#282a36"
+    foreground = "#6272a4"
+    frame_color = "#6272a4"
+	timeout = 5
+
+[urgency_normal]
+
+    background = "#282a36"
+    foreground = "#bd93f9"
+    frame_color = "#bd93f9"
+	timeout = 10
+
+[urgency_critical]
+
+    background = "#ff5555"
+    foreground = "#f8f8f2"
+    frame_color = "#f8f8f2"
+	timeout = 120

@@ -18,8 +18,8 @@ Contents in this configuration directory
 
 ## configs
 After i3 version 4.20, configuration include function is available.
-Breaking original long configuration into sessions tries to keep configuration clean.
-This directory contains all sessions that be included in `config` file.
+Breaking original long configuration into sections tries to keep configuration clean.
+This directory contains all sections that be included in `config` file.
 
 - `i3_bar.config`: i3-bar configuration,
 - `i3_bindkey.config`: i3-bindkey

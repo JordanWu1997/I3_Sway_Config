@@ -1,6 +1,6 @@
 # I3_Sway_Config
-Backup for my I3WM(Xorg), <s>SwayWM(Wayland)</s>,
-and configurations of applications for the working environment in Xorg, <s>Wayland</s>.
+Backup for my configuration of I3WM(Xorg)/SwayWM(Wayland),
+and configurations of applications for the working environment in Xorg/Wayland.
 For now, some functions do not work in Wayland, still searching for alternatives in Wayland.
 
 Table of Contents
@@ -245,7 +245,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - Although the keyboard-driven workflow is favored in i3, there is no harm in keeping mouse function
-- This part configuration can be found in
+- This part of configuration can be found in
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_mode.config`
 
@@ -347,7 +347,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `0`: [Nautilus (GUI file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
-- __Program shortcut in floating mode (`[Ctrl]`+`[Alt]`+[`Shift`]+[`1`~`7`])__
+- __Program in floating mode shortcut (`[Ctrl]`+`[Alt]`+`[Shift]`+[`1`~`7`])__
 
 </details>
 

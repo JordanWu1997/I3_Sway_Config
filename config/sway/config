@@ -13,6 +13,9 @@
 # Setup sway settings and some variables
 # DO NOT MOVE/REMOVE lines within this section unless you know what you are doing
 
+# Enable xwayland for X applications
+xwayland enable
+
 # Setup monitor order according to frequent-usage priority
 # If the monitor does not exist, workspaces will still work as normal
 set $monitor1 HDMI-A-1
@@ -50,7 +53,7 @@ set $default_titlebar_fontsize 12
 # Setup border width (set normal to show window titlebar)
 set $default_border_width pixel 5
 
-# Setup gap width (only for i3-gap, set 0 to reduce to original gapless i3)
+# Setup gap width (only for sway-gap, set 0 to reduce to gapless sway)
 set $default_inner_gap 10
 set $default_outer_gap 0
 
@@ -98,9 +101,9 @@ include ./configs/sway_window.config
 include ./configs/sway_workspace.config
 
 # ======================================================================================
-# All About i3-gap Gap Setting
+# All About Gap Setting
 # ======================================================================================
-# Comment out this section if you are using original i3
+# This is to set gaps in sway
 
 include ./configs/sway_gap.config
 
@@ -121,14 +124,13 @@ include ./configs/sway_mode.config
 # ======================================================================================
 # All About waybar Settings
 # ======================================================================================
-# Start Waybar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Start Waybar to display a workspace bar
 
 include ./configs/sway_bar.config
 
 # ======================================================================================
-# All About I3 Startup Commands/Programs
+# All About Sway Startup Commands/Programs
 # ======================================================================================
-# Following commands/programs will run after I3 starts
+# Following commands/programs will run after Sway starts
 
 include ./configs/sway_startup.config

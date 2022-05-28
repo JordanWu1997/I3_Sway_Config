@@ -103,7 +103,7 @@ ${color2}display mode ${alignr}${color1}[S]+[Shift]+[x]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Miscellaneous] ${hr 2}${font}
 ${color2}resize WD ${alignr}${color1}[Ctrl]+[Alt]+[vim-key]
-${color2}mark current WD ${alignr}${color1}[S]+[m]
+${color2}mark/unmark current WD ${alignr}${color1}[S]+[m/u]
 ${color2}goto marked WD ${alignr}${color1}[S]+([Shift])+[']
 ${color2}swap marked WD ${alignr}${color1}[S]+([Shift])+[;]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Datetime] ${hr 2}${voffset 2}${font}

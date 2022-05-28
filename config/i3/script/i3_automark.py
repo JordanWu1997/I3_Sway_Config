@@ -13,7 +13,7 @@ class SocketClosedException(Exception):
     pass
 
 
-MARKS = '1234567890qwertyuiop'
+MARKS = '1234567890qwertyuiopasdfghjkl'
 
 COMMANDS = [
     'run_command',
@@ -90,7 +90,7 @@ def refresh_all_marks(sock, marks):
         get_windows(tree, workspace) for workspace in visible_ws)
     for mark, id in zip(marks, windows):
         send_msg(sock, 'run_command',
-                 '[con_id="{}"] mark --replace {}'.format(id, mark))
+                 '[con_id="{}"] mark --add {}'.format(id, mark))
 
 
 def get_windows(node, workspace):

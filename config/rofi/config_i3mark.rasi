@@ -49,7 +49,7 @@ configuration {
 #listview {
 
     /*Number of lines (no effect when fullscreen is enable)*/
-    lines: 2;
+    lines: 3;
 
     /*Number of columns*/
     columns: 10;
@@ -72,7 +72,7 @@ configuration {
     width: 25%;
 
     /*Border width*/
-    border: 2;
+    border: 5;
 
     /*Border color*/
     border-color: @selected-active-background;

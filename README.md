@@ -110,7 +110,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [kdeconnectd](https://community.kde.org/KDEConnect): mobile phone connector
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
-- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto-mark i3 window (overwrite existing mark)
+- [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto-mark i3 window (with preset mark)
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 container (Horizontal -> Vertical -> Horizontal -> ...)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor

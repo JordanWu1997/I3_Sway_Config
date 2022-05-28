@@ -25,6 +25,16 @@ case $1 in
             i3-input -F "mark %s" -l 1 -P "Mark: "
         fi
         ;;
+    # Unmark current window
+    "unmark")
+        if [ $2 == "i3" ]; then
+            i3-input -F "unmark %s" -l 1 -P "Mark: "
+        elif [ $2 == "rofi" ]; then
+            i3-msg unmark $(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -p 'Unmark')
+        else
+            i3-input -F "unmark %s" -l 1 -P "Unmark: "
+        fi
+        ;;
     # Goto mark window
     "goto")
         if [ $2 == "i3" ]; then
@@ -40,7 +50,7 @@ case $1 in
             /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
             /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
             rofi -dmenu -sort -auto-select -p 'Goto Window [Mark]')"
-        mark_mark=$(echo $mark_title | awk '{print $1}')
+        mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
         i3-msg [con_mark="$mark_mark"] focus
         ;;
     # Swap current window to mark window but remain focus
@@ -55,7 +65,7 @@ case $1 in
         elif [ $2 == "rofi" ]; then
             mark_title="$(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -select \
                 -input ~/.config/i3/share/i3_automark_list.txt -p 'Swapto [Mark]')"
-            mark_mark=$(echo $mark_title | awk '{print $1}')
+            mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
             # Keep focus stay in current container
             if [ $3 == "stay" ]; then
                 i3-msg "swap container with mark $mark_mark, [con_mark=$mark_mark] focus"
@@ -69,7 +79,7 @@ case $1 in
             /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
             /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
             rofi -dmenu -sort -auto-select --only-match -p 'Swapto [Mark]')"
-        mark_mark=$(echo $mark_title | awk '{print $1}')
+        mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
         # Keep focus stay in current container
         if [ $3 == "stay" ]; then
             i3-msg "swap container with mark $mark_mark, [con_mark=$mark_mark] focus"

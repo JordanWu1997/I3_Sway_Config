@@ -81,6 +81,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
 - Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
 - GTK Theme Changer: [lxappearance](https://github.com/lxde/lxappearance)
+- Qt/KDE Theme Change: [Kvantum](https://github.com/tsujan/Kvantum)
 - X Compositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
 - Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
 - GUI File Manager: [Nautilus](https://gitlab.gnome.org/GNOME/nautilus)
@@ -190,6 +191,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
+- __Insert Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
+    - Disable i3 keybindings, press `[Ctrl]`+`[[]` to get i3 keybindings back
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__

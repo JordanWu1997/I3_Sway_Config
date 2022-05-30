@@ -105,6 +105,7 @@ ${color2}resize floating WD ${alignr}${color1}[right-click] titlebar
 ${color2}send WD to SP ${alignr}${color1}[S]+([Shift])+[-]
 ${color2}bring WD to FG ${alignr}${color1}[S]+([Shift])+[=]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Function / Mode]${font}${voffset 5}
+${color2}insert mode ${alignr}${color1}[S]+[Shift]+[i]
 ${color2}bar mode ${alignr}${color1}[S]+[Shift]+[b]
 ${color2}customization mode ${alignr}${color1}[S]+[Shift]+[c]
 ${color2}gap mode ${alignr}${color1}[S]+[Shift]+[g]

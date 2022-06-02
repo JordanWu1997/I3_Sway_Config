@@ -8,6 +8,8 @@ set scroll-page-aware "true"
 set sandbox none
 map <C-j> zoom in
 map <C-k> zoom out
+map <C-i> toggle_inputbar
+map <C-s> toggle_statusbar
 
 ### zathura-pywal ###
 # Allow recolor

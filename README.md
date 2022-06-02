@@ -308,6 +308,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - Cheat sheet format, color theme here is the same as the i3 user guide
+- Highly recommend to change `caplocks` to `ctrl` for your little finger (default in this configuration)
 - All following keybindings can be configured in
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`
@@ -321,6 +322,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win.png "Title")
+- __Go to workspace (`[Winkey]`+[`1`~`9`, `0`])__
 
 </details>
 
@@ -329,6 +331,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_win_shift.png "Title")
+- __Send window to workspace (`[Winkey]`+`[Shift]`+[`1`~`9`, `0`])__
 
 </details>
 

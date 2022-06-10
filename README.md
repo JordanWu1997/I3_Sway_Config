@@ -49,13 +49,13 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
 
 ### Features in My Configuration
-- [x] __Dwindle Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`)
-- [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment) and `./config/i3/script/`)
+- [x] __Dwindle Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Pywal Integration__: change color theme based on wallpaper. (Check [Section 2](#section-2---details-of-i3-environment))
-- [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment) and `./config/`)
-- [x] __Customized Rofi__: easy-to-use selector/launcher. (Check [Section 2](#section-2---details-of-i3-environment) and `./config/rofi/`)
-- [x] __Customized Conky__: system monitor and keybinding hinter. (Check [Section 2](#section-2---details-of-i3-environment), and `./config/conky/`)
-- [x] __Configuration Distributor Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3) and `./config/i3/script/`)
+- [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Customized Rofi__: easy-to-use selector/launcher. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Customized Conky__: system monitor and keybinding hinter. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Configuration Distributor Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
@@ -100,7 +100,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
 - [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome-software support
-- [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network-manager
+- [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
 - [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing

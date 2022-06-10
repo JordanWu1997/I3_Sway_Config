@@ -37,8 +37,8 @@ case $1 in
         fi
         ;;
     "bar_reload")
-        i3-msg exec 'killall i3bar'
-        i3-msg exec 'i3bar -b bar_base'
+        i3-msg exec 'killall i3bar; sleep 0.5'
+        i3-msg exec 'i3bar -b bar_base; sleep 0.5'
         i3-msg exec 'i3bar -b bar_overlay'
         ;;
 esac

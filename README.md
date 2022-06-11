@@ -60,6 +60,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
 - [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
+- [ ] __Configuration Documentation__: Document my configuration setup details in `./configs`
 
 </details>
 

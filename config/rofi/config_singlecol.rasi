@@ -33,7 +33,7 @@ configuration {
     hide-scrollbar: true;
 
     /*Auto-select mode*/
-    auto-select: true;
+    auto-select: false;
 
     /*Unmap default rofi shortcut*/
     kb-mode-complete: "";

@@ -1,5 +1,7 @@
+!# ~/.Xresources
+
 !# Bigger cursorsize
 Xcursor.size: 48
 
-!# Pywal color scheme
-#include "$HOME/.cache/wal/colors.Xresources"
+!# Pywal color scheme ($HOME variable is not available in include)
+#include "/home/jordankhwu/.cache/wal/colors.Xresources"

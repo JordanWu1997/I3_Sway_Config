@@ -38,4 +38,4 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Rofi Tips:
 - Auto-selection (select if there is only one option) is disabled in configurations except `config_i3mark.rasi`
-- Auto-selection can be enabled with adding `-auto-select` flag
+- Auto-selection can be enabled by adding `-auto-select` flag

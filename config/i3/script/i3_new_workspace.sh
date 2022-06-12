@@ -4,62 +4,98 @@
 CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
     tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
 
+# Load all workspace
+ALL_WS=$(i3-msg -t get_workspaces | tr \} '\n' | grep "num" \
+    | cut -d ':' -f 3 | cut -d ',' -f 1 | sort -n)
+
+cycle_workspace_next () {
+    if (( $1 == 40 )); then
+        NEW=1
+    else
+        NEW=$(( $1 + 1 ))
+    fi
+}
+
+cycle_workspace_prev () {
+    if ((  $1 == 1 )); then
+        NEW=40
+    else
+        NEW=$(( $1 - 1 ))
+    fi
+}
+
+cycle_workspace_next_free_only () {
+    NEW=$1
+    echo $CURRENT
+    echo $ALL_WS
+    while true; do
+        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEW"($|[[:space:]]) ]]; then
+            echo $NEW
+            if (( $NEW == 40 )); then
+                NEW=1
+            else
+                NEW=$(( $NEW + 1 ))
+            fi
+        else
+            break
+        fi
+    done
+}
+
+cycle_workspace_prev_free_only () {
+    NEW=$1
+    while true; do
+        echo $NEW
+        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEW"($|[[:space:]]) ]]; then
+            if (( $NEW == 1 )); then
+                NEW=40
+            else
+                NEW=$(( $NEW - 1 ))
+            fi
+        else
+            break
+        fi
+    done
+}
+
+name_new_workspace_with_index () {
+    if (( $1 >= 1 )) && (( $1 <= 10 )); then
+        NEW=${1}:A$(( $1 - 0))
+    elif (( $1 >= 11 )) && (( $1 <= 20 )); then
+        NEW=${1}:B$(( $1 - 10 ))
+    elif (( $1 >= 21 )) && (( $1 <= 30 )); then
+        NEW=${1}:C$(( $1 - 20 ))
+    elif (( $1 >= 31 )) && (( $1 <= 40 )); then
+        NEW=${1}:D$(( $1 - 30 ))
+    fi
+}
+
+# Assign new workspace
 case $2 in
-    # Assign new workspace increasely
-    "inc")
-        if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
-            if (( $(($CURRENT + 1)) == 11 )); then
-                NEW="11:B1"
-            else
-                NEW="$(( $CURRENT + 1 )):A$(( $CURRENT + 1 - 0 ))"
-            fi
-        elif (( $CURRENT >= 11 )) && (( $CURRENT <= 20 )) ; then
-            if (( $(($CURRENT + 1)) == 21 )); then
-                NEW="21:C1"
-            else
-                NEW="$(( $CURRENT + 1 )):B$(( $CURRENT + 1 - 10 ))"
-            fi
-        elif (( $CURRENT >= 21 )) && (( $CURRENT <= 30 )) ; then
-            if (( $(($CURRENT + 1)) == 31 )); then
-                NEW="31:D1"
-            else
-                NEW="$(( $CURRENT + 1 )):C$(( $CURRENT + 1 - 20 ))"
-            fi
-        elif (( $CURRENT >= 31 )) && (( $CURRENT <= 40 )) ; then
-            if (( $(($CURRENT + 1)) == 41 )); then
-                NEW="1:A1"
-            else
-                NEW="$(( $CURRENT + 1 )):D$(( $CURRENT + 1 - 30 ))"
-            fi
-        fi
+    # Assign next workspace as new workspace
+    "next")
+        cycle_workspace_next $CURRENT
+        name_new_workspace_with_index $NEW
         ;;
-    # Assign new workspace decreasely
-    "dec")
-        if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
-            if (( $(($CURRENT - 1)) == 0 )); then
-                NEW="40:D10"
-            else
-                NEW="$(( $CURRENT - 1 )):A$(( $CURRENT - 1 - 0 ))"
-            fi
-        elif (( $CURRENT >= 11 )) && (( $CURRENT <= 20 )) ; then
-            if (( $(($CURRENT - 1)) == 10 )); then
-                NEW="10:A10"
-            else
-                NEW="$(( $CURRENT - 1 )):B$(( $CURRENT - 1 - 10 ))"
-            fi
-        elif (( $CURRENT >= 21 )) && (( $CURRENT <= 30 )) ; then
-            if (( $(($CURRENT - 1)) == 20 )); then
-                NEW="20:B10"
-            else
-                NEW="$(( $CURRENT - 1 )):C$(( $CURRENT - 1 - 20 ))"
-            fi
-        elif (( $CURRENT >= 31 )) && (( $CURRENT <= 40 )) ; then
-            if (( $(($CURRENT - 1)) == 30 )); then
-                NEW="30:C10"
-            else
-                NEW="$(( $CURRENT - 1 )):D$(( $CURRENT - 1 - 30 ))"
-            fi
-        fi
+    # Assign previous workspace as new workspace
+    "prev")
+        echo $CURRENT
+        cycle_workspace_prev $CURRENT
+        echo $NEW
+        name_new_workspace_with_index $NEW
+        ;;
+    # Assign next workspace (free only) as new workspace
+    "next_free_only")
+        cycle_workspace_next_free_only $CURRENT
+        name_new_workspace_with_index $NEW
+        ;;
+    # Assign previous workspace (free only) as new workspace
+    "prev_free_only")
+        cycle_workspace_prev_free_only $CURRENT
+        name_new_workspace_with_index $NEW
+        ;;
+    *)
+        echo $2
         ;;
 esac
 
@@ -73,5 +109,8 @@ case $1 in
     "move_container")
         i3-msg move container to workspace $NEW
         i3-msg workspace $NEW
+        ;;
+    *)
+        echo $1
         ;;
 esac

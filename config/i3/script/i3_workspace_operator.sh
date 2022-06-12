@@ -1,91 +1,35 @@
 #!/usr/bin/env bash
 
+workspace_next_cycle () {
+    if (( $1 == 40 )); then
+        NEW=1
+    else
+        NEW=$(( $1 + 1 ))
+    fi
+}
+
+workspace_prev_cycle () {
+    if ((  $1 == 1 )); then
+        NEW=40
+    else
+        NEW=$(( $1 - 1 ))
+    fi
+}
+
+name_new_workspace_with_index () {
+    if (( $1 >= 1 )) && (( $1 <= 10 )); then
+        NEW=${1}:A$(( $1 - 0))
+    elif (( $1 >= 11 )) && (( $1 <= 20 )); then
+        NEW=${1}:B$(( $1 - 10 ))
+    elif (( $1 >= 21 )) && (( $1 <= 30 )); then
+        NEW=${1}:C$(( $1 - 20 ))
+    elif (( $1 >= 31 )) && (( $1 <= 40 )); then
+        NEW=${1}:D$(( $1 - 30 ))
+    fi
+}
+
 case $1 in
-    "save_all")
-        i3-resurrect save -w 1:A1
-        i3-resurrect save -w 2:A2
-        i3-resurrect save -w 3:A3
-        i3-resurrect save -w 4:A4
-        i3-resurrect save -w 5:A5
-        i3-resurrect save -w 6:A6
-        i3-resurrect save -w 7:A7
-        i3-resurrect save -w 8:A8
-        i3-resurrect save -w 9:A9
-        i3-resurrect save -w 10:A10
-        i3-resurrect save -w 11:B1
-        i3-resurrect save -w 12:B2
-        i3-resurrect save -w 13:B3
-        i3-resurrect save -w 14:B4
-        i3-resurrect save -w 15:B5
-        i3-resurrect save -w 16:B6
-        i3-resurrect save -w 17:B7
-        i3-resurrect save -w 18:B8
-        i3-resurrect save -w 19:B9
-        i3-resurrect save -w 20:B10
-        i3-resurrect save -w 21:C1
-        i3-resurrect save -w 22:C2
-        i3-resurrect save -w 23:C3
-        i3-resurrect save -w 24:C4
-        i3-resurrect save -w 25:C5
-        i3-resurrect save -w 26:C6
-        i3-resurrect save -w 27:C7
-        i3-resurrect save -w 28:C8
-        i3-resurrect save -w 29:C9
-        i3-resurrect save -w 30:C10
-        i3-resurrect save -w 31:D1
-        i3-resurrect save -w 32:D2
-        i3-resurrect save -w 33:D3
-        i3-resurrect save -w 34:D4
-        i3-resurrect save -w 35:D5
-        i3-resurrect save -w 36:D6
-        i3-resurrect save -w 37:D7
-        i3-resurrect save -w 38:D8
-        i3-resurrect save -w 39:D9
-        i3-resurrect save -w 40:D10
-        ;;
-    "restore_all")
-        i3-resurrect restore -w 1:A1
-        i3-resurrect restore -w 2:A2
-        i3-resurrect restore -w 3:A3
-        i3-resurrect restore -w 4:A4
-        i3-resurrect restore -w 5:A5
-        i3-resurrect restore -w 6:A6
-        i3-resurrect restore -w 7:A7
-        i3-resurrect restore -w 8:A8
-        i3-resurrect restore -w 9:A9
-        i3-resurrect restore -w 10:A10
-        i3-resurrect restore -w 11:B1
-        i3-resurrect restore -w 12:B2
-        i3-resurrect restore -w 13:B3
-        i3-resurrect restore -w 14:B4
-        i3-resurrect restore -w 15:B5
-        i3-resurrect restore -w 16:B6
-        i3-resurrect restore -w 17:B7
-        i3-resurrect restore -w 18:B8
-        i3-resurrect restore -w 19:B9
-        i3-resurrect restore -w 20:B10
-        i3-resurrect restore -w 21:C1
-        i3-resurrect restore -w 22:C2
-        i3-resurrect restore -w 23:C3
-        i3-resurrect restore -w 24:C4
-        i3-resurrect restore -w 25:C5
-        i3-resurrect restore -w 26:C6
-        i3-resurrect restore -w 27:C7
-        i3-resurrect restore -w 28:C8
-        i3-resurrect restore -w 29:C9
-        i3-resurrect restore -w 30:C10
-        i3-resurrect restore -w 31:D1
-        i3-resurrect restore -w 32:D2
-        i3-resurrect restore -w 33:D3
-        i3-resurrect restore -w 34:D4
-        i3-resurrect restore -w 35:D5
-        i3-resurrect restore -w 36:D6
-        i3-resurrect restore -w 37:D7
-        i3-resurrect restore -w 38:D8
-        i3-resurrect restore -w 39:D9
-        i3-resurrect restore -w 40:D10
-        ;;
-    "single")
+    "swap")
         # Calculate workspace number for different monitor
         case $2 in
             "A")
@@ -108,72 +52,42 @@ case $1 in
         WPNM="$WN:$2$3"
         echo $WPNM
         # Swap workspace with i3-workspace-swap
-        # Installation: pip install i3-workspace-swap
+        # -- Installation: pip install i3-workspace-swap
         i3-workspace-swap -d "$WPNM"
         ;;
     "swap_next")
         # Load current workspace
         CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
             tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
-        # Assign new workspace increasely
-        if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
-            if (( $(($CURRENT + 1)) == 11 )); then
-                NEXT="11:B1"
-            else
-                NEXT="$(( $CURRENT + 1 )):A$(( $CURRENT + 1 - 0 ))"
-            fi
-        elif (( $CURRENT >= 11 )) && (( $CURRENT <= 20 )) ; then
-            if (( $(($CURRENT + 1)) == 21 )); then
-                NEXT="21:C1"
-            else
-                NEXT="$(( $CURRENT + 1 )):B$(( $CURRENT + 1 - 10 ))"
-            fi
-        elif (( $CURRENT >= 21 )) && (( $CURRENT <= 30 )) ; then
-            if (( $(($CURRENT + 1)) == 31 )); then
-                NEXT="31:D1"
-            else
-                NEXT="$(( $CURRENT + 1 )):C$(( $CURRENT + 1 - 20 ))"
-            fi
-        elif (( $CURRENT >= 31 )) && (( $CURRENT <= 40 )) ; then
-            if (( $(($CURRENT + 1)) == 41 )); then
-                NEXT="1:A1"
-            else
-                NEXT="$(( $CURRENT + 1 )):D$(( $CURRENT + 1 - 30 ))"
-            fi
-        fi
-        i3-workspace-swap -d "$NEXT"
+        # Swap with next workspace
+        workspace_next_cycle $CURRENT
+        name_new_workspace_with_index $NEW
+        i3-workspace-swap -d "$NEW"
         ;;
     "swap_prev")
         # Load current workspace
         CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
             tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
-        # Assign new workspace decreasely
-        if (( $CURRENT >= 1  )) && (( $CURRENT <= 10 )) ; then
-            if (( $(($CURRENT - 1)) == 0 )); then
-                PREV="40:D10"
-            else
-                PREV="$(( $CURRENT - 1 )):A$(( $CURRENT - 1 - 0 ))"
-            fi
-        elif (( $CURRENT >= 11 )) && (( $CURRENT <= 20 )) ; then
-            if (( $(($CURRENT - 1)) == 10 )); then
-                PREV="10:A10"
-            else
-                PREV="$(( $CURRENT - 1 )):B$(( $CURRENT - 1 - 10 ))"
-            fi
-        elif (( $CURRENT >= 21 )) && (( $CURRENT <= 30 )) ; then
-            if (( $(($CURRENT - 1)) == 20 )); then
-                PREV="20:B10"
-            else
-                PREV="$(( $CURRENT - 1 )):C$(( $CURRENT - 1 - 20 ))"
-            fi
-        elif (( $CURRENT >= 31 )) && (( $CURRENT <= 40 )) ; then
-            if (( $(($CURRENT - 1)) == 30 )); then
-                PREV="30:C10"
-            else
-                PREV="$(( $CURRENT - 1 )):D$(( $CURRENT - 1 - 30 ))"
-            fi
-        fi
-        i3-workspace-swap -d "$PREV"
+        # Swap with previous workspace
+        workspace_prev_cycle $CURRENT
+        name_new_workspace_with_index $NEW
+        i3-workspace-swap -d "$NEW"
+        ;;
+    "save_all")
+        # Loop all defined workspaces
+        for prefix in A B C D; do
+            for index in {1..10}; do
+                i3-resurrect save -w ${index}:${prefix}${index}
+            done
+        done
+        ;;
+    "restore_all")
+        # Loop all defined workspaces
+        for prefix in A B C D; do
+            for index in {1..10}; do
+                i3-resurrect restore -w ${index}:${prefix}${index}
+            done
+        done
         ;;
     *)
         echo $0

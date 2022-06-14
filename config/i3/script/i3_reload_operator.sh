@@ -4,7 +4,12 @@ reload_conky () {
     # Conky (system monitor & shortcut table)
     $I3_SCRIPT/i3_conky_colorchanger.sh system all; sleep 1
     $I3_SCRIPT/i3_conky_colorchanger.sh bindkey all; sleep 1
-    notify-send -u low "Theme Mode" "Reload conky"
+    notify-send -u low "Theme Mode" "Reload conky (system monitor)"
+}
+
+reload_i3bar () {
+    $I3_SCRIPT/i3_bar_operator.sh bar_reload
+    notify-send -u low "Theme Mode" "Reload i3bar (status bar)"
 }
 
 reload_dunst () {
@@ -34,15 +39,12 @@ reload_zathura () {
 # Main reload pipline
 reload_pipeline () {
     # Reload programs for new color theme
-    reload_conky
     reload_dunst
-    reload_xsslock
-    reload_vis
+    reload_conky
+    reload_i3bar
     reload_zathura
-    # Restart i3
-    i3-msg restart
-    # Reload picom
-    $I3_SCRIPT/i3_picom_operator.sh default
+    reload_vis
+    reload_xsslock
 }
 
 reload_pipeline

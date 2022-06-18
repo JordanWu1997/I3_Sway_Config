@@ -71,7 +71,7 @@
     },
     {
       "pattern": "https?://www.youtube.com/*",
-      "passKeys": "f m"
+      "passKeys": "f"
     }
   ],
   "filterLinkHints": false,

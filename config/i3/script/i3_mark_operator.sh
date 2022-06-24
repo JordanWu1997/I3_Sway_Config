@@ -100,5 +100,5 @@ esac
 if [ $4 == 'title_on' ]; then
     DEFAULT_WIDTH=$(awk '$0~/default_border_width/ {print $3,$4}' $HOME/.config/i3/config | awk 'NR==1')
     echo $DEFAULT_WIDTH
-    i3-msg "[all] border $DEFAULT_WIDTH; [floating] border normal"
+    i3-msg "[all] border $DEFAULT_WIDTH; [floating] border normal; [tiling_from='user'] border $DEFAULT_WIDTH"
 fi

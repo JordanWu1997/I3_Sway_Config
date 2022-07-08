@@ -368,25 +368,27 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
 - __Go to Workspace (Relatively)__
-    - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next workspace
+    - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next existing workspace
     - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
+    - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Tab]`: Create and go to (prev)/next free workspace
     - `[Winkey]` + `[Ctrl]` + `[Tab]`: Go to next workspace back and forth
-    - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next workspace (create one if it does not exist)
+    - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next existing workspace (create one if it does not exist)
 - __Swap Workspace (Relatively)__
-    - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap (prev)/next workspace (create one if it does not exist)
+    - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap current workspace with (prev)/next workspace (create one if it does not exist)
 - __Send Window to Workspace (Absolutely)__
-    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
-    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
-    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
-    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
+    - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
+    - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
+    - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
+    - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
 - __Send Window to Workspace (Relatively)__
-    - `[Alt]` + (`[Shift]`) + `[Grave]`: Send to (prev)/next workspace
+    - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
+    - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
 - __List Windows__
-    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all window on (current)/all displays
-    - `[Winkey]` + `[t]`: Vimium-like tab operation. List all window on all displays
+    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on (current)/all displays
+    - `[Winkey]` + `[t]`: Vimium-like tab operation. List all windows on all displays
 - __Manipulate Scratchpad__
-    - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
+    - `[Winkey]` + `[-]`: Send focused window to scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground

@@ -169,7 +169,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 - [Optional] Add following lines for pywal color support for bash/zsh/fish, no NEED for kitty terminal emulator
     ```
-    # Add following line to .bashrc/.zshrc/config.fish
+    #Add following line to .bashrc/.zshrc/config.fish
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
     ```
 
@@ -388,7 +388,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on (current)/all displays
     - `[Winkey]` + `[t]`: Vimium-like tab operation. List all windows on all displays
 - __Manipulate Scratchpad__
-    - `[Winkey]` + `[-]`: Send focused window to scratchpad (background)
+    - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground

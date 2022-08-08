@@ -15,6 +15,9 @@ case $1 in
     "hide_both_edge_if_only_one")
         sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders smart/" $BORDER_CONFIG
         ;;
+    "hide_both_edge_if_no_gaps")
+        sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders smart_no_gaps/" $BORDER_CONFIG
+        ;;
 esac
 
 i3-msg reload

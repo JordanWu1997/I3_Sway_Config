@@ -192,8 +192,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- __Insert Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
-    - Disable i3 keybindings, press `[Ctrl]`+`[[]` to get i3 keybindings back
+- __Insert Mode (`[Winkey]` + `[Shift]` + `[i]`)__
+    - Disable i3 keybindings. Press `[Ctrl]`+`[[]` to get i3 keybindings back
+- __Vim Keybinding Mode (`[Winkey]` + `[Ctrl]` + `[[]`)__
+    - Enable vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__

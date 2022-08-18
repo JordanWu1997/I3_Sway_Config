@@ -49,7 +49,7 @@ configuration {
 #listview {
 
     /*Number of lines (no effect when fullscreen is enable)*/
-    lines: 3;
+    lines: 4;
 
     /*Number of columns*/
     columns: 10;

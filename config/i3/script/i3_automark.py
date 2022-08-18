@@ -13,7 +13,7 @@ class SocketClosedException(Exception):
     pass
 
 
-MARKS = '1234567890qwertyuiopasdfghjkl'
+MARKS = '1234567890qwertyuiopasdfghjklzxcvbnm'
 
 COMMANDS = [
     'run_command',

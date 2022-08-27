@@ -200,7 +200,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with dual monitor, e.g. joint monitor, mirror monitor
-- __Red Shift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
+- __Redshift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
     - Screen color temperature tuner
 - __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
     - Dunst actions, including stopping or resuming dunst
@@ -290,12 +290,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Middle Key__
     - __Click Title Bar__
         - Kill current window
-    - __`[Winkey]` + Click__
+    - __`[Winkey]` + Click anywhere except title bar__
         - Kill current window
 - __Right Key__
     - __Click Title Bar__
         - Toggle floating mode
-    - __`[Winkey]` + Click__
+    - __`[Winkey]` + Click anywhere except title bar__
         - Toggle floating mode
 - __Scroll Wheel__
     - __Scroll Up Title Bar__
@@ -311,7 +311,13 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <summary>Click to expand/shrink</summary>
 
 - Cheat sheet format, color theme here is the same as the i3 user guide
-- Highly recommend to change `caplocks` to `ctrl` for your little finger (default in this configuration)
+- It is __HIGHLY RECOMMENDED__ to change `caplocks` to `ctrl` for your little finger (default in this configuration)
+    - `caplocks` can be remapped to `ctrl` with following command in shell
+        ```bash
+        setxkbmap -option "ctrl:nocaps"
+        ```
+    - The remapping command will be automatically activated as you enter i3
+        - Check `./config/i3/configs/i3_startup.config`
 - All following keybindings can be configured in
     - `./config/i3/configs/i3_bindkey.config`
     - `./config/i3/configs/i3_workspace.config`

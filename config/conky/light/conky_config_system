@@ -99,7 +99,10 @@ ${color2}Home (Used/All) ${alignr}${color1}${fs_used /home} / ${fs_size /home}
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Network] ${hr 2}${color1}${font}${if_existing /sys/class/net/enp0s20f0u5/operstate unknown}
 ${color2}enp0s20f0u5
 		${color1}Down ${downspeed enp0s20f0u5}/s ${alignr}Up ${upspeed enp0s20f0u5}/s
-		${color1}Total ${totaldown enp0s20f0u5} ${alignr}Total ${totalup enp0s20f0u5}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
+		${color1}Total ${totaldown enp0s20f0u5} ${alignr}Total ${totalup enp0s20f0u5}${endif}${if_existing /sys/class/net/enp0s20f0u2u2/operstate unknown}
+${color2}enp0s20f0u2u2
+		${color1}Down ${downspeed enp0s20f0u2u2}/s ${alignr}Up ${upspeed enp0s20f0u2u2}/s
+		${color1}Total ${totaldown enp0s20f0u2u2} ${alignr}Total ${totalup enp0s20u2u2}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
 ${color2}enp0s20f0u2u2u4
 		${color1}Down ${downspeed enp0s20f0u2u2u4}/s ${alignr}Up ${upspeed enp0s20f0u2u2u4}/s
 		${color1}Total ${totaldown enp0s20f0u2u2u4} ${alignr}Total ${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}
@@ -121,6 +124,7 @@ ${color2}IP Address
 		${color1}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
 		${color1}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}
 		${color1}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
+		${color1}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u2/operstate unknown}
 		${color1}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/wlp3s0/operstate up}
 		${color1}Internal IP (wifi) ${alignr}${color1}${exec ip a | grep inet | grep wlp | grep -vw lo | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}
 ${color3}${hr 2}

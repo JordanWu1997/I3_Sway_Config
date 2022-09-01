@@ -18,11 +18,11 @@ case $1 in
     # Mark current window
     "mark")
         if [ $2 == "i3" ]; then
-            i3-input -F "mark %s" -l 1 -P "Mark: "
+            i3-input -F "mark --add %s" -l 1 -P "Mark: "
         elif [ $2 == "rofi" ]; then
-            i3-msg mark $(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -p 'Mark')
+            i3-msg "mark --add $(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -p 'Mark')"
         else
-            i3-input -F "mark %s" -l 1 -P "Mark: "
+            i3-input -F "mark --add %s" -l 1 -P "Mark: "
         fi
         ;;
     # Unmark current window

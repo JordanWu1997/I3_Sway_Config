@@ -29,10 +29,10 @@
 
 # Setup monitor order according to frequent-usage priority
 # If the monitor does not exist, workspaces will still work as normal
-set $monitor1 HDMI1
-set $monitor2 eDP1
-set $monitor3 VIRTUAL1
-set $monitor4 VIRTUAL2
+set $monitor1 eDP1
+set $monitor2 VIRTUAL1
+set $monitor3 VIRTUAL2
+set $monitor4 HDMI1
 
 # Setup terminal
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile

@@ -182,11 +182,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 - i3 has a built-in mode function that overwrites current keybinding with preset mode keybinding
 - When i3 mode is on, mode keybinding instruction shows on the i3 status bar
-- Press the `Esc` key to exit mode
+- Press the `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
 - This part configuration can be found in
     - `./config/i3/configs/i3_mode.config`
     - `./config/i3/configs/i3_custom.config`
     - `./config/i3/configs/i3_bar.config`
+    - `./config/i3/configs/i3_gap.config`
 
 ### 1. Mode Usage
 <details open>

@@ -115,9 +115,12 @@ if __name__ == '__main__':
             with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
                 sock.connect(socketpath)
                 no_socket_counter = 0
-
                 send_msg(sock, 'subscribe',
                          json.dumps(['workspace', 'output', 'window']))
+
+                # Initialize marks for all windows
+                send_msg(sock, 'run_command', 'mark --add " "')
+                send_msg(sock, 'run_command', 'mark --add \'')
                 refresh_all_marks(sock, marks)
                 while True:
                     type, event = read_msg(sock)
@@ -125,6 +128,20 @@ if __name__ == '__main__':
                     if type in {'workspace', 'output'
                                 } or (type == 'window' and event['change']
                                       in {'new', 'close', 'move', 'focus'}):
+                        # Mark last window with single quotation ('),
+                        try:
+                            send_msg(sock, 'run_command',
+                                     '[con_mark=" "] mark --add \'')
+                        # Break if there is no existing window e.g. in new workspace
+                        except:
+                            print('No markable window')
+                        # Mark current window with space  (" ").
+                        try:
+                            send_msg(sock, 'run_command', 'mark --add " "')
+                        # Break if there is no existing window e.g. in new workspace
+                        except:
+                            print('No markable window')
+                        # Mark all exising windows
                         refresh_all_marks(sock, marks)
 
         except SocketClosedException:

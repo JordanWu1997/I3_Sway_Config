@@ -119,15 +119,17 @@ if __name__ == '__main__':
                          json.dumps(['workspace', 'output', 'window']))
 
                 # Initialize marks for all windows
+                refresh_all_marks(sock, marks)
                 send_msg(sock, 'run_command', 'mark --add " "')
                 send_msg(sock, 'run_command', 'mark --add \'')
-                refresh_all_marks(sock, marks)
                 while True:
                     type, event = read_msg(sock)
                     print(event['change'])
                     if type in {'workspace', 'output'
                                 } or (type == 'window' and event['change']
                                       in {'new', 'close', 'move', 'focus'}):
+                        # Mark all exising windows
+                        refresh_all_marks(sock, marks)
                         # Mark last window with single quotation ('),
                         try:
                             send_msg(sock, 'run_command',
@@ -141,8 +143,6 @@ if __name__ == '__main__':
                         # Break if there is no existing window e.g. in new workspace
                         except:
                             print('No markable window')
-                        # Mark all exising windows
-                        refresh_all_marks(sock, marks)
 
         except SocketClosedException:
             pass

@@ -182,7 +182,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 - i3 has a built-in mode function that overwrites current keybinding with preset mode keybinding
 - When i3 mode is on, mode keybinding instruction shows on the i3 status bar
-- Press the `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
+- Press `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
+- Press `[Enter]` to go to the last level of mode and exit mode if it is already the last one
 - This part configuration can be found in
     - `./config/i3/configs/i3_mode.config`
     - `./config/i3/configs/i3_custom.config`
@@ -203,7 +204,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - Deal with dual monitor, e.g. joint monitor, mirror monitor
 - __Redshift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
     - Screen color temperature tuner
-- __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
+- __Dunst Mode (`[Winkey]` + `[Shift]` + `[n]`)__
     - Dunst actions, including stopping or resuming dunst
 - __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
     - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide

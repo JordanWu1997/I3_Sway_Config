@@ -44,8 +44,9 @@ set $default_i3bar_fontsize 12
 # Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12
 
-# Set titlebar (set normal/pixel to show/hide titlebar)
+# Set tiling/floating window titlebar style (set normal/pixel to show/hide titlebar)
 set $default_titlebar_style pixel
+set $default_floating_titlebar_style normal
 
 # Set border width (set pixel number of border width)
 set $default_border_width 2

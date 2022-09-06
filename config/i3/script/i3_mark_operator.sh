@@ -98,6 +98,7 @@ if [ $4 == 'title_on' ]; then
     # Get current titlebar/border setup
     DEFAULT_WIDTH=$(awk '$0~/default_border_width/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_STYLE=$(awk '$0~/default_titlebar_style/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_FLOATING_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     echo $DEFAULT_STYLE $DEFAULT_WIDTH
     # Show titlebar
     i3-msg [con_mark="^.*"] border normal $DEFAULT_WIDTH
@@ -105,7 +106,7 @@ if [ $4 == 'title_on' ]; then
     mark_operation $1 $2 $3
     # Restore defaults
     i3-msg "[all] border $DEFAULT_STYLE $DEFAULT_WIDTH; \
-            [floating] border normal $DEFAULT_WIDTH; \
+            [floating] border $DEFAULT_FLOATING_STYLE $DEFAULT_WIDTH; \
             [tiling_from='user'] border $DEFAULT_STYLE $DEFAULT_WIDTH"
 else
     # Do not show titlebar for all windows

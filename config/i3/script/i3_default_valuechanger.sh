@@ -13,6 +13,7 @@ COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/c
 COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_FLOATING_TITLEBAR_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 
@@ -36,6 +37,10 @@ case $CHANGE_ITEM in
         ;;
     "titlebar_style")
         sed -i "$COL_TITLEBAR_STYLE s/.*/set \$default_titlebar_style $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
+    "floating_titlebar_style")
+        sed -i "$COL_FLOATING_TITLEBAR_STYLE s/.*/set \$default_floating_titlebar_style $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "titlebar_fontsize")
@@ -68,7 +73,7 @@ case $CHANGE_ITEM in
         ;;
     *)
         echo ""
-        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_style/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky]"
+        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_style/floating_titlebar_style/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky]"
         echo ""
         ;;
 esac

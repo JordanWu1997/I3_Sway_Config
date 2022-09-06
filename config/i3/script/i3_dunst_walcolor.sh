@@ -34,18 +34,23 @@ reload_dunst () {
     notify-send -u low "Dunst" "Dunst is up and running"
 }
 
-case $1 in
-    "load_wal_color")
-        load_wal_color
-        ;;
-    "reload")
-        reload_dunst
-        ;;
-    "both")
-        load_wal_color
-        reload_dunst
-        ;;
-    *)
-        echo Available option: load_wal_color/reload/both
-        ;;
-esac
+dunst_operation () {
+    case $1 in
+        "load_wal_color")
+            load_wal_color
+            ;;
+        "reload")
+            reload_dunst
+            ;;
+        "both")
+            load_wal_color
+            reload_dunst
+            ;;
+        *)
+            echo Available option: load_wal_color/reload/both
+            ;;
+    esac
+}
+
+# Main
+dunst_operation $1

@@ -28,68 +28,73 @@ name_new_workspace_with_index () {
     fi
 }
 
-case $1 in
-    "swap")
-        # Calculate workspace number for different monitor
-        case $2 in
-            "A")
-                ORIGIN=0
-                ;;
-            "B")
-                ORIGIN=10
-                ;;
-            "C")
-                ORIGIN=20
-                ;;
-            "D")
-                ORIGIN=30
-                ;;
-            *)
-                echo "Wrong Input Workspace Header (Available: A/B/C/D)"
-        esac
-        # Generate workspace name to swap
-        WN=$(( $ORIGIN+$3 ))
-        WPNM="$WN:$2$3"
-        echo $WPNM
-        # Swap workspace with i3-workspace-swap
-        # -- Installation: pip install i3-workspace-swap
-        i3-workspace-swap -d "$WPNM"
-        ;;
-    "swap_next")
-        # Load current workspace
-        CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
-            tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
-        # Swap with next workspace
-        workspace_next_cycle $CURRENT
-        name_new_workspace_with_index $NEW
-        i3-workspace-swap -d "$NEW"
-        ;;
-    "swap_prev")
-        # Load current workspace
-        CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
-            tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
-        # Swap with previous workspace
-        workspace_prev_cycle $CURRENT
-        name_new_workspace_with_index $NEW
-        i3-workspace-swap -d "$NEW"
-        ;;
-    "save_all")
-        # Loop all defined workspaces
-        for prefix in A B C D; do
-            for index in {1..10}; do
-                i3-resurrect save -w ${index}:${prefix}${index}
+workspace_operation () {
+    case $1 in
+        "swap")
+            # Calculate workspace number for different monitor
+            case $2 in
+                "A")
+                    ORIGIN=0
+                    ;;
+                "B")
+                    ORIGIN=10
+                    ;;
+                "C")
+                    ORIGIN=20
+                    ;;
+                "D")
+                    ORIGIN=30
+                    ;;
+                *)
+                    echo "Wrong Input Workspace Header (Available: A/B/C/D)"
+            esac
+            # Generate workspace name to swap
+            WN=$(( $ORIGIN+$3 ))
+            WPNM="$WN:$2$3"
+            echo $WPNM
+            # Swap workspace with i3-workspace-swap
+            # -- Installation: pip install i3-workspace-swap
+            i3-workspace-swap -d "$WPNM"
+            ;;
+        "swap_next")
+            # Load current workspace
+            CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
+                tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+            # Swap with next workspace
+            workspace_next_cycle $CURRENT
+            name_new_workspace_with_index $NEW
+            i3-workspace-swap -d "$NEW"
+            ;;
+        "swap_prev")
+            # Load current workspace
+            CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
+                tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+            # Swap with previous workspace
+            workspace_prev_cycle $CURRENT
+            name_new_workspace_with_index $NEW
+            i3-workspace-swap -d "$NEW"
+            ;;
+        "save_all")
+            # Loop all defined workspaces
+            for prefix in A B C D; do
+                for index in {1..10}; do
+                    i3-resurrect save -w ${index}:${prefix}${index}
+                done
             done
-        done
-        ;;
-    "restore_all")
-        # Loop all defined workspaces
-        for prefix in A B C D; do
-            for index in {1..10}; do
-                i3-resurrect restore -w ${index}:${prefix}${index}
+            ;;
+        "restore_all")
+            # Loop all defined workspaces
+            for prefix in A B C D; do
+                for index in {1..10}; do
+                    i3-resurrect restore -w ${index}:${prefix}${index}
+                done
             done
-        done
-        ;;
-    *)
-        echo $0
-        ;;
-esac
+            ;;
+        *)
+            echo $0
+            ;;
+    esac
+}
+
+# Main
+workspace_operation $1 $2 $3

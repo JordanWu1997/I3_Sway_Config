@@ -70,47 +70,55 @@ name_new_workspace_with_index () {
     fi
 }
 
-# Assign new workspace
-case $2 in
-    # Assign next workspace as new workspace
-    "next")
-        cycle_workspace_next $CURRENT
-        name_new_workspace_with_index $NEW
-        ;;
-    # Assign previous workspace as new workspace
-    "prev")
-        echo $CURRENT
-        cycle_workspace_prev $CURRENT
-        echo $NEW
-        name_new_workspace_with_index $NEW
-        ;;
-    # Assign next workspace (free only) as new workspace
-    "next_free_only")
-        cycle_workspace_next_free_only $CURRENT
-        name_new_workspace_with_index $NEW
-        ;;
-    # Assign previous workspace (free only) as new workspace
-    "prev_free_only")
-        cycle_workspace_prev_free_only $CURRENT
-        name_new_workspace_with_index $NEW
-        ;;
-    *)
-        echo $2
-        ;;
-esac
+assign_new_workspace () {
+    # Assign new workspace
+    case $1 in
+        # Assign next workspace as new workspace
+        "next")
+            cycle_workspace_next $CURRENT
+            name_new_workspace_with_index $NEW
+            ;;
+        # Assign previous workspace as new workspace
+        "prev")
+            echo $CURRENT
+            cycle_workspace_prev $CURRENT
+            echo $NEW
+            name_new_workspace_with_index $NEW
+            ;;
+        # Assign next workspace (free only) as new workspace
+        "next_free_only")
+            cycle_workspace_next_free_only $CURRENT
+            name_new_workspace_with_index $NEW
+            ;;
+        # Assign previous workspace (free only) as new workspace
+        "prev_free_only")
+            cycle_workspace_prev_free_only $CURRENT
+            name_new_workspace_with_index $NEW
+            ;;
+        *)
+            echo $2
+            ;;
+    esac
+}
 
-# Workspace action
-case $1 in
-    # Move to new workspace
-    "move_focus")
-        i3-msg workspace $NEW
-        ;;
-    # Move container to new workspace
-    "move_container")
-        i3-msg move container to workspace $NEW
-        i3-msg workspace $NEW
-        ;;
-    *)
-        echo $1
-        ;;
-esac
+workspace_action () {
+    # Workspace action
+    case $1 in
+        # Move to new workspace
+        "move_focus")
+            i3-msg workspace $NEW
+            ;;
+        # Move container to new workspace
+        "move_container")
+            i3-msg move container to workspace $NEW
+            i3-msg workspace $NEW
+            ;;
+        *)
+            echo $1
+            ;;
+    esac
+}
+
+# Main
+assign_new_workspace $2
+workspace_action $1

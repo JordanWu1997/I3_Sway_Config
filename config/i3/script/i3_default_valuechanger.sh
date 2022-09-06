@@ -12,6 +12,7 @@ CONKY_DIR="$HOME/.config/conky"
 COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 
@@ -30,11 +31,11 @@ case $CHANGE_ITEM in
         i3-msg reload
         ;;
     "border_width")
-        if [ $NEW_DEFAULT_VALUE == "normal" ]; then
-            sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width normal/" $I3_CONFIG_FILE
-        else
-            sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width pixel $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
-        fi
+        sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
+    "titlebar_style")
+        sed -i "$COL_TITLEBAR_STYLE s/.*/set \$default_titlebar_style $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "titlebar_fontsize")
@@ -67,7 +68,7 @@ case $CHANGE_ITEM in
         ;;
     *)
         echo ""
-        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky]"
+        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_style/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky]"
         echo ""
         ;;
 esac

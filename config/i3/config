@@ -21,35 +21,41 @@
 # ======================================================================================
 # All About Mod Key Settings And I3 Variables
 # ======================================================================================
-# Setup i3 key and some variables
-# DO NOT MOVE/REMOVE lines within this section unless you know what you are doing
+# Set i3 key and some variables
+# PLEASE DO NOT MOVE/REMOVE LINES IN THIS SECTION UNLESS YOU KNOW WHAT YOU ARE DOING !!!
 
-# Setup mod (Prefix)
+# Set mod (Prefix)
 # Mod1: alt, Mod4: win
 
-# Setup monitor order according to frequent-usage priority
+# Set monitor order according to frequent-usage priority
 # If the monitor does not exist, workspaces will still work as normal
 set $monitor1 eDP1
 set $monitor2 VIRTUAL1
 set $monitor3 VIRTUAL2
 set $monitor4 HDMI1
 
-# Setup terminal
+# Set terminal
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile
 set $terminal i3-sensible-terminal
 
-# Setup i3bar fontsize
+# Set i3bar fontsize (RECOMMENDED: 12)
 set $default_i3bar_fontsize 12
 
-# Setup titlebar fontsize
+# Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12
 
-# Setup border width (set normal to show window titlebar)
-set $default_border_width pixel 2
+# Set titlebar (set normal/pixel to show/hide titlebar)
+set $default_titlebar_style pixel
 
-# Setup gap width (only for i3-gap, set 0 to reduce to original gapless i3)
+# Set border width (set pixel number of border width)
+set $default_border_width 2
+
+# Set gap width (only for i3-gap, set 0 to reduce to original gapless i3)
 set $default_inner_gap 10
 set $default_outer_gap 0
+
+# Set default conky gap_y to avoid being blocked by i3bar (RECOMMEMDED: 30)
+set $default_conky_gap_y 30
 
 # ======================================================================================
 # All About Color Template

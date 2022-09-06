@@ -68,7 +68,7 @@ color_picker () {
             OUTPUT_VALUE=256
             ;;
         *)
-            OUTPUT_VALUE=$3
+            OUTPUT_VALUE=$1
             ;;
     esac
 }
@@ -89,6 +89,7 @@ conky_color_change () {
             CONFIGS[0]="$HOME/.config/conky/full/conky_config_system"
             CONFIGS[1]="$HOME/.config/conky/light/conky_config_system"
             CONFIGS[2]="$HOME/.config/conky/minimal/conky_config_system"
+            CONKY_DEFAULT_YOFFSET=$(awk '$0~/default_conky_gap_y/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
             for config in ${CONFIGS[@]}; do
                 COL_DEFAULT_COLOR=$(awk '$0~/default_color/ {print NR}' $config | awk 'NR==1')
                 COL_TEXT_COLOR=$(awk '$0~/color1/ {print NR}' $config | awk 'NR==1')

@@ -28,7 +28,7 @@
 # Mod1: alt, Mod4: win
 
 # Set monitor order according to frequent-usage priority
-# If the monitor does not exist, workspaces will still work as normal
+# If the monitor does not exist, workspaces will just spawn in current monitor
 set $monitor1 eDP1
 set $monitor2 VIRTUAL1
 set $monitor3 VIRTUAL2
@@ -40,6 +40,9 @@ set $terminal i3-sensible-terminal
 
 # Set i3bar fontsize (RECOMMENDED: 12)
 set $default_i3bar_fontsize 12
+
+# Set i3bar height (RECOMMENDED: 25)
+set $default_i3bar_height 25
 
 # Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12

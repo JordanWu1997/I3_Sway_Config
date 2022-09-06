@@ -4,8 +4,7 @@
 BAR_CONFIG="$HOME/.config/i3/configs/i3_bar.config"
 BAR_ID="bar_base"
 COL_BAR_VIS=$(expr $(awk '$0~/Bar visibility/{print NR}' $BAR_CONFIG) + 1)
-COL_BAR_HEIGHT=$(expr $(awk '$0~/Height/ {print NR}' $BAR_CONFIG) + 1)
-BAR_HEIGHT=$(awk -v var=$COL_BAR_HEIGHT 'NR==var {print $2}' $BAR_CONFIG)
+BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
 
 # Conky
 CONKY_CONFIG="$HOME/.config/conky/conky_config_system"

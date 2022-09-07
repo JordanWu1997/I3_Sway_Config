@@ -119,6 +119,8 @@ This session modifies keyboard keymap and operation for laptop trackpad
 #       Driver "libinput"
 #       Option "NaturalScrolling" "True"
 #       Option "Tapping" "On"
+#       Option "TappingButtonMap" "lrm"
+#       Option "ScrollMethod" "twofinger"
 # EndSection
 ```
 
@@ -154,3 +156,6 @@ This session modifies keyboard keymap and operation for laptop trackpad
 - https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
 - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 - https://www.reddit.com/r/i3wm/comments/cqefj3/mapping_symbols/
+- https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
+- https://blog.ruo-chen.wang/2020/01/switch-from-gnome-to-i3.html
+- https://wiki.archlinux.org/title/libinput

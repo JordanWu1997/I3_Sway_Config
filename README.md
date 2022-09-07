@@ -216,6 +216,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - Show/hide i3bar, reload i3bar, set default i3bar status (show/hide), bar font size
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
     - Modify i3 title bar, e.g. hide/show title bar, font size
+- __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
+    - Player control (e.g. previous, pause-play, next) for spotify, player, vlc
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__

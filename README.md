@@ -397,7 +397,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
 - __List Windows__
-    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on (current)/all displays
+    - `[Alt]` + `[Tab]`: List all windows on all workspaces (window-like keybinding)
 - __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)

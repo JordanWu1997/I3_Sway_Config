@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/jordankhwu/.config/i3/share/default_wallpaper",
+    "alpha": "100",
+
+    "special": {
+        "background": "COLOR0",
+        "foreground": "COLOR15",
+        "cursor": "COLOR15"
+    },
+    "colors": {
+        "color0": "COLOR0",
+        "color1": "COLOR9",
+        "color2": "COLOR10",
+        "color3": "COLOR11",
+        "color4": "COLOR12",
+        "color5": "COLOR13",
+        "color6": "COLOR14",
+        "color7": "COLOR15",
+        "color8": "COLOR8",
+        "color9": "COLOR9",
+        "color10": "COLOR10",
+        "color11": "COLOR11",
+        "color12": "COLOR12",
+        "color13": "COLOR13",
+        "color14": "COLOR14",
+        "color15": "COLOR15"
+    }
+}

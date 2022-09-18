@@ -2,23 +2,23 @@
 
 BAR_CONFIG="$HOME/.config/i3/configs/i3_bar.config"
 
-COL_BAR1_1=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 2)
-COL_BAR1_2=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 3)
-COL_BAR1_3=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 4)
-COL_BAR1_4=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 6)
-COL_BAR1_5=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 7)
-COL_BAR1_6=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 8)
-COL_BAR1_7=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 9)
-COL_BAR1_8=$(expr $(awk '$0~/bar_base workspace color/{print NR}' $BAR_CONFIG) + 10)
+COL_BAR1_1=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 2)
+COL_BAR1_2=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 3)
+COL_BAR1_3=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 4)
+COL_BAR1_4=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 6)
+COL_BAR1_5=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 7)
+COL_BAR1_6=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 8)
+COL_BAR1_7=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 9)
+COL_BAR1_8=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 10)
 
-COL_BAR2_1=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 2)
-COL_BAR2_2=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 3)
-COL_BAR2_3=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 4)
-COL_BAR2_4=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 6)
-COL_BAR2_5=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 7)
-COL_BAR2_6=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 8)
-COL_BAR2_7=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 9)
-COL_BAR2_8=$(expr $(awk '$0~/bar_overlay workspace color/{print NR}' $BAR_CONFIG) + 10)
+COL_BAR2_1=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 2)
+COL_BAR2_2=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 3)
+COL_BAR2_3=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 4)
+COL_BAR2_4=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 6)
+COL_BAR2_5=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 7)
+COL_BAR2_6=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 8)
+COL_BAR2_7=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 9)
+COL_BAR2_8=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 10)
 
 bar_decoration () {
     case $1 in

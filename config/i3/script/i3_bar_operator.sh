@@ -2,7 +2,7 @@
 
 # i3bar
 BAR_CONFIG="$HOME/.config/i3/configs/i3_bar.config"
-BAR_ID="bar_base"
+BAR_ID="bar_status"
 COL_BAR_VIS=$(expr $(awk '$0~/Bar visibility/{print NR}' $BAR_CONFIG) + 1)
 BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
 
@@ -40,8 +40,8 @@ bar_operation () {
             ;;
         "bar_reload")
             i3-msg exec 'killall i3bar; sleep 1.0'
-            i3-msg exec 'i3bar -b bar_base; sleep 0.5'
-            i3-msg exec 'i3bar -b bar_overlay'
+            i3-msg exec 'i3bar -b bar_status; sleep 0.5'
+            i3-msg exec 'i3bar -b bar_mode'
             ;;
     esac
 }

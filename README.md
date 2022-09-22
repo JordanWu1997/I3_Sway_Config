@@ -49,6 +49,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
 
 ### Features in My Configuration
+Note: the term "window" used in this configuration actually refers to "container" in i3 window manager
+
 - [x] __Dwindle Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Pywal Integration__: change color theme based on wallpaper. (Check [Section 2](#section-2---details-of-i3-environment))
@@ -58,7 +60,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - [x] __Configuration Distributor Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
-- [x] __Fully Documented Keybinding and i3-userguide-like Cheatsheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
+- [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
 - [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
 - [ ] __Configuration Documentation__: Document my configuration setup details in `./configs`
 
@@ -167,7 +169,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- [Optional] Add following lines for pywal color support for bash/zsh/fish, no NEED for kitty terminal emulator
+- [Optional] Add following lines for pywal color support for bash/zsh/fish, NO NEED for kitty terminal emulator
     ```
     #Add following line to .bashrc/.zshrc/config.fish
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
@@ -235,7 +237,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - __Border Mode (`[b]`)__
             - Window container border width, color scheme and edge border option
         - __Conky Mode (`[c]`)__
-            - System monitor, i3 bindkey sheet, conky color palette
+            - System monitor, i3 keybinding sheet, conky color palette
         - __Picom Mode (`[p]`)__
             - Blur, transparency support
         - __Flashfocus Mode (`[f]`)__
@@ -281,9 +283,9 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - Go to next workspace
 - __4-finger Gesture__
     - __Pinch Out__
-        - Bring window in scratchpad to foreground
+        - Bring window in scratchpad (background workspace) to foreground
     - __Pinch In__
-        - Send window to scratchpad
+        - Send window to scratchpad (background workspace)
 
 </details>
 
@@ -395,12 +397,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - __Send Window to Workspace (Relatively)__
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
-    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to (prev)/next workspace (create one if it does not exist)
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to prev/next workspace (create one if it does not exist)
 - __List Windows__
-    - `[Alt]` + `[Tab]`: List all windows on all workspaces (window-like keybinding)
+    - `[Alt]` + `[Tab]`: List all windows on all workspaces (Windows-like keybinding)
 - __Manipulate Scratchpad__
-    - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background)
-    - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background)
+    - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background workspace)
+    - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background workspace)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground
 - __Change Gap Size__

@@ -5,65 +5,66 @@ Table of Contents
 =================
 
 * [Theme](#theme)
+* [Table of Contents](#table-of-contents)
 * [Context](#context)
-   * [Color Files Generator](#color-files-generator)
-      * [Input: 16-color template](#input-16-color-template)
-      * [Input: options](#input-options)
-      * [Output: files](#output-files)
-   * [Templates - Gruvbox](#templates---gruvbox)
-   * [Templates - Dracula](#templates---dracula)
+   * [Script Usage](#script-usage)
+      * [Apply color files](#apply-color-files)
+      * [Generate color files from pywal colorschemes](#generate-color-files-from-pywal-colorschemes)
+      * [Generate color files](#generate-color-files)
    * [Reference](#reference)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # Context
 
-## Color Files Generator
+## Script Usage
 
-### Input: 16-color template
-- Save 16-color template as `./NAME_OF_TEMPLATE/colors`
-    - 16 rows for 16 colors
-        - Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
-        - Bright Black, Bright Red, Bright Green, Bright Yellow, Bright Blue, Bright Magenta, Bright Cyan, Bright White
-    - Output color files will be stored in `./NAME_OF_TEMPLATE`
+### Apply color files
+- `./apply_template_theme.sh`
+    - Use existing color files in `./templates/`
+    - Copy colors files to `$HOME/.cache/wal/` to replace original wal color files
 
-### Input: options
-1. `16` or `9`
-    - 16-color template
-    - 9-color template (bright color only)
-2. `apply_now` or ` ` (nothing)
-    - Replace wal color files (`$HOME/.cache/wal/*`) with new generated files
+### Generate color files from pywal colorschemes
+- `./copy_wal_templates.sh`
+    - Copy colorscheme from pywal (https://github.com/dylanaraps/pywal)
+        - `./pywal/colorschemes/dark/`
+- `./generate_color_files_for_templates.sh`
+    -  Generate color files based on pywal colorschemes
 
-### Output: files
-1. `color`
-    - Required by `conky`
-2. `colors-kitty.conf`
-    - Required by `kitty`
-3. `colors-rofi-dark.rasi`
-    - Required by `rofi`
-4. `colors.json`
-    - Required by `bumblebee-status`
-5. `color.sh`
-    - Required by `vis`
-6. `colors.Xresources`
-    - Required by `i3` and other X window applications
+### Generate color files
 
-## Templates - Gruvbox
-- Source
-    - https://github.com/morhetz/gruvbox
-- Usage (in this directory)
-    - ` ./generate_theme_color_files.sh ./gruvbox/gruvbox_colors 9 apply_now`
-    - ` ./generate_theme_color_files.sh ./gruvbox/gruvbox_colors 16 apply_now`
+- `./generate_color_files_for_template.sh`
+    - Input: 16-color template
+        - 16-color template as `./NAME_OF_TEMPLATE/NAME_OF_TEMPLATE_colors`, containing 16 rows
+            - row 1~8: Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
+            - row 9~16: Bright Black, Bright Red, Bright Green, Bright Yellow, Bright Blue, Bright Magenta, Bright Cyan, Bright White
+        - Output color files will be stored in `./NAME_OF_TEMPLATE`
 
-## Templates - Dracula
-- Source
-    - https://draculatheme.com/
-- Usage (in this directory)
-    - ` ./generate_theme_color_files.sh ./dracula/dracula_colors 9 apply_now`
-    - ` ./generate_theme_color_files.sh ./dracula/dracula_colors 16 apply_now`
+    - Input: options
+        1. `./color_files`
+            - Color file templates (`./color_files`)
+        2. `16` or `9`
+            - 16-color template
+            - 9-color template (bright color only)
+        3. `apply_now` or ` ` (nothing)
+            - Replace wal color files (`$HOME/.cache/wal/*`) with new generated files
+    - Output: color files
+        1. `color`
+            - Required by `conky`
+        2. `colors-kitty.conf`
+            - Required by `kitty`
+        3. `colors-rofi-dark.rasi`
+            - Required by `rofi`
+        4. `colors.json`
+            - Required by `bumblebee-status`
+        5. `color.sh`
+            - Required by `vis`
+        6. `colors.Xresources`
+            - Required by `i3` and other X window applications
 
 ## Reference
 - https://en.wikipedia.org/wiki/Xrdb
 - https://www.reddit.com/r/i3wm/comments/76p3tg/color_scheme_not_loading_set_from_resource_upon/
 - https://github.com/morhetz/gruvbox
 - https://draculatheme.com/
+- https://github.com/dylanaraps/pywal

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Templates for color files
+FILE_TEMPLATES=$2 #"./templates/file_templates"
+
 # Read template colors
 read_template_color () {
     case $2 in
@@ -48,79 +51,81 @@ read_template_color () {
 
 # Generate file: colors
 generate_file_color_template () {
-    cp $1 "$(dirname $1)/colors"
+    COLOR_FILE="$(dirname $1)/colors"
+    cp $1 ${COLOR_FILE}
+    sed -i -e 's/^"//g' -e 's/"$//g' ${COLOR_FILE}
 }
 
 # Generate file: colors-kitty.conf
 add_colors_to_color_file () {
     # Copy color file template
-    cp ./template/$(basename $2) $2
+    cp "$FILE_TEMPLATES"/$(basename $2) $2
     # Add colors
     case $1 in
         "wrap_by_single_quote")
-            sed -i "s/COLOR0$/\#$COLOR0/g" $2
-            sed -i "s/COLOR1$/\#$COLOR1/g" $2
-            sed -i "s/COLOR2$/\#$COLOR2/g" $2
-            sed -i "s/COLOR3$/\#$COLOR3/g" $2
-            sed -i "s/COLOR4$/\#$COLOR4/g" $2
-            sed -i "s/COLOR5$/\#$COLOR5/g" $2
-            sed -i "s/COLOR6$/\#$COLOR6/g" $2
-            sed -i "s/COLOR7$/\#$COLOR7/g" $2
-            sed -i "s/COLOR8$/\#$COLOR8/g" $2
-            sed -i "s/COLOR9$/\#$COLOR9/g" $2
-            sed -i "s/COLOR10$/\#$COLOR10/g" $2
-            sed -i "s/COLOR11$/\#$COLOR11/g" $2
-            sed -i "s/COLOR12$/\#$COLOR12/g" $2
-            sed -i "s/COLOR13$/\#$COLOR13/g" $2
-            sed -i "s/COLOR14$/\#$COLOR14/g" $2
-            sed -i "s/COLOR15$/\#$COLOR15/g" $2
+            sed -i "s/COLOR0$/$COLOR0/g" $2
+            sed -i "s/COLOR1$/$COLOR1/g" $2
+            sed -i "s/COLOR2$/$COLOR2/g" $2
+            sed -i "s/COLOR3$/$COLOR3/g" $2
+            sed -i "s/COLOR4$/$COLOR4/g" $2
+            sed -i "s/COLOR5$/$COLOR5/g" $2
+            sed -i "s/COLOR6$/$COLOR6/g" $2
+            sed -i "s/COLOR7$/$COLOR7/g" $2
+            sed -i "s/COLOR8$/$COLOR8/g" $2
+            sed -i "s/COLOR9$/$COLOR9/g" $2
+            sed -i "s/COLOR10$/$COLOR10/g" $2
+            sed -i "s/COLOR11$/$COLOR11/g" $2
+            sed -i "s/COLOR12$/$COLOR12/g" $2
+            sed -i "s/COLOR13$/$COLOR13/g" $2
+            sed -i "s/COLOR14$/$COLOR14/g" $2
+            sed -i "s/COLOR15$/$COLOR15/g" $2
             ;;
         "no_wrap")
-            sed -i "s/COLOR0$/\#$COLOR0/g" $2
-            sed -i "s/COLOR1$/\#$COLOR1/g" $2
-            sed -i "s/COLOR2$/\#$COLOR2/g" $2
-            sed -i "s/COLOR3$/\#$COLOR3/g" $2
-            sed -i "s/COLOR4$/\#$COLOR4/g" $2
-            sed -i "s/COLOR5$/\#$COLOR5/g" $2
-            sed -i "s/COLOR6$/\#$COLOR6/g" $2
-            sed -i "s/COLOR7$/\#$COLOR7/g" $2
-            sed -i "s/COLOR8$/\#$COLOR8/g" $2
-            sed -i "s/COLOR9$/\#$COLOR9/g" $2
-            sed -i "s/COLOR10$/\#$COLOR10/g" $2
-            sed -i "s/COLOR11$/\#$COLOR11/g" $2
-            sed -i "s/COLOR12$/\#$COLOR12/g" $2
-            sed -i "s/COLOR13$/\#$COLOR13/g" $2
-            sed -i "s/COLOR14$/\#$COLOR14/g" $2
-            sed -i "s/COLOR15$/\#$COLOR15/g" $2
+            sed -i "s/COLOR0$/$COLOR0/g" $2
+            sed -i "s/COLOR1$/$COLOR1/g" $2
+            sed -i "s/COLOR2$/$COLOR2/g" $2
+            sed -i "s/COLOR3$/$COLOR3/g" $2
+            sed -i "s/COLOR4$/$COLOR4/g" $2
+            sed -i "s/COLOR5$/$COLOR5/g" $2
+            sed -i "s/COLOR6$/$COLOR6/g" $2
+            sed -i "s/COLOR7$/$COLOR7/g" $2
+            sed -i "s/COLOR8$/$COLOR8/g" $2
+            sed -i "s/COLOR9$/$COLOR9/g" $2
+            sed -i "s/COLOR10$/$COLOR10/g" $2
+            sed -i "s/COLOR11$/$COLOR11/g" $2
+            sed -i "s/COLOR12$/$COLOR12/g" $2
+            sed -i "s/COLOR13$/$COLOR13/g" $2
+            sed -i "s/COLOR14$/$COLOR14/g" $2
+            sed -i "s/COLOR15$/$COLOR15/g" $2
             ;;
         "end_with_semi_column")
-            sed -i "s/COLOR0;$/\#$COLOR0\;/g" $2
-            sed -i "s/COLOR1;$/\#$COLOR1\;/g" $2
-            sed -i "s/COLOR2;$/\#$COLOR2\;/g" $2
-            sed -i "s/COLOR3;$/\#$COLOR3\;/g" $2
-            sed -i "s/COLOR4;$/\#$COLOR4\;/g" $2
-            sed -i "s/COLOR5;$/\#$COLOR5\;/g" $2
-            sed -i "s/COLOR6;$/\#$COLOR6\;/g" $2
-            sed -i "s/COLOR7;$/\#$COLOR7\;/g" $2
-            sed -i "s/COLOR8;$/\#$COLOR8\;/g" $2
-            sed -i "s/COLOR9;$/\#$COLOR9\;/g" $2
-            sed -i "s/COLOR10;$/\#$COLOR10\;/g" $2
-            sed -i "s/COLOR11;$/\#$COLOR11\;/g" $2
-            sed -i "s/COLOR12;$/\#$COLOR12\;/g" $2
-            sed -i "s/COLOR13;$/\#$COLOR13\;/g" $2
-            sed -i "s/COLOR14;$/\#$COLOR14\;/g" $2
-            sed -i "s/COLOR15;$/\#$COLOR15\;/g" $2
+            sed -i "s/COLOR0;$/$COLOR0\;/g" $2
+            sed -i "s/COLOR1;$/$COLOR1\;/g" $2
+            sed -i "s/COLOR2;$/$COLOR2\;/g" $2
+            sed -i "s/COLOR3;$/$COLOR3\;/g" $2
+            sed -i "s/COLOR4;$/$COLOR4\;/g" $2
+            sed -i "s/COLOR5;$/$COLOR5\;/g" $2
+            sed -i "s/COLOR6;$/$COLOR6\;/g" $2
+            sed -i "s/COLOR7;$/$COLOR7\;/g" $2
+            sed -i "s/COLOR8;$/$COLOR8\;/g" $2
+            sed -i "s/COLOR9;$/$COLOR9\;/g" $2
+            sed -i "s/COLOR10;$/$COLOR10\;/g" $2
+            sed -i "s/COLOR11;$/$COLOR11\;/g" $2
+            sed -i "s/COLOR12;$/$COLOR12\;/g" $2
+            sed -i "s/COLOR13;$/$COLOR13\;/g" $2
+            sed -i "s/COLOR14;$/$COLOR14\;/g" $2
+            sed -i "s/COLOR15;$/$COLOR15\;/g" $2
             ;;
         "wal_json_file")
-            sed -i "s/COLOR0/\#$COLOR0/g" $2
-            sed -i "s/COLOR8/\#$COLOR8/g" $2
-            sed -i "s/COLOR9/\#$COLOR9/g" $2
-            sed -i "s/COLOR10/\#$COLOR10/g" $2
-            sed -i "s/COLOR11/\#$COLOR11/g" $2
-            sed -i "s/COLOR12/\#$COLOR12/g" $2
-            sed -i "s/COLOR13/\#$COLOR13/g" $2
-            sed -i "s/COLOR14/\#$COLOR14/g" $2
-            sed -i "s/COLOR15/\#$COLOR15/g" $2
+            sed -i "s/COLOR0/$COLOR0/g" $2
+            sed -i "s/COLOR8/$COLOR8/g" $2
+            sed -i "s/COLOR9/$COLOR9/g" $2
+            sed -i "s/COLOR10/$COLOR10/g" $2
+            sed -i "s/COLOR11/$COLOR11/g" $2
+            sed -i "s/COLOR12/$COLOR12/g" $2
+            sed -i "s/COLOR13/$COLOR13/g" $2
+            sed -i "s/COLOR14/$COLOR14/g" $2
+            sed -i "s/COLOR15/$COLOR15/g" $2
             ;;
         *)
             echo "wrap_by_single_quote", "no_wrap", "end_with_semi_column", "wal_json_file"
@@ -134,7 +139,7 @@ replace_wal_color_file () {
 generate_theme_color_files () {
     # Template
     generate_file_color_template $1
-    read_template_color $1 $2
+    read_template_color $1 $3
     # FILE: colors.Xresources
     add_colors_to_color_file no_wrap "$(dirname $1)/colors.Xresources"
     # FILE: colors.sh
@@ -149,11 +154,11 @@ generate_theme_color_files () {
 
 # Main
 # generate_theme_color_files [theme_color_template] [9/16] [apply_now]
-if [ -z $1 ] || [ -z $2 ]; then
-    echo generate_theme_color_files [theme_color_template] [9/16] [apply_now]
+if [ -z $1 ] || [ -z $2 ] || [ -z $3 ]; then
+    echo generate_theme_color_files [theme_color_template] [theme_file_template] [9/16] [apply_now]
 else
-    generate_theme_color_files $1 $2 $3
-    if [ $3 == "apply_now" ]; then
+    generate_theme_color_files $1 $2 $3 $4
+    if [ $4 == "apply_now" ]; then
         replace_wal_color_file "$(dirname $1)/colors"
         replace_wal_color_file "$(dirname $1)/colors.Xresources"
         replace_wal_color_file "$(dirname $1)/colors.sh"

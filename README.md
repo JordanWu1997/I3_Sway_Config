@@ -102,7 +102,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
-- [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): gnome-software support
+- [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): GUI software authentication support
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
@@ -219,7 +219,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
     - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
-    - Player control (e.g. previous, pause-play, next) for spotify, player, vlc
+    - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotify, player, vlc
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__

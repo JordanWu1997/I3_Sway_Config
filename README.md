@@ -206,7 +206,7 @@ Note: the term "window" used in this configuration actually refers to "container
     - Deal with dual monitor, e.g. joint monitor, mirror monitor
 - __Redshift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
     - Screen color temperature tuner
-- __Dunst Mode (`[Winkey]` + `[Shift]` + `[n]`)__
+- __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
     - Dunst actions, including stopping or resuming dunst
 - __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
     - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide

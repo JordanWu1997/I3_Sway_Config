@@ -39,8 +39,8 @@ bar_operation () {
             fi
             ;;
         "bar_reload")
-            i3-msg exec 'killall i3bar; sleep 1.0'
-            i3-msg exec 'i3bar -b bar_status; sleep 0.5'
+            i3-msg exec 'killall i3bar && sleep 0.5'
+            i3-msg exec 'i3bar -b bar_status && sleep 0.5'
             i3-msg exec 'i3bar -b bar_mode'
             ;;
     esac

@@ -9,8 +9,8 @@ FEH_WALLPAPER=$(awk 'NR==2 {print $4}' $HOME/.fehbg | xargs)
 
 initialization () {
     # Create default wallpaper if there is none
-    if [ ! -f $DEFAULT_WALLPAPER ]; then
-        cp $DEFAULT_I3_WALLPAPER $DEFAULT_WALLPAPER
+    if [ ! -f "$DEFAULT_WALLPAPER" ]; then
+        cp "$DEFAULT_I3_WALLPAPER" "$DEFAULT_WALLPAPER"
     fi
 }
 
@@ -19,30 +19,30 @@ wallpaper_operation () {
         "variety")
             case $2 in
                 "set_default")
-                    if [[ $VARIETY_WALLPAPER != $DEFAULT_WALLPAPER ]]; then
-                        rm -f $DEFAULT_WALLPAPER
-                        cp $VARIETY_WALLPAPER $DEFAULT_WALLPAPER
+                    if [[ "$VARIETY_WALLPAPER" != "$DEFAULT_WALLPAPER" ]]; then
+                        rm -f "$DEFAULT_WALLPAPER"
+                        cp "$VARIETY_WALLPAPER" "$DEFAULT_WALLPAPER"
                     else
                         notify-send -u low "Wallpaper" "Already saved as default wallpaper"
                     fi
                     ;;
                 "save_current")
-                    cp $VARIETY_WALLPAPER $WALLPAPERV
+                    cp "$VARIETY_WALLPAPER" "$WALLPAPERV"
                     ;;
             esac
             ;;
         "feh")
             case $2 in
                 "set_default")
-                    if [[  $FEH_WALLPAPER != $DEFAULT_WALLPAPER ]]; then
-                        rm -f $DEFAULT_WALLPAPER
-                        cp $FEH_WALLPAPER $DEFAULT_WALLPAPER
+                    if [[  "$FEH_WALLPAPER" != "$DEFAULT_WALLPAPER" ]]; then
+                        rm -f "$DEFAULT_WALLPAPER"
+                        cp "$FEH_WALLPAPER" "$DEFAULT_WALLPAPER"
                     else
                         notify-send -u low "Wallpaper" "Already saved as default wallpaper"
                     fi
                     ;;
                 "save_current")
-                    cp $FEH_WALLPAPER $WALLPAPERF
+                    cp "$FEH_WALLPAPER" "$WALLPAPERF"
                     ;;
             esac
             ;;

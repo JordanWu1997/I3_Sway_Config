@@ -20,15 +20,15 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Additional settings in picom is needed, check reference quick start section for details
 
 ## Configurations
-- `flashfocus_blur.yml`
-    - Default opacity: 0.85
-    - Flash_opacity: 0.25
 - `flashfocus_transparency.yml`
-    - Default opacity: 1.0
-    - Flash_opacity:  0.4
-- `flashfocus_opaque.yml`
+    - Default opacity: 0.8
+    - Flash_opacity:  0.2
+- `flashfocus_blur.yml`
     - Default opacity: 0.9
     - Flash_opacity: 0.3
+- `flashfocus_opaque.yml`
+    - Default opacity: 1.0
+    - Flash_opacity: 0.4
 - `flashfocus.yml`
     - Symbolic link of the above configurations (blur/transparency/opaque)
     - Linking is available in flashfocus mode embedded within custom mode

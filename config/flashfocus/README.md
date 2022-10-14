@@ -16,11 +16,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Flashfocus
 - Flashfocus shows visualized-warning when focus changes by changing opacity of window
-- Flashfocus needs picom or other compositor to change opacity of window
+- Flashfocus is actually an __ADDITIONAL__ filter overlayed to application window that needs picom or other compositor to change opacity of window
 - Additional settings in picom is needed, check reference quick start section for details
 
 ## Configurations
 - `flashfocus_transparency.yml`
+    - Default opacity: 0.7
+    - Flash_opacity:  0.1
+- `flashfocus_intermediate.yml`
     - Default opacity: 0.8
     - Flash_opacity:  0.2
 - `flashfocus_blur.yml`

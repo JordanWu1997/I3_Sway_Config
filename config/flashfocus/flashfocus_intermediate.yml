@@ -3,10 +3,10 @@
 ## @@@@@@@@@@@@@@@@@@@@@@
 
 # Opacity of window during flash.
-flash-opacity: 0.0
+flash-opacity: 0.2
 
 # Windows are restored to this opacity value at the end of a flash.
-default-opacity: 0.6
+default-opacity: 0.8
 
 # Length of flash in milliseconds.
 time: 500
@@ -89,9 +89,3 @@ flash-lone-windows: 'always'
 # rules:
 #   - window-name: ^(?!termite)$
 #     default-opacity: 0.8
-
-rules:
-  - window-class: Brave-browser
-    default-opacity: 0.95
-  - window-class: Firefox
-    default-opacity: 0.95

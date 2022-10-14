@@ -203,7 +203,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
-    - Deal with dual monitor, e.g. joint monitor, mirror monitor
+    - Deal with multiple monitor configuration, e.g. joint monitor, mirror monitor
+- __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
+    - Modify monitor backlight level
 - __Redshift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
     - Screen color temperature tuner
 - __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
@@ -220,6 +222,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
     - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotify, player, vlc
+        - __Volume Mode (`[v]`)__
+            - Volume control with pulsemixer (e.g. volume up/down, mute)
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
@@ -241,7 +245,7 @@ Note: the term "window" used in this configuration actually refers to "container
         - __Picom Mode (`[p]`)__
             - Blur, transparency support
         - __Flashfocus Mode (`[f]`)__
-            - Flash window with picom (Mode: blur, transparency and opaque)
+            - Flash window with additional filter provided by picom (overlay picom settings)
         - __Theme Mode (`[t]`)__
             - Auto-theme with pywal and reload applications after auto-theming
         - __Wallpaper Mode (`[w]`)__

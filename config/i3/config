@@ -52,7 +52,7 @@ set $default_titlebar_style pixel
 set $default_floating_titlebar_style normal
 
 # Set border width (set pixel number of border width)
-set $default_border_width 2
+set $default_border_width 3
 
 # Set gap width (only for i3-gap, set 0 to reduce to original gapless i3)
 set $default_inner_gap 0

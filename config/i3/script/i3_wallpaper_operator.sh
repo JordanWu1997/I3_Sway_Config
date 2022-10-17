@@ -5,7 +5,7 @@ DEFAULT_WALLPAPER="$HOME/.config/i3/share/default_wallpaper"
 DEFAULT_I3_WALLPAPER="$HOME/.config/i3/share/default_i3_wallpaper.png"
 VARIETY_INFO="$HOME/.config/variety/wallpaper/wallpaper.jpg.txt"
 VARIETY_WALLPAPER="$(cat $VARIETY_INFO)"
-FEH_WALLPAPER=$(awk 'NR==2 {print $4}' $HOME/.fehbg | xargs)
+FEH_WALLPAPER=$(awk -F\' 'NR==2 {print $2}' $HOME/.fehbg | xargs)
 
 initialization () {
     # Create default wallpaper if there is none

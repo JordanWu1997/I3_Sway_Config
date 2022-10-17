@@ -84,7 +84,7 @@ ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Workspace / Window] ${hr 2}$
 ${color2}navigate to WS ${alignr}${color1}[S]+[(F)\#]
 ${color2}send WD to WS ${alignr}${color1}[S]+[Shift]+[(F)\#]
 ${color2}kill focused WD ${alignr}${color1}[S]+[Shift]+[q]
-${color2}change split direction ${alignr}${color1}[S]+[q]
+${color2}change split direction ${alignr}${color1}[S]+[q/\]
 ${color2}tiling/tabbed/stacking ${alignr}${color1}[S]+[e/w/s]
 ${color2}fullscreen toggle ${alignr}${color1}[S]+([Shift])+[f]
 ${color2}navigate to WD ${alignr}${color1}[S]+[vim-key]

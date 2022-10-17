@@ -222,8 +222,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
     - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotify, player, vlc
-        - __Volume Mode (`[v]`)__
-            - Volume control with pulsemixer (e.g. volume up/down, mute)
+- __Volume Mode (`[Ctrl]`+`[Alt]`+`[v]`)__
+    - Volume control with pulsemixer (e.g. volume up/down, mute)
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark window, go to/swap marked window, auto-mark function
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
@@ -308,10 +308,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - __`[Winkey]` + Click anywhere except title bar__
         - Toggle floating mode
 - __Scroll Wheel__
-    - __Scroll Up Title Bar__
-        - Send to scratchpad
-    - __Scroll Down Title Bar__
-        - Toggle floating mode
+    - __Scroll Up/Down Border__
+        - Show/Hide title bar
 
 </details>
 </details>

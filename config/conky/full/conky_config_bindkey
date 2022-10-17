@@ -84,7 +84,7 @@ ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Worksp
 ${color2}navigate to WS ${alignr}${color1}[S]+[(F)\#]
 ${color2}send WD to WS ${alignr}${color1}[S]+[Shift]+[(F)\#]
 ${color2}kill focused WD ${alignr}${color1}[S]+[Shift]+[q]
-${color2}change split direction ${alignr}${color1}[S]+[q]
+${color2}change split direction ${alignr}${color1}[S]+[q/\]
 ${color2}tiling/tabbed/stacking ${alignr}${color1}[S]+[e/w/s]
 ${color2}toggle layouts ${alignr}${color1}[S]+[Shift]+[e]
 ${color2}navigate to WD ${alignr}${color1}[S]+[vim-key]

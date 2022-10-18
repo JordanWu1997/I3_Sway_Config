@@ -179,11 +179,11 @@ install_xwindow_tool_package () {
 install_audio_tool_package () {
     echo
     echo "Audio tool package including:"
-    echo "-- Audio manager: pavucontrol, pulseaudio, pulsemixer"
+    echo "-- Audio manager: pavucontrol, pulseaudio, pulsemixer, playerctl"
     echo "-- Audio visualizer: cava"
     echo "Installation requires sudo permission"
     # Audio controls
-    sudo dnf install pavucontrol pulseaudio
+    sudo dnf install pavucontrol pulseaudio playerctl
     python -m pip install pulsemixer
     # Cava/Vis [https://github.com/dpayne/cli-visualizer]
     sudo dnf install cava

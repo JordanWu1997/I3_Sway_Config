@@ -34,9 +34,8 @@
 	# notification_limit).
 	indicate_hidden = yes
 
-	# Draw a line of "separator_height" pixel height between two
-	# notifications.
-	separator_height = 2
+	# Border height in pixel betwen two notifications
+	separator_height = 3
 
 	# Padding between text and separator.
 	padding = 8
@@ -46,7 +45,7 @@
 
 	# Frame color and width
 	frame_color = "#AD4C2D"
-	frame_width = 2
+	frame_width = 3
 
 	# Define a color for the separator.
 	separator_color = frame
@@ -121,7 +120,7 @@
 	background = "#953515"
 	foreground = "#bfbfbf"
 	frame_color = "#AD4C2D"
-	timeout = 5
+	timeout = 3
 
 [urgency_normal]
 

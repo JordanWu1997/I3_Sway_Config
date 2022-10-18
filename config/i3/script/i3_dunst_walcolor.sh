@@ -1,15 +1,26 @@
 #!/usr/bin/env bash
 
 DUNST_CONFIG="$HOME/.config/dunst/dunstrc"
-WAL_COLOR="$HOME/.cache/wal/colors"
-
 BG_COLOR_COL=$(awk '$0~/background/ {print NR}' $DUNST_CONFIG)
 FG_COLOR_COL=$(awk '$0~/foreground/ {print NR}' $DUNST_CONFIG)
 FRAME_COLOR_COL=$(awk '$0~/frame_color/ {print NR}' $DUNST_CONFIG)
+FRAME_BORDER_WIDTH_COL=$(awk '$0~/frame_width =/ {print NR}' $DUNST_CONFIG)
+SEPARATOR_BORDER_WIDTH_COL=$(awk '$0~/separator_height =/ {print NR}' $DUNST_CONFIG)
 
+I3_CONFIG="$HOME/.config/i3/config"
+BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' $I3_CONFIG)
+
+WAL_COLOR="$HOME/.cache/wal/colors"
 WAL_COLOR3="$(awk 'NR==4' $WAL_COLOR)"
 WAL_COLOR12="$(awk 'NR==13' $WAL_COLOR)"
 WAL_COLOR15="$(awk 'NR==16' $WAL_COLOR)"
+
+load_wal_border_width () {
+    # Separator border width
+    sed -i "$SEPARATOR_BORDER_WIDTH_COL s/.*/\tseparator_height \= $BORDER_WIDTH/" "$DUNST_CONFIG"
+    # Frame border width
+    sed -i "$FRAME_BORDER_WIDTH_COL s/.*/\tframe_width \= $BORDER_WIDTH/" "$DUNST_CONFIG"
+}
 
 load_wal_color () {
     # Background: wal color3 (Yellow)
@@ -39,11 +50,15 @@ dunst_operation () {
         "load_wal_color")
             load_wal_color
             ;;
+        "load_i3_border_width")
+            load_wal_border_width
+            ;;
         "reload")
             reload_dunst
             ;;
-        "both")
+        "all")
             load_wal_color
+            load_wal_border_width
             reload_dunst
             ;;
         *)

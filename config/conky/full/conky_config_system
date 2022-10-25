@@ -98,9 +98,9 @@ ${color2}Swap ${alignr}${color1} ${swap} / ${swapmax}
 ${voffset -5}${color2}${hr 1}
 ${color2}MEM-Top ${alignr}${color1}CPU		${alignr}MEM
 ${voffset -5}${color2}${hr 1}
-${color2}${top_mem name 1} ${alignr}${color1}${top_mem cpu 1}	${alignr}${top mem 1}
-${color2}${top_mem name 2} ${alignr}${color1}${top_mem cpu 2}	${alignr}${top mem 2}
-${color2}${top_mem name 3} ${alignr}${color1}${top_mem cpu 3}	${alignr}${top mem 3}
+${color2}${top_mem name 1} ${alignr}${color1}${top_mem cpu 1}	${alignr}${top_mem mem 1}
+${color2}${top_mem name 2} ${alignr}${color1}${top_mem cpu 2}	${alignr}${top_mem mem 2}
+${color2}${top_mem name 3} ${alignr}${color1}${top_mem cpu 3}	${alignr}${top_mem mem 3}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Graphics]${font}${voffset 5}
 ${alignc}${color1}${exec lspci | grep VGA | awk -F 'VGA compatible controller: ' '{print $2}' | cut -d '(' -f 1} ${font}
 ${color2}GPU Freq. ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card1/gt_cur_freq_mhz)} MHz / ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card1/gt_max_freq_mhz)} MHz

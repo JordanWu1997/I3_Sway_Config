@@ -62,7 +62,7 @@ case $CHANGE_ITEM in
         killall flashfocus
         i3-msg exec flashfocus
         ;;
-    "conky")
+    "conky_style")
         rm "$CONKY_DIR/conky_config_bindkey"
         rm "$CONKY_DIR/conky_config_system"
         ln -s "$CONKY_DIR/$NEW_DEFAULT_VALUE/conky_config_bindkey" "$CONKY_DIR/conky_config_bindkey"
@@ -73,7 +73,7 @@ case $CHANGE_ITEM in
         ;;
     *)
         echo ""
-        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_style/floating_titlebar_style/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky]"
+        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_style/floating_titlebar_style/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky_style]"
         echo ""
         ;;
 esac

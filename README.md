@@ -221,7 +221,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
     - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
-    - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotify, player, vlc
+    - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotifyd, player, vlc
+- __Spotifyd Mode (`[Ctrl]`+`[Alt]`+`[s]`)__
+    - Spotifyd control (e.g. enable, disable, reload) for spotifyd
 - __Volume Mode (`[Ctrl]`+`[Alt]`+`[v]`)__
     - Volume control with pulsemixer (e.g. volume up/down, mute)
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__

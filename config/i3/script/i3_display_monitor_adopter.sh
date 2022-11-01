@@ -8,7 +8,6 @@ HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
 HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
 HDMI1_HEIGHT=$(xrandr | awk -v var=$HDMI1_HEIGHT_ID '$1~/HDMI1/ {print $var}')
 HDMI1_WIDTH=$(xrandr | awk -v var=$HDMI1_WIDTH_ID '$1~/HDMI1/ {print $var}')
-echo HDMI1 HxW: $HDMI1_HEIGHT, $HDMI1_WIDTH
 
 # Reload conky after monitor display is set
 reload_conky () {

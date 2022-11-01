@@ -2,6 +2,18 @@
 
 ICON="$HOME/.config/spotifyd/spotify.png"
 
+help_message () {
+    echo "Usage":
+    echo "  i3_spotifyd_operator.sh [operation]"
+    echo ""
+    echo "OPERATIONS"
+    echo "  [status]: current spotifyd status"
+    echo "  [enable]: enable spotifyd"
+    echo "  [disable]: disable spotifyd"
+    echo "  [reload]: reload spotifyd"
+    echo "  [reload_all]: reload spotifyd and reload spt"
+}
+
 case $1 in
     "status")
         if [ ! -z $(pgrep -f ^spotifyd) ]; then
@@ -19,9 +31,17 @@ case $1 in
         notify-send "Spotifyd" "Spotifyd is disabled" --icon=${ICON}
         ;;
     "reload")
-        killall spotifyd; spotifyd
+        killall spotifyd
+        spotifyd
+        notify-send "Spotifyd" "Spotifyd is reloaded" --icon=${ICON}
+        ;;
+    "reload_all")
+        killall spotifyd
+        spotifyd
+        sleep 1.5
+        spt playback --transfer spotifyd
         notify-send "Spotifyd" "Spotifyd is reloaded" --icon=${ICON}
         ;;
     *)
-        echo enable, disalbe, reload
+        help_message
 esac

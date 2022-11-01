@@ -2,7 +2,6 @@
 
 GAP_CONFIG="$HOME/.config/i3/configs/i3_gap.config"
 COL_SMART_GAP=$(awk '$1~/smart_gaps/ {print NR}' $GAP_CONFIG)
-echo $COL_SMART_GAP
 
 gap_operation () {
     case $1 in

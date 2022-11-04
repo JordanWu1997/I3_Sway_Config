@@ -170,7 +170,7 @@ class fzf_select_cat(Command):
         # Modified for fish shell
         env['FZF_DEFAULT_OPTS'] = "--height=100% --layout=reverse --ansi \
            --bind alt-k:up,alt-j:down,ctrl-y:preview-up,ctrl-e:preview-down,ctrl-b:preview-page-up,ctrl-f:preview-page-down \
-            --preview=\"cat --color=always {}\""
+            --preview=\"bat -P --plain --color=always {}\""
 
         fzf = self.fm.execute_command('fzf --no-multi',
                                       env=env,

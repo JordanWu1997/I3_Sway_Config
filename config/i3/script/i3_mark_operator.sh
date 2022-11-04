@@ -31,6 +31,12 @@ mark_operation () {
                 i3-input -F "unmark %s" -l 1 -P "Unmark: "
             fi
             ;;
+        # Unmark all automark marks
+        "unmark_all_automark")
+            for mark in $(cat ~/.config/i3/share/i3_automark_list.txt); do
+                i3-msg unmark ${mark}
+            done
+            ;;
         # Goto mark window
         "goto")
             if [ $2 == "i3" ]; then
@@ -87,7 +93,7 @@ mark_operation () {
         *)
             echo
             echo "Wrong Input: $0"
-            echo "Available Usage: [i3_mark_operation.sh] [mark/goto/swap/show_then_goto/show_then_swap] [i3/rofi] [title_on/off]"
+            echo "Available Usage: [i3_mark_operation.sh] [mark/unmark/unmark_all_automark/goto/swap/show_then_goto/show_then_swap] [i3/rofi] [title_on/off]"
             echo
             ;;
     esac

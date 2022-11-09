@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+# Automark marks
+ALL_AUTOMARK_LIST=(\
+    1 2 3 4 5 6 7 8 9 0 \
+    q w e r t y u i o p \
+    a s d f g h j k l \
+    z x c v b n m)
+
 cycle_mark_focus () {
     # Set automark index dictionary
-    ALL_AUTOMARK_LIST=(\
-        1 2 3 4 5 6 7 8 9 0 \
-        q w e r t y u i o p \
-        a s d f g h j k l \
-        z x c v b n m)
     declare -A AUTOMARK_INDEX_DICT
     for i in ${!ALL_AUTOMARK_LIST[@]}; do
         AUTOMARK_INDEX_DICT[${ALL_AUTOMARK_LIST[$i]}]=${i}

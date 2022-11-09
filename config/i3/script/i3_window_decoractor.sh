@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-WINDOW_CONFIG="$HOME/.config/i3/configs/i3_window.config"
+WINDOW_CONFIG="$HOME/.config/i3/config.d/i3_window.config"
 COL_WIN1=$(expr $(awk '$0~/Color Palette/{print NR}' $WINDOW_CONFIG) + 2)
 COL_WIN2=$(expr $(awk '$0~/Color Palette/{print NR}' $WINDOW_CONFIG) + 3)
 COL_WIN3=$(expr $(awk '$0~/Color Palette/{print NR}' $WINDOW_CONFIG) + 4)
@@ -18,15 +18,6 @@ window_decoraction () {
             sed -i "$COL_WIN4 s/.*/client.urgent           \#2F343A \#900000 \#FFFFFF \#900000 \#900000/" "$WINDOW_CONFIG"
             sed -i "$COL_WIN5 s/.*/client.placeholder      \#000000 \#0C0C0C \#FFFFFF \#000000 \#0C0C0C/" "$WINDOW_CONFIG"
             sed -i "$COL_WIN6 s/.*/client.background               \#ffffff/" "$WINDOW_CONFIG"
-            ;;
-        "dracula")
-            # Dracula theme [https://draculatheme.com/]
-            sed -i "$COL_WIN1 s/.*/client.focused          \#6272A4 \#6272A4 \#F8F8F2 \#6272A4 \#6272A4/" "$WINDOW_CONFIG"
-            sed -i "$COL_WIN2 s/.*/client.focused_inactive \#44475A \#44475A \#F8F8F2 \#44475A \#44475A/" "$WINDOW_CONFIG"
-            sed -i "$COL_WIN3 s/.*/client.unfocused        \#282A36 \#282A36 \#BFBFBF \#282A36 \#282A36/" "$WINDOW_CONFIG"
-            sed -i "$COL_WIN4 s/.*/client.urgent           \#44475A \#FF5555 \#F8F8F2 \#FF5555 \#FF5555/" "$WINDOW_CONFIG"
-            sed -i "$COL_WIN5 s/.*/client.placeholder      \#282A36 \#282A36 \#F8F8F2 \#282A36 \#282A36/" "$WINDOW_CONFIG"
-            sed -i "$COL_WIN6 s/.*/client.background               \#F8F8F2/" "$WINDOW_CONFIG"
             ;;
         "monochromic")
             # Set window decoration
@@ -46,6 +37,17 @@ window_decoraction () {
             sed -i "$COL_WIN5 s/.*/client.placeholder      \$c1     \$c1     \$c15    \$c14    \$c1/" "$WINDOW_CONFIG"
             sed -i "$COL_WIN6 s/.*/client.background               \$transp/" "$WINDOW_CONFIG"
             ;;
+        "monochromic_inversed")
+            # Set window decoration
+            sed -i "$COL_WIN1 s/.*/client.focused          \$c1     \$c1     \$c15    \$c9     \$c1/" "$WINDOW_CONFIG"
+            sed -i "$COL_WIN2 s/.*/client.focused_inactive \$c5     \$c5     \$c7     \$c13    \$c5/" "$WINDOW_CONFIG"
+            sed -i "$COL_WIN3 s/.*/client.unfocused        \$c5     \$c5     \$c7     \$c5     \$c5/" "$WINDOW_CONFIG"
+            sed -i "$COL_WIN4 s/.*/client.urgent           \$c0     \$c15    \$c0     \$c15    \$c15/" "$WINDOW_CONFIG"
+            sed -i "$COL_WIN5 s/.*/client.placeholder      \$c5     \$c5     \$c15    \$c13    \$c1/" "$WINDOW_CONFIG"
+            sed -i "$COL_WIN6 s/.*/client.background               \$transp/" "$WINDOW_CONFIG"
+            ;;
+        *)
+            echo "default/monochromic/dirchromatic/monochromic_inversed"
     esac
 }
 

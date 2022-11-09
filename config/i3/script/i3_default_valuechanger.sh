@@ -3,31 +3,32 @@
 # Input variable and constant
 CHANGE_ITEM=$1
 NEW_DEFAULT_VALUE=$2
+
+# Configuration files
 I3_CONFIG_FILE="$HOME/.config/i3/config"
 PICOM_DIR="$HOME/.config/picom"
 FLASHFOCUS_DIR="$HOME/.config/flashfocus"
 CONKY_DIR="$HOME/.config/conky"
 
-# Default gap, border width column number in i3 configuration
+# Column number of defualt value in $I3_CONFIG_FILE
 COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_FLOATING_TITLEBAR_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_I3BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
 
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
     "outer_gap")
-        echo $NEW_DEFAULT_VALUE
-        echo $COL_OUTER_GAP_WIDTH
         sed -i "$COL_OUTER_GAP_WIDTH s/.*/set \$default_outer_gap $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "inner_gap")
-        echo $NEW_DEFAULT_VALUE
-        echo $COL_INNER_GAP_WIDTH
         sed -i "$COL_INNER_GAP_WIDTH s/.*/set \$default_inner_gap $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
@@ -47,8 +48,20 @@ case $CHANGE_ITEM in
         sed -i "$COL_TITLEBAR_FONTSIZE s/.*/set \$default_titlebar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
+    "i3bar_height")
+        sed -i "$COL_I3BAR_HEIGHT s/.*/set \$default_i3bar_height $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
     "i3bar_fontsize")
         sed -i "$COL_I3BAR_FONTSIZE s/.*/set \$default_i3bar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
+    "i3bar_mode")
+        sed -i "$COL_I3BAR_MODE s/.*/set \$default_i3bar_mode $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
+    "i3bar_position")
+        sed -i "$COL_I3BAR_POS s/.*/set \$default_i3bar_position $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "picom")
@@ -72,8 +85,15 @@ case $CHANGE_ITEM in
         i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
         ;;
     *)
+        echo "Usage:"
+        echo "  i3_default_valuechanger [options] [new_value]"
         echo ""
-        echo "Wrong input [Available option: outer_gap/inner_gap/border_width/titlebar_style/floating_titlebar_style/titlebar_fontsize/i3bar_fontsize/picom/flashfocus/conky_style]"
+        echo "OPTION"
+        echo "  border_width"
+        echo "  outer_gap/inner_gap"
+        echo "  titlebar_style/floating_titlebar_style/titlebar_fontsize"
+        echo "  i3bar_height/i3bar_fontsize/i3bar_mode/i3bar_position"
+        echo "  picom/flashfocus/conky_style]"
         echo ""
         ;;
 esac

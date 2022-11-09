@@ -7,6 +7,7 @@ Table of Contents
 * [Rofi_Config](#rofi_config)
 * [Context](#context)
    * [Configurations](#configurations)
+   * [Text file](#text-file)
    * [Customized Rofi Keybindings](#customized-rofi-keybindings)
    * [Rofi Tips:](#rofi-tips)
 
@@ -29,6 +30,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - `config_dracula.rasi`
     - Configuration for Dracula-themed rofi
     - Main usage: miscellaneous (for Dracula-themed environment)
+
+## Text file
+- `i3_automark_list.txt`
+    - Single character mark list that
+        - Record marks used in `../../config/i3/script/i3_automark.py` to automatically assign mark to every window
+        - Is used as the input list for rofi selector in `../../config/i3/script/i3_mark_operator.sh`
+    - In rofi, it starts from the left to the right and from the first row to the last row of __QWERTY__ keyboard
+        - Alphabet only, except for single quotation (')
 
 ## Customized Rofi Keybindings
 - `[Ctrl]`+`[c/g/[]`: Exit rofi

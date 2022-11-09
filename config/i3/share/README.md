@@ -17,12 +17,6 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ## Texts
 - `app-icons.json`
     - Unicode list for applications (required by [i3-workspace-names-daemon](https://github.com/cboddy/i3-workspace-names-daemon))
-- `i3_automark_list`
-    - Single character mark list that is
-        - Used by `../script/i3_automark.py` to assign mark to every window
-        - Used as the input list for rofi selector in `../script/i3_mark_operator.sh`
-    - In rofi, it starts from the left to the right and from the first row to the last row of __QWERTY__ keyboard
-        - Alphabet only, except for single quotation
 
 ## Images
 - `default_wallpaper`

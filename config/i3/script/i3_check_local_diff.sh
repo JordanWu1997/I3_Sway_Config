@@ -4,12 +4,12 @@ GIT_DIR="$HOME/Desktop/I3_Sway_Config/config/i3"
 LOC_DIR="$HOME/.config/i3"
 
 GIT_CONFIG=("$GIT_DIR/config")
-for config in $GIT_DIR/configs/*; do
+for config in $GIT_DIR/config.d/*; do
     GIT_CONFIG+=($config)
 done
 
 LOC_CONFIG=("$LOC_DIR/config")
-for config in $LOC_DIR/configs/*; do
+for config in $LOC_DIR/config.d/*; do
     LOC_CONFIG+=($config)
 done
 

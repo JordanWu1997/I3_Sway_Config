@@ -39,11 +39,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 `conky_config_bindkey`
     - Symbolic link for the above configuration (full/light/minimal)
     - Linking is available in conky mode embedded within custom mode
-        - Check `configs/i3/configs/i3_custom.config`
+        - Check `configs/i3/config.d/i3_custom.config`
 `conky_config_system`
     - Symbolic link for the above configuration (full/light/minimal)
     - Linking is available in conky mode embedded within custom mode
-        - Check `configs/i3/configs/i3_custom.config`
+        - Check `configs/i3/config.d/i3_custom.config`
 
 ## Reference
 - https://github.com/brndnmtthws/conky

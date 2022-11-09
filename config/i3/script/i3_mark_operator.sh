@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# Rofi configuration
+ROFI_SELECTOR_CONFIG="$HOME/.config/rofi/config_i3mark.rasi"
+# Mark input list for rofi
+ROFI_AUTOMARK_INPUT_TEXT="$HOME/.config/rofi/i3_automark_list.txt"
+# Automark marks
+ALL_AUTOMARK_LIST=(\
+    1 2 3 4 5 6 7 8 9 0 \
+    q w e r t y u i o p \
+    a s d f g h j k l \
+    z x c v b n m)
+
 # Operation for i3 vim-style mark
 mark_operation () {
     case $1 in
@@ -16,7 +27,7 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "mark --add %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                i3-msg "mark --add $(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -p 'Mark')"
+                i3-msg "mark --add $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Mark')"
             else
                 i3-input -F "mark --add %s" -l 1 -P "Mark: "
             fi
@@ -26,14 +37,14 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "unmark %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                i3-msg unmark $(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -p 'Unmark')
+                i3-msg unmark $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Unmark')
             else
                 i3-input -F "unmark %s" -l 1 -P "Unmark: "
             fi
             ;;
         # Unmark all automark marks
         "unmark_all_automark")
-            for mark in $(cat ~/.config/i3/share/i3_automark_list.txt); do
+            for mark in ${ALL_AUTOMARK_LIST[@]}; do
                 i3-msg unmark ${mark}
             done
             ;;
@@ -42,8 +53,8 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto Window [Mark]: "
             elif [ $2 == "rofi" ]; then
-                i3-msg [con_mark="$(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' \
-                    -select -input ~/.config/i3/share/i3_automark_list.txt \
+                i3-msg [con_mark="$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} \
+                    -select -input ${ROFI_AUTOMARK_INPUT_TEXT} \
                     -p 'Goto Window [Mark]')"] focus
             fi
             ;;
@@ -65,8 +76,8 @@ mark_operation () {
                     i3-input -F "swap container with mark %s" -l 1 -P "Swapto [Mark]: "
                 fi
             elif [ $2 == "rofi" ]; then
-                mark_title="$(rofi -dmenu -config '~/.config/rofi/config_i3mark.rasi' -select \
-                    -input ~/.config/i3/share/i3_automark_list.txt -p 'Swapto [Mark]')"
+                mark_title="$(rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -select \
+                    -input "${ROFI_AUTOMARK_INPUT_TEXT}" -p 'Swapto [Mark]')"
                 mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
                 # Keep focus stay in current container
                 if [ $3 == "stay" ]; then

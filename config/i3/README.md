@@ -6,7 +6,7 @@ Table of Contents
 
 * [I3_Config](#i3_config)
 * [Context](#context)
-   * [configs](#configs)
+   * [config.d](#config.d)
    * [doc](#doc)
    * [script](#script)
    * [share](#share)
@@ -16,7 +16,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 # Context
 Contents in this configuration directory
 
-## configs
+## config.d
+Directory of my i3 configuration files.
 After i3 version 4.20, configuration include function is available.
 Breaking original long configuration into sections tries to keep configuration clean.
 This directory contains all sections that be included in `config` file.

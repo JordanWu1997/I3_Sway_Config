@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BAR_CONFIG="$HOME/.config/i3/configs/i3_bar.config"
+BAR_CONFIG="$HOME/.config/i3/config.d/i3_bar.config"
 
 COL_BAR1_1=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 2)
 COL_BAR1_2=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 3)

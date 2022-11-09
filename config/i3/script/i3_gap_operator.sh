@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GAP_CONFIG="$HOME/.config/i3/configs/i3_gap.config"
+GAP_CONFIG="$HOME/.config/i3/config.d/i3_gap.config"
 COL_SMART_GAP=$(awk '$1~/smart_gaps/ {print NR}' $GAP_CONFIG)
 
 gap_operation () {

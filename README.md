@@ -1,7 +1,8 @@
 # I3_Sway_Config
-Backup for my configuration of I3WM(X11)/SwayWM(Wayland),
+Backup for my configuration of __i3WM (X11)__ and __SwayWM (Wayland)__,
 and configurations of applications for the working environment in X11/Wayland.
-For now, some functions do not work in Wayland, still searching for alternatives in Wayland.
+For now, some functions do not work in Wayland, still searching for solutions or alternatives in Wayland.
+For more SwayWM details and i3WM migration progress, please check `.config/sway/README.md`
 
 Table of Contents
 =================
@@ -62,9 +63,11 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
 - [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
-- [ ] __Configuration Documentation__: Document my configuration setup details in `./configs`
+- [ ] __Configuration Documentation__: Document my configuration setup details in `./config.d`
 
 </details>
+
+### My Workflow Demo
 
 ## Section 2 - Details of i3 Environment
 <details>
@@ -187,10 +190,10 @@ Note: the term "window" used in this configuration actually refers to "container
 - Press `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
 - Press `[Enter]` to go to the last level of mode and exit mode if it is already the last one
 - This part configuration can be found in
-    - `./config/i3/configs/i3_mode.config`
-    - `./config/i3/configs/i3_custom.config`
-    - `./config/i3/configs/i3_bar.config`
-    - `./config/i3/configs/i3_gap.config`
+    - `./config/i3/config.d/i3_mode.config`
+    - `./config/i3/config.d/i3_custom.config`
+    - `./config/i3/config.d/i3_bar.config`
+    - `./config/i3/config.d/i3_gap.config`
 
 ### 1. Mode Usage
 <details open>
@@ -217,7 +220,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
     - Modify i3 gaps, e.g. inner gaps, outer gaps
 - __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
-    - Show/hide i3bar, reload i3bar, set default i3bar status (show/hide), bar font size
+    - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, fontsize)
 - __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
     - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
@@ -264,8 +267,8 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - Although the keyboard-driven workflow is favored in i3, there is no harm in keeping mouse function
 - This part of configuration can be found in
-    - `./config/i3/configs/i3_bindkey.config`
-    - `./config/i3/configs/i3_mode.config`
+    - `./config/i3/config.d/i3_bindkey.config`
+    - `./config/i3/config.d/i3_mode.config`
 
 ### 1. Touchpad Usage
 <details open>
@@ -327,14 +330,14 @@ Note: the term "window" used in this configuration actually refers to "container
         setxkbmap -option "ctrl:nocaps"
         ```
     - The remapping command will be automatically activated as you enter i3
-        - Check `./config/i3/configs/i3_startup.config`
+        - Check `./config/i3/config.d/i3_startup.config`
 - All following keybindings can be configured in
-    - `./config/i3/configs/i3_bindkey.config`
-    - `./config/i3/configs/i3_workspace.config`
-    - `./config/i3/configs/i3_custom.config`
-    - `./config/i3/configs/i3_gap.config`
-    - `./config/i3/configs/i3_mode.config`
-    - `./config/i3/configs/i3_bar.config`
+    - `./config/i3/config.d/i3_bindkey.config`
+    - `./config/i3/config.d/i3_workspace.config`
+    - `./config/i3/config.d/i3_custom.config`
+    - `./config/i3/config.d/i3_gap.config`
+    - `./config/i3/config.d/i3_mode.config`
+    - `./config/i3/config.d/i3_bar.config`
 
 ### 1. Prefix: Winkey
 <details open>
@@ -442,6 +445,4 @@ Note: the term "window" used in this configuration actually refers to "container
 - https://regolith-linux.org/
 - https://arcolinux.com/
 
-</details>
-</details>
 </details>

@@ -44,6 +44,12 @@ set $default_i3bar_fontsize 12
 # Set i3bar height (RECOMMENDED: 25)
 set $default_i3bar_height 25
 
+# Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
+set $default_i3bar_mode hide
+
+# Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
+set $default_i3bar_position top
+
 # Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12
 
@@ -60,6 +66,9 @@ set $default_outer_gap 0
 
 # Set default conky gap_y to avoid being blocked by i3bar (RECOMMEMDED: 30)
 set $default_conky_gap_y 30
+
+# Set default conky gap opacity (RECOMMENDED: 64, AVAIL: 0-256)
+set $default_conky_opacity 64
 
 # ======================================================================================
 # All About Color Template
@@ -111,53 +120,53 @@ set $transp #00000000
 # ======================================================================================
 # This is initial setup for all windows and floating windows in i3
 
-include ./configs/i3_window.config
+include ./config.d/i3_window.config
 
 # ======================================================================================
 # All About Workspace Settings
 # ======================================================================================
 # This is initial setup for all workspace in i3
 
-include ./configs/i3_workspace.config
+include ./config.d/i3_workspace.config
 
 # ======================================================================================
 # All About i3-gap Gap Setting
 # ======================================================================================
 # Comment out this section if you are using original i3
 
-include ./configs/i3_gap.config
+include ./config.d/i3_gap.config
 
 # ======================================================================================
 # All About Bindkeys
 # ======================================================================================
 # This is to save all bindkeys of programs
 
-include ./configs/i3_bindkey.config
+include ./config.d/i3_bindkey.config
 
 # ======================================================================================
 # All About Modes
 # ======================================================================================
 # This is to save all bindkeys of modes
 
-include ./configs/i3_mode.config
+include ./config.d/i3_mode.config
 
 # ======================================================================================
 # All About Customization
 # ======================================================================================
 # Customization includes wallpaper, theme, and visual effects (e.g. blur/animation)
 
-include ./configs/i3_custom.config
+include ./config.d/i3_custom.config
 
 # ======================================================================================
 # All About i3bar Settings
 # ======================================================================================
 # Start i3bar to display a status/workspace bar
 
-include ./configs/i3_bar.config
+include ./config.d/i3_bar.config
 
 # ======================================================================================
 # All About I3 Startup Commands/Programs
 # ======================================================================================
 # Following commands/programs will run after I3 starts
 
-include ./configs/i3_startup.config
+include ./config.d/i3_startup.config

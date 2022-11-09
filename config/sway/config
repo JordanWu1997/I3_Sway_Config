@@ -4,7 +4,7 @@
 # --------------------------------------------------------------------------------------
 # Author: Jordan Kuan-Hsien Wu
 # Email:  jordankhwu@gmail.com
-# Date:   2022/05/27
+# Date:   2022/11/09
 # --------------------------------------------------------------------------------------
 
 # ======================================================================================
@@ -44,17 +44,30 @@ set $terminal kitty --config $HOME/.config/kitty/kitty_dracula.conf
 # Setup rofi in dracula theme
 set $rofi rofi -config "$HOME/.config/rofi/config_dracula.rasi"
 
-# Setup i3bar fontsize
+# Set i3bar fontsize (RECOMMENDED: 12)
 set $default_i3bar_fontsize 12
 
-# Setup titlebar fontsize
+# Set i3bar height (RECOMMENDED: 25)
+set $default_i3bar_height 25
+
+# Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
+set $default_i3bar_mode hide
+
+# Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
+set $default_i3bar_position top
+
+# Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12
 
-# Setup border width (set normal to show window titlebar)
-set $default_border_width pixel 5
+# Set tiling/floating window titlebar style (set normal/pixel to show/hide titlebar)
+set $default_titlebar_style pixel
+set $default_floating_titlebar_style normal
+
+# Set border width (set pixel number of border width)
+set $default_border_width 3
 
 # Setup gap width (only for sway-gap, set 0 to reduce to gapless sway)
-set $default_inner_gap 10
+set $default_inner_gap 0
 set $default_outer_gap 0
 
 # Keyboard and Trackpad Setup
@@ -91,46 +104,46 @@ client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
-include ./configs/sway_window.config
+include ./config.d/sway_window.config
 
 # ======================================================================================
 # All About Workspace Settings
 # ======================================================================================
 # This is initial setup for all workspace in sway
 
-include ./configs/sway_workspace.config
+include ./config.d/sway_workspace.config
 
 # ======================================================================================
 # All About Gap Setting
 # ======================================================================================
 # This is to set gaps in sway
 
-include ./configs/sway_gap.config
+include ./config.d/sway_gap.config
 
 # ======================================================================================
 # All About Bindkeys
 # ======================================================================================
 # This is to save all bindkeys of programs
 
-include ./configs/sway_bindkey.config
+include ./config.d/sway_bindkey.config
 
 # ======================================================================================
 # All About Modes
 # ======================================================================================
 # This is to save all bindkeys of modes
 
-include ./configs/sway_mode.config
+include ./config.d/sway_mode.config
 
 # ======================================================================================
 # All About waybar Settings
 # ======================================================================================
 # Start Waybar to display a workspace bar
 
-include ./configs/sway_bar.config
+include ./config.d/sway_bar.config
 
 # ======================================================================================
 # All About Sway Startup Commands/Programs
 # ======================================================================================
 # Following commands/programs will run after Sway starts
 
-include ./configs/sway_startup.config
+include ./config.d/sway_startup.config

@@ -19,13 +19,10 @@
 # --------------------------------------------------------------------------------------
 
 # ======================================================================================
-# All About Mod Key Settings And I3 Variables
+# All About Variables
 # ======================================================================================
-# Set i3 key and some variables
+# Set variables
 # PLEASE DO NOT MOVE/REMOVE LINES IN THIS SECTION UNLESS YOU KNOW WHAT YOU ARE DOING !!!
-
-# Set mod (Prefix)
-# Mod1: alt, Mod4: win
 
 # Set monitor order according to frequent-usage priority
 # If the monitor does not exist, workspaces will just spawn in current monitor
@@ -53,14 +50,14 @@ set $default_i3bar_position top
 # Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12
 
-# Set tiling/floating window titlebar style (set normal/pixel to show/hide titlebar)
+# Set window titlebar style (set normal/pixel to show/hide titlebar)
 set $default_titlebar_style pixel
 set $default_floating_titlebar_style normal
 
 # Set border width (set pixel number of border width)
 set $default_border_width 3
 
-# Set gap width (only for i3-gap, set 0 to reduce to original gapless i3)
+# Set gap width (ONLY for i3-gap)
 set $default_inner_gap 0
 set $default_outer_gap 0
 

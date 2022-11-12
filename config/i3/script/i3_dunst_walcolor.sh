@@ -17,23 +17,23 @@ WAL_COLOR15="$(awk 'NR==16' $WAL_COLOR)"
 
 load_wal_border_width () {
     # Separator border width
-    sed -i "$SEPARATOR_BORDER_WIDTH_COL s/.*/\tseparator_height \= $BORDER_WIDTH/" "$DUNST_CONFIG"
+    sed -i "$SEPARATOR_BORDER_WIDTH_COL s/.*/    separator_height \= $BORDER_WIDTH/" "$DUNST_CONFIG"
     # Frame border width
-    sed -i "$FRAME_BORDER_WIDTH_COL s/.*/\tframe_width \= $BORDER_WIDTH/" "$DUNST_CONFIG"
+    sed -i "$FRAME_BORDER_WIDTH_COL s/.*/    frame_width \= $BORDER_WIDTH/" "$DUNST_CONFIG"
 }
 
 load_wal_color () {
     # Background: wal color3 (Yellow)
     for col in $BG_COLOR_COL; do
-        sed -i "$col s/.*/\tbackground \= \"$WAL_COLOR3\"/" "$DUNST_CONFIG"
+        sed -i "$col s/.*/    background \= \"$WAL_COLOR3\"/" "$DUNST_CONFIG"
     done
     # Foreground: wal color15 (White)
     for col in $FG_COLOR_COL; do
-        sed -i "$col s/.*/\tforeground \= \"$WAL_COLOR15\"/" "$DUNST_CONFIG"
+        sed -i "$col s/.*/    foreground \= \"$WAL_COLOR15\"/" "$DUNST_CONFIG"
     done
     # Frame: wal color12 (Magenta)
     for col in $FRAME_COLOR_COL; do
-        sed -i "$col s/.*/\tframe_color \= \"$WAL_COLOR12\"/" "$DUNST_CONFIG"
+        sed -i "$col s/.*/    frame_color \= \"$WAL_COLOR12\"/" "$DUNST_CONFIG"
     done
 }
 

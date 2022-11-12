@@ -26,6 +26,7 @@ COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $I3_CONFIG_FIL
 COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 COL_DUNST_POS=$(awk '$0~/origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_ALIGN=$(awk '$0~/alignment/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
@@ -96,6 +97,10 @@ case $CHANGE_ITEM in
         sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_walcolor.sh reload
         ;;
+    "dunst_offset")
+        sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${NEW_DEFAULT_VALUE}x${NEW_DEFAULT_VALUE}/" $DUNST_DIR/dunstrc
+        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        ;;
     "dunst_alignment")
         sed -i "$COL_DUNST_ALIGN s/.*/    alignment = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_walcolor.sh reload
@@ -117,7 +122,7 @@ case $CHANGE_ITEM in
         echo "  outer_gap/inner_gap"
         echo "  titlebar_style/floating_titlebar_style/titlebar_fontsize"
         echo "  i3bar_height/i3bar_fontsize/i3bar_mode/i3bar_position"
-        echo "  dunst_position/dunst_alignment/dunst_fontsize/dunst_icon_position"
+        echo "  dunst_position/dunst_offset/dunst_alignment/dunst_fontsize/dunst_icon_position"
         echo "  picom/flashfocus/conky_style"
         echo ""
         ;;

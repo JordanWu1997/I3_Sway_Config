@@ -204,7 +204,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Vim Keybinding Mode (`[Winkey]` + `[Ctrl]` + `[[]`)__
     - Enable vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
-    - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
+    - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function, keyboard function
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with multiple monitor configuration, e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
@@ -247,6 +247,8 @@ Note: the term "window" used in this configuration actually refers to "container
             - Window container border width, color scheme and edge border option
         - __Conky Mode (`[c]`)__
             - System monitor, i3 keybinding sheet, conky color palette
+        - __Dunst Mode (`[d]`)__
+            - Dunst position, offset, alignment, font size, icon position
         - __Picom Mode (`[p]`)__
             - Blur, transparency support
         - __Flashfocus Mode (`[f]`)__

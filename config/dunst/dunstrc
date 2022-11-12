@@ -25,7 +25,7 @@
     # Geometry (dunst version >= 1.7)
     width = (0, 640)
     height = 360
-    origin = "bottom-right"
+    origin = bottom-right
     offset = 25x25
 
     ### Progress bar ###

@@ -31,6 +31,9 @@ set $monitor2 VIRTUAL1
 set $monitor3 VIRTUAL2
 set $monitor4 HDMI1
 
+# Set font
+set $default_font DroidSansMono Nerd Font
+
 # Set terminal
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile
 set $terminal i3-sensible-terminal

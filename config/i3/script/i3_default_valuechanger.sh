@@ -9,18 +9,26 @@ I3_CONFIG_FILE="$HOME/.config/i3/config"
 PICOM_DIR="$HOME/.config/picom"
 FLASHFOCUS_DIR="$HOME/.config/flashfocus"
 CONKY_DIR="$HOME/.config/conky"
+DUNST_DIR="$HOME/.config/dunst"
+
+# Default value
+DEFAULT_FONT=$(awk '$0~/default_font/' $I3_CONFIG_FILE | awk 'NR==1' | cut -d' ' -f3-)
 
 # Column number of defualt value in $I3_CONFIG_FILE
-COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_FLOATING_TITLEBAR_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_I3BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
-COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $HOME/.config/i3/config | awk 'NR==1')
+COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_FLOATING_TITLEBAR_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_I3BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_DUNST_POS=$(awk '$0~/origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+COL_DUNST_ALIGN=$(awk '$0~/alignment/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
@@ -84,6 +92,22 @@ case $CHANGE_ITEM in
         i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
         i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
         ;;
+    "dunst_position")
+        sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
+        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        ;;
+    "dunst_alignment")
+        sed -i "$COL_DUNST_ALIGN s/.*/    alignment = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
+        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        ;;
+    "dunst_fontsize")
+        sed -i "$COL_DUNST_FONT s/.*/    font = \"$DEFAULT_FONT $NEW_DEFAULT_VALUE\"/" $DUNST_DIR/dunstrc
+        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        ;;
+    "dunst_icon_position")
+        sed -i "$COL_DUNST_ICON_POS s/.*/    icon_position = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
+        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        ;;
     *)
         echo "Usage:"
         echo "  i3_default_valuechanger [options] [new_value]"
@@ -93,7 +117,8 @@ case $CHANGE_ITEM in
         echo "  outer_gap/inner_gap"
         echo "  titlebar_style/floating_titlebar_style/titlebar_fontsize"
         echo "  i3bar_height/i3bar_fontsize/i3bar_mode/i3bar_position"
-        echo "  picom/flashfocus/conky_style]"
+        echo "  dunst_position/dunst_alignment/dunst_fontsize/dunst_icon_position"
+        echo "  picom/flashfocus/conky_style"
         echo ""
         ;;
 esac

@@ -38,10 +38,14 @@ output HDMI-A-1 {
     transform 0
 }
 
-# Setup terminal
+
+# Set font
+set $default_font DroidSansMono Nerd Font
+
+# Set terminal
 set $terminal kitty --config $HOME/.config/kitty/kitty_dracula.conf
 
-# Setup rofi in dracula theme
+# Set rofi in dracula theme
 set $rofi rofi -config "$HOME/.config/rofi/config_dracula.rasi"
 
 # Set i3bar fontsize (RECOMMENDED: 12)
@@ -59,14 +63,14 @@ set $default_i3bar_position top
 # Set titlebar fontsize (RECOMMENDED: 12)
 set $default_titlebar_fontsize 12
 
-# Set tiling/floating window titlebar style (set normal/pixel to show/hide titlebar)
+# Set window titlebar style (set normal/pixel to show/hide titlebar)
 set $default_titlebar_style pixel
 set $default_floating_titlebar_style normal
 
 # Set border width (set pixel number of border width)
 set $default_border_width 3
 
-# Setup gap width (only for sway-gap, set 0 to reduce to gapless sway)
+# Set gap width (ONLY for i3-gap)
 set $default_inner_gap 0
 set $default_outer_gap 0
 

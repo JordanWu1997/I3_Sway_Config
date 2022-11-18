@@ -11,7 +11,8 @@ help_message () {
     echo "  [enable]: enable spotifyd"
     echo "  [disable]: disable spotifyd"
     echo "  [reload]: reload spotifyd"
-    echo "  [reload_all]: reload spotifyd and reload spt"
+    echo "  [attach]: attach spotifyd to spt"
+    echo "  [reload_and_attach]: reload spotifyd and attach it to spt"
 }
 
 case $1 in
@@ -30,17 +31,21 @@ case $1 in
         killall spotifyd
         notify-send "Spotifyd" "Spotifyd is disabled" --icon=${ICON}
         ;;
+    "attach")
+        spt playback --transfer spotifyd
+        notify-send "Spotifyd" "Spotifyd is attatched to spt" --icon=${ICON}
+        ;;
     "reload")
         killall spotifyd
         spotifyd
         notify-send "Spotifyd" "Spotifyd is reloaded" --icon=${ICON}
         ;;
-    "reload_all")
+    "reload_and_attach")
         killall spotifyd
         spotifyd
         sleep 1.5
         spt playback --transfer spotifyd
-        notify-send "Spotifyd" "Spotifyd is reloaded" --icon=${ICON}
+        notify-send "Spotifyd" "Spotifyd is reloaded and attached to spt" --icon=${ICON}
         ;;
     *)
         help_message

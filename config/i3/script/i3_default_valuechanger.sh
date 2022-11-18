@@ -14,7 +14,7 @@ DUNST_DIR="$HOME/.config/dunst"
 # Default value
 DEFAULT_FONT=$(awk '$0~/default_font/' $I3_CONFIG_FILE | awk 'NR==1' | cut -d' ' -f3-)
 
-# Column number of defualt value in $I3_CONFIG_FILE
+# Column number of default value in $I3_CONFIG_FILE
 COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')

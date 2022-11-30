@@ -42,11 +42,21 @@ mark_operation () {
                 i3-input -F "unmark %s" -l 1 -P "Unmark: "
             fi
             ;;
+        # Unmark all marks
+        "unmark_all")
+            i3-msg unmark
+            ;;
         # Unmark all automark marks
         "unmark_all_automark")
             for mark in ${ALL_AUTOMARK_LIST[@]}; do
                 i3-msg unmark ${mark}
             done
+            ;;
+        "unmark_all_automark_and_remark")
+            for mark in ${ALL_AUTOMARK_LIST[@]}; do
+                i3-msg unmark ${mark}
+            done
+            python3 $I3_SCRIPT/i3_automark.py
             ;;
         # Goto mark window
         "goto")
@@ -104,8 +114,16 @@ mark_operation () {
         *)
             echo
             echo "Wrong Input: $0"
-            echo "Available Usage: [i3_mark_operation.sh] [mark/unmark/unmark_all_automark/goto/swap/show_then_goto/show_then_swap] [i3/rofi] [title_on/off]"
             echo
+            echo "Usage:"
+            echo "  i3_mark_operator.sh [mark_operation] [input] [titlebar_option]"
+            echo ""
+            echo "OPTIONS"
+            echo "  [mark_operation]: mark, unmark, unmark_all, unmark_all_automark,"
+            echo "                    unmark_all_automark_and_reomark,"
+            echo "                    goto, swap, show_then_goto, show_then_swap"
+            echo "  [input]": i3, rofi, none
+            echo "  [titlebar_option]": title_on, title_off
             ;;
     esac
 }

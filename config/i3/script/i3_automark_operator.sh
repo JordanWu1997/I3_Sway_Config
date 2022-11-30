@@ -77,11 +77,11 @@ automark_operation () {
     case $1 in
         "enable")
             notify-send -u "low" "i3 Automark" "i3 automark is enabled"
-            python3 $I3_SCRIPT/i3_automark.py
+            python3 $I3_SCRIPT/i3_automark_daemon.py
             ;;
         "disable")
             notify-send -u "low" "i3 Automark" "i3 automark is disabled"
-            kill $(ps -aux | grep "python3 $I3_SCRIPT/i3_automark.py")
+            kill $(ps -aux | grep "python3 $I3_SCRIPT/i3_automark_daemon.py")
             ;;
         "cycle_focus_inc")
             cycle_mark_focus inc

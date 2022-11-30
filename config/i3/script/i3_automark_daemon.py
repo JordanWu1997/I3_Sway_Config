@@ -106,15 +106,50 @@ def get_windows(node, workspace):
 
 
 if __name__ == '__main__':
+    no_socket_counter = 0
     marks = sys.argv[1] if len(sys.argv) > 1 else MARKS
-    socketpath = subprocess.check_output(['i3',
-                                          '--get-socketpath']).rstrip(b'\n')
-    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
-        sock.connect(socketpath)
-        send_msg(sock, 'subscribe',
-                 json.dumps(['workspace', 'output', 'window']))
+    while True:
+        try:
+            socketpath = subprocess.check_output(['i3', '--get-socketpath'
+                                                  ]).rstrip(b'\n')
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+                sock.connect(socketpath)
+                no_socket_counter = 0
+                send_msg(sock, 'subscribe',
+                         json.dumps(['workspace', 'output', 'window']))
 
-        # Initialize marks for all windows
-        refresh_all_marks(sock, marks)
-        send_msg(sock, 'run_command', 'mark --add " "')
-        send_msg(sock, 'run_command', 'mark --add \'')
+                # Initialize marks for all windows
+                refresh_all_marks(sock, marks)
+                send_msg(sock, 'run_command', 'mark --add " "')
+                send_msg(sock, 'run_command', 'mark --add \'')
+                while True:
+                    type, event = read_msg(sock)
+                    print(event['change'])
+                    if type in {'workspace', 'output'
+                                } or (type == 'window' and event['change']
+                                      in {'new', 'close', 'move', 'focus'}):
+                        # Mark all exising windows
+                        refresh_all_marks(sock, marks)
+                        # Mark last window with single quotation ('),
+                        try:
+                            send_msg(sock, 'run_command',
+                                     '[con_mark=" "] mark --add \'')
+                        # Break if there is no existing window e.g. in new workspace
+                        except:
+                            print('No markable window')
+                        # Mark current window with space  (" ").
+                        try:
+                            send_msg(sock, 'run_command', 'mark --add " "')
+                        # Break if there is no existing window e.g. in new workspace
+                        except:
+                            print('No markable window')
+
+        except SocketClosedException:
+            pass
+        except FileNotFoundError:
+            no_socket_counter += 1
+            if no_socket_counter > 10:
+                raise
+            time.sleep(0.1)
+        except KeyboardInterrupt:
+            break

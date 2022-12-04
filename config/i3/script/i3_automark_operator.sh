@@ -7,6 +7,24 @@ ALL_AUTOMARK_LIST=(\
     a s d f g h j k l \
     z x c v b n m)
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_automark_operator.sh [operation]"
+    echo ""
+    echo "OPERATIONS"
+    echo "  [enable]: enable automark"
+    echo "  [disable]: disable automark"
+    echo "  [cycle_focus_inc]: change focus to next automarked window increasingly"
+    echo "  [cycle_focus_dec]: change focus to prev automarked window decreasingly"
+}
+
 cycle_mark_focus () {
     # Set automark index dictionary
     declare -A AUTOMARK_INDEX_DICT
@@ -90,7 +108,10 @@ automark_operation () {
             cycle_mark_focus dec
             ;;
         *)
-            echo $0
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

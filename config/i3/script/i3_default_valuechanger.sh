@@ -31,6 +31,40 @@ COL_DUNST_ALIGN=$(awk '$0~/alignment/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==
 COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+        echo "Usage:"
+        echo "  i3_default_valuechanger [options] [new_value]"
+        echo ""
+        echo "OPTION: NEW_VALUE (TYPE or valiable options)"
+        echo "  [border_width]: INTEGER"
+        echo "  [outer_gap]: INTEGER"
+        echo "  [inner_gap]: INTEGER"
+        echo "  [titlebar_style]: pixel, normal"
+        echo "  [floating_titlebar_style]: pixel, normal"
+        echo "  [titlebar_fontsize]: INTEGER"
+        echo "  [i3bar_height]: INTEGER"
+        echo "  [i3bar_fontsize]: INTEGER"
+        echo "  [i3bar_mode]: hide, dock"
+        echo "  [i3bar_position]: top, bottom"
+        echo "  [dunst_position]: top-left, top-center, top-right"
+        echo "                    left-center, center, right-center"
+        echo "                    bottom-left, bottom-center, bottom-right"
+        echo "  [dunst_offset]: INTEGER"
+        echo "  [dunst_alignment]: left, center, right"
+        echo "  [dunst_fontsize]: INTEGER"
+        echo "  [dunst_icon_position]: left, top, right, off"
+        echo "  [picom]: blur, transparency"
+        echo "  [flashfocus]: transparency, crystal, intermediate, blur, opaque"
+        echo "  [conky_style]: full, light, minimal"
+}
+
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
     "outer_gap")
@@ -114,16 +148,9 @@ case $CHANGE_ITEM in
         $I3_SCRIPT/i3_dunst_walcolor.sh reload
         ;;
     *)
-        echo "Usage:"
-        echo "  i3_default_valuechanger [options] [new_value]"
-        echo ""
-        echo "OPTION"
-        echo "  border_width"
-        echo "  outer_gap/inner_gap"
-        echo "  titlebar_style/floating_titlebar_style/titlebar_fontsize"
-        echo "  i3bar_height/i3bar_fontsize/i3bar_mode/i3bar_position"
-        echo "  dunst_position/dunst_offset/dunst_alignment/dunst_fontsize/dunst_icon_position"
-        echo "  picom/flashfocus/conky_style"
-        echo ""
+        show_wrong_usage_message
+        echo
+        show_help_message
+        exit
         ;;
 esac

@@ -9,6 +9,34 @@ HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
 HDMI1_HEIGHT=$(xrandr | awk -v var=$HDMI1_HEIGHT_ID '$1~/HDMI1/ {print $var}')
 HDMI1_WIDTH=$(xrandr | awk -v var=$HDMI1_WIDTH_ID '$1~/HDMI1/ {print $var}')
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_display_monitor_adopter.sh [adoption] [options]"
+    echo ""
+    echo "ADOPTION"
+    echo "  [auto]: adopt preset configuration"
+    echo "  [options]: adopt following input options"
+    echo
+    echo "OPTIONS"
+    echo "  [eDP1_only]: activate eDP1 only"
+    echo "  [HDMI1_only]: activate HDMI1 only"
+    echo "  [eDP1_HDMI1_joint]: activate eDP1 and HDMI1 in joint mode"
+    echo "  [eDP1_HDMI1_mirror]: activate eDP1 and HDMi1 in mirror mode"
+    echo "  [HDMI1_default]: activate HDMI1 in default mode"
+    echo "  [HDMI1_extend]: activate HDMI1 in extended mode"
+    echo "  [HDMI1_primary]: set HDMI1 as primary display"
+    echo "  [eDP1_default]: activate HDMI1 in default mode"
+    echo "  [eDP1_shrink]: activate eDP1 in shrink mode"
+    echo "  [eDP1_primary]: set eDP1 as primary display"
+}
+
 # Reload conky after monitor display is set
 reload_conky () {
     # Reload conky
@@ -115,14 +143,21 @@ display_monitor_adoption () {
                     notify-send -u low "Set Display" "Set eDP1 as primary display"
                     xrandr --output eDP1 --primary
                     ;;
-                *) echo $2
-                    ;;
+                *)
+                    show_wrong_usage_message
+                    echo
+                    show_help_message
+                    exit
             esac
             ;;
+        *)
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
+    reload_misc
 }
-
 
 # Main
 display_monitor_adoption $1 $2
-reload_misc

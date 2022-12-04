@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_autotiling_operator.sh [operation]"
+    echo ""
+    echo "OPERATIONS"
+    echo "  [enable_dwindling]: enable dwindling autotiling"
+    echo "  [disable_dwindling]: disable dwindling autotiling"
+}
+
 autotiling_operation () {
     case $1 in
         "enable_dwindling")
@@ -11,7 +25,10 @@ autotiling_operation () {
             kill $(ps -aux | grep "python $PYTHON_BIN/autotiling")
             ;;
         *)
-            echo $0
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

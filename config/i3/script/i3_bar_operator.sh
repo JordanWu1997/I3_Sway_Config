@@ -16,6 +16,28 @@ CONKY_CONFIG="$HOME/.config/conky/conky_config_$CONKY_TO_OFFSET"
 CONKY_YOFFSET=$(awk '$0~/gap_y/ {print $3}' $CONKY_CONFIG | cut -d ',' -f 1)
 CONKY_DEFAULT_YOFFSET=$(awk '$0~/default_conky_gap_y/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
 
+# Wrong usage message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_bar_operator.sh [operation]"
+    echo ""
+    echo "OPERATIONS"
+    echo "  [default_mode_hide]: set bar mode default to hide"
+    echo "  [default_mode_dock]: set bar mode default to dock"
+    echo "  [default_pos_top]: set bar position default to top"
+    echo "  [default_pos_bottom]: set bar position default to bottom"
+    echo "  [bar_hide]: hide status bar"
+    echo "  [bar_dock]: show status bar"
+    echo "  [bar_toggle]: toggle bar visibility"
+    echo "  [bar_reload]: reload bar"
+}
+
 # Bar operation
 bar_operation () {
     case $1 in
@@ -55,6 +77,11 @@ bar_operation () {
             i3-msg exec 'i3bar -b bar_status && sleep 0.5'
             i3-msg exec 'i3bar -b bar_mode'
             ;;
+        *)
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

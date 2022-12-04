@@ -15,6 +15,24 @@ WAL_COLOR3="$(awk 'NR==4' $WAL_COLOR)"
 WAL_COLOR12="$(awk 'NR==13' $WAL_COLOR)"
 WAL_COLOR15="$(awk 'NR==16' $WAL_COLOR)"
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_dunst_walcolor.sh [options]"
+    echo ""
+    echo "OPTIONS"
+    echo "  [load_wal_color]: Load wal color to dunst"
+    echo "  [load_i3_border_width]:Load border width to dunst"
+    echo "  [reload]: Reload dunst"
+    echo "  [reload_all]: Load wal color and border width to dunst and reload dunst"
+}
+
 load_wal_border_width () {
     # Separator border width
     sed -i "$SEPARATOR_BORDER_WIDTH_COL s/.*/    separator_height \= $BORDER_WIDTH/" "$DUNST_CONFIG"
@@ -56,14 +74,16 @@ dunst_operation () {
         "reload")
             reload_dunst
             ;;
-        "all")
+        "reload_all")
             load_wal_color
             load_wal_border_width
             reload_dunst
             ;;
         *)
-            echo Available option: load_wal_color/reload/both
-            ;;
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

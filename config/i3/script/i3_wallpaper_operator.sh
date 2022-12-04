@@ -7,6 +7,26 @@ VARIETY_INFO="$HOME/.config/variety/wallpaper/wallpaper.jpg.txt"
 VARIETY_WALLPAPER="$(cat $VARIETY_INFO)"
 FEH_WALLPAPER=$(awk -F\' 'NR==2 {print $2}' $HOME/.fehbg | xargs)
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_wallpaper_operator.sh [tools] [operations]"
+    echo
+    echo "TOOLS"
+    echo "  [variety]: variety"
+    echo "  [feh]: feh"
+    echo
+    echo "OPERATIONS"
+    echo "  [set_default]: save current wallpaper as default wallpaper"
+    echo "  [save_curreent]: save current wallpaper to favorites"
+}
+
 initialization () {
     # Create default wallpaper if there is none
     if [ ! -f "$DEFAULT_WALLPAPER" ]; then
@@ -19,6 +39,7 @@ wallpaper_operation () {
         "variety")
             case $2 in
                 "set_default")
+                    initialization
                     if [[ "$VARIETY_WALLPAPER" != "$DEFAULT_WALLPAPER" ]]; then
                         rm -f "$DEFAULT_WALLPAPER"
                         cp "$VARIETY_WALLPAPER" "$DEFAULT_WALLPAPER"
@@ -29,11 +50,17 @@ wallpaper_operation () {
                 "save_current")
                     cp "$VARIETY_WALLPAPER" "$WALLPAPERV"
                     ;;
+                *)
+                    show_wrong_usage_message
+                    echo
+                    show_help_message
+                    exit
             esac
             ;;
         "feh")
             case $2 in
                 "set_default")
+                    initialization
                     if [[  "$FEH_WALLPAPER" != "$DEFAULT_WALLPAPER" ]]; then
                         rm -f "$DEFAULT_WALLPAPER"
                         cp "$FEH_WALLPAPER" "$DEFAULT_WALLPAPER"
@@ -44,14 +71,20 @@ wallpaper_operation () {
                 "save_current")
                     cp "$FEH_WALLPAPER" "$WALLPAPERF"
                     ;;
+                *)
+                    show_wrong_usage_message
+                    echo
+                    show_help_message
+                    exit
             esac
             ;;
         *)
-            echo $0
-            ;;
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 
 # Main program
-initialization
 wallpaper_operation $1 $2

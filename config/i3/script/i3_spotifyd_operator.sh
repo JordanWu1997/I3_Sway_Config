@@ -2,8 +2,15 @@
 
 ICON="$HOME/.config/spotifyd/spotify.png"
 
-help_message () {
-    echo "Usage":
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
     echo "  i3_spotifyd_operator.sh [operation]"
     echo ""
     echo "OPERATIONS"
@@ -48,5 +55,8 @@ case $1 in
         notify-send "Spotifyd" "Spotifyd is reloaded and attached to spt" --icon=${ICON}
         ;;
     *)
-        help_message
+        show_wrong_message
+        echo
+        show_help_message
+        exit
 esac

@@ -8,6 +8,24 @@ COL_WIN4=$(expr $(awk '$0~/Color Palette/{print NR}' $WINDOW_CONFIG) + 5)
 COL_WIN5=$(expr $(awk '$0~/Color Palette/{print NR}' $WINDOW_CONFIG) + 6)
 COL_WIN6=$(expr $(awk '$0~/Color Palette/{print NR}' $WINDOW_CONFIG) + 7)
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_window_decoractor.sh [options]"
+    echo ""
+    echo "OPTIONS"
+    echo "  [default]: same as [monochromic]"
+    echo "  [monochromic]: border color scheme in monochrmic style"
+    echo "  [dichromatic]: border color scheme in dichromatic style"
+    echo "  [monochromic_inversed]: border color scheme in inversely monochromic style"
+}
+
 window_decoraction () {
     case $1 in
         "default")
@@ -47,10 +65,13 @@ window_decoraction () {
             sed -i "$COL_WIN6 s/.*/client.background               \$transp/" "$WINDOW_CONFIG"
             ;;
         *)
-            echo "default/monochromic/dirchromatic/monochromic_inversed"
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
+    i3-msg reload
 }
 
 # Main
 window_decoraction $1
-i3-msg reload

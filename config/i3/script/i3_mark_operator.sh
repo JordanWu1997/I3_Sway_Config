@@ -11,6 +11,25 @@ ALL_AUTOMARK_LIST=(\
     a s d f g h j k l \
     z x c v b n m)
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_mark_operator.sh [mark_operation] [input] [titlebar_option]"
+    echo ""
+    echo "OPTIONS"
+    echo "  [mark_operation]: mark, unmark, unmark_all, unmark_all_automark,"
+    echo "                    unmark_all_automark_and_reomark,"
+    echo "                    goto, swap, show_then_goto, show_then_swap"
+    echo "  [input]": i3, rofi, none
+    echo "  [titlebar_option]": title_on, title_off
+}
+
 # Operation for i3 vim-style mark
 mark_operation () {
     case $1 in
@@ -112,19 +131,10 @@ mark_operation () {
             ;;
         # Print usage
         *)
+            show_wrong_message
             echo
-            echo "Wrong Input: $0"
-            echo
-            echo "Usage:"
-            echo "  i3_mark_operator.sh [mark_operation] [input] [titlebar_option]"
-            echo ""
-            echo "OPTIONS"
-            echo "  [mark_operation]: mark, unmark, unmark_all, unmark_all_automark,"
-            echo "                    unmark_all_automark_and_reomark,"
-            echo "                    goto, swap, show_then_goto, show_then_swap"
-            echo "  [input]": i3, rofi, none
-            echo "  [titlebar_option]": title_on, title_off
-            ;;
+            show_help_message
+            exit
     esac
 }
 

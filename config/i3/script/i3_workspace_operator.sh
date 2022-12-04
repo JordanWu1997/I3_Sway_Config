@@ -1,7 +1,29 @@
 #!/usr/bin/env bash
 
+# Maximal number of workspaces
+MAX_NUM_WS=40
+
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_workspace_operator.sh [operations]"
+    echo ""
+    echo "OPERATIONS"
+    echo "  [swap]: swap current workspace with assigned workspace [A-D] [1-10]"
+    echo "  [swap_next]: swap current workspace with next workspace"
+    echo "  [swap_prev]: swap current workspace with previous workspace"
+    echo "  [save_all]: save layout in all workspaces"
+    echo "  [restore_all]: restore layout in all workspaces"
+}
+
 workspace_next_cycle () {
-    if (( $1 == 40 )); then
+    if (( $1 == ${MAX_NUM_WS} )); then
         NEW=1
     else
         NEW=$(( $1 + 1 ))
@@ -10,7 +32,7 @@ workspace_next_cycle () {
 
 workspace_prev_cycle () {
     if ((  $1 == 1 )); then
-        NEW=40
+        NEW=${MAX_NUM_WS}
     else
         NEW=$(( $1 - 1 ))
     fi
@@ -91,8 +113,10 @@ workspace_operation () {
             done
             ;;
         *)
-            echo $0
-            ;;
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

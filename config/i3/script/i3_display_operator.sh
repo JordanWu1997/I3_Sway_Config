@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_display_operator.sh [operations]"
+    echo ""
+    echo "OPERATIONS"
+    echo "  [HDMI1_default]: set HDMI1 to 1920x1080"
+    echo "  [HDMI_extend]: extend HDMI1 to 1920x1200"
+    echo "  [eDP1_default]: set eDP1 to 1920x1080"
+    echo "  [eDP1_shrink]: shrink eDP1 to 1440x1080"
+}
+
 display_operation () {
     # Note: For monitor in IOA, 1920x1200 maximal refresh rate is 50
     case $1_$2 in
@@ -22,8 +40,10 @@ display_operation () {
             xrandr --addmode eDP1 "1440x810_60.00"
             ;;
         *)
-            echo Usage:
-            echo [monitor]
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

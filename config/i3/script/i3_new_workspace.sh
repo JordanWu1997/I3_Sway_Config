@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Maximal number of workspaces
+MAX_NUM_WS=40
+
 # Load current workspace
 CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
     tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
@@ -8,8 +11,30 @@ CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
 ALL_WS=$(i3-msg -t get_workspaces | tr \} '\n' | grep "num" \
     | cut -d ':' -f 3 | cut -d ',' -f 1 | sort -n)
 
+# Wrong message
+show_wrong_usage_message () {
+    echo "Wrong Usage:"
+    echo "  $0"
+}
+
+# Help message
+show_help_message () {
+    echo "Usage:"
+    echo "  i3_new_workspace.sh [actions] [to_workspace]"
+    echo
+    echo "ACTIONS"
+    echo "  [move_focus]: move focus"
+    echo "  [move_container]: move currently focused container"
+    echo
+    echo "TO_WORKSPACE"
+    echo "  [next]: next workspace"
+    echo "  [prev]: previous workspace"
+    echo "  [next_free_only]: next workspace that does not have containers"
+    echo "  [prev_free_only]: previous workspace that does not have containers"
+}
+
 cycle_workspace_next () {
-    if (( $1 == 40 )); then
+    if (( $1 == ${MAX_NUM_WS} )); then
         NEW=1
     else
         NEW=$(( $1 + 1 ))
@@ -18,7 +43,7 @@ cycle_workspace_next () {
 
 cycle_workspace_prev () {
     if ((  $1 == 1 )); then
-        NEW=40
+        NEW=${MAX_NUM_WS}
     else
         NEW=$(( $1 - 1 ))
     fi
@@ -31,7 +56,7 @@ cycle_workspace_next_free_only () {
     while true; do
         if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEW"($|[[:space:]]) ]]; then
             echo $NEW
-            if (( $NEW == 40 )); then
+            if (( $NEW == ${MAX_NUM_WS} )); then
                 NEW=1
             else
                 NEW=$(( $NEW + 1 ))
@@ -48,7 +73,7 @@ cycle_workspace_prev_free_only () {
         echo $NEW
         if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEW"($|[[:space:]]) ]]; then
             if (( $NEW == 1 )); then
-                NEW=40
+                NEW=${MAX_NUM_WS}
             else
                 NEW=$(( $NEW - 1 ))
             fi
@@ -96,8 +121,10 @@ assign_new_workspace () {
             name_new_workspace_with_index $NEW
             ;;
         *)
-            echo $2
-            ;;
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 
@@ -114,8 +141,10 @@ workspace_action () {
             i3-msg workspace $NEW
             ;;
         *)
-            echo $1
-            ;;
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
     esac
 }
 

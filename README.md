@@ -230,7 +230,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Volume Mode (`[Ctrl]`+`[Alt]`+`[v]`)__
     - Volume control with pulsemixer (e.g. volume up/down, mute)
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
-    - Mark window, go to/swap marked window, auto-mark function
+    - Mark/Unmark window, go/swap to/with marked window
+        - __Automark Mode ([`a`])__
+            - Enable/Disable automark deamon
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
     - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
 - __Workspace Mode (`[Winkey]` + `[Shift]` + `[p]`)__

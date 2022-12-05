@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
+# Workspace name list
+WS_NAME_LIST="$HOME/.config/i3/share/i3_workspace_name_list.txt"
+
+# Set workspace list to workspace array
+readarray WS_ARRAY < ${WS_NAME_LIST}
+
 # Maximal number of workspaces
-MAX_NUM_WS=40
+MAX_NUM_WS=${#WS_ARRAY[@]}
 
 # Load current workspace
-CURRENT=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
+CURRENT_WS_NUM=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
     tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
 
 # Load all workspace
@@ -33,33 +39,30 @@ show_help_message () {
     echo "  [prev_free_only]: previous workspace that does not have containers"
 }
 
-cycle_workspace_next () {
+workspace_next_WS_NUM () {
     if (( $1 == ${MAX_NUM_WS} )); then
-        NEW=1
+        NEXT_WS_NUM=1
     else
-        NEW=$(( $1 + 1 ))
+        NEXT_WS_NUM=$(( $1 + 1 ))
     fi
 }
 
-cycle_workspace_prev () {
-    if ((  $1 == 1 )); then
-        NEW=${MAX_NUM_WS}
+workspace_prev_WS_NUM () {
+    if (( $1 == 1 )); then
+        PREV_WS_NUM=${MAX_NUM_WS}
     else
-        NEW=$(( $1 - 1 ))
+        PREV_WS_NUM=$(( $1 - 1 ))
     fi
 }
 
-cycle_workspace_next_free_only () {
-    NEW=$1
-    echo $CURRENT
-    echo $ALL_WS
+workspace_next_free_only_WS_NUM () {
+    NEXT_FREE_WS_NUM=$1
     while true; do
-        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEW"($|[[:space:]]) ]]; then
-            echo $NEW
-            if (( $NEW == ${MAX_NUM_WS} )); then
-                NEW=1
+        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEXT_FREE_WS_NUM"($|[[:space:]]) ]]; then
+            if (( $NEXT_FREE_WS_NUM == ${MAX_NUM_WS} )); then
+                NEXT_FREE_WS_NUM=1
             else
-                NEW=$(( $NEW + 1 ))
+                NEXT_FREE_WS_NUM=$(( $NEXT_FREE_WS_NUM + 1 ))
             fi
         else
             break
@@ -67,32 +70,19 @@ cycle_workspace_next_free_only () {
     done
 }
 
-cycle_workspace_prev_free_only () {
-    NEW=$1
+workspace_prev_free_only_WS_NUM () {
+    PREV_FREE_WS_NUM=$1
     while true; do
-        echo $NEW
-        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEW"($|[[:space:]]) ]]; then
-            if (( $NEW == 1 )); then
-                NEW=${MAX_NUM_WS}
+        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$PREV_FREE_WS_NUM"($|[[:space:]]) ]]; then
+            if (( $PREV_FREE_WS_NUM == 1 )); then
+                PREV_FREE_WS_NUM=${MAX_NUM_WS}
             else
-                NEW=$(( $NEW - 1 ))
+                PREV_FREE_WS_NUM=$(( $PREV_FREE_WS_NUM - 1 ))
             fi
         else
             break
         fi
     done
-}
-
-name_new_workspace_with_index () {
-    if (( $1 >= 1 )) && (( $1 <= 10 )); then
-        NEW=${1}:A$(( $1 - 0))
-    elif (( $1 >= 11 )) && (( $1 <= 20 )); then
-        NEW=${1}:B$(( $1 - 10 ))
-    elif (( $1 >= 21 )) && (( $1 <= 30 )); then
-        NEW=${1}:C$(( $1 - 20 ))
-    elif (( $1 >= 31 )) && (( $1 <= 40 )); then
-        NEW=${1}:D$(( $1 - 30 ))
-    fi
 }
 
 assign_new_workspace () {
@@ -100,25 +90,23 @@ assign_new_workspace () {
     case $1 in
         # Assign next workspace as new workspace
         "next")
-            cycle_workspace_next $CURRENT
-            name_new_workspace_with_index $NEW
+            workspace_next_WS_NUM ${CURRENT_WS_NUM}
+            WS_NAME="${WS_ARRAY[$(( ${NEXT_WS_NUM} - 1 ))]}"
             ;;
         # Assign previous workspace as new workspace
         "prev")
-            echo $CURRENT
-            cycle_workspace_prev $CURRENT
-            echo $NEW
-            name_new_workspace_with_index $NEW
+            workspace_prev_WS_NUM ${CURRENT_WS_NUM}
+            WS_NAME="${WS_ARRAY[$(( ${PREV_WS_NUM} - 1 ))]}"
             ;;
         # Assign next workspace (free only) as new workspace
         "next_free_only")
-            cycle_workspace_next_free_only $CURRENT
-            name_new_workspace_with_index $NEW
+            workspace_next_free_only_WS_NUM ${CURRENT_WS_NUM}
+            WS_NAME="${WS_ARRAY[$(( ${NEXT_FREE_WS_NUM} - 1 ))]}"
             ;;
         # Assign previous workspace (free only) as new workspace
         "prev_free_only")
-            cycle_workspace_prev_free_only $CURRENT
-            name_new_workspace_with_index $NEW
+            workspace_prev_free_only_WS_NUM ${CURRENT_WS_NUM}
+            WS_NAME="${WS_ARRAY[$(( ${PREV_FREE_WS_NUM} - 1 ))]}"
             ;;
         *)
             show_wrong_usage_message
@@ -133,12 +121,12 @@ workspace_action () {
     case $1 in
         # Move to new workspace
         "move_focus")
-            i3-msg workspace $NEW
+            i3-msg workspace ${WS_NAME}
             ;;
         # Move container to new workspace
         "move_container")
-            i3-msg move container to workspace $NEW
-            i3-msg workspace $NEW
+            i3-msg move container to workspace ${WS_NAME}
+            i3-msg workspace ${WS_NAME}
             ;;
         *)
             show_wrong_usage_message

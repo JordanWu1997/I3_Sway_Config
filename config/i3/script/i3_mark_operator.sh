@@ -100,13 +100,13 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 # Keep focus stay in current container
                 if [ $3 == "stay" ]; then
-                    i3-input -F "swap container with mark %s, [con_mark=%s] focus" -l 1 -P "Swapto [Mark]: "
+                    i3-input -F "swap container with mark %s, [con_mark=%s] focus" -l 1 -P "Swap with Window [Mark]: "
                 else
-                    i3-input -F "swap container with mark %s" -l 1 -P "Swapto [Mark]: "
+                    i3-input -F "swap container with mark %s" -l 1 -P "Swap with Window [Mark]: "
                 fi
             elif [ $2 == "rofi" ]; then
                 mark_title="$(rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -select \
-                    -input "${ROFI_AUTOMARK_INPUT_TEXT}" -p 'Swapto [Mark]')"
+                    -input "${ROFI_AUTOMARK_INPUT_TEXT}" -p 'Swap with Window [Mark]')"
                 mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
                 # Keep focus stay in current container
                 if [ $3 == "stay" ]; then
@@ -120,7 +120,7 @@ mark_operation () {
             mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
                 /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
                 /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
-                rofi -dmenu -sort -auto-select --only-match -p 'Swapto [Mark]')"
+                rofi -dmenu -sort -auto-select --only-match -p 'Swap with Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
             # Keep focus stay in current container
             if [ $3 == "stay" ]; then
@@ -144,7 +144,6 @@ if [ $4 == 'title_on' ]; then
     DEFAULT_WIDTH=$(awk '$0~/default_border_width/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_STYLE=$(awk '$0~/default_titlebar_style/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_FLOATING_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
-    echo $DEFAULT_STYLE $DEFAULT_WIDTH
     # Show titlebar
     i3-msg [con_mark="^.*"] border normal $DEFAULT_WIDTH
     # Operation with mark

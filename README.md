@@ -234,9 +234,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
     - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
 - __Workspace Mode (`[Winkey]` + `[Shift]` + `[p]`)__
-    - Manipulate i3 workspace, e.g. swap, save, restore
-        - __Swap Workspace Mode (`[p]`)__
-            - Swap workspace
+    - Manipulate i3 workspace, e.g. goto, swap, save, restore
         - __Save Workspace Mode (`[s]`)__
             - Save workspace layout
         - __Restore Workspace Mode (`[r]`)__

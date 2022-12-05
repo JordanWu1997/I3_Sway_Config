@@ -30,6 +30,7 @@ This directory contains all sections that be included in `config` file.
 - `i3_startup.config`: startup programs in i3
 - `i3_window.config`: settings for window/container in i3
 - `i3_workspace.config`: settings for workspace in i3
+- `i3_workspace_name.config`: settings for workspace name in i3 (must be included before `i3_workspace.config`)
 
 ## doc
 Document problems I met in customization of i3wm, backup configurations and some notes

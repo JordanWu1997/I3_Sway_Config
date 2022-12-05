@@ -117,7 +117,7 @@ set_from_resource $c15 i3wm.color15 #ffffff
 set $transp #00000000
 
 # ======================================================================================
-# All About Windows Settings
+# All About Window Settings
 # ======================================================================================
 # This is initial setup for all windows and floating windows in i3
 
@@ -126,12 +126,13 @@ include ./config.d/i3_window.config
 # ======================================================================================
 # All About Workspace Settings
 # ======================================================================================
-# This is initial setup for all workspace in i3
+# This is initial setup for all workspaces in i3
 
+include ./config.d/i3_workspace_name.config
 include ./config.d/i3_workspace.config
 
 # ======================================================================================
-# All About i3-gap Gap Setting
+# All About Gap Settings
 # ======================================================================================
 # Comment out this section if you are using original i3
 

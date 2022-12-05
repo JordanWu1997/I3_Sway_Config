@@ -17,6 +17,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ## Texts
 - `app-icons.json`
     - Unicode list for applications (required by [i3-workspace-names-daemon](https://github.com/cboddy/i3-workspace-names-daemon))
+- `i3_workspace_name.txt`
+    - i3 workspace name list (required by `../script/i3_workspace_operator.sh` and `../script/i3_new_workspace.sh`)
 
 ## Images
 - `default_wallpaper`

@@ -29,6 +29,12 @@ border_operation () {
         "hide_both_edge")
             sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders both/" $BORDER_CONFIG
             ;;
+        "hide_vertical_edge")
+            sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders vertical/" $BORDER_CONFIG
+            ;;
+        "hide_horizontal_edge")
+            sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders horizontal/" $BORDER_CONFIG
+            ;;
         "hide_both_edge_if_only_one")
             sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders smart/" $BORDER_CONFIG
             ;;

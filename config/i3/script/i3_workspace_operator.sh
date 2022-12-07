@@ -54,16 +54,16 @@ workspace_prev_WS_NUM () {
 workspace_operation () {
     case $1 in
         "goto")
-            i3-msg workspace $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Goto WS")
+            i3-msg workspace $(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Goto WS")
             ;;
         "swap")
-            i3-workspace-swap -d $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Swap with WS")
-            ;;
+            i3-workspace-swap -d $(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Swap with WS")
+           ;;
         "save")
-            i3-resurrect save -w $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Save WS")
+            i3-resurrect save -w $(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Save WS")
             ;;
         "restore")
-            i3-resurrect restore -w $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Restore WS")
+            i3-resurrect restore -w $(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Restore WS")
             ;;
         "swap_with_index")
             if (( $2 < ${MAX_NUM_WS} )); then

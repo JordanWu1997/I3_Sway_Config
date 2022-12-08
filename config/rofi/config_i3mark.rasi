@@ -3,7 +3,7 @@
 configuration {
 
     /*Font*/
-    font: "DroidSansMono Nerd Font 16";
+    font: "DroidSansMono Nerd Font Bold 16";
 
     /*Show icons*/
     show-icons: false;

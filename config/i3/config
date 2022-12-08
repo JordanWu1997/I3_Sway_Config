@@ -33,7 +33,7 @@ set $monitor3 VIRTUAL2
 set $monitor4 HDMI1
 
 # Set font
-set $default_font DroidSansMono Nerd Font
+set $default_font DroidSansMono Nerd Font Bold
 
 # Set terminal
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile

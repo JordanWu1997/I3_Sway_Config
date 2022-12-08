@@ -141,7 +141,7 @@ show_popup() {
 }
 
 show_nagbar(){
-    i3-msg "exec i3-nagbar -f 'pango:DroidSansMono Nerd Font 12' -m \"${1}\""
+    i3-msg "exec i3-nagbar -f 'pango:DroidSansMono Nerd Font Bold 12' -m \"${1}\""
 }
 
 show_notify(){

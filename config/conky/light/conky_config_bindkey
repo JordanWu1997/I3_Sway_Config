@@ -39,7 +39,7 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=9',
+	font = 'DroidSanMono Nerd Font:bold:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
@@ -54,7 +54,7 @@ conky.config = {
 	default_shade_color = '#000000',
 	border_width = 1,
 	stippled_borders = 0,
-	draw_borders = false,
+	draw_borders = true,
 	draw_graph_borders = true,
 	draw_outline = false,
 	draw_shades = true,
@@ -107,7 +107,7 @@ ${color2}mark/unmark current WD ${alignr}${color1}[S]+[m/u]
 ${color2}goto marked WD ${alignr}${color1}[S]+([Shift])+[']
 ${color2}swap marked WD ${alignr}${color1}[S]+([Shift])+[;]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Datetime] ${hr 2}${voffset 2}${font}
-${color2}${font DroidSanMono Nerd Font:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
-${color1}${font DroidSanMono Nerd Font:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}
-${color3}${hr 2}
+${color2}${font DroidSanMono Nerd Font:bold:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}
+${color3}${hr 2}${voffset -10}
 ]]

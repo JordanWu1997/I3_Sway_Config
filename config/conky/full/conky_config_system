@@ -39,7 +39,7 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=9',
+	font = 'DroidSanMono Nerd Font:bold:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,

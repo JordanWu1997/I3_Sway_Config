@@ -39,7 +39,7 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:size=9',
+	font = 'DroidSanMono Nerd Font:bold:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
@@ -54,7 +54,7 @@ conky.config = {
 	default_shade_color = '#000000',
 	border_width = 1,
 	stippled_borders = 0,
-	draw_borders = false,
+	draw_borders = true,
 	draw_graph_borders = true,
 	draw_outline = false,
 	draw_shades = true,
@@ -73,8 +73,8 @@ conky.config = {
 };
 
 conky.text = [[
-${voffset 5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[Distro] ${hr 2}${font}
-${voffset 40}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 3,0 -s 230x104}
+${voffset -5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[Distro] ${hr 2}${font}
+${voffset 55}${alignc}${image ~/.config/i3/share/fedora_logo_white.png -p 3,0 -s 230x104}
 ${voffset 5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[Information] ${hr 2}${font}
 ${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}

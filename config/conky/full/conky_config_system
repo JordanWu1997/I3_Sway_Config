@@ -87,7 +87,7 @@ ${color2}Usage / Freq. ${alignr}${color1}${cpu} % / ${alignr}${color1}${exec awk
 ${color2}Processes (Running) ${alignr}${color1}${processes} (${running_processes})
 ${color2}Threads (Running) ${alignr}${color1}${threads} (${running_threads})
 ${voffset -5}${color2}${hr 1}
-${color2}CPU-Top ${alignr}${color1}CPU		${alignr}MEM
+${color2}CPU-Top ${alignr}${color1}CPU	${alignr}MEM
 ${voffset -5}${color2}${hr 1}
 ${color2}${top name 1} ${alignr}${color1}${top cpu 1}	${alignr}${top mem 1}
 ${color2}${top name 2} ${alignr}${color1}${top cpu 2}	${alignr}${top mem 2}
@@ -96,7 +96,7 @@ ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Memory
 ${color2}Memory ${alignr}${color1} ${mem} / ${memmax}
 ${color2}Swap ${alignr}${color1} ${swap} / ${swapmax}
 ${voffset -5}${color2}${hr 1}
-${color2}MEM-Top ${alignr}${color1}CPU		${alignr}MEM
+${color2}MEM-Top ${alignr}${color1}CPU	${alignr}MEM
 ${voffset -5}${color2}${hr 1}
 ${color2}${top_mem name 1} ${alignr}${color1}${top_mem cpu 1}	${alignr}${top_mem mem 1}
 ${color2}${top_mem name 2} ${alignr}${color1}${top_mem cpu 2}	${alignr}${top_mem mem 2}

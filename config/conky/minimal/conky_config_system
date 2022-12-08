@@ -92,7 +92,7 @@ ${color2}Gateway IP ${alignr}${color1}${gw_ip}
 ${color2}Internal IP ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}
 ${voffset 5}${color3}${font DroidSanMono Nerd Font:bold:size=9}[System Monitor] ${hr 2}${font}
 ${voffset -5}${color2}${hr 1}
-${color2}CPU-Top ${alignr}${color1}CPU		${alignr}MEM
+${color2}CPU-Top ${alignr}${color1}CPU	${alignr}MEM
 ${voffset -5}${color2}${hr 1}
 ${color2}${top name 1} ${alignr}${color1}${top cpu 1}	${alignr}${top mem 1}
 ${color2}${top name 2} ${alignr}${color1}${top cpu 2}	${alignr}${top mem 2}

@@ -85,3 +85,10 @@ configuration {
     handle-width: 0px;
 
 }
+
+#element-text {
+
+    /*Align center*/
+    horizontal-align: 0.50;
+
+}

@@ -88,7 +88,6 @@ cycle_mark_focus () {
     esac
     # Focus next mark window
     NEXT_MARK=${ALL_AUTOMARK_LIST[${NEXT_MARK_INDEX}]}
-    i3-msg "[con_mark=${NEXT_MARK}] focus"
 }
 
 automark_operation () {
@@ -103,9 +102,19 @@ automark_operation () {
             ;;
         "cycle_focus_inc")
             cycle_mark_focus inc
+            i3-msg "[con_mark=${NEXT_MARK}] focus"
             ;;
         "cycle_focus_dec")
             cycle_mark_focus dec
+            i3-msg "[con_mark=${NEXT_MARK}] focus"
+            ;;
+        "cycle_swap_inc")
+            cycle_mark_focus dec
+            i3-msg "swap container with mark ${NEXT_MARK}"
+            ;;
+        "cycle_swap_dec")
+            cycle_mark_focus dec
+            i3-msg "swap container with mark ${NEXT_MARK}"
             ;;
         *)
             show_wrong_usage_message

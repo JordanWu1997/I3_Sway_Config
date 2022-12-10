@@ -254,7 +254,7 @@ Note: the term "window" used in this configuration actually refers to "container
         - __Flashfocus Mode (`[f]`)__
             - Flash window with additional filter provided by picom (overlay picom settings)
         - __Theme Mode (`[t]`)__
-            - Auto-theme with pywal
+            - Auto-theme with pywal or theme template
         - __Wallpaper Mode (`[w]`)__
             - Select wallpaper, set default wallpaper
         - __Variety Mode (`[v]`)__

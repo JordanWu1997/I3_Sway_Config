@@ -40,3 +40,6 @@ Scripts for i3wm working environment customized for my favored workflow
 
 ## share
 Files for other programs (e.g. wallpapers, auto-mark-list, app-icons)
+
+## theme
+Files and scripts for theme templates

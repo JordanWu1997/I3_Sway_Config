@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PYWAL_DIR="/home/jordankhwu/Desktop/pywal-3.3.0/pywal/colorschemes/dark"
+PYWAL_DIR="$HOME/Desktop/pywal-3.3.0/pywal/colorschemes/dark"
 echo Pywal Colorscheme Sources: $PYWAL_DIR
 
 JSON_FILES=$(ls ${PYWAL_DIR})

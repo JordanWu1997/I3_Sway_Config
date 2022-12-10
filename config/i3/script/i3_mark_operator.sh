@@ -37,8 +37,8 @@ mark_operation () {
         # -- https://github.com/EllaTheCat/dopamine-2020/blob/master/i3scripts/i3-list-windows
         "show")
             i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
-                /usr/bin/grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
-                /usr/bin/grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
+                command grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
+                command grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
                 rofi -dmenu -sort -select -p 'Show [Mark]'
             ;;
         # Mark current window
@@ -89,7 +89,7 @@ mark_operation () {
             ;;
         "show_then_goto")
             mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
-                grep -x '^\[$' -A1 -B1 | grep -vx '^\[$' | tr -d '\n' | \
+                command grep -x '^\[$' -A1 -B1 | command grep -vx '^\[$' | tr -d '\n' | \
                 sed 's/\"\,/\"/g' | sed 's/--/\n/g' | awk -F '  ' '{print $2,$1}' | \
                 rofi -dmenu -sort -auto-select -p 'Goto Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
@@ -118,7 +118,7 @@ mark_operation () {
             ;;
         "show_then_swap")
             mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
-                grep -x '^\[$' -A1 -B1 | grep -vx '^\[$' | tr -d '\n' | \
+                command grep -x '^\[$' -A1 -B1 | command grep -vx '^\[$' | tr -d '\n' | \
                 sed 's/\"\,/\"/g' | sed 's/--/\n/g' | awk -F '  ' '{print $2,$1}' | \
                 rofi -dmenu -sort -auto-select -p 'Swap with Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)

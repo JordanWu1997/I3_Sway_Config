@@ -19,19 +19,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Script Usage
 
-### Apply color files
-- `./apply_template_theme.sh`
-    - Use existing color files in `./templates/`
-    - Copy colors files to `$HOME/.cache/wal/` to replace original wal color files
-
-### Generate color files from pywal colorschemes
+### Generate color files from pywal colorschemes (Required)
 - `./copy_wal_templates.sh`
     - Copy colorscheme from pywal (https://github.com/dylanaraps/pywal)
         - `./pywal/colorschemes/dark/`
 - `./generate_color_files_for_templates.sh`
     -  Generate color files based on pywal colorschemes
 
-### Generate color files
+#### Generate color files
 
 - `./generate_color_files_for_template.sh`
     - Input: 16-color template
@@ -61,6 +56,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - Required by `vis`
         6. `colors.Xresources`
             - Required by `i3` and other X window applications
+
+### Apply color files
+- `./apply_template_theme.sh`
+    - Use existing color files in `./templates/`
+    - Copy colors files to `$HOME/.cache/wal/` to replace original wal color files
 
 ## Reference
 - https://en.wikipedia.org/wiki/Xrdb

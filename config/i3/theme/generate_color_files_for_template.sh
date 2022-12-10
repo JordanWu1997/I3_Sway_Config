@@ -59,7 +59,7 @@ generate_file_color_template () {
 # Generate file: colors-kitty.conf
 add_colors_to_color_file () {
     # Copy color file template
-    cp "$FILE_TEMPLATES"/$(basename $2) $2
+    cp "${FILE_TEMPLATES}"/$(basename $2) $2
     # Add colors
     case $1 in
         "wrap_by_single_quote")

@@ -1,6 +1,7 @@
 /config/i3/share/default_wallpaper.png
 /config/i3/share/i3_workspace_name_list.txt
 /config/i3/theme/templates
+/config/i3/theme/pywal
 /config/zathura/zathurarc.bak
 /config/picom/picom.conf
 /config/conky/picom.conf

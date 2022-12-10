@@ -19,14 +19,14 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Script Usage
 
-### Generate color files from pywal colorschemes (Required)
-- `./copy_wal_templates.sh`
-    - Copy colorscheme from pywal (https://github.com/dylanaraps/pywal)
-        - `./pywal/colorschemes/dark/`
-- `./generate_color_files_for_templates.sh`
-    -  Generate color files based on pywal colorschemes
+### Installation (Required)
 
-#### Generate color files
+- `./install.sh`
+    - Includes
+        - `./copy_wal_templates.sh`: copy color template from [pywal](https://github.com/dylanaraps/pywal):
+        - `./generate_color_files_for_template.sh`: generate color files based on pywal colorschemes
+
+### Details of generating color files
 
 - `./generate_color_files_for_template.sh`
     - Input: 16-color template
@@ -34,7 +34,6 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
             - row 1~8: Black, Red, Green, Yellow, Blue, Magenta, Cyan, White
             - row 9~16: Bright Black, Bright Red, Bright Green, Bright Yellow, Bright Blue, Bright Magenta, Bright Cyan, Bright White
         - Output color files will be stored in `./NAME_OF_TEMPLATE`
-
     - Input: options
         1. `./color_files`
             - Color file templates (`./color_files`)

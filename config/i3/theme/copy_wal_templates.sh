@@ -14,7 +14,7 @@ TEMPLATE_DIR="${THEME_DIR}/templates"
 JSON_FILES=$(ls ${THEME_DIR}/${PYWAL_COLORSCHEME})
 for JSON_FILE in ${JSON_FILES[@]}; do
     TEMPLATE=$(basename $JSON_FILE .json)
-    echo $TEMPLATE, $JSON_FILE
+    echo "Copy $TEMPLATE ($JSON_FILE)"
     # Read color from json file
     for i in {0..15}; do
         COLOR=$(cat ${THEME_DIR}/${PYWAL_COLORSCHEME}/${JSON_FILE} | jq '.colors' | jq ".color${i}")

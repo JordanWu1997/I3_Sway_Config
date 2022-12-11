@@ -123,10 +123,12 @@ install_terminal_package () {
     echo "Terminal package including:"
     echo "-- Terminal: kitty, gnome-terminal"
     echo "-- Shell: fish"
-    echo "-- TUI tool: fish, git"
+    echo "-- TUI tool: fish, git, pip"
     echo "Installation requires sudo permission"
     # Terminal emulator, shell tools and etc.
     sudo dnf install kitty gnome-terminal fish tmux git
+    # Install pip with dnf if there is no one
+    command -v pip || sudo dnf install python3-pip
 }
 
 # Input method package
@@ -223,6 +225,7 @@ install_theme_packages () {
     echo "-- QT: qt-config qt5ct qt5-qtstyleplugins kvantum"
     echo "-- Wallpaper tool: feh variety pywal"
     echo "-- Font: Droid Sans Mono for Powerline Nerd Font"
+    echo "-- Auto-theme: pywal"
     echo "Installation requires sudo permission"
     # Theme configurator and fonts
     sudo dnf install gtk-chtheme lxappearance
@@ -233,6 +236,11 @@ install_theme_packages () {
     mkdir -p $HOME/.local/share/fonts
     cd $HOME/.local/share/fonts
     curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf"
+    # Pywal
+    cd $HOME/Desktop
+    git clone https://github.com/sonjiku/pywal.git
+    cd pywal
+    pythom -m pip install .
 }
 
 # Editor tools

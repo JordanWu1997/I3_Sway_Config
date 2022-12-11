@@ -15,7 +15,7 @@ fi
 # Generate color files from template color files and pywal colorscheme files
 JSON_FILES=$(command ls "${PYWAL_COLORSCHEME_DIR}/")
 for JSON_FILE in ${JSON_FILES[@]}; do
-    echo ${JSON_FILE}
+    echo "Generate color files: ${JSON_FILE} ..."
     TEMPLATE=$(basename ${JSON_FILE} .json)
     "${THEME_DIR}/generate_color_files_for_template.sh" \
         "${TEMPLATE_DIR}/${TEMPLATE}/${TEMPLATE}_colors" \

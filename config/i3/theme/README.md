@@ -8,9 +8,9 @@ Table of Contents
 * [Table of Contents](#table-of-contents)
 * [Context](#context)
    * [Script Usage](#script-usage)
+      * [Installation (Required for first time usage)](#installation-required-for-first-time-usage)
+      * [Details of generating color files](#details-of-generating-color-files)
       * [Apply color files](#apply-color-files)
-      * [Generate color files from pywal colorschemes](#generate-color-files-from-pywal-colorschemes)
-      * [Generate color files](#generate-color-files)
    * [Reference](#reference)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
@@ -19,7 +19,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Script Usage
 
-### Installation (Required)
+### Installation (Required for first time usage)
 
 - `./install.sh`
     - Includes

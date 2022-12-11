@@ -25,6 +25,7 @@ show_help_message () {
     echo "OPERATIONS"
     echo "  [set_default]: save current wallpaper as default wallpaper"
     echo "  [save_curreent]: save current wallpaper to favorites"
+    echo "  [show_current]: show current wallpaper name"
 }
 
 initialization () {
@@ -44,11 +45,14 @@ wallpaper_operation () {
                         rm -f "$DEFAULT_WALLPAPER"
                         cp "$VARIETY_WALLPAPER" "$DEFAULT_WALLPAPER"
                     else
-                        notify-send -u low "Wallpaper" "Already saved as default wallpaper"
+                        notify-send -u low "Variety Mode" "Already saved as default wallpaper"
                     fi
                     ;;
                 "save_current")
                     cp "$VARIETY_WALLPAPER" "$WALLPAPERV"
+                    ;;
+                "show_current")
+                    notify-send -u low "Variety Mode" "Current variety: $(echo $VARIETY_WALLPAPER | rev | cut -d\/ -f1 | rev)"
                     ;;
                 *)
                     show_wrong_usage_message
@@ -70,6 +74,9 @@ wallpaper_operation () {
                     ;;
                 "save_current")
                     cp "$FEH_WALLPAPER" "$WALLPAPERF"
+                    ;;
+                "show_current")
+                    notify-send -u low "Wallpaper Mode" "Current feh: $(echo $FEH_WALLPAPER | rev | cut -d\/ -f1 | rev)"
                     ;;
                 *)
                     show_wrong_usage_message

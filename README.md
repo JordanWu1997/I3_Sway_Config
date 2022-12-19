@@ -236,7 +236,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
     - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
 - __Workspace Mode (`[Winkey]` + `[Shift]` + `[p]`)__
-    - Manipulate i3 workspace, e.g. goto, swap, save, restore
+    - Manipulate i3 workspace, e.g. kill, goto, moveto, swap, save, restore
         - __Save Workspace Mode (`[s]`)__
             - Save workspace layout
         - __Restore Workspace Mode (`[r]`)__
@@ -409,6 +409,10 @@ Note: the term "window" used in this configuration actually refers to "container
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to prev/next workspace (create one if it does not exist)
+- __Manipulate (go to, send window to, swap) Workspace (Interactively)__:
+    - `[Winkey]` + `[Esc]`: Go to workspace
+    - `[Alt]` + `[Esc]`: Send window to workspace
+    - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace
 - __List Windows__
     - `[Alt]` + `[Tab]`: List all windows on all workspaces (Windows-like keybinding)
 - __Manipulate Scratchpad__

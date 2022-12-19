@@ -95,7 +95,7 @@ ${color2}focus children WD ${alignr}${color1}[S]+[Shift]+[a]
 ${color2}mark/unmark current WD ${alignr}${color1}[S]+[m/u]
 ${color2}goto marked WD ${alignr}${color1}[S]+([Shift])+[']
 ${color2}swap marked WD ${alignr}${color1}[S]+([Shift])+[;]
-${color2}toggle WD titlebar ${alignr}${color1}[S]+([Shift])+[n]
+${color2}toggle WD titlebar ${alignr}${color1}[S]+[t]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Floating / Scratchpad]${font}${voffset 5}
 ${color2}floating toggle ${alignr}${color1}[S]+[Shift]+[Space]
 ${color2}floating focus toggle ${alignr}${color1}[S]+[Space]

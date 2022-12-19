@@ -18,7 +18,7 @@ show_wrong_usage_message () {
 # Help message
 show_help_message () {
     echo "Usage:"
-    echo "  i3_display_monitor_adopter.sh [adoption] [options]"
+    echo "  i3_display_monitor_adopter.sh [adoption] [options] [conky]"
     echo ""
     echo "ADOPTION"
     echo "  [auto]: adopt preset configuration"
@@ -35,6 +35,8 @@ show_help_message () {
     echo "  [eDP1_default]: activate HDMI1 in default mode"
     echo "  [eDP1_shrink]: activate eDP1 in shrink mode"
     echo "  [eDP1_primary]: set eDP1 as primary display"
+    echo "CONKY"
+    echo "  [enable]: show conky system monitor and shortcuts"
 }
 
 # Reload conky after monitor display is set
@@ -68,7 +70,6 @@ display_monitor_adoption () {
                         --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
                         --output eDP1 --mode 1440x810_60.00 \
                         --output HDMI1 --mode 1920x1200_50.00 --primary
-                    reload_conky
                 # ACER 27': 600mm x 340mm
                 elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
                     notify-send -u low "Set Display Automatically" "ACER 27' connected"
@@ -77,7 +78,6 @@ display_monitor_adoption () {
                         --output eDP1 --pos 0x270 --output HDMI1 --pos 1440x0 \
                         --output eDP1 --mode 1440x810_60.00 \
                         --output HDMI1 --mode 1920x1080 --primary
-                    reload_conky
                 # Other HDMI:
                 else
                     notify-send -u low "Set Display Automatically" "External HDMI1 connected"
@@ -87,6 +87,9 @@ display_monitor_adoption () {
             else
                 notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected"
                 xrandr --output eDP1 --mode 1920x1080 --primary --output HDMI1 --off
+            fi
+            # Conky
+            if [ $2 == 'enable' ]; then
                 reload_conky
             fi
             ;;
@@ -96,44 +99,36 @@ display_monitor_adoption () {
                 "eDP1_only" )
                     notify-send -u low "Set Display" "Activate eDP1 only"
                     xrandr --output HDMI1 --off --output eDP1 --auto --primary
-                    reload_conky
                     ;;
                 "HDMI1_only" )
                     notify-send -u low "Set Display" "Activate HDMI1 only"
                     xrandr --output eDP1 --off --output HDMI1 --auto --primary
-                    reload_conky
                     ;;
                 "eDP1_HDMI1_joint" )
                     notify-send -u low "Set Display" "Activate HDMI1 joint mode"
                     xrandr --output eDP1 --auto --output HDMI1 --auto --primary --right-of eDP1
-                    reload_conky
                     ;;
                 "eDP1_HDMI1_mirror" )
                     notify-send -u low "Set Display" "Activate HDMI1 mirror mode"
                     xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1
-                    reload_conky
                     ;;
                 "HDMI1_extend" )
                     notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200)"
                     $I3_SCRIPT/i3_display_operator.sh HDMI1 extend
                     xrandr --output HDMI1 --mode "1920x1200_50.00"
-                    reload_conky
                     ;;
                 "HDMI1_default" )
                     notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)"
                     $I3_SCRIPT/i3_display_operator.sh HDMI1 default
-                    reload_conky
                     ;;
                 "eDP1_shrink" )
                     notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)"
                     $I3_SCRIPT/i3_display_operator.sh eDP1 shrink
                     xrandr --output eDP1 --mode "1440x810_60.00"
-                    reload_conky
                     ;;
                 "eDP1_default" )
                     notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)"
                     $I3_SCRIPT/i3_display_operator.sh eDP1 default
-                    reload_conky
                     ;;
                 "HDMI1_primary" )
                     notify-send -u low "Set Display" "Set HDMI1 as primary display"
@@ -149,6 +144,10 @@ display_monitor_adoption () {
                     show_help_message
                     exit
             esac
+            # Conky
+            if [ $3 == 'enable' ]; then
+                reload_conky
+            fi
             ;;
         *)
             show_wrong_usage_message
@@ -156,8 +155,9 @@ display_monitor_adoption () {
             show_help_message
             exit
     esac
+    # Miscellaneous
     reload_misc
 }
 
 # Main
-display_monitor_adoption $1 $2
+display_monitor_adoption $1 $2 $3

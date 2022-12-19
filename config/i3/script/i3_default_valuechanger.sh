@@ -30,6 +30,7 @@ COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1'
 COL_DUNST_ALIGN=$(awk '$0~/alignment/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+COL_CONKY_STARTUP=$(awk '$0~/default_conky_startup/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 
 # Wrong message
 show_wrong_usage_message () {
@@ -63,6 +64,7 @@ show_help_message () {
         echo "  [picom]: blur, transparency"
         echo "  [flashfocus]: transparency, crystal, intermediate, blur, opaque"
         echo "  [conky_style]: full, light, minimal"
+        echo "  [conky_startup]: enable, disable"
 }
 
 # Set new default value in i3 configuration file
@@ -126,6 +128,10 @@ case $CHANGE_ITEM in
         killall conky
         i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
         i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+        ;;
+    "conky_startup")
+        sed -i "$COL_CONKY_STARTUP s/.*/set \$default_conky_startup $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
         ;;
     "dunst_position")
         sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc

@@ -27,7 +27,7 @@ Table of Contents
    * [Section 5 - Mouse Usage for i3](#section-5---mouse-usage-for-i3)
       * [1. Touchpad Usage](#1-touchpad-usage)
       * [2. Mouse Usage](#2-mouse-usage)
-   * [Section 6 - Keybinding Sheet for i3](#section-6---keybinding-sheet-for-i3)
+   * [Section 6 - Keybinding Usage for i3](#section-6---keybinding-usage-for-i3)
       * [1. Prefix: Winkey](#1-prefix-winkey)
       * [2. Prefix: Winkey + Shift](#2-prefix-winkey--shift)
       * [3. Prefix: Ctrl + Alt](#3-prefix-ctrl--alt)
@@ -323,7 +323,7 @@ Note: the term "window" used in this configuration actually refers to "container
 </details>
 </details>
 
-## Section 6 - Keybinding Sheet for i3
+## Section 6 - Keybinding Usage for i3
 <details>
 <summary>Click to expand/shrink</summary>
 
@@ -409,12 +409,12 @@ Note: the term "window" used in this configuration actually refers to "container
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to prev/next workspace (create one if it does not exist)
-- __Manipulate (go to, send window to, swap) Workspace (Interactively)__:
-    - `[Winkey]` + `[Esc]`: Go to workspace
-    - `[Alt]` + `[Esc]`: Send window to workspace
-    - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace
+- __Manipulate (go to, send window to, swap with) Workspace (Interactively)__:
+    - `[Winkey]` + `[Esc]`: Go to selected workspace
+    - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to selected workspace
+    - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace with selected workspace
 - __List Windows__
-    - `[Alt]` + `[Tab]`: List all windows on all workspaces (Windows-like keybinding)
+    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
 - __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background workspace)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background workspace)

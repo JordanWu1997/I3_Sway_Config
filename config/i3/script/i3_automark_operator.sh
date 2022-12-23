@@ -21,8 +21,10 @@ show_help_message () {
     echo "OPERATIONS"
     echo "  [enable]: enable automark"
     echo "  [disable]: disable automark"
-    echo "  [cycle_focus_inc]: change focus to next automarked window increasingly"
-    echo "  [cycle_focus_dec]: change focus to prev automarked window decreasingly"
+    echo "  [cycle_focus_inc]: change focus to next increasingly-automarked window"
+    echo "  [cycle_focus_dec]: change focus to next decreasingly-automarked window"
+    echo "  [cycle_swap_inc]: swap window with next increasingly-automarked window"
+    echo "  [cycle_swap_dec]: swap window with next decreasingly-automarked window"
 }
 
 cycle_mark_focus () {
@@ -109,12 +111,14 @@ automark_operation () {
             i3-msg "[con_mark=${NEXT_MARK}] focus"
             ;;
         "cycle_swap_inc")
-            cycle_mark_focus dec
+            cycle_mark_focus inc
             i3-msg "swap container with mark ${NEXT_MARK}"
+            $I3_SCRIPT/i3_automark.py
             ;;
         "cycle_swap_dec")
             cycle_mark_focus dec
             i3-msg "swap container with mark ${NEXT_MARK}"
+            $I3_SCRIPT/i3_automark.py
             ;;
         *)
             show_wrong_usage_message

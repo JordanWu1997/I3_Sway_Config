@@ -28,7 +28,7 @@ show_help_message () {
     echo ""
     echo "OPTIONS"
     echo "  [load_wal_color]: Load wal color to dunst"
-    echo "  [load_i3_border_width]:Load border width to dunst"
+    echo "  [load_i3_border_width]: Load border width to dunst"
     echo "  [reload]: Reload dunst"
     echo "  [reload_all]: Load wal color and border width to dunst and reload dunst"
 }

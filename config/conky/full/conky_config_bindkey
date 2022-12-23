@@ -105,7 +105,6 @@ ${color2}resize floating WD ${alignr}${color1}[right-click] titlebar
 ${color2}send WD to SP ${alignr}${color1}[S]+([Shift])+[-]
 ${color2}bring WD to FG ${alignr}${color1}[S]+([Shift])+[=]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Function / Mode]${font}${voffset 5}
-${color2}insert mode ${alignr}${color1}[S]+[Shift]+[i]
 ${color2}bar mode ${alignr}${color1}[S]+[Shift]+[b]
 ${color2}customization mode ${alignr}${color1}[S]+[Shift]+[c]
 ${color2}gap mode ${alignr}${color1}[S]+[Shift]+[g]
@@ -118,6 +117,7 @@ ${color2}dunst mode ${alignr}${color1}[S]+[Shift]+[v]
 ${color2}redshift mode ${alignr}${color1}[S]+[Shift]+[z]
 ${color2}resize mode ${alignr}${color1}[Ctrl]+[Alt]+[r]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
+${color2}insert mode ${alignr}${color1}[Ctrl]+[Alt]+[i]
 ${voffset 5}${color3}${hr 2}${voffset 5}
 ${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignc}${time %l}:${time %M} ${time %p}${font}
 ${voffset 5}${color2}${font DroidSanMono Nerd Font:bold:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}

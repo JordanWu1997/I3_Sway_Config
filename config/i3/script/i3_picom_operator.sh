@@ -13,8 +13,8 @@ show_help_message () {
     echo ""
     echo "OPERATIONS"
     echo "  [default]: start picom with default picom configuration"
-    echo "  [blur]: start picom with blur configuration"
     echo "  [transparency]: start picom with transparency configuration"
+    echo "  [blur]: start picom with blur configuration"
 }
 
 picom_operation () {
@@ -23,13 +23,13 @@ picom_operation () {
             killall picom
             i3-msg exec "picom"
             ;;
-        "blur")
-            killall picom
-            i3-msg exec "picom --config $HOME/.config/picom/picom_blur.conf"
-            ;;
         "transparency")
             killall picom
             i3-msg exec "picom --config $HOME/.config/picom/picom_transparency.conf"
+            ;;
+        "blur")
+            killall picom
+            i3-msg exec "picom --config $HOME/.config/picom/picom_blur.conf"
             ;;
         *)
             show_wrong_usage_message

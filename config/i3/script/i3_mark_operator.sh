@@ -56,7 +56,10 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "unmark %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                i3-msg unmark $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Unmark')
+                MK=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Unmark')
+                if [[ ! -z ${MK} ]]; then
+                    i3-msg unmark ${MK}
+                fi
             else
                 i3-input -F "unmark %s" -l 1 -P "Unmark: "
             fi

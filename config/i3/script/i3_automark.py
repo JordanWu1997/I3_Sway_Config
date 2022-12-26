@@ -117,4 +117,3 @@ if __name__ == '__main__':
         # Initialize marks for all windows
         refresh_all_marks(sock, marks)
         send_msg(sock, 'run_command', 'mark --add " "')
-        send_msg(sock, 'run_command', 'mark --add \'')

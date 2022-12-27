@@ -28,13 +28,15 @@ show_help_message () {
     echo "  i3_bar_operator.sh [operation]"
     echo ""
     echo "OPERATIONS"
-    echo "  [default_mode_hide]: set bar mode default to hide"
-    echo "  [default_mode_dock]: set bar mode default to dock"
-    echo "  [default_pos_top]: set bar position default to top"
-    echo "  [default_pos_bottom]: set bar position default to bottom"
+    echo "  [default_mode_hide]: set bar default mode to hide"
+    echo "  [default_mode_dock]: set bar default mode to dock"
+    echo "  [default_pos_top]: set bar default position to top"
+    echo "  [default_pos_bottom]: set bar default position to bottom"
     echo "  [bar_hide]: hide status bar"
     echo "  [bar_dock]: show status bar"
-    echo "  [bar_toggle]: toggle bar visibility"
+    echo "  [bar_toggle]: toggle bar visibility (hide/dock)"
+    echo "  [bar_hidden_state_show]: set hidden state to show"
+    echo "  [bar_hidden_state_hide]: set hidden state to hide"
     echo "  [bar_reload]: reload bar"
 }
 
@@ -71,6 +73,12 @@ bar_operation () {
                 $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
                 i3-msg "bar mode hide $BAR_ID"
             fi
+            ;;
+        "bar_hidden_state_show")
+            i3-msg "bar hidden_state show $BAR_ID"
+            ;;
+        "bar_hidden_state_hide")
+            i3-msg "bar hidden_state hide $BAR_ID"
             ;;
         "bar_reload")
             i3-msg exec 'killall i3bar && sleep 0.5'

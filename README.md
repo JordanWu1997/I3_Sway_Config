@@ -286,6 +286,8 @@ Note: the term "window" used in this configuration actually refers to "container
 - __3-finger Gesture__
     - __Tap__
         - Middle key click
+    - __Hold (requires libinput >= 1.19)__
+        - Toggle i3bar visibility
     - __Swipe Up__
         - Toggle window full-screen mode
     - __Swipe Down__
@@ -295,6 +297,10 @@ Note: the term "window" used in this configuration actually refers to "container
     - __Swipe Right__
         - Go to next workspace
 - __4-finger Gesture__
+    - __Swipe Up__
+        - Enable sticky window (floating window stays on screen)
+    - __Swipe Down__
+        - Disable sticky window (floating window stays on screen)
     - __Pinch Out__
         - Bring window in scratchpad (background workspace) to foreground
     - __Pinch In__

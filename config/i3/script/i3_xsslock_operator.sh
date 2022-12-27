@@ -14,7 +14,7 @@ show_wrong_usage_message () {
 # Help message
 show_help_message () {
     echo "Usage:"
-    echo "  i3_xsslock_operator.sh [operation]"
+    echo "  i3_xsslock_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
     echo "  [current_default]: start xsslock with current default wallpaper"

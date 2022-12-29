@@ -20,14 +20,27 @@ show_wrong_usage_message () {
 # Help message
 show_help_message () {
     echo "Usage:"
-    echo "  i3_mark_operator.sh [mark_operation] [input] [titlebar_option]"
+    echo "  i3_mark_operator.sh [operations] [input/selector] [titlebar]"
     echo ""
-    echo "OPTIONS"
-    echo "  [mark_operation]: mark, unmark, unmark_all, unmark_all_automark,"
-    echo "                    unmark_all_automark_and_reomark,"
-    echo "                    goto, swap, show_then_goto, show_then_swap"
-    echo "  [input]": i3, rofi, none
-    echo "  [titlebar_option]": title_on, title_off
+    echo "OPERATIONS"
+    echo "  [mark]: add mark to window"
+    echo "  [unmark]: unmark existing mark"
+    echo "  [unmark_all]: unmark all existing marks"
+    echo "  [unmark_all_automark]: unmark all automarked marks"
+    echo "  [unmark_all_automark_and_remark]: unmark all automarked marks and re-automark"
+    echo "  [goto]: go to marked window"
+    echo "  [swap]: swap with marked window"
+    echo "  [show_then_goto]: show all marks and go to marked window"
+    echo "  [show_then_swap]: show all marks and swap with marked window"
+    echo ""
+    echo "INPUT/SELECTOR"
+    echo "  [i3]: use i3-input as input/selector"
+    echo "  [rofi]: use rofi as input/selector"
+    echo "  [none]: do not use input/selector"
+    echo ""
+    echo "TITLEBAR"
+    echo "  [title_on]: show window title bar when selecting"
+    echo "  [title_off]: do not show winow title bar when selecting"
 }
 
 # Operation for i3 vim-style mark

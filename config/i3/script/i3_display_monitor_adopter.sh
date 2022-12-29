@@ -35,8 +35,10 @@ show_help_message () {
     echo "  [eDP1_default]: activate HDMI1 in default mode"
     echo "  [eDP1_shrink]: activate eDP1 in shrink mode"
     echo "  [eDP1_primary]: set eDP1 as primary display"
+    echo
     echo "CONKY"
-    echo "  [enable]: show conky system monitor and shortcuts"
+    echo "  [enable]: show conky after display is adopted"
+    echo "  [disable]: do not show conky after display is adopted"
 }
 
 # Reload conky after monitor display is set

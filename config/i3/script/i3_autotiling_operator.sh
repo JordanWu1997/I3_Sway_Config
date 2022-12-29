@@ -7,7 +7,7 @@ show_wrong_usage_message () {
 
 show_help_message () {
     echo "Usage:"
-    echo "  i3_autotiling_operator.sh [operation]"
+    echo "  i3_autotiling_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
     echo "  [enable_dwindling]: enable dwindling autotiling"

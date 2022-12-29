@@ -25,7 +25,7 @@ show_wrong_usage_message () {
 # Help message
 show_help_message () {
     echo "Usage:"
-    echo "  i3_bar_operator.sh [operation]"
+    echo "  i3_bar_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
     echo "  [default_mode_hide]: set bar default mode to hide"

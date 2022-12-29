@@ -12,7 +12,7 @@ show_wrong_usage_message () {
 # Help message
 show_help_message () {
     echo "Usage:"
-    echo "  i3_i3lock_operator.sh [operation]"
+    echo "  i3_i3lock_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
     echo "  [default]: start i3lock with default wallpaper"

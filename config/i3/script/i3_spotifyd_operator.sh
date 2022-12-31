@@ -14,7 +14,8 @@ show_help_message () {
     echo "  i3_spotifyd_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [status]: current spotifyd status"
+    echo "  [playing]: show current playing"
+    echo "  [status]: show current spotifyd status"
     echo "  [enable]: enable spotifyd"
     echo "  [disable]: disable spotifyd"
     echo "  [reload]: reload spotifyd"
@@ -29,6 +30,9 @@ case $1 in
         else
             notify-send "Spotifyd" "Spotifyd is not active" --icon=${ICON}
         fi
+        ;;
+    "playing")
+        $HOME/.config/spotifyd/song_notification.sh
         ;;
     "enable")
         spotifyd

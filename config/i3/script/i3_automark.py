@@ -79,7 +79,7 @@ def read_msg(sock):
     return type, json.loads(recv(sock, length))
 
 
-def refresh_all_marks(sock, marks):
+def add_all_marks(sock, marks):
     # sort left to right, top to bottom
     workspaces = sorted(send_msg(sock, 'get_workspaces'),
                         key=lambda w: (w['rect']['y'], w['rect']['x']))
@@ -115,5 +115,5 @@ if __name__ == '__main__':
                  json.dumps(['workspace', 'output', 'window']))
 
         # Initialize marks for all windows
-        refresh_all_marks(sock, marks)
+        add_all_marks(sock, marks)
         send_msg(sock, 'run_command', 'mark --add " "')

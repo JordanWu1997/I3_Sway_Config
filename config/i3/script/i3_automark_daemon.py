@@ -79,7 +79,21 @@ def read_msg(sock):
     return type, json.loads(recv(sock, length))
 
 
-def refresh_all_marks(sock, marks):
+def delete_all_marks(sock, marks):
+    # sort left to right, top to bottom
+    workspaces = sorted(send_msg(sock, 'get_workspaces'),
+                        key=lambda w: (w['rect']['y'], w['rect']['x']))
+    visible_ws = [w['name'] for w in workspaces if w['visible']]
+    tree = send_msg(sock, 'get_tree')
+
+    windows = itertools.chain.from_iterable(
+        get_windows(tree, workspace) for workspace in visible_ws)
+    for mark, id in zip(marks, windows):
+        send_msg(sock, 'run_command',
+                 '[con_id="{}"] mark --toggle " "'.format(id))
+
+
+def add_all_marks(sock, marks):
     # sort left to right, top to bottom
     workspaces = sorted(send_msg(sock, 'get_workspaces'),
                         key=lambda w: (w['rect']['y'], w['rect']['x']))
@@ -119,30 +133,31 @@ if __name__ == '__main__':
                          json.dumps(['workspace', 'output', 'window']))
 
                 # Initialize marks for all windows
-                refresh_all_marks(sock, marks)
+                add_all_marks(sock, marks)
                 send_msg(sock, 'run_command', 'mark --add " "')
                 send_msg(sock, 'run_command', 'mark --add \'')
                 while True:
                     type, event = read_msg(sock)
-                    print(event['change'])
+                    print("{}: {}".format(type, event['change']))
+                    # Delete all marks when window is close
+                    if (type == 'window' and event['change'] == 'close'):
+                        delete_all_marks(sock, marks)
                     if type in {'workspace', 'output'
                                 } or (type == 'window' and event['change']
                                       in {'new', 'close', 'move', 'focus'}):
                         # Mark all exising windows
-                        refresh_all_marks(sock, marks)
+                        add_all_marks(sock, marks)
                         # Mark last window with single quotation ('),
                         try:
                             send_msg(sock, 'run_command',
                                      '[con_mark=" "] mark --add \'')
-                        # Break if there is no existing window e.g. in new workspace
                         except:
-                            print('No markable window')
+                            print('No markable window for mark \'')
                         # Mark current window with space  (" ").
                         try:
                             send_msg(sock, 'run_command', 'mark --add " "')
-                        # Break if there is no existing window e.g. in new workspace
                         except:
-                            print('No markable window')
+                            print('No markable window for mark \" \"')
 
         except SocketClosedException:
             pass

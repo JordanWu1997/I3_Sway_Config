@@ -196,17 +196,19 @@ install_audio_tool_package () {
     sudo ./install.sh
 }
 
-# i3 gap
-install_i3_gap_packages () {
+# i3/i3-gap (i3-gap has been merged to i3 in i3 v4.22)
+install_i3_packages () {
     echo
-    echo "i3 gap package including:"
-    echo "-- i3 gap: fuhrmann/i3-gaps"
+    echo "i3 package including:"
+    #echo "-- i3 gap: fuhrmann/i3-gaps"
+    echo "-- i3 window manager: i3"
     echo "-- i3 bar: bumblebee-status"
     echo "-- i3 tool: dunst, rofi, autotiling, flashfocus, i3-workspace-swap, i3-resurrect"
     echo "Installation requires sudo permission"
-    # i3 gap
-    sudo dnf copr enable fuhrmann/i3-gaps
-    sudo dnf install i3-gaps
+    ## i3-gap (i3-gap has been merged to i3 in i3 v4.22)
+    #sudo dnf copr enable fuhrmann/i3-gaps
+    #sudo dnf install i3-gaps
+    sudo dnf install i3
     # i3 tools
     python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect
     sudo dnf install dunst rofi

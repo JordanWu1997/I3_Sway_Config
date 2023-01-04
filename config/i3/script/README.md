@@ -10,3 +10,4 @@ Script for I3WM function support
         - Not work well in dunst version > = 1.7, I rewrite one instead
     - https://github.com/rjekker/i3-battery-popup (i3_battery-popup.sh)
     - https://git.bune.city/petra-fied/viscolourchanger (i3_viscolorchanger.sh)
+    - https://www.youtube.com/watch?v=ulunAkEW9XU&t=636s (i3_notify_logger.sh)

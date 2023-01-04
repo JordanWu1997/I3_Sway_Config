@@ -25,7 +25,7 @@ This directory contains all sections that be included in `config` file.
 - `i3_bar.config`: i3-bar configuration,
 - `i3_bindkey.config`: i3-bindkey
 - `i3_custom.config`: user-defined customization in i3
-- `i3_gap.config`: i3-gap only gap configuration
+- `i3_gap.config`: i3 gap configuration (i3-gap has been merged to i3 in i3 v4.22)
 - `i3_mode.config`: mode in i3
 - `i3_startup.config`: startup programs in i3
 - `i3_window.config`: settings for window/container in i3

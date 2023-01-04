@@ -61,7 +61,7 @@ set $default_floating_titlebar_style normal
 # Set border width (set pixel number of border width)
 set $default_border_width 3
 
-# Set gap width (ONLY for i3-gap)
+# Set gap width (ONLY for i3-gaps, but i3-gaps has been merged to i3 in i3 v4.22)
 set $default_inner_gap 0
 set $default_outer_gap 0
 
@@ -137,7 +137,7 @@ include ./config.d/i3_workspace.config
 # ======================================================================================
 # All About Gap Settings
 # ======================================================================================
-# Comment out this section if you are using original i3
+# This is setup for gaps in i3 (i3-gaps has been merged to i3 in i3 v4.22)
 
 include ./config.d/i3_gap.config
 

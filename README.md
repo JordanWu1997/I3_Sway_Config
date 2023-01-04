@@ -78,18 +78,18 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - Display Manager: [GNOME display manager (GDM)](https://gitlab.gnome.org/GNOME/gdm)
-- i3 Window Manager: [i3-gap](https://github.com/Airblader/i3) `4.20.1`
+- i3 Window Manager: [i3](https://github.com/Airblader/i3) `4.22`
 - Status Bar: [i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
-- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.25.0`
-- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.4.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7` + [starship](https://starship.rs/) `1.2.1`
-- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.2a` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
-- Text Editor: [neovim](https://github.com/neovim/neovim) `0.6.1` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
-- Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.3`
+- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.26.5`
+- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.5.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7` + [starship](https://starship.rs/) `1.2.1`
+- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.3a` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Text Editor: [neovim](https://github.com/neovim/neovim) `0.8.2` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.5`
 - Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
 - GTK Theme Changer: [lxappearance](https://github.com/lxde/lxappearance)
 - Qt/KDE Theme Change: [Kvantum](https://github.com/tsujan/Kvantum)
 - X Compositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
-- Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.8.0`
+- Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.9.0`
 - GUI File Manager: [Nautilus](https://gitlab.gnome.org/GNOME/nautilus)
 - TUI File Manager: [ranger](https://github.com/ranger/ranger) `1.9.3`
 - Web Browser: [Brave browser](https://brave.com/) + [vimium](https://vimium.github.io/)

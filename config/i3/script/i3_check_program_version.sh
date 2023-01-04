@@ -30,6 +30,11 @@ echo "### oh-my-fish ###"
 omf --version
 echo
 
+# starship version
+echo "### starship ###"
+starship --version
+echo
+
 # tmux version
 echo "### tmux ###"
 tmux -V

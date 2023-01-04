@@ -13,3 +13,4 @@
 /config/ncspot/userstate.cbor
 /config/vis/vis.log
 /config/ranger/plugins/__pycache__
+/config/dunst/log.txt

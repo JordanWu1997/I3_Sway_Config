@@ -10,6 +10,9 @@ map <C-j> zoom in
 map <C-k> zoom out
 map <C-i> toggle_inputbar
 map <C-s> toggle_statusbar
+map bl feedkeys ":blist<Tab>"
+map bm feedkeys ":bmark "
+map bd feedkeys ":bdelete "
 
 ### zathura-pywal ###
 # Allow recolor

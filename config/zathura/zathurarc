@@ -1,18 +1,22 @@
 ### Settings from original zathurarc ###
+unmap <C-m>
+unmap <C-n>
 set adjust-open "best-fit"
 set pages-per-row 1
 set font "DroidSansMono Nerd Font Bold 12"
-set guioptions 'shv'
+set guioptions 'hv'
 set selection-clipboard clipboard
 set scroll-page-aware "true"
 set sandbox none
 map <C-j> zoom in
 map <C-k> zoom out
-map <C-i> toggle_inputbar
-map <C-s> toggle_statusbar
+map <C-g> toggle_statusbar
 map bl feedkeys ":blist<Tab>"
 map bm feedkeys ":bmark "
 map bd feedkeys ":bdelete "
+map ; follow
+map <C-o> jumplist backward
+map <C-i> jumplist forward
 
 ### zathura-pywal ###
 # Allow recolor

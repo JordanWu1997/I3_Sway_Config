@@ -100,9 +100,16 @@ automark_operation () {
             ;;
         "disable")
             notify-send -u "low" "i3 Automark" "i3 automark is disabled"
-            kill $(ps -eo "%p %c %a" \|
+            kill $(ps -aux \|
                 grep "python3 $I3_SCRIPT/i3_automark_daemon.py" \|
-                awk 'NR==1 {print $1}')
+                awk 'NR==1 {print $2}')
+            ;;
+        "reload")
+            notify-send -u "low" "i3 Automark" "i3 automark is reloaded"
+            kill $(ps -aux \|
+                grep "python3 $I3_SCRIPT/i3_automark_daemon.py" \|
+                awk 'NR==1 {print $2}')
+            python3 $I3_SCRIPT/i3_automark_daemon.py
             ;;
         "cycle_focus_inc")
             cycle_mark_focus inc

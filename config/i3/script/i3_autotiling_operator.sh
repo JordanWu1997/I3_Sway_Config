@@ -22,7 +22,8 @@ autotiling_operation () {
             ;;
         "disable_dwindling")
             notify-send -u "low" "i3 Autotiling" "i3 dwindling autotiling is disabled"
-            kill $(ps -aux | grep "python $PYTHON_BIN/autotiling")
+            ps -aux | grep "python $PYTHON_BIN/autotiling" | \
+                awk 'NR==1 {print $2}' | xargs -I {} kill {}
             ;;
         *)
             show_wrong_usage_message

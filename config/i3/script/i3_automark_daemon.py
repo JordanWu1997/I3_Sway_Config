@@ -80,17 +80,10 @@ def read_msg(sock):
 
 
 def delete_all_marks(sock, marks):
-    # sort left to right, top to bottom
-    workspaces = sorted(send_msg(sock, 'get_workspaces'),
-                        key=lambda w: (w['rect']['y'], w['rect']['x']))
-    visible_ws = [w['name'] for w in workspaces if w['visible']]
-    tree = send_msg(sock, 'get_tree')
-
-    windows = itertools.chain.from_iterable(
-        get_windows(tree, workspace) for workspace in visible_ws)
-    for mark, id in zip(marks, windows):
-        send_msg(sock, 'run_command',
-                 '[con_id="{}"] mark --toggle " "'.format(id))
+    existing_marks = send_msg(sock, 'get_marks')
+    for mark in marks:
+        if mark in existing_marks:
+            send_msg(sock, 'run_command', 'unmark {}'.format(mark))
 
 
 def add_all_marks(sock, marks):
@@ -140,7 +133,9 @@ if __name__ == '__main__':
                     type, event = read_msg(sock)
                     print("{}: {}".format(type, event['change']))
                     # Delete all marks when window is close
-                    if (type == 'window' and event['change'] == 'close'):
+                    if (type == 'window' and event['change']
+                            == 'close') or (type == 'workspace'
+                                            and event['change'] == 'focus'):
                         delete_all_marks(sock, marks)
                     if type in {'workspace', 'output'
                                 } or (type == 'window' and event['change']

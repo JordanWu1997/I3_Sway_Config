@@ -7,6 +7,9 @@ set font "DroidSansMono Nerd Font Bold 12"
 set guioptions 'hv'
 set selection-clipboard clipboard
 set scroll-page-aware "true"
+set statusbar-page-percent "true"
+set statusbar-home-tilde "true"
+set window-title-home-tilde "true"
 set sandbox none
 map <C-j> zoom in
 map <C-k> zoom out

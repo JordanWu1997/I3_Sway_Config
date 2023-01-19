@@ -13,13 +13,14 @@ Table of Contents
 * [Context](#context)
    * [Section 1 - Demo Current Customization](#section-1---demo-current-customization)
       * [Features in My Configuration](#features-in-my-configuration)
+      * [My Workflow Demo](#my-workflow-demo)
    * [Section 2 - Details of i3 Environment](#section-2---details-of-i3-environment)
       * [1. My i3 Environment](#1-my-i3-environment)
       * [2. Programs Auto-start in Background for i3 Environment](#2-programs-auto-start-in-background-for-i3-environment)
       * [3. Wallpapers](#3-wallpapers)
       * [4. Theme and Fonts](#4-theme-and-fonts)
    * [Section 3 - First Time Usage for i3](#section-3---first-time-usage-for-i3)
-      * [1. Configuration distributor](#1-configuration-distributor)
+      * [1. Configuration Distributor](#1-configuration-distributor)
       * [2. Optional Configuration](#2-optional-configuration)
    * [Section 4 - Mode Usage for i3](#section-4---mode-usage-for-i3)
       * [1. Mode Usage](#1-mode-usage)
@@ -31,6 +32,10 @@ Table of Contents
       * [2. Prefix: Winkey + Shift](#2-prefix-winkey--shift)
       * [3. Prefix: Ctrl + Alt](#3-prefix-ctrl--alt)
       * [4. Miscellaneous](#4-miscellaneous)
+         * [Workspace](#workspace)
+         * [Window](#window)
+         * [Gap](#gap)
+         * [Screenshot](#screenshot)
    * [Reference for i3 Setup](#reference-for-i3-setup)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
@@ -150,7 +155,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <details>
 <summary>Click to expand/shrink</summary>
 
-### 1. Configuration distributor
+### 1. Configuration Distributor
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -278,32 +283,28 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __2-finger Gesture__
-    - __Tap__
-        - Right key click
-    - __Swipe__
-        - Scroll
+    | Gesture   | Action          | Note |
+    | :-------: | :-------------: | :--: |
+    | __Tap__   | Right key click |      |
+    | __Swipe__ | Scroll          |      |
+
 - __3-finger Gesture__
-    - __Tap__
-        - Middle key click
-    - __Hold (requires libinput >= 1.19)__
-        - Toggle i3bar visibility
-    - __Swipe Up__
-        - Toggle window full-screen mode
-    - __Swipe Down__
-        - Toggle floating mode
-    - __Swipe Left__
-        - Go to previous workspace
-    - __Swipe Right__
-        - Go to next workspace
+    | Gesture         | Action                         | Note                        |
+    | :-------------: | :----------------------------: | :-------------------------: |
+    | __Tap__         | Middle key click               |                             |
+    | __Hold__        | Toggle i3bar visibility        | Requires `libinput` >= 1.19 |
+    | __Swipe Up__    | Toggle window full-screen mode |                             |
+    | __Swipe Down__  | Toggle floating mode           |                             |
+    | __Swipe Left__  | Go to previous workspace       |                             |
+    | __Swipe Right__ | Go to next workspace           |                             |
+
 - __4-finger Gesture__
-    - __Swipe Up__
-        - Enable sticky window (floating window stays on screen)
-    - __Swipe Down__
-        - Disable sticky window (floating window stays on screen)
-    - __Pinch Out__
-        - Bring window in scratchpad (background workspace) to foreground
-    - __Pinch In__
-        - Send window to scratchpad (background workspace)
+    | Gesture        | Action                                                       | Note |
+    | :------------: | :----------------------------------------------------------: | :--: |
+    | __Swipe Up__   | Enable sticky window (floating window stays on screen)       |      |
+    | __Swipe Down__ | Disable sticky window (floating window stays on screen)      |      |
+    | __Pinch In__   | Send window to scratchpad (background workspace)             |      |
+    | __Pinch Out__  | Bring scratchpad (background workspace) window to foreground |      |
 
 </details>
 
@@ -311,19 +312,30 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- __Middle Key__
-    - __Click Title Bar__
-        - Kill current window
-    - __`[Winkey]` + Click anywhere except title bar__
-        - Kill current window
-- __Right Key__
-    - __Click Title Bar__
-        - Toggle floating mode
-    - __`[Winkey]` + Click anywhere except title bar__
-        - Toggle floating mode
-- __Scroll Wheel__
-    - __Scroll Up/Down Border__
-        - Show/Hide title bar
+- __Left Button (`Button1`)__
+    | Left Button (`Button1`) +         | Action               | Note |
+    | :-------------------------------: | :------------------: | :--: |
+    | __Drag Title Bar__                | Move window          |      |
+    | __`[Button3]` + Click Title Bar__ | Toggle floating mode |      |
+
+- __Middle Button (`Button2`)__
+    | Middle Button (`Button2`) +   | Action              | Note |
+    | :---------------------------: | :-----------------: | :--: |
+    | __Click Title Bar__           | Kill current window |      |
+    | __`[Winkey]` + Click Window__ | Kill current window |      |
+
+- __Right Button (`[Button3]`)__
+    | Right Button (`Button3`) +    | Action               | Note |
+    | :---------------------------: | :------------------: | :--: |
+    | __Drag Title Bar or Window__  | Resize window        |      |
+    | __Click Title Bar__           | Enable floating mode |      |
+    | __`[Winkey]` + Click Window__ | Toggle floating mode |      |
+
+- __Scroll Wheel Up/Down (`[Button4]`/`[Button5]`)__
+    | Mouse Wheel                  | Action         | Note |
+    | :--------------------------: | :------------: | :--: |
+    | __Scroll Up On Title Bar__   | Show title bar |      |
+    | __Scroll Down On Title Bar__ | Hide title bar |      |
 
 </details>
 </details>
@@ -385,13 +397,17 @@ Note: the term "window" used in this configuration actually refers to "container
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 - __Program in floating mode shortcut (`[Ctrl]`+`[Alt]`+`[Shift]`+[`1`~`7`])__
+    - Note that you will need kitty terminal for floating windows
 
 </details>
 
 ### 4. Miscellaneous
+Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Winkey + Shift](#2-prefix-winkey--shift), or [Prefix: Ctrl + Alt](#3-prefix-ctrl--alt)
+
 <details open>
 <summary>Click to expand/shrink</summary>
 
+#### Workspace
 - __Go to Workspace (Absolutely)__
     - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
     - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
@@ -405,6 +421,10 @@ Note: the term "window" used in this configuration actually refers to "container
     - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next existing workspace (create one if it does not exist)
 - __Swap Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap current workspace with (prev)/next workspace (create one if it does not exist)
+
+#### Window
+- __List Windows__
+    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
 - __Send Window to Workspace (Absolutely)__
     - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
@@ -418,19 +438,21 @@ Note: the term "window" used in this configuration actually refers to "container
     - `[Winkey]` + `[Esc]`: Go to selected workspace
     - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to selected workspace
     - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace with selected workspace
-- __List Windows__
-    - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
 - __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background workspace)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background workspace)
     - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
     - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground
+
+#### Gap
 - __Change Gap Size__
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[h/l]`: Decrease/Increase horizontal outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[j/k]`: Decrease/Increase vertical outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[m/p]`: Decrease/Increase inner gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
+
+#### Screenshot
 - __Screenshot__
     - `[PrtSc]`: Flameshot (screenshot tool)
     - `[Winkey]` + `[PrtSc]`: Gnome-screenshot for the current window

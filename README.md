@@ -56,7 +56,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ### Features in My Configuration
 Note: the term "window" used in this configuration actually refers to "container" in i3 window manager
 
-- [x] __Dwindle Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Dynamic Dwindling Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Pywal Integration__: change color theme based on wallpaper. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
@@ -67,7 +67,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
 - [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
-- [ ] __Configuration Documentation__: Document my configuration setup details in `./config.d`
+- [x] __Configuration Documentation__: Document my configuration setup details in `./config`
 
 </details>
 
@@ -448,7 +448,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 - __Change Gap Size__
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[h/l]`: Decrease/Increase horizontal outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[j/k]`: Decrease/Increase vertical outer gap size
-    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[m/p]`: Decrease/Increase inner gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[-/=]`: Decrease/Increase inner gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
 

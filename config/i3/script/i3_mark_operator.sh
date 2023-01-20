@@ -147,7 +147,7 @@ mark_operation () {
             ;;
         # Print usage
         *)
-            show_wrong_message
+            show_wrong_usage_message
             echo
             show_help_message
             exit

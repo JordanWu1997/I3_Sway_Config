@@ -30,23 +30,26 @@ select_MPRIS_player () {
 
 # Operation
 MPRIS_operation () {
-    # Select player
-    select_MPRIS_player
     # Operation
     case $1 in
         'play-pause')
+            select_MPRIS_player
             playerctl play-pause -p ${PLAYER}
             ;;
         'stop')
+            select_MPRIS_player
             playerctl stop -p ${PLAYER}
             ;;
         'next')
+            select_MPRIS_player
             playerctl next -p ${PLAYER}
             ;;
         'prev')
+            select_MPRIS_player
             playerctl previous -p ${PLAYER}
             ;;
         'fast-forward')
+            select_MPRIS_player
             TIME=$(rofi -dmenu -p 'Fast-forward (sec)')
             if [[ ${PLAYER} == *'spotifyd'* ]]; then
                 spt playback --device spotifyd --seek +${TIME}
@@ -55,6 +58,7 @@ MPRIS_operation () {
             fi
             ;;
         'rewind')
+            select_MPRIS_player
             TIME=$(rofi -dmenu -p 'Rewind (sec)')
             if [[ ${PLAYER} == *'spotifyd'* ]]; then
                 spt playback --device spotifyd --seek -${TIME}
@@ -63,7 +67,7 @@ MPRIS_operation () {
             fi
             ;;
         *)
-            show_wrong_message
+            show_wrong_usage_message
             echo
             show_help_message
             exit

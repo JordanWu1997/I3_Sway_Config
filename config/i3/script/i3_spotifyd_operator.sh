@@ -59,7 +59,7 @@ case $1 in
         notify-send "Spotifyd" "Spotifyd is reloaded and attached to spt" --icon=${ICON}
         ;;
     *)
-        show_wrong_message
+        show_wrong_usage_message
         echo
         show_help_message
         exit

@@ -57,6 +57,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 Note: the term "window" used in this configuration actually refers to "container" in i3 window manager
 
 - [x] __Dynamic Dwindling Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Dynamic Master-Stack Layout__: split window in master-stack layout. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Pywal Integration__: change color theme based on wallpaper. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
@@ -66,8 +67,8 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
-- [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
 - [x] __Configuration Documentation__: Document my configuration setup details in `./config`
+- [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
 
 </details>
 
@@ -122,7 +123,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
 - [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto-mark i3 window (with preset mark)
-- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 container (Horizontal -> Vertical -> Horizontal -> ...)
+- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 container (dwindling, master-stack layout)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
 
@@ -239,6 +240,8 @@ Note: the term "window" used in this configuration actually refers to "container
             - Enable/Disable automark deamon
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
     - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
+        - __Auto-tiling Mode (`[a]`)__
+            - Set dynamic layout in i3, e.g. dwindling layout, master-stack layout
 - __Workspace Mode (`[Winkey]` + `[Shift]` + `[p]`)__
     - Manipulate i3 workspace, e.g. kill, goto, moveto, swap, save, restore
         - __Save Workspace Mode (`[s]`)__

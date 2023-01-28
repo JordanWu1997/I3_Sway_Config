@@ -24,8 +24,6 @@ show_help_message () {
     echo "  i3_workspace_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [float_current]: make all windows in current workspace floating"
-    echo "  [tile_current]: make all window in current workspace tiled"
     echo "  [rename]: rename current workspace"
     echo "  [kill_current]: kill current workspace"
     echo "  [goto]: goto selected workspace"
@@ -61,12 +59,6 @@ workspace_prev_WS_NUM () {
 workspace_operation () {
     case $1 in
         # For current workspace
-        "float_current")
-            i3-msg [workspace='__focused__'] floating enable
-            ;;
-        "tile_current")
-            i3-msg [workspace='__focused__'] floating disable
-            ;;
         "rename_current")
             i3-msg rename workspace to $(rofi -dmenu -line 0 -p "New Workspace Name")
             ;;

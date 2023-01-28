@@ -12,12 +12,15 @@ show_help_message () {
     echo "  i3_window_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [floating_fullscreen]: make current window floating and resize to monitor size"
+    echo "  [float_then_fullscreen]: make current window floating and resize to monitor size"
+    echo "  [center_current]: make current window floating and move to center of monitor"
+    echo "  [float_all]: make all windows in current workspace floating"
+    echo "  [tile_all]: make all window in current workspace tiled"
 }
 
 window_operation () {
     case $1 in
-        'floating_fullscreen')
+        'float_then_fullscreen')
             # Get workspace width and height
             WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
             HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
@@ -30,6 +33,18 @@ window_operation () {
             # Fullscreen
             i3-msg "resize set width ${WIDTH} px height ${HEIGHT} px"
             i3-msg "move position center"
+            ;;
+        'center_current')
+            # Floating
+            i3-msg "floating enable"
+            # Center window
+            i3-msg "move position center"
+            ;;
+        "float_all")
+            i3-msg [workspace='__focused__'] floating enable
+            ;;
+        "tile_all")
+            i3-msg [workspace='__focused__'] floating disable
             ;;
         *)
             show_wrong_usage_message

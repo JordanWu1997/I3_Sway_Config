@@ -8,25 +8,18 @@
 # --------------------------------------------------------------------------------------
 
 # ======================================================================================
-# All About Sway Settings And Variables
+# All About Sway Settings
 # ======================================================================================
-# Setup sway settings and some variables
+# Setup sway settings
 # DO NOT MOVE/REMOVE lines within this section unless you know what you are doing
 
 # Enable xwayland for X applications
 xwayland enable
 
-# Setup monitor order according to frequent-usage priority
-# If the monitor does not exist, workspaces will still work as normal
-set $monitor1 HDMI-A-1
-set $monitor2 eDP-1
-set $monitor3 VIRTUAL1
-set $monitor4 VIRTUAL2
-
 # Display Setup
 # NOTE: Sway get output devices: sway-msg -t get_outputs
 output eDP-1 {
-    scale 1.5
+    scale 1.0
     resolution 1920x1080
     position 0 360
     transform 0
@@ -38,6 +31,29 @@ output HDMI-A-1 {
     transform 0
 }
 
+# Keyboard and Trackpad Setup
+# NOTE: Sway get input devices: sway-msg -t get_outputs/get_inputs
+input "type:keyboard" {
+    xkb_layout us
+    xkb_options ctrl:nocaps
+}
+input "type:touchpad" {
+    tap enabled
+    natural_scroll enabled
+}
+
+# ======================================================================================
+# All About And Variables
+# ======================================================================================
+# Set variables
+# DO NOT MOVE/REMOVE lines within this section unless you know what you are doing
+
+# Setup monitor order according to frequent-usage priority
+# If the monitor does not exist, workspaces will still work as normal
+set $monitor1 HDMI-A-1
+set $monitor2 eDP-1
+set $monitor3 VIRTUAL1
+set $monitor4 VIRTUAL2
 
 # Set font
 set $default_font DroidSansMono Nerd Font
@@ -74,21 +90,10 @@ set $default_border_width 3
 set $default_inner_gap 0
 set $default_outer_gap 0
 
-# Keyboard and Trackpad Setup
-# NOTE: Sway get input devices: sway-msg -t get_outputs/get_inputs
-input "type:keyboard" {
-    xkb_layout us
-    xkb_options ctrl:nocaps
-}
-input "type:touchpad" {
-    tap enabled
-    natural_scroll enabled
-}
-
 # ======================================================================================
-# All About Windows Settings
+# All About Color Template
 # ======================================================================================
-# This is initial setup for all windows and floating windows in sway
+# Load color from Xresource, then set color for i3 containers/windows
 
 # Default theme
 ## class                 border  backgr. text    indicator child_border
@@ -108,6 +113,11 @@ client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
 client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
+# ======================================================================================
+# All About Windows Settings
+# ======================================================================================
+# This is initial setup for all windows and floating windows in sway
+
 include ./config.d/sway_window.config
 
 # ======================================================================================
@@ -115,6 +125,7 @@ include ./config.d/sway_window.config
 # ======================================================================================
 # This is initial setup for all workspace in sway
 
+include ./config.d/sway_workspace_name.config
 include ./config.d/sway_workspace.config
 
 # ======================================================================================

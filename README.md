@@ -23,7 +23,11 @@ Table of Contents
       * [1. Configuration Distributor](#1-configuration-distributor)
       * [2. Optional Configuration](#2-optional-configuration)
    * [Section 4 - Mode Usage for i3](#section-4---mode-usage-for-i3)
-      * [1. Mode Usage](#1-mode-usage)
+      * [1. Keybinding-related Mode](#1-keybinding-related-mode)
+      * [2. System-related Mode](#2-system-related-mode)
+      * [3. Multimedia-related Mode](#3-multimedia-related-mode)
+      * [4. Window/Workspace-related Mode](#4-windowworkspace-related-mode)
+      * [5. Customization-related Mode](#5-customization-related-mode)
    * [Section 5 - Mouse Usage for i3](#section-5---mouse-usage-for-i3)
       * [1. Touchpad Usage](#1-touchpad-usage)
       * [2. Mouse Usage](#2-mouse-usage)
@@ -68,11 +72,12 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
 - [x] __Configuration Documentation__: Document my configuration setup details in `./config`
-- [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md))
+- [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My Workflow Demo](#my-workflow-demo))
 
 </details>
 
 ### My Workflow Demo
+[My workflow note](https://github.com/JordanWu1997/Knowlodge_Base/blob/main/workflow/My_Frequently_Used_Program_Shortcuts.md)
 
 ## Section 2 - Details of i3 Environment
 <details>
@@ -123,7 +128,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
 - [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto-mark i3 window (with preset mark)
-- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 container (dwindling, master-stack layout)
+- [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 window (dwindling, master-stack layout)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
 
@@ -191,16 +196,19 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - i3 has a built-in mode function that overwrites current keybinding with preset mode keybinding
+    - Like different key mappings in vim insert/normal/visual mode
 - When i3 mode is on, mode keybinding instruction shows on the i3 status bar
-- Press `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
-- Press `[Enter]` to go to the last level of mode and exit mode if it is already the last one
+    - Here I use an additional i3 bar to provide more space for text
+- Shared keybindings of mode in my configuration
+    - Press `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
+    - Press `[Enter]` to go to the last level of mode and exit mode if it is already the last one
 - This part configuration can be found in
     - `./config/i3/config.d/i3_mode.config`
     - `./config/i3/config.d/i3_custom.config`
     - `./config/i3/config.d/i3_bar.config`
     - `./config/i3/config.d/i3_gap.config`
 
-### 1. Mode Usage
+### 1. Keybinding-related Mode
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -208,8 +216,19 @@ Note: the term "window" used in this configuration actually refers to "container
     - Disable i3 keybindings. Press `[Ctrl]`+`[[]` to get i3 keybindings back
 - __Vim Keybinding Mode (`[Winkey]` + `[Ctrl]` + `[[]`)__
     - Enable vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
+- __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
+    - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
+
+</details>
+
+### 2. System-related Mode
+<details open>
+<summary>Click to expand/shrink</summary>
+
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
-    - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function, keyboard function
+    - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
+        - __Keyboard Mode (`[k]`)__
+            - Map keys, tune repeat key speed
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with multiple monitor configuration, e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
@@ -218,22 +237,30 @@ Note: the term "window" used in this configuration actually refers to "container
     - Screen color temperature tuner
 - __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
     - Dunst actions, including stopping or resuming dunst
-- __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
-    - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
-- __Resize Mode (`[Ctrl]` + `[Alt]` + `[r]`)__
-    - Resize focused window
-- __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
-    - Modify i3 gaps, e.g. inner gaps, outer gaps
-- __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
-    - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, fontsize)
-- __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
-    - Modify i3 title bar, e.g. hide/show title bar, font size
+
+</details>
+
+### 3. Multimedia-related Mode
+<details open>
+<summary>Click to expand/shrink</summary>
+
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
     - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotifyd, player, vlc
 - __Spotifyd Mode (`[Ctrl]`+`[Alt]`+`[s]`)__
     - Spotifyd control (e.g. enable, disable, reload) for spotifyd
 - __Volume Mode (`[Ctrl]`+`[Alt]`+`[v]`)__
     - Volume control with pulsemixer (e.g. volume up/down, mute)
+
+</details>
+
+### 4. Window/Workspace-related Mode
+<details open>
+<summary>Click to expand/shrink</summary>
+
+- __Resize Mode (`[Ctrl]` + `[Alt]` + `[r]`)__
+    - Resize focused window
+- __Title Bar Mode (`[Winkey]` + `[Shift]` + `[t]`)__
+    - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark/Unmark window, go/swap to/with marked window
         - __Automark Mode ([`a`])__
@@ -248,10 +275,21 @@ Note: the term "window" used in this configuration actually refers to "container
             - Save workspace layout
         - __Restore Workspace Mode (`[r]`)__
             - Restore workspace layout
+
+</details>
+
+### 5. Customization-related Mode
+<details open>
+<summary>Click to expand/shrink</summary>
+
+- __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
+    - Modify i3 gaps, e.g. inner gaps, outer gaps
+- __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
+    - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, fontsize)
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
     - Customize i3wm, e.g. wallpaper, theme, X compositor
         - __Border Mode (`[b]`)__
-            - Window container border width, color scheme and edge border option
+            - Window border width, color scheme and edge border option
         - __Conky Mode (`[c]`)__
             - System monitor, i3 keybinding sheet, conky color palette
         - __Dunst Mode (`[d]`)__

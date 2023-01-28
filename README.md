@@ -36,10 +36,6 @@ Table of Contents
       * [2. Prefix: Winkey + Shift](#2-prefix-winkey--shift)
       * [3. Prefix: Ctrl + Alt](#3-prefix-ctrl--alt)
       * [4. Miscellaneous](#4-miscellaneous)
-         * [Workspace](#workspace)
-         * [Window](#window)
-         * [Gap](#gap)
-         * [Screenshot](#screenshot)
    * [Reference for i3 Setup](#reference-for-i3-setup)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
@@ -263,7 +259,7 @@ Note: the term "window" used in this configuration actually refers to "container
     - Modify i3 title bar, e.g. hide/show title bar, font size
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark/Unmark window, go/swap to/with marked window
-        - __Automark Mode ([`a`])__
+        - __Automark Mode (`[a]`)__
             - Enable/Disable automark deamon
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
     - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function

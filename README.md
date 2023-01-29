@@ -208,7 +208,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- __Insert Mode (`[Ctrl]` + `[Alt]` + `[i]`)__
+- __Insert Mode (`[Ctrl]` + `[Alt]` + `[i]` or `[Winkey]` + `[Ctrl]` + `[i]`)__
     - Disable i3 keybindings. Press `[Ctrl]`+`[[]` to get i3 keybindings back
 - __Vim Keybinding Mode (`[Winkey]` + `[Ctrl]` + `[[]`)__
     - Enable vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode

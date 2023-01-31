@@ -44,11 +44,14 @@ reload_after_replacement () {
 
 # Main
 if [ -z $1 ]; then
-    replace_all_wal_color_files $(command ls -D ${THEME_TEMPLATE_DIR}/ | rofi -dmenu -i -p "Theme Templates")
+    THEME=$(command ls -D ${THEME_TEMPLATE_DIR}/ | rofi -dmenu -i -p "Theme Templates")
+    replace_all_wal_color_files ${THEME}
     reload_after_replacement
+    notify-send -u low "Template Theme" "Theme ${THEME} is applied"
 else
     if verify_input_template $1; then
         replace_all_wal_color_files $1
         reload_after_replacement
+        notify-send -u low "Template Theme" "Theme $1 is applied"
     fi
 fi

@@ -40,12 +40,15 @@ autotiling_operation () {
             ;;
         "set_dwindling_as_default")
             sed -i "$COL_AUTOTILING s/.*/exec_always \-\-no\-startup\-id autotiling/" "${STARTUP_CONFIG}"
+            notify-send -u "low" "i3 Autotiling" "Set dwindling layout as default"
             ;;
         "set_master_stack_as_default")
             sed -i "$COL_AUTOTILING s/.*/exec_always \-\-no\-startup\-id autotiling \-\-limit 2/" "${STARTUP_CONFIG}"
+            notify-send -u "low" "i3 Autotiling" "Set master-stack layout as default"
             ;;
         "set_no_autotiling_as_default")
             sed -i "$COL_AUTOTILING s/.*/\#exec_always \-\-no\-startup\-id autotiling/" "${STARTUP_CONFIG}"
+            notify-send -u "low" "i3 Autotiling" "Set no auto-tiling layout as default"
             ;;
         *)
             show_wrong_usage_message

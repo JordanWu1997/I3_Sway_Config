@@ -17,4 +17,5 @@ else
     CONTEXT="MUTED (L:${L_VOLUME}% R:${R_VOLUME}%)"
 fi
 
+# Send notification
 notify-send -r ${NOTIFY_ID} -u low -a "Volume" "${CONTEXT}" --icon="${ICON}"

@@ -47,6 +47,9 @@ border_operation () {
             show_help_message
             exit
     esac
+    # Send notification
+    notify-send -u low "i3 Border Operator" "Default border_option is set to $1"
+    # Reload
     i3-msg reload
 }
 

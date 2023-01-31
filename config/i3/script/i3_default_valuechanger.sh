@@ -2,7 +2,6 @@
 
 # Input variable and constant
 CHANGE_ITEM=$1
-NEW_DEFAULT_VALUE=$2
 
 # Configuration files
 I3_CONFIG_FILE="$HOME/.config/i3/config"
@@ -13,6 +12,8 @@ DUNST_DIR="$HOME/.config/dunst"
 
 # Default value
 DEFAULT_FONT=$(awk '$0~/default_font/' $I3_CONFIG_FILE | awk 'NR==1' | cut -d' ' -f3-)
+DEFAULT_DUNST_XOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f1)
+DEFAULT_DUNST_YOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f2)
 
 # Column number of default value in $I3_CONFIG_FILE
 COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
@@ -43,7 +44,7 @@ show_help_message () {
         echo "Usage:"
         echo "  i3_default_valuechanger [options] [new_value]"
         echo ""
-        echo "OPTION: NEW_VALUE (TYPE or valiable options)"
+        echo "OPTION: NEW_VALUE (TYPE or valiable options, or use 'input' to input manually)"
         echo "  [border_width]: INTEGER"
         echo "  [outer_gap]: INTEGER"
         echo "  [inner_gap]: INTEGER"
@@ -57,7 +58,8 @@ show_help_message () {
         echo "  [dunst_position]: top-left, top-center, top-right"
         echo "                    left-center, center, right-center"
         echo "                    bottom-left, bottom-center, bottom-right"
-        echo "  [dunst_offset]: INTEGER"
+        echo "  [dunst_xoffset]: INTEGER"
+        echo "  [dunst_yoffset]: INTEGER"
         echo "  [dunst_alignment]: left, center, right"
         echo "  [dunst_fontsize]: INTEGER"
         echo "  [dunst_icon_position]: left, top, right, off"
@@ -66,6 +68,13 @@ show_help_message () {
         echo "  [conky_style]: full, light, minimal"
         echo "  [conky_startup]: enable, disable"
 }
+
+# Input new default value
+if [[ $2 == 'input' ]]; then
+    NEW_DEFAULT_VALUE=$(rofi -dmenu -p "Set $1 to")
+else
+    NEW_DEFAULT_VALUE=$2
+fi
 
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
@@ -94,6 +103,8 @@ case $CHANGE_ITEM in
         i3-msg reload
         ;;
     "i3bar_height")
+        echo $COL_I3BAR_HEIGHT
+        echo $NEW_DEFAULT_VALUE
         sed -i "$COL_I3BAR_HEIGHT s/.*/set \$default_i3bar_height $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
@@ -137,8 +148,12 @@ case $CHANGE_ITEM in
         sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_walcolor.sh reload
         ;;
-    "dunst_offset")
-        sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${NEW_DEFAULT_VALUE}x${NEW_DEFAULT_VALUE}/" $DUNST_DIR/dunstrc
+    "dunst_xoffset")
+        sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${NEW_DEFAULT_VALUE}x${DEFAULT_DUNST_YOFFSET}/" $DUNST_DIR/dunstrc
+        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        ;;
+    "dunst_yoffset")
+        sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DEFAULT_DUNST_XOFFSET}x${NEW_DEFAULT_VALUE}/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_walcolor.sh reload
         ;;
     "dunst_alignment")
@@ -160,3 +175,6 @@ case $CHANGE_ITEM in
         exit
         ;;
 esac
+
+# Send notification
+notify-send -u low "i3 Default Value Changer" "Default $1 is set to $NEW_DEFAULT_VALUE"

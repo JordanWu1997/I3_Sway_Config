@@ -37,6 +37,9 @@ gap_operation () {
             show_help_message
             exit
     esac
+    # Send notification
+    notify-send -u low "i3 Gap Operator" "Default gap_option is set to $1"
+    # Reload
     i3-msg reload
 }
 

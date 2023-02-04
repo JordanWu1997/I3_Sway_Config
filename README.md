@@ -67,7 +67,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
-- [x] __Configuration Documentation__: Document my configuration setup details in `./config`
+- [x] __Configuration Documentation__: Document my configuration setup details in [./config](./config) directory
 - [ ] __Workflow Demo__: theme changing, mode usage, keyboard-driven workflow (Check [My Workflow Demo](#my-workflow-demo))
 
 </details>
@@ -180,7 +180,6 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - [Optional] Add following lines for pywal color support for bash/zsh/fish, NO NEED for kitty terminal emulator
     ```
-    #Add following line to .bashrc/.zshrc/config.fish
     [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
     ```
 

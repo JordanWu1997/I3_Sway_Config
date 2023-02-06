@@ -62,7 +62,7 @@ set $default_floating_titlebar_style normal
 set $default_border_width 3
 
 # Set gap width (ONLY for i3-gaps, but i3-gaps has been merged to i3 in i3 v4.22)
-set $default_inner_gap 10
+set $default_inner_gap 0
 set $default_outer_gap 0
 
 # Set default conky startup (enable/disable)

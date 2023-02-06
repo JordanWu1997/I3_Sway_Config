@@ -325,22 +325,23 @@ Note: the term "window" used in this configuration actually refers to "container
     | __Swipe__ | Scroll          |      |
 
 - __3-finger Gesture__
-    | Gesture         | Action                         | Note                        |
-    | :-------------: | :----------------------------: | :-------------------------: |
-    | __Tap__         | Middle key click               |                             |
-    | __Hold__        | Toggle i3bar visibility        | Requires `libinput` >= 1.19 |
-    | __Swipe Up__    | Toggle window full-screen mode |                             |
-    | __Swipe Down__  | Toggle floating mode           |                             |
-    | __Swipe Left__  | Go to previous workspace       |                             |
-    | __Swipe Right__ | Go to next workspace           |                             |
+    | Gesture         | Action                                                 | Note                                                          |
+    | :-------------: | :----------------------------------------------------: | :-----------------------------------------------------------: |
+    | __Tap__         | Middle key click                                       |                                                               |
+    | __Hold__        | Toggle sticky window (floating window stays on screen) | `[Winkey]` + `[Shift]` + `[s]`                                |
+    | __Swipe Up__    | Toggle window full-screen mode                         | `[Winkey]` + `[f]`                                            |
+    | __Swipe Down__  | Toggle floating mode                                   | `[Winkey]` + `[Shift]` + `[Space]`                            |
+    | __Swipe Left__  | Focus and cursor go to previous marked window          | `[Winkey]` + `[i]`, requires i3-automark with my modification |
+    | __Swipe Right__ | Focus and cursor go to next marked window              | `[Winkey]` + `[n]`, requires i3-automark with my modification |
 
 - __4-finger Gesture__
-    | Gesture        | Action                                                       | Note |
-    | :------------: | :----------------------------------------------------------: | :--: |
-    | __Swipe Up__   | Enable sticky window (floating window stays on screen)       |      |
-    | __Swipe Down__ | Disable sticky window (floating window stays on screen)      |      |
-    | __Pinch In__   | Send window to scratchpad (background workspace)             |      |
-    | __Pinch Out__  | Bring scratchpad (background workspace) window to foreground |      |
+    | Gesture         | Action                                                       | Note                               |
+    | :------------:  | :----------------------------------------------------------: | :--------------------------------: |
+    | __Hold__        | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
+    | __Swipe Up__    | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
+    | __Swipe Down__  | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
+    | __Swipe Left__  | Go to previous workspace                                     | `[Winkey]` + `[Shift]` + `[Grave]` |
+    | __Swipe Right__ | Go to next workspace                                         | `[Winkey]` + `[Grave]`             |
 
 </details>
 

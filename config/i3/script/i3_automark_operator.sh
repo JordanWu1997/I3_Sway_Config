@@ -92,6 +92,16 @@ cycle_mark_focus () {
     NEXT_MARK=${ALL_AUTOMARK_LIST[${NEXT_MARK_INDEX}]}
 }
 
+cursor_follow_focus () {
+    # Source Code: https://github.com/i3/i3/issues/2971
+    WINDOW=$(xdotool getwindowfocus)
+    # This brings in variables WIDTH and HEIGHT
+    eval `xdotool getwindowgeometry --shell $WINDOW`
+    TX=`expr $WIDTH / 2`
+    TY=`expr $HEIGHT / 2`
+    xdotool mousemove -window $WINDOW $TX $TY
+}
+
 automark_operation () {
     case $1 in
         "enable")
@@ -112,20 +122,24 @@ automark_operation () {
         "cycle_focus_inc")
             cycle_mark_focus inc
             i3-msg "[con_mark=${NEXT_MARK}] focus"
+            cursor_follow_focus
             ;;
         "cycle_focus_dec")
             cycle_mark_focus dec
             i3-msg "[con_mark=${NEXT_MARK}] focus"
+            cursor_follow_focus
             ;;
         "cycle_swap_inc")
             cycle_mark_focus inc
             i3-msg "swap container with mark ${NEXT_MARK}"
             $I3_SCRIPT/i3_automark.py
+            cursor_follow_focus
             ;;
         "cycle_swap_dec")
             cycle_mark_focus dec
             i3-msg "swap container with mark ${NEXT_MARK}"
             $I3_SCRIPT/i3_automark.py
+            cursor_follow_focus
             ;;
         *)
             show_wrong_usage_message

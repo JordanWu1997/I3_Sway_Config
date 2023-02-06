@@ -1,6 +1,9 @@
 ### Settings from original zathurarc ###
 unmap <C-m>
 unmap <C-n>
+unmap -
+unmap +
+unmap =
 set adjust-open "best-fit"
 set pages-per-row 1
 set font "DroidSansMono Nerd Font Bold 12"
@@ -13,6 +16,12 @@ set window-title-home-tilde "true"
 set sandbox none
 map <C-j> zoom in
 map <C-k> zoom out
+map = zoom in
+map - zoom out
+map + zoom fit
+map <C-=> zoom in
+map <C--> zoom out
+map <C-0> zoom fit
 map <C-g> toggle_statusbar
 map bl feedkeys ":blist<Tab>"
 map bm feedkeys ":bmark "

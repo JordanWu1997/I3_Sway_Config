@@ -17,9 +17,9 @@ reload_minus
 # [|]: Flip image horizontally (mirror)
 
 # Customize keymapping
-zoom_fit plus C-0
-zoom_in equal C-j
-zoom_out minus C-k
+zoom_fit plus C-plus C-0
+zoom_in equal C-equal C-j
+zoom_out minus C-minus C-k
 scroll_up Up k
 scroll_down Down j
 scroll_left Left h

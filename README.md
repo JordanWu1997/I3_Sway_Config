@@ -57,7 +57,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 Note: the term "window" used in this configuration actually refers to "container" in i3 window manager
 
 - [x] __Dynamic Dwindling Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
-- [x] __Dynamic Master-Stack Layout__: split window in master-stack layout. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Dynamic Master-Stack Layout__: auto-split window in master-stack layout. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Window Auto-mark__: auto-mark window for moving/swapping. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Pywal Integration__: change color theme based on wallpaper. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
@@ -163,14 +163,14 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - Run distributor in this git repository `./config/i3/script/i3_config_distributor.sh`
 - Includes
-    - __Add Environment Variables__
+    - __1. Add Environment Variables__
         - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
         - Add `I3_SCRIPT` in `$HOME/.profile`
         - Add `WALLPAPERI3` in `$HOME/.profile`
-    - __Backup Old Configuration and Link New Configuration__
+    - __2. Backup Old Configuration and Link/Copy New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
-        - Link configuration in git repository `./config/*` to `$HOME/.config` directory
-    - __Install Programs for Work Environment__
+        - Link/Copy configuration in git repository `./config/*` to `$HOME/.config` directory
+    - __3. Install Programs for Work Environment__
 
 </details>
 
@@ -178,10 +178,31 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- [Optional] Add following lines for pywal color support for bash/zsh/fish, NO NEED for kitty terminal emulator
-    ```
-    [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
-    ```
+- Optional configuration that you can try
+- Includes
+    - __1. Terminal Emulator Pywal Color Support__
+        - __NO NEED__ for kitty terminal emulator if using my configuration `./config/kitty/kitty.conf`
+        - Add following lines to shell (e.g. bash/zsh/fish) dotfile (e.g. `~/.bashrc`/`~/.zshrc`/`~/.config/fish/config`) for pywal color support
+            ```
+            [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
+            ```
+    - __2. Preset Workspace Name Renaming__
+        - My preset workspace naming style is combination of capitalized alphabet (A~L) and one-digit number (1~9+0), which has 120 workspaces in total
+        - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using following syntax (the prefix number will be stripped in i3bar workspace)
+            - From
+                ```
+                set $ws1 "1:A1" # Change 1:A1 to 1:NEW_NAME_1
+                set $ws2 "2:A2" # Change 2:A2 to 2:NEW_NAME_2
+                ...
+                ```
+            - To
+                ```
+                set $ws1 "1:NEW_NAME_1" # Now workspace 1 is renamed to 1:NEW_NAME_1
+                set $ws2 "2:NEW_NAME_2" # Now workspace 2 is renamed to 2:NEW_NAME_2
+                ...
+                ```
+        - After finishing renaming process, run `./config/i3/script/i3_genereate_workspace_name_list.sh`
+            - This is to generate workspace name list for rofi selector for further workspace manipulation
 
 </details>
 </details>
@@ -240,7 +261,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
-    - Player control (e.g. previous, pause-play, next, fast/back-ward, stop) for spotifyd, player, vlc
+    - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spotifyd, player, vlc
 - __Spotifyd Mode (`[Ctrl]`+`[Alt]`+`[s]`)__
     - Spotifyd control (e.g. enable, disable, reload) for spotifyd
 - __Volume Mode (`[Ctrl]`+`[Alt]`+`[v]`)__
@@ -319,10 +340,13 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __2-finger Gesture__
-    | Gesture   | Action          | Note |
-    | :-------: | :-------------: | :--: |
-    | __Tap__   | Right key click |      |
-    | __Swipe__ | Scroll          |      |
+    | Gesture                     | Action          | Note                         |
+    | :-------------------------: | :-------------: | :--------------------------: |
+    | __Tap__                     | Right key click |                              |
+    | __Swipe Up__                | Scroll down     | Natural scrolling is enabled |
+    | __Swipe Down__              | Scroll up       | Natural scrolling is enabled |
+    | __Swipe Up On Border__      | Hide title bar  | Natural scrolling is enabled |
+    | __Swipe Down On Title Bar__ | Show title bar  | Natural scrolling is enabled |
 
 - __3-finger Gesture__
     | Gesture         | Action                                                 | Note                                                          |
@@ -371,7 +395,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Scroll Wheel Up/Down (`[Button4]`/`[Button5]`)__
     | Mouse Wheel                  | Action         | Note |
     | :--------------------------: | :------------: | :--: |
-    | __Scroll Up On Title Bar__   | Show title bar |      |
+    | __Scroll Up On Border__      | Show title bar |      |
     | __Scroll Down On Title Bar__ | Hide title bar |      |
 
 </details>
@@ -503,8 +527,11 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 <summary>Click to expand/shrink</summary>
 
 - https://i3wm.org/docs/userguide.html
+- https://www.reddit.com/r/unixporn/
+- https://www.reddit.com/r/i3wm/
+- https://www.reddit.com/r/Fedora/
 - https://wiki.archlinux.org/title/I3
-- https://github.com/Airblader/i3 (i3-gap)
+- https://github.com/Airblader/i3 (i3-gap has been merged to i3 since ver 4.22)
 - https://github.com/levinit/i3wm-config (written in Chinese)
 - https://www.itread01.com/p/142448.html (written in Chinese)
 - https://segmentfault.com/a/1190000022083424 (written in Chinese)

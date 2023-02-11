@@ -187,7 +187,7 @@ Note: the term "window" used in this configuration actually refers to "container
             [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
             ```
     - __2. Preset Workspace Name Renaming__
-        - My preset workspace naming style is combination of capitalized alphabet (A~L) and one-digit number (1~9+0), which has 120 workspaces in total
+        - My preset workspace naming style is combination of capital letter (A~D) and one-digit number (1~9+0), which has 40 workspaces in total
         - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using following syntax (the prefix number will be stripped in i3bar workspace)
             - From
                 ```
@@ -347,21 +347,25 @@ Note: the term "window" used in this configuration actually refers to "container
     | __Swipe Down__              | Scroll up       | Natural scrolling is enabled |
     | __Swipe Up On Border__      | Hide title bar  | Natural scrolling is enabled |
     | __Swipe Down On Title Bar__ | Show title bar  | Natural scrolling is enabled |
+    | __Pinch In__                | Zoom in         | `[Ctrl] + `[=]`              |
+    | __Pinch Out__               | Zoom out        | `[Ctrl]` + `[-]`             |
 
 - __3-finger Gesture__
-    | Gesture         | Action                                                 | Note                                                          |
-    | :-------------: | :----------------------------------------------------: | :-----------------------------------------------------------: |
-    | __Tap__         | Middle key click                                       |                                                               |
-    | __Hold__        | Toggle sticky window (floating window stays on screen) | `[Winkey]` + `[Shift]` + `[s]`                                |
-    | __Swipe Up__    | Toggle window full-screen mode                         | `[Winkey]` + `[f]`                                            |
-    | __Swipe Down__  | Toggle floating mode                                   | `[Winkey]` + `[Shift]` + `[Space]`                            |
-    | __Swipe Left__  | Focus and cursor go to previous marked window          | `[Winkey]` + `[i]`, requires i3-automark with my modification |
-    | __Swipe Right__ | Focus and cursor go to next marked window              | `[Winkey]` + `[n]`, requires i3-automark with my modification |
+    | Gesture                 | Action                                                 | Note                                                          |
+    | :---------------------: | :----------------------------------------------------: | :-----------------------------------------------------------: |
+    | __Tap__                 | Middle key click                                       |                                                               |
+    | __Hold On__             | Toggle sticky window (floating window stays on screen) | `[Winkey]` + `[Shift]` + `[s]`                                |
+    | __Swipe Up__            | Toggle window full-screen mode                         | `[Winkey]` + `[f]`                                            |
+    | __Swipe Down__          | Toggle floating mode                                   | `[Winkey]` + `[Shift]` + `[Space]`                            |
+    | __Swipe Left__          | Focus and cursor go to previous marked window          | `[Winkey]` + `[i]`, requires i3-automark with my modification |
+    | __Swipe Right__         | Focus and cursor go to next marked window              | `[Winkey]` + `[n]`, requires i3-automark with my modification |
+    | __Swipe Left-Up/Down__  | Switch to previous tab                                 | `[Ctrl]` + `[Shift]` + `[Tab]`                                |
+    | __Swipe Right-Up/Down__ | Switch to next tab                                     | `[Ctrl]` + `[Tab]`                                            |
 
 - __4-finger Gesture__
     | Gesture         | Action                                                       | Note                               |
     | :------------:  | :----------------------------------------------------------: | :--------------------------------: |
-    | __Hold__        | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
+    | __Hold On__     | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
     | __Swipe Up__    | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
     | __Swipe Down__  | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
     | __Swipe Left__  | Go to previous workspace                                     | `[Winkey]` + `[Shift]` + `[Grave]` |

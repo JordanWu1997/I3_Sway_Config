@@ -72,6 +72,10 @@ show_help_message () {
 # Input new default value
 if [[ $2 == 'input' ]]; then
     NEW_DEFAULT_VALUE=$(rofi -dmenu -p "Set $1 to")
+    # Avoid empty input
+    if [ -z ${NEW_DEFAULT_VALUE} ]; then
+        exit
+    fi
 else
     NEW_DEFAULT_VALUE=$2
 fi

@@ -363,13 +363,15 @@ Note: the term "window" used in this configuration actually refers to "container
     | __Swipe Right-Up/Down__ | Switch to next tab                                     | `[Ctrl]` + `[Tab]`                                            |
 
 - __4-finger Gesture__
-    | Gesture         | Action                                                       | Note                               |
-    | :------------:  | :----------------------------------------------------------: | :--------------------------------: |
-    | __Hold On__     | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
-    | __Swipe Up__    | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
-    | __Swipe Down__  | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
-    | __Swipe Left__  | Go to previous workspace                                     | `[Winkey]` + `[Shift]` + `[Grave]` |
-    | __Swipe Right__ | Go to next workspace                                         | `[Winkey]` + `[Grave]`             |
+    | Gesture                 | Action                                                       | Note                               |
+    | :------------:          | :----------------------------------------------------------: | :--------------------------------: |
+    | __Hold On__             | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
+    | __Swipe Up__            | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
+    | __Swipe Down__          | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
+    | __Swipe Left__          | Go to previous workspace (create one if it is not existing)  | `[Winkey]` + `[Shift]` + `[Grave]` |
+    | __Swipe Right__         | Go to next workspace  (create one if it is not existing)     | `[Winkey]` + `[Grave]`             |
+    | __Swipe Left-Up/Down__  | Go to previous workspace (existing ones only)                | `[Winkey]` + `[Shift]` + `[Tab]`   |
+    | __Swipe Right-Up/Down__ | Go to next workspace (existing ones only)                    | `[Winkey]` + `[Tab]`               |
 
 </details>
 

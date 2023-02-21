@@ -16,7 +16,7 @@ Table of Contents
       * [My Workflow Demo](#my-workflow-demo)
    * [Section 2 - Details of i3 Environment](#section-2---details-of-i3-environment)
       * [1. My i3 Environment](#1-my-i3-environment)
-      * [2. Programs Auto-start in Background for i3 Environment](#2-programs-auto-start-in-background-for-i3-environment)
+      * [2. Startup Programs](#2-startup-programs)
       * [3. Wallpapers](#3-wallpapers)
       * [4. Theme and Fonts](#4-theme-and-fonts)
    * [Section 3 - First Time Usage for i3](#section-3---first-time-usage-for-i3)
@@ -103,7 +103,7 @@ Note: the term "window" used in this configuration actually refers to "container
 
 </details>
 
-### 2. Programs Auto-start in Background for i3 Environment
+### 2. Startup Programs
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -124,6 +124,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
 - [lincheney/i3_automark.py](https://github.com/lincheney/i3-automark/blob/master/i3-automark.py): auto-mark i3 window (with preset mark)
+    - [i3_automark_daemon.py](./config/i3/script/i3_automark_daemon.py): my modification of `i3_automark.py`
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 window (dwindling, master-stack layout)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
@@ -347,7 +348,7 @@ Note: the term "window" used in this configuration actually refers to "container
     | __Swipe Down__              | Scroll up       | Natural scrolling is enabled |
     | __Swipe Up On Border__      | Hide title bar  | Natural scrolling is enabled |
     | __Swipe Down On Title Bar__ | Show title bar  | Natural scrolling is enabled |
-    | __Pinch In__                | Zoom in         | `[Ctrl] + `[=]`              |
+    | __Pinch In__                | Zoom in         | `[Ctrl]` + `[=]`             |
     | __Pinch Out__               | Zoom out        | `[Ctrl]` + `[-]`             |
 
 - __3-finger Gesture__
@@ -480,14 +481,16 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
     - `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
     - `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+    - `[Winkey]` + `[Esc]`: Go to selected workspace (interactively)
 - __Go to Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next existing workspace
     - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
-    - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Tab]`: Create and go to (prev)/next free workspace
+    - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next free workspace (create one if it does not exist)
     - `[Winkey]` + `[Ctrl]` + `[Tab]`: Go to next workspace back and forth
     - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next existing workspace (create one if it does not exist)
 - __Swap Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap current workspace with (prev)/next workspace (create one if it does not exist)
+    - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace with selected workspace (interactively)
 
 #### Window
 - __List Windows__
@@ -497,14 +500,11 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
     - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
     - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
+    - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to selected workspace (interactively)
 - __Send Window to Workspace (Relatively)__
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to prev/next workspace (create one if it does not exist)
-- __Manipulate (go to, send window to, swap with) Workspace (Interactively)__:
-    - `[Winkey]` + `[Esc]`: Go to selected workspace
-    - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to selected workspace
-    - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace with selected workspace
 - __Manipulate Scratchpad__
     - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background workspace)
     - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background workspace)

@@ -15,7 +15,10 @@ show_help_message () {
     echo "  [float_then_fullscreen]: make current window floating and resize to monitor size"
     echo "  [center_current]: make current window floating and move to center of monitor"
     echo "  [float_all]: make all windows in current workspace floating"
-    echo "  [tile_all]: make all window in current workspace tiled"
+    echo "  [tile_all]: make all windows in current workspace tiled"
+    echo "  [hide_all]: send all windows to scratchpad"
+    echo "  [show_all_scratchpad]: show all windows in scratchpad"
+    echo "  [hide_all_floating]: send all floating windows to scratchpad"
 }
 
 window_operation () {
@@ -45,6 +48,16 @@ window_operation () {
             ;;
         "tile_all")
             i3-msg [workspace='__focused__'] floating disable
+            ;;
+        "hide_all")
+            i3-msg [workspace='__focused__'] floating enable
+            i3-msg [floating] move scratchpad
+            ;;
+        "show_all_scratchpad")
+            i3-msg [all] scratchpad show
+            ;;
+        "hide_all_floating")
+            i3-msg [floating] move scratchpad
             ;;
         *)
             show_wrong_usage_message

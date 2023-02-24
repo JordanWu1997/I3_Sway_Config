@@ -250,9 +250,9 @@ Note: the term "window" used in this configuration actually refers to "container
     - Deal with multiple monitor configuration, e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
     - Modify monitor backlight level
-- __Redshift Mode (`[Winkey]` + `[Shift]` + `[z]`)__
+- __Redshift Mode (`[Ctrl]` + `[Alt]` + `[z]`)__
     - Screen color temperature tuner
-- __Dunst Mode (`[Winkey]` + `[Shift]` + `[v]`)__
+- __Dunst Mode (`[Ctrl]` + `[Alt]` + `[n]`)__
     - Dunst actions, including stopping or resuming dunst
 
 </details>
@@ -299,7 +299,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- __Gap Mode (`[Winkey]` + `[Shift]` + `[g]`)__
+- __Gap Mode (`[Ctrl]` + `[Alt]` + `[g]`)__
     - Modify i3 gaps, e.g. inner gaps, outer gaps
 - __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
     - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, fontsize)
@@ -506,10 +506,10 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to prev/next workspace (create one if it does not exist)
 - __Manipulate Scratchpad__
-    - `[Winkey]` + `[-]`: Send focused window to the scratchpad (background workspace)
-    - `[Winkey]` + `[Shift]` + `[-]`: Send all floating windows to scratchpad (background workspace)
-    - `[Winkey]` + `[=]`: Bring window in scratchpad to foreground one by one
-    - `[Winkey]` + `[Shift]` + `[=]`: Bring all windows in scratchpad to foreground
+    - `[Winkey]` + `[-/z]`: Send focused window to scratchpad (background workspace)
+    - `[Winkey]` + `[Shift]` + `[-/z]`: Send all floating windows to scratchpad (background workspace)
+    - `[Winkey]` + `[=/g]`: Bring window in scratchpad to foreground one by one
+    - `[Winkey]` + `[Shift]` + `[=/g]`: Bring all windows in scratchpad to foreground
 
 #### Gap
 - __Change Gap Size__
@@ -549,5 +549,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 - https://www.youtube.com/watch?v=j1I63wGcvU4&list=PL5ze0DjYv5DbCv9vNEzFmP6sU7ZmkGzcf
 - https://regolith-linux.org/
 - https://arcolinux.com/
+- https://github.com/endeavouros-team/endeavouros-i3wm-setup
+- https://gitlab.com/garuda-linux/themes-and-settings/settings/garuda-i3-settings/-/tree/master/
 
 </details>

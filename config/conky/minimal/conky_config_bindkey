@@ -93,8 +93,8 @@ ${color2}tiling/tabbed/stacking ${alignr}${color1}[S]+[e/w/s]
 ${color2}toggle layouts ${alignr}${color1}[S]+[Shift]+[e]
 ${color2}floating toggle ${alignr}${color1}[S]+[Shift]+[Space]
 ${color2}floating focus toggle ${alignr}${color1}[S]+[Space]
-${color2}send WD to SP ${alignr}${color1}[S]+([Shift])+[-]
-${color2}bring WD to FG ${alignr}${color1}[S]+([Shift])+[=]
+${color2}send WD to SP ${alignr}${color1}[S]+([Shift])+[-/z]
+${color2}bring WD to FG ${alignr}${color1}[S]+([Shift])+[=/g]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Datetime] ${hr 2}${font}${voffset 2}
 ${voffset 0}${color2}${font DroidSanMono Nerd Font:bold:size=12}${time %B} ${time %e}, ${time %Y}${font}
 ${voffset 0}${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}

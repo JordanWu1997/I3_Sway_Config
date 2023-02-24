@@ -94,8 +94,8 @@ ${color2}focus children ${alignr}${color1}[S]+[Shift]+[a]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Floating / Scratchpad] ${hr 2}${font}
 ${color2}floating toggle ${alignr}${color1}[S]+[Shift]+[Space]
 ${color2}focus toggle ${alignr}${color1}[S]+[Space]
-${color2}send WD to scratchpad ${alignr}${color1}[S]+[-]
-${color2}bring WD to foreground ${alignr}${color1}[S]+[=]
+${color2}send WD to scratchpad ${alignr}${color1}[S]+[-/z]
+${color2}bring WD to foreground ${alignr}${color1}[S]+[=/g]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Function / Mode] ${hr 2}${font}
 ${color2}custimization mode ${alignr}${color1}[S]+[Shift]+[c]
 ${color2}titlebar mode ${alignr}${color1}[S]+[Shift]+[t]

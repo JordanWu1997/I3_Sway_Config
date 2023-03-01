@@ -405,6 +405,12 @@ Note: the term "window" used in this configuration actually refers to "container
     | __Scroll Up On Border__      | Show title bar |      |
     | __Scroll Down On Title Bar__ | Hide title bar |      |
 
+- Thumb Button Up/Down (`[Button8]`/`[Button9]`)
+    | Thumb Button                    | Action                     | Note      |
+    | :-----------------------------: | :------------------------: | :-------: |
+    | __`[Ctrl]`+ Thumb Button Up__   | Enable cursor auto-hiding  | unclutter |
+    | __`[Ctrl]`+ Thumb Button Down__ | Disable cursor auto-hiding | unclutter |
+
 </details>
 </details>
 

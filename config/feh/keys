@@ -1,3 +1,16 @@
+# ~/.config/feh/keys
+
+# Source: https://github.com/derf/feh/blob/master/examples/keys
+#
+# feh key configuration.
+# Comments start with a # sign, do not use them mid-line.
+# Each line must be blank, a comment, or a key definition.
+#
+# key definition: <action name> <key1> [<key2> [<key3>]]
+#
+# Each <key> is an X11 keysym (as output by xev) with optional modifier.
+# For instance, C-x would be Ctrl+X, or 4-space Mod4+Space
+
 # Unset default keymapping
 next_img
 prev_img
@@ -16,13 +29,24 @@ reload_minus
 # [_]: Flip image vertically
 # [|]: Flip image horizontally (mirror)
 
-# Customize keymapping
-zoom_fit plus C-plus C-0
-zoom_in equal C-equal C-j
+# Zooming
+zoom_fit plus  C-plus C-0
+zoom_in equal  C-equal C-j
 zoom_out minus C-minus C-k
-scroll_up Up k
-scroll_down Down j
-scroll_left Left h
+
+# Image movement
+scroll_up    Up k
+scroll_down  Down j
+scroll_left  Left h
 scroll_right Right l
-next_img n J
-prev_img p K
+
+# Image navigation
+next_img n J space
+prev_img p K BackSpace
+
+# vim-like menu bindings
+menu_parent h Left
+menu_child  l Right
+menu_down   j Down
+menu_up     k Up
+menu_select space Return

@@ -17,21 +17,26 @@ show_help_message () {
     echo "  [player_all]: show all players"
 }
 
-case $1 in
-    "playing")
-        PLAYING=$(playerctl metadata --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}")
-        notify-send -u low "MPRIS: Playing" "$PLAYING"
-        ;;
-    "playing_all")
-        PLAYING=$(playerctl metadata -a --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}\n")
-        notify-send -u low "MPRIS: All Playing" "$PLAYING"
-        ;;
-    "player_all")
-        notify-send -u low "MPRIS: Active Players" "$(playerctl --list-all)"
-        ;;
-    *)
-        show_wrong_usage_message
-        echo
-        show_help_message
-        exit
-esac
+MPRIS_notification () {
+    case $1 in
+        "playing")
+            PLAYING=$(playerctl metadata --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}")
+            notify-send -u low "MPRIS: Playing" "$PLAYING"
+            ;;
+        "playing_all")
+            PLAYING=$(playerctl metadata -a --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}\n")
+            notify-send -u low "MPRIS: All Playing" "$PLAYING"
+            ;;
+        "player_all")
+            notify-send -u low "MPRIS: Active Players" "$(playerctl --list-all)"
+            ;;
+        *)
+            show_wrong_usage_message
+            echo
+            show_help_message
+            exit
+    esac
+}
+
+# Main
+MPRIS_notification $1

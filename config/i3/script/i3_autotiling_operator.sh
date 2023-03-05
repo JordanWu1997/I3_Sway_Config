@@ -17,6 +17,9 @@ show_help_message () {
     echo "  [enable_master_stack]: enable master-stack layout (require autotiling > 1.8)"
     echo "  [disable_dwindling]: disable dwindling layout"
     echo "  [disable_master_stack]: disable master-stack layout"
+    echo "  [set_dwindling_as_default]: set dwindling layout as default"
+    echo "  [set_master_stack_as_default]: set master-stack layout as default"
+    echo "  [set_no_autotiling_as_default]: do not set autotiling layout as default"
 }
 
 autotiling_operation () {

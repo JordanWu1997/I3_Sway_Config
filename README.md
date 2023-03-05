@@ -235,6 +235,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - Enable vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
 - __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
     - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
+        - __Cursor Mode (`[c]`)__
+            - Cursor auto-hiding (unclutter)
 
 </details>
 

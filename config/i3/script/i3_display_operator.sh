@@ -18,13 +18,10 @@ show_wrong_usage_message () {
 # Help message
 show_help_message () {
     echo "Usage:"
-    echo "  i3_display_monitor_adopter.sh [adoption] [options] [conky]"
+    echo "  i3_display_operator.sh [options] [conky]"
     echo ""
-    echo "ADOPTION"
-    echo "  [auto]: adopt preset configuration"
-    echo "  [options]: adopt following input options"
-    echo
     echo "OPTIONS"
+    echo "  [auto]: use preset configuration"
     echo "  [eDP1_only]: activate eDP1 only"
     echo "  [HDMI1_only]: activate HDMI1 only"
     echo "  [eDP1_HDMI1_joint]: activate eDP1 and HDMI1 in joint mode"
@@ -37,8 +34,8 @@ show_help_message () {
     echo "  [eDP1_primary]: set eDP1 as primary display"
     echo
     echo "CONKY"
-    echo "  [enable]: show conky after display is adopted"
-    echo "  [disable]: do not show conky after display is adopted"
+    echo "  [enable]: show conky after changing"
+    echo "  [disable]: do not show conky after changing"
 }
 
 # Reload conky after monitor display is set
@@ -56,100 +53,114 @@ reload_misc () {
     $I3_SCRIPT/i3_picom_operator.sh default
 }
 
-display_monitor_adoption () {
-    # Joint Display
+HDMI1_shrink () {
+    # Create new mode
+    xrandr --newmode "1912x960_60.00"  152.20  1912 2024 2232 2552  960 961 964 994  -HSync +Vsync
+    # Add new mode to HDMI1
+    xrandr --addmode HDMI1 "1912x960_60.00"
+}
+
+HDMI1_extend () {
+    # Create new mode
+    xrandr --newmode "1920x1200_50.00"  158.08  1920 2032 2240 2560  1200 1201 1204 1235  -HSync +Vsync
+    # Add new mode to HDMI1
+    xrandr --addmode HDMI1 "1920x1200_50.00"
+}
+
+eDP1_shrink () {
+    # Create new mode
+    xrandr --newmode "1440x810_60.00"  95.04  1440 1512 1664 1888  810 811 814 839  -HSync +Vsync
+    # Add new mode to eDP1
+    xrandr --addmode eDP1 "1440x810_60.00"
+}
+
+auto_adjust () {
+    if [ $HDMI1_STATUS == 'connected' ]; then
+        # IOA 24': 520mm x 290mm
+        if [ $HDMI1_WIDTH == "520mm" ] && [ $HDMI1_HEIGHT == "290mm" ]; then
+            notify-send -u low "Set Display Automatically" "IOA 24' connected"
+            # Adjust eDP1 & HDMI1
+            HDMI1_extend; eDP1_shrink
+            # Locate eDP1 & HDMI1
+            xrandr \
+                --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
+                --output eDP1 --mode 1440x810_60.00 \
+                --output HDMI1 --mode 1920x1200_50.00 --primary
+        # ACER 27': 600mm x 340mm
+        elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
+            notify-send -u low "Set Display Automatically" "ACER 27' connected"
+            # Adjust eDP1
+            eDP1_shrink
+            # Locate eDP1 & HDMI1
+            xrandr \
+                --output eDP1 --pos 0x270 --output HDMI1 --pos 1440x0 \
+                --output eDP1 --mode 1440x810_60.00 \
+                --output HDMI1 --mode 1912x960_60.00 --primary
+        # Rent: 0mm x 0mm (unknown)
+        elif [ $HDMI1_WIDTH == "0mm" ] && [ $HDMI1_HEIGHT == "0mm" ]; then
+            notify-send -u low "Set Display Automatically" "Rent unknown connected"
+            # Adjust eDP1 & HDMI1
+            HDMI1_extend; eDP1_shrink
+            # Locate eDP1 & HDMI1 (extented)
+            xrandr \
+                --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
+                --output eDP1 --mode 1440x810_60.00 \
+                --output HDMI1 --mode 1920x1200_50.00 --primary
+        # Other HDMI:
+        else
+            notify-send -u low "Set Display Automatically" "External HDMI1 connected"
+            xrandr --output HDMI1 --auto --primary --right-of eDP1
+        fi
+    # Laptop display only
+    else
+        notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected"
+        xrandr --output eDP1 --mode 1920x1080 --primary --output HDMI1 --off
+    fi
+}
+
+display_operation () {
     case $1 in
-        # Automatically setup display
-        "auto")
-            if [ $HDMI1_STATUS == 'connected' ]; then
-                # IOA 24': 520mm x 290mm
-                if [ $HDMI1_WIDTH == "520mm" ] && [ $HDMI1_HEIGHT == "290mm" ]; then
-                    notify-send -u low "Set Display Automatically" "IOA 24' connected"
-                    # Locate eDP1 & HDMI1
-                    $I3_SCRIPT/i3_display_operator.sh HDMI1 extend && \
-                        $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && \
-                        xrandr \
-                        --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
-                        --output eDP1 --mode 1440x810_60.00 \
-                        --output HDMI1 --mode 1920x1200_50.00 --primary
-                # ACER 27': 600mm x 340mm
-                elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
-                    notify-send -u low "Set Display Automatically" "ACER 27' connected"
-                    # Locate eDP1 & HDMI1
-                    $I3_SCRIPT/i3_display_operator.sh eDP1 shrink && xrandr \
-                        --output eDP1 --pos 0x270 --output HDMI1 --pos 1440x0 \
-                        --output eDP1 --mode 1440x810_60.00 \
-                        --output HDMI1 --mode 1920x1080 --primary
-                # Other HDMI:
-                else
-                    notify-send -u low "Set Display Automatically" "External HDMI1 connected"
-                    xrandr --output HDMI1 --auto --primary --right-of eDP1
-                fi
-            # Laptop display only
-            else
-                notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected"
-                xrandr --output eDP1 --mode 1920x1080 --primary --output HDMI1 --off
-            fi
-            # Conky
-            if [ $2 == 'enable' ]; then
-                reload_conky
-            fi
+        "eDP1_only" )
+            notify-send -u low "Set Display" "Activate eDP1 only"
+            xrandr --output HDMI1 --off --output eDP1 --auto --primary
             ;;
-        # Additional display option
-        "option")
-            case $2 in
-                "eDP1_only" )
-                    notify-send -u low "Set Display" "Activate eDP1 only"
-                    xrandr --output HDMI1 --off --output eDP1 --auto --primary
-                    ;;
-                "HDMI1_only" )
-                    notify-send -u low "Set Display" "Activate HDMI1 only"
-                    xrandr --output eDP1 --off --output HDMI1 --auto --primary
-                    ;;
-                "eDP1_HDMI1_joint" )
-                    notify-send -u low "Set Display" "Activate HDMI1 joint mode"
-                    xrandr --output eDP1 --auto --output HDMI1 --auto --primary --right-of eDP1
-                    ;;
-                "eDP1_HDMI1_mirror" )
-                    notify-send -u low "Set Display" "Activate HDMI1 mirror mode"
-                    xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1
-                    ;;
-                "HDMI1_extend" )
-                    notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200)"
-                    $I3_SCRIPT/i3_display_operator.sh HDMI1 extend
-                    xrandr --output HDMI1 --mode "1920x1200_50.00"
-                    ;;
-                "HDMI1_default" )
-                    notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)"
-                    $I3_SCRIPT/i3_display_operator.sh HDMI1 default
-                    ;;
-                "eDP1_shrink" )
-                    notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)"
-                    $I3_SCRIPT/i3_display_operator.sh eDP1 shrink
-                    xrandr --output eDP1 --mode "1440x810_60.00"
-                    ;;
-                "eDP1_default" )
-                    notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)"
-                    $I3_SCRIPT/i3_display_operator.sh eDP1 default
-                    ;;
-                "HDMI1_primary" )
-                    notify-send -u low "Set Display" "Set HDMI1 as primary display"
-                    xrandr --output HDMI1 --primary
-                    ;;
-                "eDP1_primary" )
-                    notify-send -u low "Set Display" "Set eDP1 as primary display"
-                    xrandr --output eDP1 --primary
-                    ;;
-                *)
-                    show_wrong_usage_message
-                    echo
-                    show_help_message
-                    exit
-            esac
-            # Conky
-            if [ $3 == 'enable' ]; then
-                reload_conky
-            fi
+        "HDMI1_only" )
+            notify-send -u low "Set Display" "Activate HDMI1 only"
+            xrandr --output eDP1 --off --output HDMI1 --auto --primary
+            ;;
+        "eDP1_HDMI1_joint" )
+            notify-send -u low "Set Display" "Activate HDMI1 joint mode"
+            xrandr --output eDP1 --auto --output HDMI1 --auto --primary --right-of eDP1
+            ;;
+        "eDP1_HDMI1_mirror" )
+            notify-send -u low "Set Display" "Activate HDMI1 mirror mode"
+            xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1
+            ;;
+        "HDMI1_extend" )
+            notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200)"
+            HDMI1_extend
+            xrandr --output HDMI1 --mode "1920x1200_50.00"
+            ;;
+        "HDMI1_default" )
+            notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)"
+            xrandr --output HDMI1 --mode "1920x1080"
+            ;;
+        "eDP1_shrink" )
+            notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)"
+            eDP1_shrink
+            xrandr --output eDP1 --mode "1440x810_60.00"
+            ;;
+        "eDP1_default" )
+            notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)"
+            xrandr --output eDP1 --mode "1920x1080"
+            ;;
+        "HDMI1_primary" )
+            notify-send -u low "Set Display" "Set HDMI1 as primary display"
+            xrandr --output HDMI1 --primary
+            ;;
+        "eDP1_primary" )
+            notify-send -u low "Set Display" "Set eDP1 as primary display"
+            xrandr --output eDP1 --primary
             ;;
         *)
             show_wrong_usage_message
@@ -157,9 +168,23 @@ display_monitor_adoption () {
             show_help_message
             exit
     esac
+}
+
+# Main
+main () {
+    # Automatically setup display
+    if [ $1 == "auto" ]; then
+        auto_adjust
+    else
+        display_operation $1
+    fi
+    # Conky
+    if [ $2 == 'enable' ]; then
+        reload_conky
+    fi
     # Miscellaneous
     reload_misc
 }
 
 # Main
-display_monitor_adoption $1 $2 $3
+main $1 $2

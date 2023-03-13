@@ -386,7 +386,6 @@ Note: the term "window" used in this configuration actually refers to "container
     | Left Button (`Button1`) +         | Action               | Note |
     | :-------------------------------: | :------------------: | :--: |
     | __Drag Title Bar__                | Move window          |      |
-    | __`[Button3]` + Click Title Bar__ | Toggle floating mode |      |
 
 - __Middle Button (`Button2`)__
     | Middle Button (`Button2`) +   | Action              | Note |
@@ -395,11 +394,11 @@ Note: the term "window" used in this configuration actually refers to "container
     | __`[Winkey]` + Click Window__ | Kill current window |      |
 
 - __Right Button (`[Button3]`)__
-    | Right Button (`Button3`) +    | Action               | Note |
-    | :---------------------------: | :------------------: | :--: |
-    | __Drag Title Bar or Window__  | Resize window        |      |
-    | __Click Title Bar__           | Enable floating mode |      |
-    | __`[Winkey]` + Click Window__ | Toggle floating mode |      |
+    | Right Button (`Button3`) +    | Action               | Note                                             |
+    | :---------------------------: | :------------------: | :----------------------------------------------: |
+    | __Drag Title Bar or Window__  | Resize window        |                                                  |
+    | __Click Title Bar__           | Toggle floating mode | requires disabling i3 default button3 keybinding |
+    | __`[Winkey]` + Click Window__ | Toggle floating mode |                                                  |
 
 - __Scroll Wheel Up/Down (`[Button4]`/`[Button5]`)__
     | Mouse Wheel                  | Action         | Note |

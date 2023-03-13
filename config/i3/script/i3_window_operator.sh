@@ -45,20 +45,34 @@ window_operation () {
             i3-msg "move position center"
             ;;
         "toggle_sticky_current")
-            # Get current window ID
+            # Get window information
             CURRENT_WINDOW_ID=$(xdotool getwindowfocus)
-            # Get current window sticky status
             CURRENT_STICKY_STATUS=$(i3-msg -t get_tree | tr \} "\n" | grep ${CURRENT_WINDOW_ID} -A1 | tr \, "\n" | grep "\"sticky\"\:" | cut -d: -f2)
+            CURRENT_FLOATING_STATUS==$(i3-msg -t get_tree | tr \} "\n" | grep ${CURRENT_WINDOW_ID} -A13 | tr \, "\n" | grep "\"floating\"\:" | cut -d: -f2)
+            DEFAULT_WIDTH=$(awk '$0~/default_border_width/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+            # Sticky status
             if [[ ${CURRENT_STICKY_STATUS} == "true" ]]; then
                 i3-msg "sticky disable"
                 i3-msg 'title_format "%title"'
-                notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky"
+                # Restore titlebar style to default
+                DEFAULT_STYLE=$(awk '$0~/default_titlebar_style/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+                DEFAULT_FLOATING_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+                if [[ ${CURRENT_FLOATING_STATUS} == "*on*" ]]; then
+                    i3-msg border ${DEFAULT_FLOATING_STYLE} ${DEFAULT_WIDTH}
+                else
+                    i3-msg border ${DEFAULT_STYLE} ${DEFAULT_WIDTH}
+                fi
+                # Send notification if there is no titlebar
+                if [[ ${DEFAULT_FLOATING_STYLE} == "pixel" ]]; then
+    -                notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky"
+                fi
             elif [[ ${CURRENT_STICKY_STATUS} == "false" ]]; then
                 i3-msg "sticky enable"
                 i3-msg 'title_format "%title [STICKY]"'
-                notify-send -u low "i3 Window Manager" "Focused window is NOW sticky"
+                i3-msg border normal ${DEFAULT_WIDTH}
             else
-                notify-send -u low "i3 Window Manger" "Focused window has UNKNOWN sticky status: ${CURRENT_STICKY_STATUS}"
+                i3-msg "sticky toggle"
+                notify-send -u low "i3 Window Manger" "Cannot get focused window sticky status\nWindow stickiness is just toggled"
             fi
             ;;
         "float_all")

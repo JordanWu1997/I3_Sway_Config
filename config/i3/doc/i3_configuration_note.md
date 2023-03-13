@@ -56,7 +56,7 @@ Also, if you want to map `shift + numpad key`, both `Mod2` and `shift` are neede
 
 ## Display configuration for X-window
 
-For now, display configuration are all integrated with my script `i3_display_monitor_adopter.sh`
+For now, display configuration are all integrated with my script `i3_display_operater.sh`
 
 Set output display and primary display (use xrandr command to check) [or use arandr (GUI)]
 - Xrandr label
@@ -179,7 +179,7 @@ But it works better in low-resource computer (e.g virtual machine)
 ## Picom
 
 X window compositor for animation, transparency, blur support [https://man.archlinux.org/man/picom.1.en].
-For now, picom function has been integrated in my `$HOME/.config/i3/script/i3_display_monitor_adopter.sh script)`.
+For now, picom function has been integrated in my `$HOME/.config/i3/script/i3_display_operator.sh script)`.
 Unfortunately, picom in Fedora repository not work well [https://github.com/yshui/picom],
 so I use picom fork of jonaburg [https://github.com/jonaburg/picom] instead (need manually installed on Fedora)
 

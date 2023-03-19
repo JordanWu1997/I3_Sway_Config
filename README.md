@@ -20,7 +20,7 @@ Table of Contents
       * [3. Wallpapers](#3-wallpapers)
       * [4. Theme and Fonts](#4-theme-and-fonts)
    * [Section 3 - First Time Usage for i3](#section-3---first-time-usage-for-i3)
-      * [1. Configuration Distributor](#1-configuration-distributor)
+      * [1. Configuration/Environment Installer](#1-configurationenvironment-installer)
       * [2. Optional Configuration](#2-optional-configuration)
    * [Section 4 - Mode Usage for i3](#section-4---mode-usage-for-i3)
       * [1. Keybinding-related Mode](#1-keybinding-related-mode)
@@ -63,7 +63,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Customized Rofi__: easy-to-use selector/launcher. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Customized Conky__: system monitor and keybinding hinter. (Check [Section 2](#section-2---details-of-i3-environment))
-- [x] __Configuration Distributor Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
+- [x] __Configuration Installer Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
@@ -158,21 +158,22 @@ Note: the term "window" used in this configuration actually refers to "container
 <details>
 <summary>Click to expand/shrink</summary>
 
-### 1. Configuration Distributor
+### 1. Configuration/Environment Installer
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Run distributor in this git repository `./config/i3/script/i3_config_distributor.sh`
+- Run installer in this git repository `./install.sh`
 - Includes
     - __1. Add Environment Variables__
-        - Add `I3_SCRIPT` to `$PATH` in `$HOME/.profile`
-        - Add `I3_SCRIPT` in `$HOME/.profile`
-        - Add `WALLPAPERI3` in `$HOME/.profile`
+        - Add `I3_SCRIPT` to `$PATH` to dotfile
+        - Add `I3_SCRIPT` to dotfile
+        - Add `WALLPAPERI3` to dotfile
+        - dotfile is related to `$SHELL`, (e.g. `bash`/`zsh` -> `.bashrc`/`.zshrc`, others -> `.profile`)
     - __2. Backup Old Configuration and Link/Copy New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
         - Link/Copy configuration in git repository `./config/*` to `$HOME/.config` directory
     - __3. Install Programs for Work Environment__
-
+        - You can install them all or go through every packed installation one by one
 </details>
 
 ### 2. Optional Configuration

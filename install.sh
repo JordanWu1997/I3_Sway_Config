@@ -9,10 +9,10 @@
 
 # Assign profile variable based on $SHELL
 case $SHELL in
-    'bash')
+    '/bin/bash')
         PROFILE="$HOME/.bashrc"
         ;;
-    'zsh')
+    '/bin/zsh')
         PROFILE="$HOME/.zshrc"
         ;;
     *)
@@ -126,36 +126,40 @@ done
 # Packages needed for my i3 work environment
 
 # Add RPM repositories
-add_RPM_repositories () {
+desc_RPM_repositories () {
     echo
     echo "RPM repositories including:"
     echo "-- rpmfusion: both free and non-free repositories"
     echo "-- rpmshere: rpmsphere repository"
     echo "Installation requires sudo permission"
+}
+add_RPM_repositories () {
     # Add free/non-free rpmfusion repository
     sudo dnf install -y \
         https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
         https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-    # Add rpmsphere repository
-    sudo dnf install -y rpmsphere-release
+    # TODO: Add rpmsphere repository
+    #sudo dnf install -y rpmsphere-release
 }
 
 # Terminal packages
-install_terminal_packages () {
+desc_terminal_packages () {
     echo
     echo "Terminal packages including:"
     echo "-- Terminal: kitty, gnome-terminal"
     echo "-- Shell: fish"
-    echo "-- TUI tool: tmux, git"
+    echo "-- TUI tool: tmux, git, htop"
     echo "-- Complier: golang"
     echo "-- Package Manger: pip"
     echo "Installation requires sudo permission"
+}
+install_terminal_packages () {
     # Terminal emulator
     sudo dnf install -y kitty gnome-terminal
     # Shell
     sudo dnf install -y fish
     # TUI tool
-    sudo dnf install -y tmux git
+    sudo dnf install -y tmux git htop
     # Complier: golang
     sudo dnf install -y golang
     # Install pip with dnf if there is no one
@@ -175,11 +179,13 @@ add_environment_variables_for_ibus () {
 }
 
 # Input method packages
-install_input_method_packages () {
+desc_input_method_packages () {
     echo
     echo "Input method packages including:"
     echo "-- Input method: ibus, ibus-chewing"
     echo "Installation requires sudo permission"
+}
+install_input_method_packages () {
     # Ibus input
     sudo dnf install -y ibus ibus-chewing
     # Add environment variable for ibus
@@ -188,12 +194,13 @@ install_input_method_packages () {
 }
 
 # X-compositor
-install_xcompositor_packages () {
+desc_xcompositor_packages () {
     echo
     echo "Xcompositor packages including:"
     echo "-- Xcompositor: picom"
     echo "Installation requires sudo permission"
-
+}
+install_xcompositor_packages () {
     # TODO: jonaburg-fork is not complied successfully
     ## Picom [https://github.com/jonaburg/picom]
     #sudo dnf install -y meson gcc ninja-build cmake libev-devel xcb-util-devel \
@@ -213,7 +220,7 @@ install_xcompositor_packages () {
 }
 
 # X-window tools
-install_xwindow_tool_packages () {
+desc_xwindow_tool_packages () {
     echo
     echo "X-window tool packages including:"
     echo "-- Display manager: xrandr, arandr"
@@ -222,6 +229,8 @@ install_xwindow_tool_packages () {
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
     echo "-- System monitor: conky"
     echo "Installation requires sudo permission"
+}
+install_xwindow_tool_packages () {
     # Display manger: xrandr, arandr
     sudo dnf install -y xrandr arandr
     # Screen: xbacklight, redshift, i3lock, xss-lock
@@ -236,12 +245,14 @@ install_xwindow_tool_packages () {
 }
 
 # Audio tools
-install_audio_tool_packages () {
+desc_audio_tool_packages () {
     echo
     echo "Audio tool packages including:"
     echo "-- Audio manager: pavucontrol, pulseaudio, pulsemixer, playerctl"
     echo "-- Audio visualizer: cava"
     echo "Installation requires sudo permission"
+}
+install_audio_tool_packages () {
     # Audio controls
     sudo dnf install -y pavucontrol pulseaudio playerctl
     python -m pip install pulsemixer
@@ -258,7 +269,7 @@ install_audio_tool_packages () {
 }
 
 # i3/i3-gap (i3-gap has been merged to i3 in i3 v4.22)
-install_i3_packages () {
+desc_i3_packages () {
     echo
     echo "i3 packages including:"
     #echo "-- i3 gap: fuhrmann/i3-gaps"
@@ -266,6 +277,8 @@ install_i3_packages () {
     echo "-- i3 bar: bumblebee-status"
     echo "-- i3 tool: dunst, rofi, autotiling, flashfocus, i3-workspace-swap, i3-resurrect"
     echo "Installation requires sudo permission"
+}
+install_i3_packages () {
     ## i3-gap (i3-gap has been merged to i3 in i3 v4.22)
     #sudo dnf copr enable fuhrmann/i3-gaps
     #sudo dnf install -y i3-gaps
@@ -278,10 +291,10 @@ install_i3_packages () {
     sudo dnf install -y python-netifaces lm_sensors pulseaudio-utils python3-psutil
 }
 
-# Theme
-install_theme_packages () {
+# Customization
+desc_customization_packages () {
     echo
-    echo "Theme packages including:"
+    echo "Customization packages including:"
     echo "-- Theme: arc-theme papirus-icon-theme"
     echo "-- GTK: gtk-chtheme lxappearance"
     echo "-- QT: qt-config qt5ct qt5-qtstyleplugins kvantum"
@@ -289,11 +302,13 @@ install_theme_packages () {
     echo "-- Font: Droid Sans Mono for Powerline Nerd Font"
     echo "-- Auto-theme: pywal"
     echo "Installation requires sudo permission"
+}
+install_customization_packages () {
     # Theme configurer and fonts
     sudo dnf install -y gtk-chtheme lxappearance
     sudo dnf install -y qt-config qt5ct qt5-qtstyleplugins kvantum
+    sudo dnf install -y feh variety
     sudo dnf install -y arc-theme papirus-icon-theme
-    sudo dnf install -y feh variety pywal
     # Font
     cd $HOME/Desktop
     mkdir -p $HOME/.local/share/fonts
@@ -309,16 +324,18 @@ install_theme_packages () {
 }
 
 # Editor tools
-install_editor_tool_packages () {
+desc_editor_tool_packages () {
     echo
     echo "Editor tool packages including:"
-    echo "-- Text editor: neovim"
+    echo "-- Text editor: vim neovim"
     echo "-- Clipboard manager: parcellite"
     #echo "-- Markdown viewer: glow"
     echo "-- PDF viewer: zathura, okular"
     echo "Installation requires sudo permission"
+}
+install_editor_tool_packages () {
     # Text editor tools
-    sudo dnf install -y neovim
+    sudo dnf install -y vim neovim
     # Clipboard manager: parcellite
     sudo dnf install -y parcellite
     ## Glow [https://github.com/charmbracelet/glow]
@@ -335,17 +352,19 @@ install_editor_tool_packages () {
 }
 
 # Python tools
-install_python_tool_packages () {
+desc_python_tool_packages () {
     echo
     echo "Python tool packages including:"
     echo "-- pynvim: neovim python plugin"
     echo "-- ipdb: python debugger"
     echo "-- jedi: python autocompletion"
+}
+install_python_tool_packages () {
     python -m pip install pynvim ipdb jedi
 }
 
 # Misc tools
-install_misc_tool_packages () {
+desc_misc_tool_packages () {
     echo
     echo "Miscellaneous tool packages including:"
     echo "-- Gnome software: polkit-gnome, gnome-screenshot, nautilus"
@@ -354,6 +373,8 @@ install_misc_tool_packages () {
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Miscellaneous: flameshot"
     echo "Installation requires sudo permission"
+}
+install_misc_tool_packages () {
     # Gnome software
     sudo dnf install -y polkit-gnome gnome-screenshot nautilus
     # Bluetooth
@@ -371,16 +392,16 @@ install_misc_tool_packages () {
 }
 
 
-PACKAGE_LIST=( install_terminal_packages \
-               install_python_tool_packages \
-               install_input_method_packages \
-               install_xcompositor_packages \
-               install_xwindow_tool_packages \
-               install_audio_tool_packages \
-               install_i3_packages \
-               install_theme_packages \
-               install_editor_tool_packages \
-               install_misc_tool_packages \
+PACKAGE_LIST=( terminal_packages \
+               editor_tool_packages \
+               input_method_packages \
+               i3_packages \
+               xcompositor_packages \
+               xwindow_tool_packages \
+               audio_tool_packages \
+               customization_packages \
+               python_tool_packages \
+               misc_tool_packages \
              )
 
 section3_greetings () {
@@ -397,7 +418,7 @@ section3_greetings () {
 }
 
 section3_greetings
-echo "Do you want to install needed package/tool for working environment ?"
+echo "Do you want to install needed package for working environment ?"
 select option_section3 in \
     'no' \
     'yes (one-by-one)' \
@@ -410,7 +431,10 @@ do
             ;;
         'yes (one-by-one)')
             # Add RPM repositories
+            echo
             echo "Do you want to enable other RPM repositories ?"
+            desc_RPM_repositories
+            echo
             select option in \
                 'no' \
                 'yes'
@@ -418,16 +442,22 @@ do
                 case ${option} in \
                     'no')
                         echo "No RPM repository is enabled ..."
+                        echo
+                        break
                         ;;
                     'yes')
                         add_RPM_repositories
+                        echo
+                        break
                         ;;
                 esac
             done
             # Install packages one-by-one
             for package in ${PACKAGE_LIST[@]};
             do
-                echo "Do you want to ${package} ?"
+                echo "Do you want to install ${package} ?"
+                desc_${package}
+                echo
                 select option in \
                     'no' \
                     'yes'
@@ -439,8 +469,8 @@ do
                             break
                             ;;
                         'yes')
-                            ${package}
-                            echo "${package} done ..."
+                            install_${package}
+                            echo "${package} installation is done ..."
                             echo
                             break
                             ;;
@@ -451,7 +481,10 @@ do
             ;;
         'yes (all)')
             # Add RPM repositories
+            echo
             echo "Do you want to enable other RPM repositories ?"
+            echo
+            desc_RPM_repositories
             select option in \
                 'no' \
                 'yes'
@@ -459,9 +492,13 @@ do
                 case ${option} in \
                     'no')
                         echo "No RPM repository is enabled ..."
+                        echo
+                        break
                         ;;
                     'yes')
                         add_RPM_repositories
+                        echo
+                        break
                         ;;
                 esac
             done
@@ -469,13 +506,20 @@ do
             for package in ${PACKAGE_LIST[@]};
             do
                 echo ${package}
-                ${package}
+                desc_${package}
+                echo
+                install_${package}
             done
             echo "Package installation is done ..."
             break
             ;;
     esac
 done
+
+# ----------------------------------------------------------------------------
+# Section 4 - End of my i3 environment installation
+# ----------------------------------------------------------------------------
+# End of environment installation. Note there are still some TODO things
 
 section4_greetings () {
     echo
@@ -486,10 +530,10 @@ section4_greetings () {
 }
 
 section4_greetings
-
-# TODO: post-installation
-# (1) set default picom/flashfocus
-# (2) set default theme that is not pywal but templates
-# (3) set GTK/QT color theme with lxappearance/(Kvantum, qt5, qt4)
-# (4) flatpak packages
-# (5) dotfiles (e.g. .Xresources)
+echo "Post-installation TODO things"
+echo "(1) set default picom/flashfocus/conky"
+echo "(2) set default theme that is not pywal but templates"
+echo "(3) set GTK/QT color theme with lxappearance/(Kvantum, qt5, qt4)"
+echo "(6) set chewing as primary input method"
+echo "(4) flatpak packages installation and customization"
+echo "(5) dotfiles (e.g. .Xresources)"

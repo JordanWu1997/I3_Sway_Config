@@ -9,10 +9,10 @@
 
 # Assign profile variable based on $SHELL
 case $SHELL in
-    '/bin/bash')
+    '/bin/bash' | '/usr/bin/zsh')
         PROFILE="$HOME/.bashrc"
         ;;
-    '/bin/zsh')
+    '/bin/zsh' | '/usr/bin/zsh')
         PROFILE="$HOME/.zshrc"
         ;;
     *)
@@ -228,6 +228,7 @@ desc_xwindow_tool_packages () {
     echo "-- Mouse: imwheel, libinput, unclutter-xfixes"
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
     echo "-- System monitor: conky"
+    echo "-- Touchpad: libinput-gestures"
     echo "Installation requires sudo permission"
 }
 install_xwindow_tool_packages () {
@@ -241,7 +242,14 @@ install_xwindow_tool_packages () {
     sudo dnf install -y xdotool xset numlockx screenkey
     # System monitor: conky
     sudo dnf install -y conky
-    # TODO: add libinput-gestures
+    # Touchpad: libinput-gestures
+    sudo dnf install wmctrl xdotool
+    cd $HOME/Desktop
+    git clone https://github.com/bulletmark/libinput-gestures.git
+    cd libinput-gestures
+    sudo ./libinput-gestures-setup install
+    # libinput-gestures requires user to be in the group input
+    sudo gpasswd -a $USER input
 }
 
 # Audio tools
@@ -530,10 +538,15 @@ section4_greetings () {
 }
 
 section4_greetings
+# Set default picom/flashfocus/conky
+i3_default_valuechanger.sh picom transparency
+i3_default_valuechanger.sh flashfocus opaque
+i3_default_valuechanger.sh conky_style minimal
+
+# Post-installation
 echo "Post-installation TODO things"
-echo "(1) set default picom/flashfocus/conky"
-echo "(2) set default theme that is not pywal but templates"
-echo "(3) set GTK/QT color theme with lxappearance/(Kvantum, qt5, qt4)"
-echo "(6) set chewing as primary input method"
+echo "(1) set default theme that is not pywal but templates"
+echo "(2) set GTK/QT color theme with lxappearance/(Kvantum, qt5, qt4)"
+echo "(3) set chewing as primary input method"
 echo "(4) flatpak packages installation and customization"
 echo "(5) dotfiles (e.g. .Xresources)"

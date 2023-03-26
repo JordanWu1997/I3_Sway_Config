@@ -108,7 +108,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
-- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
+j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
 - [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): GUI software authentication support

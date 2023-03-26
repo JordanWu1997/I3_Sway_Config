@@ -1,0 +1,10 @@
+{
+  "foldHeading": true,
+  "foldIndent": true,
+  "alwaysUpdateLinks": true,
+  "useMarkdownLinks": true,
+  "vimMode": true,
+  "newLinkFormat": "relative",
+  "livePreview": true,
+  "showLineNumber": false
+}

@@ -1,0 +1,135 @@
+{
+  "main": {
+    "id": "6e83456dc02a204f",
+    "type": "split",
+    "children": [
+      {
+        "id": "b61ee95712e680b8",
+        "type": "leaf",
+        "state": {
+          "type": "empty",
+          "state": {}
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "84a02d693368b5ab",
+    "type": "split",
+    "children": [
+      {
+        "id": "fb0bc3b4b44ce25c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9ab45bdee6ad6370",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "1bc90db8aeb3f19f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "90303cef25dac430",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 492,
+    "collapsed": true
+  },
+  "right": {
+    "id": "e85e7272c7666e69",
+    "type": "split",
+    "children": [
+      {
+        "id": "c01210d9e3b59e81",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f2eb433b88d52fcb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "b01b1f5b1d12042a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e1ca19679180b458",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "79e52ac0169b0fd7",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "b61ee95712e680b8",
+  "lastOpenFiles": [
+    "KNOWLEDGE_BASE/Missing_Semester_Lecture_07_Debugging_and_Profiling.md",
+    "FUNDAMENTALS_OF_INTERFEROMETRY/1_0_introduction/1_0_introduction.md",
+    "KNOWLEDGE_BASE/Missing_Semester_Lecture_05_Command-line_Environment.md",
+    "YSO_PROJECT/YSO_HUNTERS_DATA/UKIDSS_WI_CONDITIONS/EXTINCTION_MAP/README.md",
+    "KNOWLEDGE_BASE/Classic_Shell_Script-OREILLEY.md",
+    "FUNDAMENTALS_OF_INTERFEROMETRY/1_2_electromagnetic_radiation_and_astronomical_quantities/1_2_electromagnetic_radiation_and_astronomical_quantities.md",
+    "FUNDAMENTALS_OF_INTERFEROMETRY/1_2_electromagnetic_radiation_and_astronomical_quantities/output_8_0.png",
+    "FUNDAMENTALS_OF_INTERFEROMETRY/1_1_a_brief_introduction_to_basic_astrophysics/1_1_a_brief_introduction_to_basic_astrophysics.md"
+  ]
+}

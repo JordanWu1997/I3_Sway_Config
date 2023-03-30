@@ -1,5 +1,5 @@
 # I3_Sway_Config
-Backup for my configuration of __i3WM (X11)__ and __SwayWM (Wayland)__,
+Backup for my configuration of i3WM (X11) and SwayWM (Wayland),
 and configurations of applications for the working environment in X11/Wayland.
 For now, some functions do not work in Wayland, still searching for solutions or alternatives in Wayland.
 For more SwayWM details and i3WM migration progress, please check `./config/sway/README.md`

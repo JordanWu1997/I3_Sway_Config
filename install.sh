@@ -295,7 +295,7 @@ install_i3_packages () {
     python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect
     sudo dnf install -y dunst rofi
     # Bumblebee-status [https://github.com/tobi-wan-kenobi/bumblebee-status]
-    python -m pip install bumblebee-status i3ipc utils
+    python -m pip install bumblebee-status=2.0.5 i3ipc utils
     sudo dnf install -y python-netifaces lm_sensors pulseaudio-utils python3-psutil
 }
 

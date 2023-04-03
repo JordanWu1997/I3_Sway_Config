@@ -4,13 +4,13 @@
         "separator-block-width": 0,
         "separator": "",
         "warning": {
-          "     fg": "#808080",
-			    "bg": "#285577"
-		    },
-    		"critical": {
-    			"fg": "#282A36",
-    			"bg": "#FF5555"
-    		},
+            "fg": "#808080",
+            "bg": "#285577"
+        },
+        "critical": {
+            "fg": "#282A36",
+            "bg": "#FF5555"
+        },
         "fg": "#efefef",
         "bg": "#161821"
     },

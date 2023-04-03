@@ -8,17 +8,18 @@
     "defaults": {
         "fg": "cursor",
         "bg": "color0",
-        "default-separators": false,
         "separator-block-width": 0,
         "separator": "",
+        "padding": " ",
+        "default-separators": false,
         "warning": {
             "fg": "color11",
             "bg": "color0"
-		    },
-    	"critical": {
+        },
+        "critical": {
             "fg": "color11",
             "bg": "color0"
-    		}
+        }
     },
     "battery": {
         "charged": {

@@ -53,9 +53,9 @@ configuration {
     kb-cancel: "Escape,Control+g,Control+c,Control+bracketleft";
     kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+Shift+h";
     kb-remove-to-eol: "Control+Shift+k";
-    kb-accept-entry: "!Alt+ISO_Left_Tab,!Alt-Tab,Return,KP_Enter,Alt+space,Control+space";
-    kb-row-up: "Alt+ISO_Left_Tab,Up,Alt+k,Control+k,Control+p";
-    kb-row-down: "Alt+Tab,Down,Alt+j,Control+j,Control+n";
+    kb-accept-entry: "!Alt+ISO_Left_Tab,!Alt-Tab,!Alt-Q,!Alt+q,Return,KP_Enter,Alt+space,Control+space";
+    kb-row-up: "Alt+ISO_Left_Tab,Alt-Q,Up,Alt+k,Control+k,Control+p";
+    kb-row-down: "Alt+Tab,Down,Alt+q,Alt+j,Control+j,Control+n";
     kb-row-left: "Alt+h,Control+h";
     kb-row-right: "Alt+l,Control+l";
     kb-select-1: "Super+1,Alt+1";

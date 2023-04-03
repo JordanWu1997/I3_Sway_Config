@@ -503,6 +503,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 #### Window
 - __List Windows__
     - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
+    - `[Alt]` + (`[Shift]`) + `[q]`: List all windows on all workspaces i.e. my customized GNOME-like keybinding
 - __Send Window to Workspace (Absolutely)__
     - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10

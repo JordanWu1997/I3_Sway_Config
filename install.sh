@@ -263,7 +263,7 @@ desc_audio_tool_packages () {
 install_audio_tool_packages () {
     # Audio controls
     sudo dnf install -y pavucontrol pulseaudio playerctl
-    python -m pip install pulsemixer
+    /usr/bin/python -m pip install pulsemixer
     # Audio visualizer: cava
     sudo dnf install -y cava
 
@@ -292,10 +292,10 @@ install_i3_packages () {
     #sudo dnf install -y i3-gaps
     sudo dnf install -y i3
     # i3 tools
-    python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect
+    /usr/bin/python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect
     sudo dnf install -y dunst rofi
     # Bumblebee-status [https://github.com/tobi-wan-kenobi/bumblebee-status]
-    python -m pip install bumblebee-status=2.0.5 i3ipc utils
+    /usr/bin/python -m pip install bumblebee-status==2.0.5 i3ipc utils
     sudo dnf install -y python-netifaces lm_sensors pulseaudio-utils python3-psutil
 }
 
@@ -328,7 +328,7 @@ install_customization_packages () {
     cd $HOME/Desktop
     git clone https://github.com/sonjiku/pywal.git
     cd pywal
-    python -m pip install .
+    /usr/bin/python -m pip install .
 }
 
 # Editor tools
@@ -351,9 +351,12 @@ install_editor_tool_packages () {
     #git clone https://github.com/charmbracelet/glow.git
     #cd glow
     #sudo go build
+    # Okular
+    sudo dnf install okular
+    # Zathura and pdf-plugins
+    sudo dnf install -y zathura 'zathura-*'
     # Zathura-pywal [https://github.com/mlscarlson/zathura-pywal]
     cd $HOME/Desktop
-    sudo dnf install -y zathura okular
     git clone https://github.com/mlscarlson/zathura-pywal.git
     cd zathura-pywal
     sudo make install
@@ -368,7 +371,7 @@ desc_python_tool_packages () {
     echo "-- jedi: python autocompletion"
 }
 install_python_tool_packages () {
-    python -m pip install pynvim ipdb jedi
+    /usr/bin/python -m pip install pynvim ipdb jedi
 }
 
 # Misc tools

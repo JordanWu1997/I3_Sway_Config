@@ -166,7 +166,7 @@ For fancy symbols support, NERD font must be installed first.
 Symbols can be user-defined in `$HOME/.config/i3/share/app-icons.json`.
 
 - Run in i3
-    - `exec --no-startup-id $PYTHON_BIN/i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json`
+    - `exec --no-startup-id i3-workspace-names-daemon -config-path $HOME/.config/i3/share/app-icons.json`
 
 ## Xcompgr
 

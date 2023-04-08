@@ -26,20 +26,17 @@ autotiling_operation () {
     case $1 in
         "disable_autotiling")
             notify-send -u "low" "i3 Autotiling" "i3 Autotiling is disabled"
-            ps -aux | grep "python $PYTHON_BIN/autotiling" | \
-                awk 'NR==1 {print $2}' | xargs -I {} kill {}
+            killall autotiling
             ;;
         "enable_dwindling")
-            ps -aux | grep "python $PYTHON_BIN/autotiling" | \
-                awk 'NR==1 {print $2}' | xargs -I {} kill {}
+            killall autotiling
             notify-send -u "low" "i3 Autotiling" "i3 dwindling layout is enabled"
-            python $PYTHON_BIN/autotiling
+            autotiling
             ;;
         "enable_master_stack")
-            ps -aux | grep "python $PYTHON_BIN/autotiling" | \
-                awk 'NR==1 {print $2}' | xargs -I {} kill {}
+            killall autotiling
             notify-send -u "low" "i3 Autotiling" "i3 master-stack layout is enabled"
-            python $PYTHON_BIN/autotiling --limit 2
+            autotiling --limit 2
             ;;
         "set_dwindling_as_default")
             sed -i "$COL_AUTOTILING s/.*/exec_always \-\-no\-startup\-id autotiling/" "${STARTUP_CONFIG}"

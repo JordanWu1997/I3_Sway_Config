@@ -68,7 +68,7 @@ window_operation () {
                 fi
             elif [[ ${CURRENT_STICKY_STATUS} == "false" ]]; then
                 i3-msg "sticky enable"
-                i3-msg 'title_format "%title [STICKY]"'
+                i3-msg 'title_format "[STICKY] %title [STICKY]"'
                 i3-msg border normal ${DEFAULT_WIDTH}
             else
                 i3-msg "sticky toggle"

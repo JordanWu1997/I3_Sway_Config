@@ -224,6 +224,7 @@ desc_xwindow_tool_packages () {
     echo
     echo "X-window tool packages including:"
     echo "-- Display manager: xrandr, arandr"
+    echo "-- Window controller: wmctrl"
     echo "-- Screen: xbacklight, redshift, i3lock, xss-lock"
     echo "-- Mouse: imwheel, libinput, unclutter-xfixes"
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
@@ -232,8 +233,10 @@ desc_xwindow_tool_packages () {
     echo "Installation requires sudo permission"
 }
 install_xwindow_tool_packages () {
-    # Display manger: xrandr, arandr
+    # Display manager: xrandr, arandr
     sudo dnf install -y xrandr arandr
+    # Window controller: wmctrl
+    sudo dnf install -y wmctrl
     # Screen: xbacklight, redshift, i3lock, xss-lock
     sudo dnf install -y xbacklight redshift i3lock xss-lock
     # Mouse: imwheel, libinput, unclutter-xfixes

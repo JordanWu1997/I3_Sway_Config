@@ -70,7 +70,7 @@ add_profile_to_shell_configuration () {
             echo "# At $(date)"                                   >> $1
             echo '# ============================================' >> $1
             echo '# Run ~/.profile'                               >> $1
-            echo 'emulate sh -c ". ~/profile"'                    >> $1
+            echo 'emulate sh -c ". ~/.profile"'                   >> $1
             ;;
         *)
             echo ''                                               >> $1
@@ -147,26 +147,6 @@ do
             ;;
     esac
 done
-if [[ ${option_section1} == 'yes' ]]; then
-    echo
-    echo "Do you also want to run proile file in interactive shell configuration ?"
-    select option_configuration in \
-        'no' \
-        'yes'
-    do
-        case ${option_configuration} in
-            'yes')
-                assign_profile_to_shell_configuration
-                echo "Profile file is added to shell configuration ..."
-                break
-                ;;
-            'no')
-                echo "Add profile file to shell configuration is ignored ..."
-                break
-                ;;
-        esac
-    done
-fi
 
 # ----------------------------------------------------------------------------
 # Section 2 - Link/Copy configuration files/directories to $HOME/.config/*

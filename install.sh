@@ -6,61 +6,167 @@
 # ----------------------------------------------------------------------------
 # Section 1 - Environment variables
 # ----------------------------------------------------------------------------
+#
+# Assign .profile to shell configuration based on $SHELL
+#
+load_shell_configuration () {
+    case $SHELL in
+        '/bin/bash' | '/usr/bin/bash')
+            SHELL_CONFIG="$HOME/.bashrc"
+            PROFILE="$HOME/.profile"
+            ;;
+        '/bin/zsh' | '/usr/bin/zsh')
+            SHELL_CONFIG="$HOME/.zshrc"
+            PROFILE="$HOME/.profile"
+            ;;
+        '/bin/fish' | '/usr/bin/fish')
+            SHELL_CONFIG="$HOME/.config/fish/config.fish"
+            PROFILE="$HOME/.profile"
+            ;;
+        *)
+            SHELL_CONFIG="$HOME/.bashrc"
+            PROFILE="$HOME/.profile"
+    esac
+}
+load_shell_configuration
 
-# Assign profile variable based on $SHELL
-case $SHELL in
-    '/bin/bash' | '/usr/bin/zsh')
-        PROFILE="$HOME/.bashrc"
-        ;;
-    '/bin/zsh' | '/usr/bin/zsh')
-        PROFILE="$HOME/.zshrc"
-        ;;
-    *)
-        PROFILE="$HOME/.profile"
-esac
+desc_profile_and_enviroment_variables () {
+    echo "Following lines will be added to ${PROFILE} and"
+    echo "funtion that loads ${PROFILE} will be added"
+    echo "to ${SHELL_CONFIG} for ${SHELL}"
+    echo ''
+    echo '# =========== I3 SCRIPT Variables ============'
+    echo 'export I3_SCRIPT=""$HOME/.config/i3/script'
+    echo '# ============================================'
+    echo ''
+    echo '# ========== I3 WALLPAPER Variables =========='
+    echo 'export WALLPAPERI3="$HOME/.config/i3/share"'
+    echo '# ============================================'
+    echo ''
+    echo '# ============ I3 PATH Variables ============='
+    echo 'export PATH="$I3_SCRIPT:$PATH"'
+    echo '# ============================================'
+    echo ''
+    echo '# ============= IBUS Variables ==============='
+    echo 'export GTK_IM_MODULE=ibus'
+    echo 'export XMODIFIER="@im=ibus"'
+    echo 'export DefaultIMModule=ibus'
+    echo 'export QT_IM_MODULE=ibus'
+    echo '# ============================================'
+    echo ''
+    echo '# ============= Kitty Variables =============='
+    echo 'export TERMINAL="kitty"'
+    echo 'export GLFW_IM_MODULE=ibus'
+    echo '# ============================================'
+    echo ''
+}
+
+add_profile_to_shell_configuration () {
+    case $1 in
+        "$HOME/.zshrc")
+            echo ''                                               >> $1
+            echo '# ============================================' >> $1
+            echo '# Followings are added by i3 script install.sh' >> $1
+            echo "# At $(date)"                                   >> $1
+            echo '# ============================================' >> $1
+            echo '# Run ~/.profile'                               >> $1
+            echo 'emulate sh -c ". ~/profile"'                    >> $1
+            ;;
+        *)
+            echo ''                                               >> $1
+            echo '# ============================================' >> $1
+            echo '# Followings are added by i3 script install.sh' >> $1
+            echo "# At $(date)"                                   >> $1
+            echo '# ============================================' >> $1
+            echo '# Run ~/.profile'                               >> $1
+            echo 'source ~/.profile'                              >> $1
+    esac
+}
 
 # Add following lines to configuration file
-add_enviroment_variables () {
+add_enviroment_variables_to_profile () {
     echo ''                                               >> $1
-    echo '# =========== I3_SCRIPT Variables ============' >> $1
+    echo '# ============================================' >> $1
+    echo '# Followings are added by i3 script install.sh' >> $1
+    echo "# At $(date)"                                   >> $1
+    echo '# ============================================' >> $1
+    echo ''                                               >> $1
+    echo '# =========== I3 SCRIPT Variables ============' >> $1
     echo 'export I3_SCRIPT=""$HOME/.config/i3/script'     >> $1
     echo '# ============================================' >> $1
     echo ''                                               >> $1
-    echo '# ============ I3_SHARE Variables ============' >> $1
+    echo '# ========== I3 WALLPAPER Variables ==========' >> $1
     echo 'export WALLPAPERI3="$HOME/.config/i3/share"'    >> $1
     echo '# ============================================' >> $1
     echo ''                                               >> $1
-    echo '# ============ I3WM Environments =============' >> $1
+    echo '# ============ I3 PATH Variables =============' >> $1
     echo 'export PATH="$I3_SCRIPT:$PATH"'                 >> $1
+    echo '# ============================================' >> $1
+    echo ''                                               >> $1
+    echo '# ============= IBUS Variables ===============' >> $1
+    echo 'export GTK_IM_MODULE=ibus'                      >> $1
+    echo 'export XMODIFIER="@im=ibus"'                    >> $1
+    echo 'export DefaultIMModule=ibus'                    >> $1
+    echo 'export QT_IM_MODULE=ibus'                       >> $1
+    echo '# ============================================' >> $1
+    echo ''                                               >> $1
+    echo '# ============= Kitty Variables ==============' >> $1
+    echo 'export TERMINAL="kitty"'                        >> $1
+    echo 'export GLFW_IM_MODULE=ibus'                     >> $1
     echo '# ============================================' >> $1
 }
 
+
 section1_greetings () {
     echo
-    echo '# ============= Section 1 - Environment Variable ============== #'
-    echo '# This section is to add environment variables to shell profile #'
-    echo '# ============================================================= #'
+    echo '# ============= Section 1 - Environment Variable =============== #'
+    echo '# This section is to add environment variables to $HOME/.profile #'
+    echo '# ============================================================== #'
     echo
 }
 
 section1_greetings
-echo "Do you want to add environment variables (e.g. \$PATH) to ${PROFILE} ?"
+desc_profile_and_enviroment_variables
+echo "Do you want to add environment variables and profile-loading function?"
 select option_section1 in \
     'no' \
     'yes'
 do
     case ${option_section1} in
         'yes')
-            add_enviroment_variables ${PROFILE}
-            echo "Environment variables are added to ${PROFILE} ..."
+            add_profile_to_shell_configuration $SHELL_CONFIG
+            add_enviroment_variables_to_profile $PROFILE
+            echo "Environment variables are added to $PROFILE ..."
+            echo "Profile-loading function is added to $ $SHELL_CONFIG"
             break
             ;;
         'no')
             echo "Adding environment variables is ignored ..."
+            echo "Adding profile-loading function is ignored ..."
             break
             ;;
     esac
 done
+if [[ ${option_section1} == 'yes' ]]; then
+    echo
+    echo "Do you also want to run proile file in interactive shell configuration ?"
+    select option_configuration in \
+        'no' \
+        'yes'
+    do
+        case ${option_configuration} in
+            'yes')
+                assign_profile_to_shell_configuration
+                echo "Profile file is added to shell configuration ..."
+                break
+                ;;
+            'no')
+                echo "Add profile file to shell configuration is ignored ..."
+                break
+                ;;
+        esac
+    done
+fi
 
 # ----------------------------------------------------------------------------
 # Section 2 - Link/Copy configuration files/directories to $HOME/.config/*
@@ -544,10 +650,19 @@ section4_greetings () {
 }
 
 section4_greetings
-# Set default picom/flashfocus/conky
-i3_default_valuechanger.sh picom transparency
-i3_default_valuechanger.sh flashfocus opaque
-i3_default_valuechanger.sh conky_style minimal
+# Set default picom
+if [ ! -f $HOME/.config/picom/picom.conf ]; then
+    i3_default_valuechanger.sh picom transparency
+fi
+# Set default flashfocus
+if [ ! -f $HOME/.config/flashfocus/flashfocus.yml ]; then
+    i3_default_valuechanger.sh flashfocus opaque
+fi
+# Set default conky
+if [ ! -f $HOME/.config/conky/conky_config_bindkey ] \
+    && [ -f $HOM#/.config/conky/conky_config_system ]; then
+    i3_default_valuechanger.sh conky_style minimal
+fi
 
 # Post-installation
 echo "Post-installation TODO things"

@@ -32,6 +32,8 @@ COL_DUNST_ALIGN=$(awk '$0~/alignment/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==
 COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_CONKY_STARTUP=$(awk '$0~/default_conky_startup/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_CONKY_SYSTEM_POS=$(awk '$0~/default_conky_system_alignment/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
+COL_CONKY_BINDKEY_POS=$(awk '$0~/default_conky_bindkey_alignment/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 
 # Wrong message
 show_wrong_usage_message () {
@@ -67,6 +69,8 @@ show_help_message () {
         echo "  [flashfocus]: transparency, crystal, intermediate, blur, opaque"
         echo "  [conky_style]: full, light, minimal"
         echo "  [conky_startup]: enable, disable"
+        echo "  [conky_system_position]: top_left, top_right"
+        echo "  [conky_bindkey_position]: bottom_left, bottom_right"
 }
 
 # Input new default value
@@ -146,6 +150,14 @@ case $CHANGE_ITEM in
         ;;
     "conky_startup")
         sed -i "$COL_CONKY_STARTUP s/.*/set \$default_conky_startup $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
+    "conky_system_position")
+        sed -i "$COL_CONKY_SYSTEM_POS s/.*/set \$default_conky_system_alignment $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
+        i3-msg reload
+        ;;
+    "conky_bindkey_position")
+        sed -i "$COL_CONKY_BINDKEY_POS s/.*/set \$default_conky_bindkey_alignment $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "dunst_position")

@@ -311,7 +311,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
         - __Border Mode (`[b]`)__
             - Window border width, color scheme and edge border option
         - __Conky Mode (`[c]`)__
-            - System monitor, i3 keybinding sheet, conky color palette
+            - System monitor, i3 keybinding sheet, color palette, position
         - __Dunst Mode (`[d]`)__
             - Dunst position, offset, alignment, font size, icon position
         - __Picom Mode (`[p]`)__
@@ -526,6 +526,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[h/l]`: Decrease/Increase horizontal outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[j/k]`: Decrease/Increase vertical outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[-/=]`: Decrease/Increase inner gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[0]`: Disable all inner and outer gaps
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
 

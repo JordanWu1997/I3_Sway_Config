@@ -2,7 +2,7 @@
 
 # Third argument [color0~color15/opac0~opac100]
 # Read item color (content) from wal Xresources based on input
-color_picker () {
+value_picker () {
     case $1 in
         color0)
             OUTPUT_VALUE="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
@@ -73,7 +73,7 @@ color_picker () {
     esac
 }
 
-conky_color_change () {
+change_conky_value () {
     # Assign default item / title color
     DEFAULT_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
     DEFAULT_TEXT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
@@ -82,6 +82,8 @@ conky_color_change () {
     DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
     DEFAULT_GAP_Y=$(awk '$0~/default_conky_gap_y/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_BG_OPAC=$(awk '$0~/default_conky_opacity/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_POS_SYSTEM=$(awk '$0~/default_conky_system_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_POS_BINDKEY=$(awk '$0~/default_conky_bindkey_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     # Replace color in conky configuration file
     case $1 in
         # Conky for system
@@ -96,6 +98,7 @@ conky_color_change () {
                 COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $config | awk 'NR==1')
                 COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $config | awk 'NR==1')
                 COL_COLOR_BG_OPAC=$(awk '$0~/own_window_argb_value/ {print NR}' $config | awk 'NR==1')
+                COL_POS=$(awk '$0~/alignment/ {print NR}' $config | awk 'NR==1')
                 COL_GAP_Y=$(awk '$0~/gap_y/ {print NR}' $config | awk 'NR==1')
                 case $2 in
                     "default")
@@ -116,6 +119,9 @@ conky_color_change () {
                     "bg_opacity")
                         sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $OUTPUT_VALUE,/" "$config"
                         ;;
+                    "alignment")
+                        sed -i "$COL_POS s/.*/\talignment \= \'$OUTPUT_VALUE\\',/" "$config"
+                        ;;
                     "gap_y")
                         sed -i "$COL_GAP_Y s/.*/\tgap_y \= $OUTPUT_VALUE,/" "$config"
                         ;;
@@ -126,6 +132,7 @@ conky_color_change () {
                         sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$config"
                         sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"
                         sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $DEFAULT_BG_OPAC,/" "$config"
+                        sed -i "$COL_POS s/.*/\talignment \= \'$DEFAULT_POS_SYSTEM\\',/" "$config"
                         sed -i "$COL_GAP_Y s/.*/\tgap_y \= $DEFAULT_GAP_Y,/" "$config"
                         ;;
                 esac
@@ -143,6 +150,7 @@ conky_color_change () {
                 COL_COLOR_TITLE=$(awk '$0~/color3/ {print NR}' $config | awk 'NR==1')
                 COL_COLOR_BG=$(awk '$0~/own_window_colour/ {print NR}' $config | awk 'NR==1')
                 COL_COLOR_BG_OPAC=$(awk '$0~/own_window_argb_value/ {print NR}' $config | awk 'NR==1')
+                COL_POS=$(awk '$0~/alignment/ {print NR}' $config | awk 'NR==1')
                 COL_GAP_Y=$(awk '$0~/gap_y/ {print NR}' $config | awk 'NR==1')
                 case $2 in
                     "default")
@@ -163,6 +171,9 @@ conky_color_change () {
                     "bg_opacity")
                         sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $OUTPUT_VALUE,/" "$config"
                         ;;
+                    "alignment")
+                        sed -i "$COL_POS s/.*/\talignment \= \'$OUTPUT_VALUE\\',/" "$config"
+                        ;;
                     "gap_y")
                         sed -i "$COL_GAP_Y s/.*/\tgap_y \= $OUTPUT_VALUE,/" "$config"
                         ;;
@@ -173,6 +184,7 @@ conky_color_change () {
                         sed -i "$COL_COLOR_TITLE s/.*/\tcolor3 \= \'\#$DEFAULT_TITLE_COLOR\\',/" "$config"
                         sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"
                         sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $DEFAULT_BG_OPAC,/" "$config"
+                        sed -i "$COL_POS s/.*/\talignment \= \'$DEFAULT_POS_BINDKEY\\',/" "$config"
                         sed -i "$COL_GAP_Y s/.*/\tgap_y \= $DEFAULT_GAP_Y,/" "$config"
                         ;;
                 esac
@@ -182,5 +194,5 @@ conky_color_change () {
 }
 
 # Main
-color_picker $3
-conky_color_change $1 $2
+value_picker $3
+change_conky_value $1 $2

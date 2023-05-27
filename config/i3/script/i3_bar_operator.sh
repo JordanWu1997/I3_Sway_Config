@@ -44,11 +44,11 @@ show_help_message () {
 bar_operation () {
     case $1 in
         "default_mode_hide")
-            $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
+            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
             $I3_SCRIPT/i3_default_valuechanger.sh i3bar_mode hide
             ;;
         "default_mode_dock")
-            $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
+            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
             $I3_SCRIPT/i3_default_valuechanger.sh i3bar_mode dock
             ;;
         "default_pos_top")
@@ -58,19 +58,19 @@ bar_operation () {
             $I3_SCRIPT/i3_default_valuechanger.sh i3bar_position bottom
             ;;
         "bar_hide")
-            $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
+            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
             i3-msg "bar mode hide $BAR_ID"
             ;;
         "bar_dock")
-            $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
+            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
             i3-msg "bar mode dock $BAR_ID"
             ;;
         "bar_toggle")
             if [ $(expr $CONKY_YOFFSET - $CONKY_DEFAULT_YOFFSET) == 0 ]; then
-                $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
+                $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
                 i3-msg "bar mode dock $BAR_ID"
             elif [ $(expr $CONKY_YOFFSET - $CONKY_DEFAULT_YOFFSET) == $BAR_HEIGHT ]; then
-                $I3_SCRIPT/i3_conky_colorchanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
+                $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
                 i3-msg "bar mode hide $BAR_ID"
             fi
             ;;

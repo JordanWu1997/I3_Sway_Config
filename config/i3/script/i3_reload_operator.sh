@@ -2,8 +2,8 @@
 
 reload_conky () {
     # Conky (system monitor & shortcut table)
-    $I3_SCRIPT/i3_conky_colorchanger.sh system all && sleep 1
-    $I3_SCRIPT/i3_conky_colorchanger.sh bindkey all && sleep 1
+    $I3_SCRIPT/i3_conky_valuechanger.sh system all && sleep 1
+    $I3_SCRIPT/i3_conky_valuechanger.sh bindkey all && sleep 1
     notify-send -u low "Reload Mode" "Reload conky (system monitor)"
 }
 

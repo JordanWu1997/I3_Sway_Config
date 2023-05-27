@@ -1,0 +1,22 @@
+# ----------- I3 SCRIPT Variables ------------
+export I3_SCRIPT="$HOME/.config/i3/script"
+
+# ---------- I3 WALLPAPER Variables ----------
+export WALLPAPERI3="$HOME/.config/i3/share"
+
+# ------------ I3 PATH Variables -------------
+export PATH="$I3_SCRIPT:$PATH"
+
+# ------------- IBUS Variables ---------------
+export GTK_IM_MODULE=ibus
+export XMODIFIER="@im=ibus"
+export DefaultIMModule=ibus
+export QT_IM_MODULE=ibus
+
+# ------------- Kitty Variables --------------
+export TERMINAL="kitty"
+export GLFW_IM_MODULE=ibus
+
+# -------------- FZF Variables ---------------
+export FZF_DEFAULT_OPTS="\
+    --bind alt-j:down,alt-k:up,alt-e:preview-down,alt-y:preview-up,alt-f:preview-page-down,alt-b:preview-page-up,alt-d:preview-page-down,alt-u:preview-page-up"

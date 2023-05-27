@@ -6,9 +6,7 @@
 # ----------------------------------------------------------------------------
 # Section 1 - Environment variables
 # ----------------------------------------------------------------------------
-#
-# Assign .profile to shell configuration based on $SHELL
-#
+
 load_shell_configuration () {
     case $SHELL in
         '/bin/bash' | '/usr/bin/bash')
@@ -32,35 +30,16 @@ load_shell_configuration
 
 desc_profile_and_enviroment_variables () {
     echo "Following lines will be added to ${PROFILE} and"
-    echo "funtion that loads ${PROFILE} will be added"
+    echo "the funtion that loads ${PROFILE} will be added"
     echo "to ${SHELL_CONFIG} for ${SHELL}"
     echo ''
-    echo '# =========== I3 SCRIPT Variables ============'
-    echo 'export I3_SCRIPT=""$HOME/.config/i3/script'
     echo '# ============================================'
-    echo ''
-    echo '# ========== I3 WALLPAPER Variables =========='
-    echo 'export WALLPAPERI3="$HOME/.config/i3/share"'
-    echo '# ============================================'
-    echo ''
-    echo '# ============ I3 PATH Variables ============='
-    echo 'export PATH="$I3_SCRIPT:$PATH"'
-    echo '# ============================================'
-    echo ''
-    echo '# ============= IBUS Variables ==============='
-    echo 'export GTK_IM_MODULE=ibus'
-    echo 'export XMODIFIER="@im=ibus"'
-    echo 'export DefaultIMModule=ibus'
-    echo 'export QT_IM_MODULE=ibus'
-    echo '# ============================================'
-    echo ''
-    echo '# ============= Kitty Variables =============='
-    echo 'export TERMINAL="kitty"'
-    echo 'export GLFW_IM_MODULE=ibus'
+    cat "./config/i3/share/default_profile"
     echo '# ============================================'
     echo ''
 }
 
+# Add .profile to shell configuration based on $SHELL
 add_profile_to_shell_configuration () {
     case $1 in
         "$HOME/.zshrc")
@@ -90,29 +69,7 @@ add_enviroment_variables_to_profile () {
     echo '# Followings are added by i3 script install.sh' >> $1
     echo "# At $(date)"                                   >> $1
     echo '# ============================================' >> $1
-    echo ''                                               >> $1
-    echo '# =========== I3 SCRIPT Variables ============' >> $1
-    echo 'export I3_SCRIPT=""$HOME/.config/i3/script'     >> $1
-    echo '# ============================================' >> $1
-    echo ''                                               >> $1
-    echo '# ========== I3 WALLPAPER Variables ==========' >> $1
-    echo 'export WALLPAPERI3="$HOME/.config/i3/share"'    >> $1
-    echo '# ============================================' >> $1
-    echo ''                                               >> $1
-    echo '# ============ I3 PATH Variables =============' >> $1
-    echo 'export PATH="$I3_SCRIPT:$PATH"'                 >> $1
-    echo '# ============================================' >> $1
-    echo ''                                               >> $1
-    echo '# ============= IBUS Variables ===============' >> $1
-    echo 'export GTK_IM_MODULE=ibus'                      >> $1
-    echo 'export XMODIFIER="@im=ibus"'                    >> $1
-    echo 'export DefaultIMModule=ibus'                    >> $1
-    echo 'export QT_IM_MODULE=ibus'                       >> $1
-    echo '# ============================================' >> $1
-    echo ''                                               >> $1
-    echo '# ============= Kitty Variables ==============' >> $1
-    echo 'export TERMINAL="kitty"'                        >> $1
-    echo 'export GLFW_IM_MODULE=ibus'                     >> $1
+    cat "./config/i3/share/default_profile"               >> $1
     echo '# ============================================' >> $1
 }
 

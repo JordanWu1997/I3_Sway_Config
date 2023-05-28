@@ -109,7 +109,10 @@ class fzf_select_tree(Command):
         env['FZF_DEFAULT_COMMAND'] = fzf_default_command
         # Modified for fish shell
         env['FZF_DEFAULT_OPTS'] = "--height=100% --layout=reverse --ansi \
-           --bind alt-k:up,alt-j:down,ctrl-y:preview-up,ctrl-e:preview-down,ctrl-b:preview-page-up,ctrl-f:preview-page-down \
+           --bind 'alt-k:up,alt-j:down,alt-y:preview-up,alt-e:preview-down' \
+           --bind 'alt-b:preview-page-up,alt-f:preview-page-down' \
+           --bind 'alt-u:preview-page-up,alt-d:preview-page-down' \
+           --bind 'alt-/:change-preview-window(down|hidden|)' \
            --preview=\"tree  3 -I '.git' -I '*.py[co]' -I '__pycache__' {}\""
 
         fzf = self.fm.execute_command('fzf --no-multi',
@@ -169,8 +172,11 @@ class fzf_select_cat(Command):
         env['FZF_DEFAULT_COMMAND'] = fzf_default_command
         # Modified for fish shell
         env['FZF_DEFAULT_OPTS'] = "--height=100% --layout=reverse --ansi \
-           --bind alt-k:up,alt-j:down,ctrl-y:preview-up,ctrl-e:preview-down,ctrl-b:preview-page-up,ctrl-f:preview-page-down \
-            --preview=\"bat -P --plain --color=always {}\""
+           --bind 'alt-k:up,alt-j:down,alt-y:preview-up,alt-e:preview-down' \
+           --bind 'alt-b:preview-page-up,alt-f:preview-page-down' \
+           --bind 'alt-u:preview-page-up,alt-d:preview-page-down' \
+           --bind 'alt-/:change-preview-window(down|hidden|)' \
+           --preview=\"bat -P --plain --color=always {}\""
 
         fzf = self.fm.execute_command('fzf --no-multi',
                                       env=env,

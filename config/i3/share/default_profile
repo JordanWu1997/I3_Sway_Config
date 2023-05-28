@@ -19,4 +19,8 @@ export GLFW_IM_MODULE=ibus
 
 # -------------- FZF Variables ---------------
 export FZF_DEFAULT_OPTS="\
-    --bind alt-j:down,alt-k:up,alt-e:preview-down,alt-y:preview-up,alt-f:preview-page-down,alt-b:preview-page-up,alt-d:preview-page-down,alt-u:preview-page-up"
+    --bind 'alt-j:down,alt-k:up' \
+    --bind 'alt-e:preview-down,alt-y:preview-up' \
+    --bind 'alt-f:preview-page-down,alt-b:preview-page-up' \
+    --bind 'alt-d:preview-page-down,alt-u:preview-page-up' \
+    --bind 'alt-/:change-preview-window(down|hidden|)'"

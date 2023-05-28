@@ -526,9 +526,9 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[h/l]`: Decrease/Increase horizontal outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[j/k]`: Decrease/Increase vertical outer gap size
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[-/=]`: Decrease/Increase inner gap size
-    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[0]`: Disable all inner and outer gaps
-    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[u]`: Disable all inner and outer gaps
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
 
 #### Screenshot
 - __Screenshot__

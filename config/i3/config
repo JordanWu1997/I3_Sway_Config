@@ -27,32 +27,37 @@
 
 # Set monitor order according to frequent-usage priority
 # If the monitor does not exist, workspaces will just spawn in current monitor
-set $monitor1 eDP1
-set $monitor2 HDMI1
-set $monitor3 VIRTUAL1
-set $monitor4 VIRTUAL2
+#set $monitor1 eDP1
+#set $monitor2 HDMI1
+#set $monitor3 VIRTUAL1
+#set $monitor4 VIRTUAL2
+set $monitor1 HDMI1
+set $monitor2 DP3
+set $monitor3 eDP1
+set $monitor4 VIRTUAL1
 
 # Set font
-set $default_font DroidSansMono Nerd Font Bold
+#set $default_font DroidSansMono Nerd Font Bold
+set $default_font ComicShannsMono Nerd Font Bold
 
 # Set terminal
 # If you want to use specific terminal emulator, $TERMINAL must be set in .profile
 set $terminal i3-sensible-terminal
 
 # Set i3bar fontsize (RECOMMENDED: 12)
-set $default_i3bar_fontsize 12
+set $default_i3bar_fontsize 14
 
 # Set i3bar height (RECOMMENDED: 25)
 set $default_i3bar_height 25
 
 # Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
-set $default_i3bar_mode hide
+set $default_i3bar_mode dock
 
 # Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
 set $default_i3bar_position top
 
 # Set titlebar fontsize (RECOMMENDED: 12)
-set $default_titlebar_fontsize 12
+set $default_titlebar_fontsize 16
 
 # Set window titlebar style (set normal/pixel to show/hide titlebar)
 set $default_titlebar_style pixel
@@ -62,7 +67,7 @@ set $default_floating_titlebar_style normal
 set $default_border_width 3
 
 # Set gap width (ONLY for i3-gaps, but i3-gaps has been merged to i3 in i3 v4.22)
-set $default_inner_gap 0
+set $default_inner_gap 10
 set $default_outer_gap 0
 
 # Set default conky startup (enable/disable)

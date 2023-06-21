@@ -5,52 +5,52 @@
 value_picker () {
     case $1 in
         color0)
-            OUTPUT_VALUE="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color1)
-            OUTPUT_VALUE="$(awk '$1~/*color1:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color1:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color2)
-            OUTPUT_VALUE="$(awk '$1~/*color2:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color2:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color3)
-            OUTPUT_VALUE="$(awk '$1~/*color3:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color3:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color4)
-            OUTPUT_VALUE="$(awk '$1~/*color4:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color4:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color5)
-            OUTPUT_VALUE="$(awk '$1~/*color5:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color5:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color6)
-            OUTPUT_VALUE="$(awk '$1~/*color6:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color6:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color7)
-            OUTPUT_VALUE="$(awk '$1~/*color7:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color7:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color8)
-            OUTPUT_VALUE="$(awk '$1~/*color8:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color8:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color9)
-            OUTPUT_VALUE="$(awk '$1~/*color9:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color9:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color10)
-            OUTPUT_VALUE="$(awk '$1~/*color10:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color10:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color11)
-            OUTPUT_VALUE="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color12)
-            OUTPUT_VALUE="$(awk '$1~/*color12:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color12:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color13)
-            OUTPUT_VALUE="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color14)
-            OUTPUT_VALUE="$(awk '$1~/*color14:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color14:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         color15)
-            OUTPUT_VALUE="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/\*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
             ;;
         opac0)
             OUTPUT_VALUE=0
@@ -75,11 +75,11 @@ value_picker () {
 
 change_conky_value () {
     # Assign default item / title color
-    DEFAULT_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_TEXT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+    DEFAULT_COLOR="$(awk '$1~/\*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+    DEFAULT_TEXT_COLOR="$(awk '$1~/\*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+    DEFAULT_ITEM_COLOR="$(awk '$1~/\*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+    DEFAULT_TITLE_COLOR="$(awk '$1~/\*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+    DEFAULT_BG_COLOR="$(awk '$1~/\*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
     DEFAULT_GAP_Y=$(awk '$0~/default_conky_gap_y/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_BG_OPAC=$(awk '$0~/default_conky_opacity/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_POS_SYSTEM=$(awk '$0~/default_conky_system_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')

@@ -268,7 +268,7 @@ desc_xwindow_tool_packages () {
     echo "X-window tool packages including:"
     echo "-- Display manager: xrandr, arandr"
     echo "-- Window controller: wmctrl"
-    echo "-- Screen: xbacklight, redshift, i3lock, xss-lock"
+    echo "-- Screen: xbacklight, brightnessctl, redshift, i3lock, xss-lock"
     echo "-- Mouse: imwheel, libinput, unclutter-xfixes"
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
     echo "-- System monitor: conky"
@@ -280,8 +280,8 @@ install_xwindow_tool_packages () {
     sudo dnf install -y xrandr arandr
     # Window controller: wmctrl
     sudo dnf install -y wmctrl
-    # Screen: xbacklight, redshift, i3lock, xss-lock
-    sudo dnf install -y xbacklight redshift i3lock xss-lock
+    # Screen: xbacklight, brightnessctl, redshift, i3lock, xss-lock
+    sudo dnf install -y xbacklight brightnessctl, redshift i3lock xss-lock
     # Mouse: imwheel, libinput, unclutter-xfixes
     sudo dnf install -y imwheel libinput unclutter-xfixes
     # Keyboard: xdotool, xset, numlockx, screenkey

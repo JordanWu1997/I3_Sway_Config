@@ -11,3 +11,4 @@ Script for I3WM function support
     - https://github.com/rjekker/i3-battery-popup (i3_battery-popup.sh)
     - https://git.bune.city/petra-fied/viscolourchanger (i3_viscolorchanger.sh)
     - https://www.youtube.com/watch?v=ulunAkEW9XU&t=636s (i3_notify_logger.sh)
+    - https://aduros.com/blog/hacking-i3-window-promoting/ (i3_swap_master_window.py)

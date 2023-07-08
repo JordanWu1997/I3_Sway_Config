@@ -112,9 +112,12 @@ done
 NEW_CONFIG_DIR="$HOME/Desktop/I3_Sway_Config/config"
 USER_CONFIG_DIR="$HOME/.config"
 USER_CONFIG_BACKUP="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
-USER_CONFIG_LIST=( bumblebee-status cava conky dunst flashfocus glow i3 kitty \
-                   libinput-gestures.conf ncspot neofetch picom ranger rofi \
-                   spotify-tui vis zathura )
+USER_CONFIG_LIST=( \
+    bumblebee-status cava conky dunst feh flashfocus glow htop \
+    i3 kitty Kvantum ncspot neofetch parcellite picom ranger rofi \
+    spotify-tui vis zathura \
+    libinput-gestures.conf starship.toml \
+)
 
 section2_greetings () {
     echo
@@ -194,6 +197,7 @@ desc_terminal_packages () {
     echo "-- TUI tool: tmux, git, htop"
     echo "-- Complier: golang"
     echo "-- Package Manger: pip"
+    echo "-- JSON processor: jq"
     echo "Installation requires sudo permission"
 }
 install_terminal_packages () {
@@ -205,6 +209,8 @@ install_terminal_packages () {
     sudo dnf install -y tmux git htop
     # Complier: golang
     sudo dnf install -y golang
+    # JSON processor
+    sudo dnf install -y jq
     # Install pip with dnf if there is no one
     command -v pip || sudo dnf install -y python3-pip
 }

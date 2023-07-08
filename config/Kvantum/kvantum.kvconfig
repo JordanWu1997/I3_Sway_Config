@@ -1,0 +1,6 @@
+[General]
+theme=KvArcDark#
+
+[Applications]
+Default=kdenlive, kdeconnect-app
+KvAdaptaDark=kdenlive

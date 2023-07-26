@@ -432,6 +432,13 @@ desc_misc_tool_packages () {
     echo "Miscellaneous tool packages including:"
     echo "-- Gnome software: polkit-gnome, gnome-screenshot, nautilus"
     echo "-- File manager: ranger"
+    echo "   -- File previewer: exiftool, mediainfo"
+    echo "   -- HTML previewer: w3m, w3m-img"
+    echo "   -- Image previewer: imagemagick"
+    echo "   -- Video previewer: ffmpegthumbnailer"
+    echo "   -- PDF previewer: pdftotext pdftoppm"
+    echo "   -- EPUB previewer: calibre"
+    echo "   -- Text previewer: catdoc, pandoc"
     echo "-- Bluetooth: blueman"
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Miscellaneous: flameshot"
@@ -445,15 +452,31 @@ install_misc_tool_packages () {
     # Network
     sudo dnf install -y NetworkManager brave-browser firefox
     # Ranger [https://github.com/ranger/ranger]
-    cd $HOME/Desktop
-    sudo dnf install -y ranger w3m w3m-img
+    sudo dnf install -y ranger
+    # File previewer
+    sudo dnf install -y exiftool mediainfo
+    # HTML previewer, image preview engine
+    sudo dnf install -y w3m w3m-img
+    # Image previewer
+    sudo dnf install -y imagemagick
+    # Video previewer
+    sudo dnf install -y ffmpegthumbnailer
+    # PDF previewer
+    sudo dnf install -y pdftotext pdftoppm
+    # EPUB previewer
+    sudo dnf install -y calibre
+    # Text, Word, Excel previewer
+    sudo dnf install -y catdoc pandoc
+    # Modeline Devicons
     git clone \
         https://github.com/alexanderjeurissen/ranger_devicons.git \
         $HOME/.config/ranger/plugins/ranger_devicons
+    git clone \
+        https://github.com/cdump/ranger-devicons2 \
+        $HOME/.config/ranger/plugins/devicons2
     # Miscellaneous
     sudo dnf install -y flameshot
 }
-
 
 PACKAGE_LIST=( terminal_packages \
                editor_tool_packages \

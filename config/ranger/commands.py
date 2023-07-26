@@ -15,6 +15,8 @@ import os
 # You always need to import ranger.api.commands here to get the Command class:
 from ranger.api.commands import Command
 
+# udisk menu for ranger
+from plugins.ranger_udisk_menu.mounter import mount
 
 # Any class that is a subclass of "Command" will be integrated into ranger as a
 # command.  Try typing ":my_edit<ENTER>" in ranger!

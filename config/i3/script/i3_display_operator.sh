@@ -83,9 +83,8 @@ auto_adjust () {
             HDMI1_extend; eDP1_shrink
             # Locate eDP1 & HDMI1
             xrandr \
-                --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
-                --output eDP1 --mode 1440x810_60.00 \
-                --output HDMI1 --mode 1920x1200_50.00 --primary
+                --output eDP1 --mode 1440x810_60.00 --pos 0x195 --rotate normal \
+                --output HDMI1 --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # ACER 27': 600mm x 340mm
         elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
             notify-send -u low "Set Display Automatically" "ACER 27' connected"
@@ -93,9 +92,8 @@ auto_adjust () {
             eDP1_shrink
             # Locate eDP1 & HDMI1
             xrandr \
-                --output eDP1 --pos 0x270 --output HDMI1 --pos 1440x0 \
-                --output eDP1 --mode 1440x810_60.00 \
-                --output HDMI1 --mode 1912x960_60.00 --primary
+                --output eDP1 --mode 1440x810_60.00 --pos 0x270 --rotate normal \
+                --output HDMI1 --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # Rent: 0mm x 0mm (unknown)
         elif [ $HDMI1_WIDTH == "0mm" ] && [ $HDMI1_HEIGHT == "0mm" ]; then
             notify-send -u low "Set Display Automatically" "Rent unknown connected"
@@ -103,9 +101,8 @@ auto_adjust () {
             HDMI1_extend; eDP1_shrink
             # Locate eDP1 & HDMI1 (extented)
             xrandr \
-                --output eDP1 --pos 0x195 --output HDMI1 --pos 1440x0 \
-                --output eDP1 --mode 1440x810_60.00 \
-                --output HDMI1 --mode 1920x1200_50.00 --primary
+                --output eDP1 --mode 1440x810_60.00 --pos 0x390 --rotate normal \
+                --output HDMI1 --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # Other HDMI:
         else
             notify-send -u low "Set Display Automatically" "External HDMI1 connected"
@@ -179,7 +176,7 @@ main () {
         display_operation $1
     fi
     # Conky
-    if [ $2 == 'enable' ]; then
+    if [ $2 == "enable" ]; then
         reload_conky
     fi
     # Miscellaneous

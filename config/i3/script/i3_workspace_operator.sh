@@ -27,12 +27,15 @@ show_help_message () {
     echo "  [rename]: rename current workspace"
     echo "  [kill_current]: kill current workspace"
     echo "  [goto]: goto selected workspace"
+    echo "  [goto_with_input]: goto input workspace"
     echo "  [move_container]: move current window and focus to selected workspace"
     echo "  [move_container_not_focus]: move current window but not focus to selected workspace"
+    echo "  [move_container_with_input]: move current window and focus to input workspace"
     echo "  [swap]: swap current workspace with selected workspace"
     echo "  [kill]: kill selected workspace"
     echo "  [save]: save layout in selected workspace"
     echo "  [restore]: restore layout in selected workspace"
+    echo "  [swap_with_input]: swap current workspace with input name"
     echo "  [swap_with_index]: swap current workspace with index (start from 0)"
     echo "  [swap_next]: swap current workspace with next workspace"
     echo "  [swap_prev]: swap current workspace with previous workspace"
@@ -81,6 +84,14 @@ workspace_operation () {
                 i3-msg workspace ${WS}
             fi
             ;;
+        "goto_with_input")
+            i3-msg bar hidden_state show bar_mode
+            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Go to WS")
+            i3-msg bar hidden_state hide bar_mode
+            if [[ ! -z ${WS} ]]; then
+                i3-msg workspace ${WS}
+            fi
+            ;;
         "move_container_not_focus")
             i3-msg bar hidden_state show bar_mode
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD to WS")
@@ -92,6 +103,15 @@ workspace_operation () {
         "move_container")
             i3-msg bar hidden_state show bar_mode
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD and focus to")
+            i3-msg bar hidden_state hide bar_mode
+            if [[ ! -z ${WS} ]]; then
+                i3-msg move container to workspace ${WS}
+                i3-msg workspace back_and_forth
+            fi
+            ;;
+        "move_container_with_input")
+            i3-msg bar hidden_state show bar_mode
+            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Move WD and focus to")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
                 i3-msg move container to workspace ${WS}
@@ -134,13 +154,24 @@ workspace_operation () {
                 i3-resurrect restore -w ${WS}
             fi
             ;;
+        "swap_with_input")
+            i3-msg bar hidden_state show bar_mode
+            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Swap with WS")
+            i3-msg bar hidden_state hide bar_mode
+            if [[ ! -z ${WS} ]]; then
+                i3-workspace-swap -d ${WS}
+            fi
+            ;;
         "swap_with_index")
-            if (( $2 < ${MAX_NUM_WS} )); then
-                i3-workspace-swap -d ${WS_ARRAY[$2]}
+            if (( $2 <= ${MAX_NUM_WS} )); then
+                INDEX=$(( $2 - 1 ))
+                i3-workspace-swap -d ${WS_ARRAY[${INDEX}]}
             else
                 echo
                 echo Input index $2 is out of range.
-                echo Maximal availble index: $(( ${MAX_NUM_WS} - 1)) exit
+                echo Minimal availble index: 1
+                echo Maximal availble index: $(( ${MAX_NUM_WS} ))
+                exit
             fi
             ;;
         "swap_next")

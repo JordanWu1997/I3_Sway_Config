@@ -89,9 +89,11 @@ def add_all_marks(sock, marks):
     # workspaces = sorted(send_msg(sock, 'get_workspaces'),
                         # key=lambda w: (w['rect']['y'], w['rect']['x']))
 
-    # Sort workspace in workspace name (1:A1 -> 2:A2 -> ... -> 11:B1 -> ...)
-    workspaces = sorted(send_msg(sock, 'get_workspaces'),
-        key=lambda w: w['name'].split(':')[0])
+    # Sort workspace in workspace name (A1 -> A2 -> ... -> B1 -> ...)
+    workspaces = sorted(
+        send_msg(sock, 'get_workspaces'),
+        key=lambda w: w['name']
+        if len(w['name'].split(':')) <= 1 else w['name'].split(':')[1])
 
     visible_ws = [w['name'] for w in workspaces if w['visible']]
     tree = send_msg(sock, 'get_tree')

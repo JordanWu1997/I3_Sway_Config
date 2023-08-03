@@ -34,6 +34,12 @@ zoom_fit plus  C-plus C-0
 zoom_in equal  C-equal C-j
 zoom_out minus C-minus C-k
 
+# Keep zooming options
+toggle_keep_vp v
+
+# Feh window resize
+toggle_fixed_geometry g
+
 # Image movement
 scroll_up    Up k
 scroll_down  Down j

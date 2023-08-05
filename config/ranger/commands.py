@@ -18,6 +18,7 @@ from ranger.api.commands import Command
 # udisk menu for ranger
 from plugins.ranger_udisk_menu.mounter import mount
 
+
 # Any class that is a subclass of "Command" will be integrated into ranger as a
 # command.  Try typing ":my_edit<ENTER>" in ranger!
 class my_edit(Command):
@@ -67,6 +68,8 @@ class my_edit(Command):
 ##############################################################################
 # Added
 ##############################################################################
+
+
 class fzf_select_tree(Command):
     """
     Modified by Jordan K.H. Wu
@@ -77,6 +80,7 @@ class fzf_select_tree(Command):
 
     See: https://github.com/junegunn/fzf
     """
+
     def execute(self):
         import subprocess
         import os
@@ -140,6 +144,7 @@ class fzf_select_cat(Command):
 
     See: https://github.com/junegunn/fzf
     """
+
     def execute(self):
         import subprocess
         import os
@@ -191,3 +196,25 @@ class fzf_select_cat(Command):
                 self.fm.cd(selected)
             else:
                 self.fm.select_file(selected)
+
+
+class toggle_flat(Command):
+    """
+    :toggle_flat
+
+    Flattens or unflattens the directory view.
+    """
+
+    def execute(self):
+        if self.fm.thisdir.flat == 0:
+            self.fm.thisdir.unload()
+            if self.arg(1):
+                # self.rest(1) contains self.arg(1) and everything that follows
+                self.fm.thisdir.flat = int(self.rest(1))
+            else:
+                self.fm.thisdir.flat = -1
+            self.fm.thisdir.load_content()
+        else:
+            self.fm.thisdir.unload()
+            self.fm.thisdir.flat = 0
+            self.fm.thisdir.load_content()

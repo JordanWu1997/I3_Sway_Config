@@ -246,9 +246,11 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 <summary>Click to expand/shrink</summary>
 
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
-    - System command, e.g. exit, power off, reboot, lock, hibernate, caffeine function
+    - System command, e.g. exit, power off, reboot, lock, hibernate
         - __Keyboard Mode (`[k]`)__
             - Map keys, tune repeat key speed
+        - __Toolkit Mode (`[t]`)__
+            - Caffeine (screen saver), kdeconnect pointer daemon, reload Xresource
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with multiple monitor configuration, e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__

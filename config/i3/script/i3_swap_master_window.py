@@ -18,10 +18,15 @@ def find_biggest_window(container):
     return max_leaf
 
 
-i3 = Connection()
+def main():
 
-for reply in i3.get_workspaces():
-    if reply.focused:
-        workspace = i3.get_tree().find_by_id(reply.ipc_data["id"])
-        master = find_biggest_window(workspace)
-        i3.command("swap container with con_id %s" % master.id)
+    i3 = Connection()
+    for reply in i3.get_workspaces():
+        if reply.focused:
+            workspace = i3.get_tree().find_by_id(reply.ipc_data["id"])
+            master = find_biggest_window(workspace)
+            i3.command("swap container with con_id %s" % master.id)
+
+
+if __name__ == '__main__':
+    main()

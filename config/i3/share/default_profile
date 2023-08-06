@@ -24,3 +24,6 @@ export FZF_DEFAULT_OPTS="\
     --bind 'alt-f:preview-page-down,alt-b:preview-page-up' \
     --bind 'alt-d:preview-page-down,alt-u:preview-page-up' \
     --bind 'alt-/:change-preview-window(down|hidden|)'"
+
+# ------------- Ranger Variables --------------
+export RANGER_LOAD_DEFAULT_RC="False"

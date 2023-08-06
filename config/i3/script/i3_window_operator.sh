@@ -64,7 +64,7 @@ window_operation () {
                 fi
                 # Send notification if there is no titlebar
                 if [[ ${DEFAULT_FLOATING_STYLE} == "pixel" ]]; then
-    -                notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky"
+                     notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky"
                 fi
             elif [[ ${CURRENT_STICKY_STATUS} == "false" ]]; then
                 i3-msg "sticky enable"

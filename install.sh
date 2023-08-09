@@ -315,7 +315,7 @@ desc_audio_tool_packages () {
 install_audio_tool_packages () {
     # Audio controls
     sudo dnf install -y pavucontrol pulseaudio playerctl
-    /usr/bin/python -m pip install pulsemixer
+    /usr/bin/python -m pip install pulsemixer --user
     # Audio visualizer: cava
     sudo dnf install -y cava
 
@@ -344,10 +344,10 @@ install_i3_packages () {
     #sudo dnf install -y i3-gaps
     sudo dnf install -y i3
     # i3 tools
-    /usr/bin/python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect
+    /usr/bin/python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect --user
     sudo dnf install -y dunst rofi
     # Bumblebee-status [https://github.com/tobi-wan-kenobi/bumblebee-status]
-    /usr/bin/python -m pip install bumblebee-status==2.0.5 i3ipc utils
+    /usr/bin/python -m pip install bumblebee-status==2.0.5 i3ipc utils --user
     sudo dnf install -y python-netifaces lm_sensors pulseaudio-utils python3-psutil
 }
 
@@ -380,7 +380,7 @@ install_customization_packages () {
     cd $HOME/Desktop
     git clone https://github.com/sonjiku/pywal.git
     cd pywal
-    /usr/bin/python -m pip install .
+    /usr/bin/python -m pip install . --user
 }
 
 # Editor tools
@@ -423,7 +423,7 @@ desc_python_tool_packages () {
     echo "-- jedi: python autocompletion"
 }
 install_python_tool_packages () {
-    /usr/bin/python -m pip install pynvim ipdb jedi
+    /usr/bin/python -m pip install pynvim ipdb jedi --user
 }
 
 # Misc tools
@@ -434,7 +434,7 @@ desc_misc_tool_packages () {
     echo "-- File manager: ranger"
     echo "   -- File previewer: exiftool, mediainfo"
     echo "   -- HTML previewer: w3m, w3m-img"
-    echo "   -- Image previewer: imagemagick"
+    echo "   -- Image previewer: imagemagick, ueberzug"
     echo "   -- Video previewer: ffmpegthumbnailer"
     echo "   -- PDF previewer: pdftotext pdftoppm"
     echo "   -- EPUB previewer: calibre"
@@ -467,7 +467,14 @@ install_misc_tool_packages () {
     sudo dnf install -y calibre
     # Text, Word, Excel previewer
     sudo dnf install -y catdoc pandoc
+    # Ueberzug
+    sudo dnf install -y libXres-devel
+    cd $HOME/Desktop
+    git clone https://github.com/ueber-devel/ueberzug.git
+    cd ueberzug
+    /usr/bin/python setup.py install --user
     # Modeline Devicons
+    cd $HOME/Desktop
     git clone \
         https://github.com/alexanderjeurissen/ranger_devicons.git \
         $HOME/.config/ranger/plugins/ranger_devicons

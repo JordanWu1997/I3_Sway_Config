@@ -433,6 +433,7 @@ desc_misc_tool_packages () {
     echo "-- Gnome software: polkit-gnome, gnome-screenshot, nautilus"
     echo "-- File manager: ranger"
     echo "   -- File previewer: exiftool, mediainfo"
+    echo "   -- Compressed file previewer: atool, untar, p7zip-plugins"
     echo "   -- HTML previewer: w3m, w3m-img"
     echo "   -- Image previewer: imagemagick, ueberzug"
     echo "   -- Video previewer: ffmpegthumbnailer"
@@ -455,6 +456,8 @@ install_misc_tool_packages () {
     sudo dnf install -y ranger
     # File previewer
     sudo dnf install -y exiftool mediainfo
+    # Compressed file previewer
+    sudo dnf install -y atool unrar p7zip-plugins
     # HTML previewer, image preview engine
     sudo dnf install -y w3m w3m-img
     # Image previewer

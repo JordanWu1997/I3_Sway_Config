@@ -104,7 +104,7 @@ handle_extension() {
             ;;
 
         ## JSON
-        json)
+        json|ipynb)
             jq --color-output . "${FILE_PATH}" && exit 5
             python -m json.tool -- "${FILE_PATH}" && exit 5
             ;;
@@ -127,10 +127,10 @@ handle_image() {
 
     local mimetype="${1}"
     case "${mimetype}" in
-        ## SVG
-        # image/svg+xml|image/svg)
-        #     convert -- "${FILE_PATH}" "${IMAGE_CACHE_PATH}" && exit 6
-        #     exit 1;;
+        # SVG
+        image/svg+xml|image/svg)
+            convert -- "${FILE_PATH}" "${IMAGE_CACHE_PATH}" && exit 6
+            exit 1;;
 
         ## DjVu
         # image/vnd.djvu)

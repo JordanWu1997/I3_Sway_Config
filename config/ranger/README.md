@@ -35,6 +35,11 @@ sudo dnf install w3m
 ```bash
 # image preview
 sudo dnf install w3m-img imagemagick
+# image preview
+# dependency for ueberzug
+sudo dnf install libXres-devel
+git clone https://github.com/ueber-devel/ueberzug.git
+cd ueberzug; python setup.py install --user
 ```
 
 #### Video

@@ -168,7 +168,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
         - Add `I3_SCRIPT` to `$PATH` to dotfile
         - Add `I3_SCRIPT` to dotfile
         - Add `WALLPAPERI3` to dotfile
-        - dotfile is related to `$SHELL`, (e.g. `bash`/`zsh` -> `.bashrc`/`.zshrc`, others -> `.profile`)
+        - dotfile here is correlated to `$SHELL`, (e.g. `bash`/`zsh` -> `.bashrc`/`.zshrc`, others -> `.profile`)
     - __2. Backup Old Configuration and Link/Copy New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
         - Link/Copy configuration in git repository `./config/*` to `$HOME/.config` directory
@@ -218,7 +218,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - When i3 mode is on, mode keybinding instruction shows on the i3 status bar
     - Here I use an additional i3 bar to provide more space for text
 - Shared keybindings of mode in my configuration
-    - Press `[Esc]` or `[Ctrl]`+`[[]` (vim-style escape) to exit mode
+    - Press `[Esc]` or `[Ctrl]` + `[[]` (vim-style escape) to exit mode
     - Press `[Enter]` to go to the last level of mode and exit mode if it is already the last one
 - This part configuration can be found in
     - `./config/i3/config.d/i3_mode.config`
@@ -266,11 +266,11 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- __Player Mode (`[Ctrl]`+`[Alt]`+`[p]`)__
+- __Player Mode (`[Ctrl]` + `[Alt]` + `[p]`)__
     - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), player, vlc
-- __Spotifyd Mode (`[Ctrl]`+`[Alt]`+`[s]`)__
+- __Spotifyd Mode (`[Ctrl]` + `[Alt]` + `[s]`)__
     - Spotifyd control (e.g. enable, disable, reload) for spotifyd
-- __Volume Mode (`[Ctrl]`+`[Alt]`+`[v]`)__
+- __Volume Mode (`[Ctrl]` + `[Alt]` + `[v]`)__
     - Volume control with pulsemixer (e.g. volume up/down, mute)
 
 </details>

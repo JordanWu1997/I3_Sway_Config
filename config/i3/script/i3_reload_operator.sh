@@ -18,12 +18,6 @@ reload_dunst () {
     notify-send -u low "Reload Mode" "Reload dunst (notifier)"
 }
 
-reload_xsslock () {
-    # Xsslock (lock for xwindow)
-    $I3_SCRIPT/i3_xsslock_operator.sh current
-    notify-send -u low "Reload Mode" "Reload xsslock (session lock)"
-}
-
 reload_vis () {
     # Vis (visualizer)
     $I3_SCRIPT/i3_vis_colorchanger.sh
@@ -44,7 +38,6 @@ reload_pipeline () {
     reload_i3bar
     reload_zathura
     reload_vis
-    reload_xsslock
 }
 
 # Main

@@ -54,7 +54,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![alt text](./demo/MY_I3WM_WAL_DEMO_05.png "Title")
 
 ### Features in My Configuration
-Note: the term "window" used in this configuration actually refers to "container" in i3 window manager
+Note: the term "window" used in this configuration actually refers to "container" in the i3 window manager
 
 - [x] __Dynamic Dwindling Layout__: auto-split window in long-side. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Dynamic Master-Stack Layout__: auto-split window in master-stack layout. (Check [Section 2](#section-2---details-of-i3-environment))
@@ -108,7 +108,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
-j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
+- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
 - [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): GUI software authentication support
@@ -162,13 +162,13 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Run installer in this git repository `./install.sh`
+- Run the installer in this git repository `./install.sh`
 - Includes
     - __1. Add Environment Variables__
         - Add `I3_SCRIPT` to `$PATH` to dotfile
         - Add `I3_SCRIPT` to dotfile
         - Add `WALLPAPERI3` to dotfile
-        - dotfile here is correlated to `$SHELL`, (e.g. `bash`/`zsh` -> `.bashrc`/`.zshrc`, others -> `.profile`)
+        - Note: dotfile here corresponds to `$SHELL`, (e.g. `bash`/`zsh` -> `.bashrc`/`.zshrc`, others -> `.profile`)
     - __2. Backup Old Configuration and Link/Copy New Configuration__
         - Backup old configuration file `$HOME/.config/*` to `$HOME/.config_backup` directory
         - Link/Copy configuration in git repository `./config/*` to `$HOME/.config` directory
@@ -184,13 +184,13 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - Includes
     - __1. Terminal Emulator Pywal Color Support__
         - __NO NEED__ for kitty terminal emulator if using my configuration `./config/kitty/kitty.conf`
-        - Add following lines to shell (e.g. bash/zsh/fish) dotfile (e.g. `~/.bashrc`/`~/.zshrc`/`~/.config/fish/config`) for pywal color support
+        - Add the following lines to shell (e.g. bash/zsh/fish) dotfile (e.g. `~/.bashrc`/`~/.zshrc`/`~/.config/fish/config`) for pywal color support
             ```
             [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
             ```
     - __2. Preset Workspace Name Renaming__
-        - My preset workspace naming style is combination of capital letter (A~D) and one-digit number (1~9+0), which has 40 workspaces in total
-        - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using following syntax (the prefix number will be stripped in i3bar workspace)
+        - My preset workspace naming style is a combination of a capital letter (A\~D) and a one-digit number (1\~9+0), which has 40 workspaces in total
+        - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using the following syntax (the prefix number will be stripped in i3bar workspace)
             - From
                 ```
                 set $ws1 "1:A1" # Change 1:A1 to 1:NEW_NAME_1
@@ -204,7 +204,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
                 ...
                 ```
         - After finishing renaming process, run `./config/i3/script/i3_genereate_workspace_name_list.sh`
-            - This is to generate workspace name list for rofi selector for further workspace manipulation
+            - This is to generate a workspace name list for rofi selector for further workspace manipulation
 
 </details>
 </details>
@@ -233,9 +233,9 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - __Insert Mode (`[Ctrl]` + `[Alt]` + `[i]` or `[Winkey]` + `[Ctrl]` + `[i]`)__
     - Disable i3 keybindings. Press `[Ctrl]`+`[[]` to get i3 keybindings back
 - __Vim Keybinding Mode (`[Winkey]` + `[Ctrl]` + `[[]`)__
-    - Enable vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
+    - Enable Vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
 - __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
-    - Mouse emulator using keyboard, e.g. move, left/right click, cursor auto-hide
+    - Mouse emulator using the keyboard, e.g. move, left/right click, cursor auto-hide
         - __Cursor Mode (`[c]`)__
             - Cursor auto-hiding (unclutter)
 
@@ -252,13 +252,13 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
         - __Toolkit Mode (`[t]`)__
             - Caffeine (screen saver), kdeconnect pointer daemon, reload Xresource
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
-    - Deal with multiple monitor configuration, e.g. joint monitor, mirror monitor
+    - Deal with multiple monitor configurations, e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
     - Modify monitor backlight level
 - __Redshift Mode (`[Ctrl]` + `[Alt]` + `[z]`)__
     - Screen color temperature tuner
 - __Dunst Mode (`[Ctrl]` + `[Alt]` + `[n]`)__
-    - Dunst actions, including stopping or resuming dunst
+    - Dunst actions, including stopping or resuming Dunst
 
 </details>
 
@@ -286,7 +286,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - __Mark Mode (`[Winkey]` + `[Shift]` + `[m]`)__
     - Mark/Unmark window, go/swap to/with marked window
         - __Automark Mode (`[a]`)__
-            - Enable/Disable automark deamon
+            - Enable/Disable automark daemon
 - __Window Layout Mode (`[Winkey]` + `[Shift]` + `[w]`)__
     - Change i3 window layout, e.g. tiling, tabbed, stacking mode, auto-tiling function
         - __Auto-tiling Mode (`[a]`)__
@@ -307,11 +307,11 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - __Gap Mode (`[Ctrl]` + `[Alt]` + `[g]`)__
     - Modify i3 gaps, e.g. inner gaps, outer gaps
 - __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
-    - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, fontsize)
+    - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, font size)
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
     - Customize i3wm, e.g. wallpaper, theme, X compositor
         - __Border Mode (`[b]`)__
-            - Window border width, color scheme and edge border option
+            - Window border width, color scheme, and edge border option
         - __Conky Mode (`[c]`)__
             - System monitor, i3 keybinding sheet, color palette, position
         - __Dunst Mode (`[d]`)__
@@ -337,7 +337,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 <summary>Click to expand/shrink</summary>
 
 - Although the keyboard-driven workflow is favored in i3, there is no harm in keeping mouse function
-- This part of configuration can be found in
+- This part of the configuration can be found in
     - `./config/i3/config.d/i3_bindkey.config`
     - `./config/i3/config.d/i3_mode.config`
 
@@ -397,11 +397,11 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
     | __`[Winkey]` + Click Window__ | Kill current window |      |
 
 - __Right Button (`[Button3]`)__
-    | Right Button (`Button3`) +    | Action               | Note                                             |
-    | :---------------------------: | :------------------: | :----------------------------------------------: |
-    | __Drag Title Bar or Window__  | Resize window        |                                                  |
-    | __Click Title Bar__           | Toggle floating mode | requires disabling i3 default button3 keybinding |
-    | __`[Winkey]` + Click Window__ | Toggle floating mode |                                                  |
+    | Right Button (`Button3`) +    | Action               | Note                                          |
+    | :---------------------------: | :------------------: | :-------------------------------------------: |
+    | __Drag Title Bar or Window__  | Resize window        |                                               |
+    | __Click Title Bar__           | Toggle floating mode | this overwrites i3 default button3 keybinding |
+    | __`[Winkey]` + Click Window__ | Toggle floating mode |                                               |
 
 - __Scroll Wheel Up/Down (`[Button4]`/`[Button5]`)__
     | Mouse Wheel                  | Action         | Note |
@@ -422,9 +422,9 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 <details>
 <summary>Click to expand/shrink</summary>
 
-- Cheat sheet format, color theme here is the same as the i3 user guide
-- It is __HIGHLY RECOMMENDED__ to change `caplocks` to `ctrl` for your little finger (default in this configuration)
-    - `caplocks` can be remapped to `ctrl` with following command in shell
+- Cheat sheet format, and color theme here are the same as the i3 user guide
+- It is __HIGHLY RECOMMENDED__ to map `caplocks` to `ctrl` for your little finger (default in this configuration)
+    - `caplocks` can be mapped to `ctrl` with the following command in the shell
         ```bash
         setxkbmap -option "ctrl:nocaps"
         ```
@@ -475,7 +475,7 @@ j- [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
 - __Program in floating mode shortcut (`[Ctrl]`+`[Alt]`+`[Shift]`+[`1`~`7`])__
-    - Note that you will need kitty terminal for floating windows
+    - Note that you will need a kitty terminal for floating windows
 
 </details>
 
@@ -512,15 +512,15 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
     - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
     - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
-    - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to selected workspace (interactively)
+    - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to the selected workspace (interactively)
 - __Send Window to Workspace (Relatively)__
     - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
-    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send to prev/next workspace (create one if it does not exist)
+    - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send window to prev/next workspace (create one if it does not exist)
 - __Manipulate Scratchpad__
     - `[Winkey]` + `[-/z]`: Send focused window to scratchpad (background workspace)
     - `[Winkey]` + `[Shift]` + `[-/z]`: Send all floating windows to scratchpad (background workspace)
-    - `[Winkey]` + `[=/g]`: Bring window in scratchpad to foreground one by one
+    - `[Winkey]` + `[=/g]`: Bring the window in scratchpad to the foreground one by one
     - `[Winkey]` + `[Shift]` + `[=/g]`: Bring all windows in scratchpad to foreground
 
 #### Gap

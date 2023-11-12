@@ -74,40 +74,40 @@ conky.config = {
 
 conky.text = [[
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[System Command] ${hr 2}${font}
-${color2}open terminal ${alignr}${color1}[S]+([Shift])+[Enter]
-${color2}system option ${alignr}${color1}[S]+[Shift]+[Esc]
-${color2}reload/restart i3 ${alignr}${color1}[S]+([Shift])+[r]
-${color2}app./exec. launcher ${alignr}${color1}[S]+([Shift])+[d]
+${color2}open terminal ${alignr}${color1}[Win]+([Shift])+[Enter]
+${color2}system option ${alignr}${color1}[Win]+[Shift]+[Esc]
+${color2}reload/restart i3 ${alignr}${color1}[Win]+([Shift])+[r]
+${color2}app./exec. launcher ${alignr}${color1}[Win]+([Shift])+[d]
 ${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab]
-${color2}bindkey cheatsheet ${alignr}${color1}[S]+[Shift]+[/]
+${color2}bindkey cheatsheet ${alignr}${color1}[Win]+[Shift]+[/]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Workspace / Window] ${hr 2}${font}
-${color2}navigate to WS ${alignr}${color1}[S]+[(F)\#]
-${color2}send WD to WS ${alignr}${color1}[S]+[Shift]+[(F)\#]
-${color2}kill focused WD ${alignr}${color1}[S]+[Shift]+[q]
-${color2}change split direction ${alignr}${color1}[S]+[q/\]
-${color2}tiling/tabbed/stacking ${alignr}${color1}[S]+[e/w/s]
-${color2}fullscreen toggle ${alignr}${color1}[S]+([Shift])+[f]
-${color2}navigate to WD ${alignr}${color1}[S]+[vim-key]
-${color2}move WD ${alignr}${color1}[S]+[Shift]+[vim-key]
-${color2}focus parent ${alignr}${color1}[S]+[a]
-${color2}focus children ${alignr}${color1}[S]+[Shift]+[a]
+${color2}navigate to WS ${alignr}${color1}[Win]+[(F)\#]
+${color2}send WD to WS ${alignr}${color1}[Win]+[Shift]+[(F)\#]
+${color2}kill focused WD ${alignr}${color1}[Win]+[Shift]+[q]
+${color2}change split direction ${alignr}${color1}[Win]+[q/\]
+${color2}tiling/tabbed/stacking ${alignr}${color1}[Win]+[e/w/s]
+${color2}fullscreen toggle ${alignr}${color1}[Win]+([Shift])+[f]
+${color2}navigate to WD ${alignr}${color1}[Win]+[vim-key]
+${color2}move WD ${alignr}${color1}[Win]+[Shift]+[vim-key]
+${color2}focus parent ${alignr}${color1}[Win]+[a]
+${color2}focus children ${alignr}${color1}[Win]+[Shift]+[a]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Floating / Scratchpad] ${hr 2}${font}
-${color2}floating toggle ${alignr}${color1}[S]+[Shift]+[Space]
-${color2}focus toggle ${alignr}${color1}[S]+[Space]
-${color2}send WD to scratchpad ${alignr}${color1}[S]+[-/z]
-${color2}bring WD to foreground ${alignr}${color1}[S]+[=/g]
+${color2}floating toggle ${alignr}${color1}[Win]+[Shift]+[Space]
+${color2}focus toggle ${alignr}${color1}[Win]+[Space]
+${color2}send WD to scratchpad ${alignr}${color1}[Win]+[-/z]
+${color2}bring WD to foreground ${alignr}${color1}[Win]+[=/g]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Function / Mode] ${hr 2}${font}
-${color2}custimization mode ${alignr}${color1}[S]+[Shift]+[c]
-${color2}titlebar mode ${alignr}${color1}[S]+[Shift]+[t]
-${color2}display mode ${alignr}${color1}[S]+[Shift]+[x]
+${color2}custimization mode ${alignr}${color1}[Win]+[Shift]+[c]
+${color2}titlebar mode ${alignr}${color1}[Win]+[Shift]+[t]
+${color2}display mode ${alignr}${color1}[Win]+[Shift]+[x]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Miscellaneous] ${hr 2}${font}
 ${color2}resize WD ${alignr}${color1}[Ctrl]+[Alt]+[vim-key]
-${color2}mark/unmark current WD ${alignr}${color1}[S]+[m/u]
-${color2}goto marked WD ${alignr}${color1}[S]+([Shift])+[']
-${color2}swap marked WD ${alignr}${color1}[S]+([Shift])+[;]
+${color2}mark/unmark current WD ${alignr}${color1}[Win]+[m/u]
+${color2}goto marked WD ${alignr}${color1}[Win]+([Shift])+[']
+${color2}swap marked WD ${alignr}${color1}[Win]+([Shift])+[;]
 ${color3}${font DroidSanMono Nerd Font:bold:size=9}[Datetime] ${hr 2}${voffset 2}${font}
-${color2}${font DroidSanMono Nerd Font:bold:size=12}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${color2}${font DroidSanMono Nerd Font:bold:size=12}${time %A}, ${time %B} ${time %e}, ${time %Y}${font}
 ${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignr}${time %l}:${time %M} ${time %p}${font}
 ${color3}${hr 2}${voffset -10}
 ]]

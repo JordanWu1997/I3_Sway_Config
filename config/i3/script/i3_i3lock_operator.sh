@@ -55,8 +55,15 @@ i3lock_operator () {
 }
 
 # Main
-#pkill -u "${USER}" -USR1 dunst
-dunstctl set-paused true
-i3lock_operator $1
-#pkill -u "${USER}" -USR2 dunst
-dunstctl set-paused false
+if [[ $(dunstctl is-paused) == 'false' ]]; then
+    #pkill -u "${USER}" -USR1 dunst
+    dunstctl set-paused true
+
+    # Locker
+    i3lock_operator $1
+
+    #pkill -u "${USER}" -USR2 dunst
+    dunstctl set-paused false
+else
+    i3lock_operator $1
+fi

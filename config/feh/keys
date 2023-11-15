@@ -25,6 +25,7 @@ reload_plus
 reload_minus
 save_image
 save_filelist
+toggle_filenames
 
 # Default keymapping
 # [</>]: Rotate image 90 degree (counter)clockwise
@@ -32,7 +33,7 @@ save_filelist
 # [|]: Flip image horizontally (mirror)
 
 # Zooming
-zoom_default d a
+zoom_default a
 zoom_fit     plus C-0 s
 zoom_in      equal  C-equal C-j
 zoom_out     minus C-minus C-k
@@ -42,6 +43,12 @@ toggle_keep_vp v
 
 # Feh window resize
 toggle_fixed_geometry g
+
+# Filename
+toggle_filenames d
+
+# File info
+toggle_info i
 
 # Image movement
 scroll_up    Up k
@@ -61,4 +68,4 @@ menu_up     k Up
 menu_select space Return
 
 # Save image
-save_image Ctrl-s
+save_image C-s

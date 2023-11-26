@@ -435,11 +435,12 @@ desc_misc_tool_packages () {
     echo "   -- File previewer: exiftool, mediainfo"
     echo "   -- Compressed file previewer: atool, untar, p7zip-plugins"
     echo "   -- HTML previewer: w3m, w3m-img"
-    echo "   -- Image previewer: imagemagick, ueberzug"
+    echo "   -- Image previewer: imagemagick, ueberzug, librsvg2-tools"
     echo "   -- Video previewer: ffmpegthumbnailer"
     echo "   -- PDF previewer: pdftotext pdftoppm"
     echo "   -- EPUB previewer: calibre"
     echo "   -- Text previewer: catdoc, pandoc"
+    echo "   -- Font previewer: fontforge"
     echo "-- Bluetooth: blueman"
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Miscellaneous: flameshot"
@@ -461,7 +462,7 @@ install_misc_tool_packages () {
     # HTML previewer, image preview engine
     sudo dnf install -y w3m w3m-img
     # Image previewer
-    sudo dnf install -y imagemagick
+    sudo dnf install -y imagemagick librsvg2-tools
     # Video previewer
     sudo dnf install -y ffmpegthumbnailer
     # PDF previewer
@@ -470,6 +471,8 @@ install_misc_tool_packages () {
     sudo dnf install -y calibre
     # Text, Word, Excel previewer
     sudo dnf install -y catdoc pandoc
+    # Font previewer
+    sudo dnf install -y fontforge
     # Ueberzug
     sudo dnf install -y libXres-devel
     cd $HOME/Desktop

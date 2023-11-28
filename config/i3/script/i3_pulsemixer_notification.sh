@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Dunst
-NOTIFY_ID=99709201
-
 # Pulseaudio volumes
 VOLUMES=$(pulsemixer --get-volume)
 L_VOLUME=$(echo ${VOLUMES} | awk '{print $1}')
@@ -18,4 +15,10 @@ else
 fi
 
 # Send notification
-notify-send -r ${NOTIFY_ID} -u low -a "Volume" "${CONTEXT}" --icon="${ICON}"
+NOTIFY_SEND_VERSION=$(notify-send -v | tr ' ' '\n' | grep '\.' | cut -d. -f 2)
+if (( $(echo ${NOTIFY_SEND_VERSION}) > 7 | bc -l )); then
+    NOTIFY_ID=99709201
+    notify-send -r ${NOTIFY_ID} -u low -a "Volume" "${CONTEXT}" --icon="${ICON}"
+else
+    notify-send low -a "Volume" "${CONTEXT}" --icon="${ICON}"
+fi

@@ -82,13 +82,13 @@ backlight_operation () {
             INPUT_LEVEL=$2
             # Set backlight
             command -v xbacklight && xbacklight -inc "${INPUT_LEVEL}" && show_xbacklight && exit
-            command -v brightnessctl && brightnessctl -set "+${INPUT_LEVEL}" && show_xbacklight && exit
+            command -v brightnessctl && brightnessctl set "+${INPUT_LEVEL}%" && show_xbacklight && exit
             ;;
         "dec_xbacklight")
             INPUT_LEVEL=$2
             # Set backlight
             command -v xbacklight && xbacklight -dec "${INPUT_LEVEL}" && show_xbacklight && exit
-            command -v brightnessctl && brightnessctl -set "${INPUT_LEVEL}-" && show_xbacklight && exit
+            command -v brightnessctl && brightnessctl set "${INPUT_LEVEL}%-" && show_xbacklight && exit
             ;;
         "show_xbacklight")
             show_xbacklight

@@ -15,7 +15,7 @@ show_help_message () {
     echo "  [select]: select scratchpad window"
 }
 
-scrachpad_operation () {
+scratchpad_operation () {
     case $1 in
         'select')
             SCRATCHPAD_WD_NUM=$(wmctrl -l | awk '$2<0' | wc -l)
@@ -38,4 +38,4 @@ scrachpad_operation () {
     esac
 }
 
-scrachpad_operation $1
+scratchpad_operation $1

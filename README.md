@@ -249,6 +249,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - System command, e.g. exit, power off, reboot, lock, hibernate
         - __Keyboard Mode (`[k]`)__
             - Map keys, tune repeat key speed
+        - __Device Mode__ (`[d]`)
+            - Turn on/off RF device
         - __Toolkit Mode (`[t]`)__
             - Caffeine (screen saver), kdeconnect pointer daemon, reload Xresource
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__

@@ -29,6 +29,9 @@ map bd feedkeys ":bdelete "
 map ; follow
 map <C-o> jumplist backward
 map <C-i> jumplist forward
+map <A-M> feedkeys ":set default-bg rgba(1,1,1,1.0)<Return>"
+map <A-P> feedkeys ":set default-bg rgba(1,1,1,0.0)<Return>"
+map <A-D> feedkeys ":set default-bg rgba(1,1,1,0.7)<Return>"
 
 ### zathura-pywal ###
 # Allow recolor

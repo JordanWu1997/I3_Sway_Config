@@ -1,0 +1,125 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+--[[
+Conky, a system monitor, based on torsmo
+Any original torsmo code is licensed under the BSD license
+All code written since the fork of torsmo is licensed under the GPL
+Please see COPYING for details
+Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+Copyright (c) 2005-2012 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+All rights reserved.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+conky.config = {
+
+-- Window Settings --
+	own_window = true,
+	own_window_argb_value = 64,
+	own_window_argb_visual = true,
+	own_window_class = 'Conky',
+	own_window_transparent = false,
+	own_window_title = 'i3_conky_bindkey',
+	own_window_type = 'override',
+
+-- Position --
+	alignment = 'bottom_left',
+	gap_x = 30,
+	gap_y = 30,
+	minimum_width = 240,
+	maximum_width = 240,
+
+-- Font --
+	use_xft = true,
+	xftalpha = 1.0,
+	font = 'DroidSanMono Nerd Font:bold:size=9',
+	uppercase = false,
+	use_spacer = 'none',
+	extra_newline = false,
+
+-- Graphical --
+	default_color = '#953515',
+	color1 = '#bfbfbf',
+	color2 = '#953515',
+	color3 = '#D94922',
+	own_window_colour = '#010101',
+	default_outline_color = '#FFFFFF',
+	default_shade_color = '#000000',
+	border_width = 1,
+	stippled_borders = 0,
+	draw_borders = false,
+	draw_graph_borders = true,
+	draw_outline = false,
+	draw_shades = true,
+
+-- Miscellanous --
+	background = true,
+	cpu_avg_samples = 2,
+	no_buffers = true,
+	out_to_console = false,
+	out_to_stderr = false,
+	update_interval = 1.0,
+	show_graph_scale = false,
+	show_graph_range = false,
+	double_buffer = true,
+
+};
+
+conky.text = [[
+${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[System Command]${font}${voffset 5}
+${color2}open terminal ${alignr}${color1}[S]+([Shift])+[Enter]
+${color2}system option ${alignr}${color1}[S]+[Shift]+[Esc]
+${color2}reload/restart i3 ${alignr}${color1}[S]+([Shift])+[r]
+${color2}app./exec. launcher ${alignr}${color1}[S]+([Shift])+[d]
+${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab]
+${color2}bindkey cheatsheet ${alignr}${color1}[S]+[Shift]+[/]
+${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Workspace / Window]${font}${voffset 5}
+${color2}navigate to WS ${alignr}${color1}[S]+[(F)\#]
+${color2}send WD to WS ${alignr}${color1}[S]+[Shift]+[(F)\#]
+${color2}kill focused WD ${alignr}${color1}[S]+[Shift]+[q]
+${color2}change split direction ${alignr}${color1}[S]+[q/\]
+${color2}tiling/tabbed/stacking ${alignr}${color1}[S]+[e/w/s]
+${color2}toggle layouts ${alignr}${color1}[S]+[Shift]+[e]
+${color2}navigate to WD ${alignr}${color1}[S]+[vim-key]
+${color2}move WD ${alignr}${color1}[S]+[Shift]+[vim-key]
+${color2}resize WD ${alignr}${color1}[Ctrl]+[Alt]+[vim-key]
+${color2}focus parent WD ${alignr}${color1}[S]+[a]
+${color2}focus children WD ${alignr}${color1}[S]+[Shift]+[a]
+${color2}mark/unmark current WD ${alignr}${color1}[S]+[m/u]
+${color2}goto marked WD ${alignr}${color1}[S]+([Shift])+[']
+${color2}swap marked WD ${alignr}${color1}[S]+([Shift])+[;]
+${color2}toggle WD titlebar ${alignr}${color1}[S]+[t]
+${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Floating / Scratchpad]${font}${voffset 5}
+${color2}floating toggle ${alignr}${color1}[S]+[Shift]+[Space]
+${color2}floating focus toggle ${alignr}${color1}[S]+[Space]
+${color2}move floating WD ${alignr}${color1}[left-click] titlebar
+${color2}kill floating WD ${alignr}${color1}[middle-click] titlebar
+${color2}resize floating WD ${alignr}${color1}[right-click] titlebar
+${color2}send WD to SP ${alignr}${color1}[S]+([Shift])+[-/z]
+${color2}bring WD to FG ${alignr}${color1}[S]+([Shift])+[=/g]
+${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Function / Mode]${font}${voffset 5}
+${color2}bar mode ${alignr}${color1}[S]+[Shift]+[b]
+${color2}customization mode ${alignr}${color1}[S]+[Shift]+[c]
+${color2}WD layout mode ${alignr}${color1}[S]+[Shift]+[w]
+${color2}workspace mode ${alignr}${color1}[S]+[Shift]+[p]
+${color2}titlebar mode ${alignr}${color1}[S]+[Shift]+[t]
+${color2}mark mode ${alignr}${color1}[S]+[Shift]+[m]
+${color2}display mode ${alignr}${color1}[S]+[Shift]+[x]
+${color2}dunst mode ${alignr}${color1}[Ctrl]+[Alt]+[n]
+${color2}gap mode ${alignr}${color1}[Ctrl]+[Alt]+[g]
+${color2}redshift mode ${alignr}${color1}[Ctrl]+[Alt]+[z]
+${color2}resize mode ${alignr}${color1}[Ctrl]+[Alt]+[r]
+${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
+${color2}insert mode ${alignr}${color1}[Ctrl]+[Alt]+[i]
+${voffset 5}${color3}${hr 2}${voffset 5}
+${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignc}${time %l}:${time %M} ${time %p}${font}
+${voffset 5}${color2}${font DroidSanMono Nerd Font:bold:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${voffset 5}${color3}${hr 2}${voffset 8}
+]]

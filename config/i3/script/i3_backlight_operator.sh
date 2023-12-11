@@ -13,6 +13,7 @@ show_help_message () {
     echo ""
     echo "OPERATIONS"
     echo "  [set_focused_display_backlight_with_rofi]: set focused output backlight to input value [0~100]"
+    echo "  [set_all_connected_displays_backlight_with_rofi]: set all connected outputs backlight to input value [0~100]"
     echo "  [set_xbacklight_with_rofi]: set xbacklight to input value [0~100]"
     echo "  [set_xbacklight]: set xbacklight to argument backlight_levels"
     echo "  [inc_xbacklight]: increase xbacklight in amount argument backlight_levels"
@@ -55,6 +56,22 @@ backlight_operation () {
             xrandr \
                 --output ${FOCUS_OUTPUT} \
                 --brightness ${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}
+            ;;
+        "set_all_connected_displays_backlight_with_rofi")
+            # Get backlight input level from user input via rofi
+            INPUT_LEVEL=$(rofi -dmenu -p "Set focused display backlight to [0~100]: ")
+            if (( $(echo "${INPUT_LEVEL} < 0" | bc -l) )); then
+                INPUT_LEVEL=1
+            elif (( $(echo "${INPUT_LEVEL} > 100" | bc -l) )); then
+                INPUT_LEVEL=100
+            fi
+            INPUT_LEVEL=$(echo "scale=1; ${INPUT_LEVEL}/100" | bc)
+            for FOCUS_OUTPUT in $(xrandr | grep ' connected' | awk '{print $1}'); do
+                # Set backlight
+                xrandr \
+                    --output ${FOCUS_OUTPUT} \
+                    --brightness ${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}
+            done
             ;;
         "set_xbacklight_with_rofi")
             # Get backlight input level from user input via rofi

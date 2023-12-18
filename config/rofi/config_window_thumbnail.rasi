@@ -18,7 +18,7 @@ configuration {
     window-thumbnail: true;
 
     /*Window caption format*/
-    window-format: "{w}\n{c}";
+    window-format: "{w}\n{c}\n{t}";
 
     /*Icon theme*/
     icon-theme: "Papirus";
@@ -122,7 +122,7 @@ configuration {
 #element-text {
 
     /*Align center*/
-    horizontal-align: 0.5;
+    horizontal-align: 0.1;
     vertical-align: 0.5;
 
 }

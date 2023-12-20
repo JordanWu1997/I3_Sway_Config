@@ -130,7 +130,7 @@ configuration {
 #element-icon {
 
     /*Size of icon*/
-    size: 25.0ch;
+    size: 23.0ch;
 
 
 }

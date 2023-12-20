@@ -308,17 +308,19 @@ install_xwindow_tool_packages () {
 desc_audio_tool_packages () {
     echo
     echo "Audio tool packages including:"
+    echo "-- Player controller: mpv-mpris"
     echo "-- Audio manager: pavucontrol, pulseaudio, pulsemixer, playerctl"
     echo "-- Audio visualizer: cava"
     echo "Installation requires sudo permission"
 }
 install_audio_tool_packages () {
-    # Audio controls
+    # Player controller: mpv-mpris
+    sudo dnf install -y mpv-mpris
+    # Audio managers
     sudo dnf install -y pavucontrol pulseaudio playerctl
     /usr/bin/python -m pip install pulsemixer --user
     # Audio visualizer: cava
     sudo dnf install -y cava
-
     # TODO: vis is not complied successfully
     ## Vis [https://github.com/dpayne/cli-visualizer]
     #sudo dnf install -y fftw-devel ncurses-devel pulseaudio-libs-devel cmake

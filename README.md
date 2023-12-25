@@ -401,7 +401,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Right Button (`[Button3]`)__
     | Right Button (`Button3`) +    | Action               | Note                                          |
     | :---------------------------: | :------------------: | :-------------------------------------------: |
-    | __Drag Title Bar or Window__  | Resize window        |                                               |
+    | __Drag Window Border__        | Resize window        |                                               |
     | __Click Title Bar__           | Toggle floating mode | this overwrites i3 default button3 keybinding |
     | __`[Winkey]` + Click Window__ | Toggle floating mode |                                               |
 

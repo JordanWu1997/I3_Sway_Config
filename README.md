@@ -260,7 +260,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Redshift Mode (`[Ctrl]` + `[Alt]` + `[z]`)__
     - Screen color temperature tuner
 - __Dunst Mode (`[Ctrl]` + `[Alt]` + `[n]`)__
-    - Dunst actions, including stopping or resuming Dunst
+    - Dunst actions, including pausing or resuming Dunst
+- __Open URL Mode (`[Ctrl]` + `[Alt]` + `[o]`)__
+    - Open URL in web browser
 
 </details>
 

@@ -13,6 +13,7 @@ show_help_message () {
     echo ""
     echo "OPERATIONS"
     echo "  [attach_to_tmux_session]: create new kitty terminal and attach to tmux session"
+    echo "  [attach_to_selected_tmux_session]: create new kitty terminal and attach to selected tmux session"
 }
 
 attach_to_tmux_session () {
@@ -31,6 +32,12 @@ kitty_operation () {
     case $1 in
         "attach_to_tmux_session")
             attach_to_tmux_session $2
+            ;;
+        "attach_to_selected_tmux_session")
+            SESSION=$(tmux list-sessions | \
+                rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
+                -i -auto-select | awk -F: '{print $1}')
+            attach_to_tmux_session $SESSION
             ;;
         *)
             show_wrong_usage_message

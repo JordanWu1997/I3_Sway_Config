@@ -80,10 +80,13 @@ change_conky_value () {
     DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
     DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
     DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_GAP_Y=$(awk '$0~/default_conky_gap_y/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_BG_OPAC=$(awk '$0~/default_conky_opacity/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_POS_SYSTEM=$(awk '$0~/default_conky_system_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_POS_BINDKEY=$(awk '$0~/default_conky_bindkey_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_GAP_Y=$(awk '$0~/default_conky_gap_y/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+    DEFAULT_BAR_POS=$(awk '$0~/default_i3bar_position/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     # Replace color in conky configuration file
     case $1 in
         # Conky for system
@@ -133,7 +136,12 @@ change_conky_value () {
                         sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"
                         sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $DEFAULT_BG_OPAC,/" "$config"
                         sed -i "$COL_POS s/.*/\talignment \= \'$DEFAULT_POS_SYSTEM\\',/" "$config"
-                        sed -i "$COL_GAP_Y s/.*/\tgap_y \= $DEFAULT_GAP_Y,/" "$config"
+                        # Gap-Y
+                        DEFAULT_GAP_Y_SYSTEM=$DEFAULT_GAP_Y
+                        if [[ $DEFAULT_POS_SYSTEM == *$DEFAULT_BAR_POS* ]] && [[ $DEFAULT_BAR_MODE == "dock" ]]; then
+                            DEFAULT_GAP_Y_SYSTEM=$(expr $DEFAULT_BAR_HEIGHT + $DEFAULT_GAP_Y)
+                        fi
+                        sed -i "$COL_GAP_Y s/.*/\tgap_y \= ${DEFAULT_GAP_Y_SYSTEM},/" "$config"
                         ;;
                 esac
             done
@@ -185,7 +193,12 @@ change_conky_value () {
                         sed -i "$COL_COLOR_BG s/.*/\town_window_colour \= \'\#$DEFAULT_BG_COLOR\\',/" "$config"
                         sed -i "$COL_COLOR_BG_OPAC s/.*/\town_window_argb_value \= $DEFAULT_BG_OPAC,/" "$config"
                         sed -i "$COL_POS s/.*/\talignment \= \'$DEFAULT_POS_BINDKEY\\',/" "$config"
-                        sed -i "$COL_GAP_Y s/.*/\tgap_y \= $DEFAULT_GAP_Y,/" "$config"
+                        # Gap-Y
+                        DEFAULT_GAP_Y_BINDKEY=$DEFAULT_GAP_Y
+                        if [[ $DEFAULT_POS_BINDKEY == *$DEFAULT_BAR_POS* ]] && [[ $DEFAULT_BAR_MODE == "dock" ]]; then
+                            DEFAULT_GAP_Y_BINDKEY=$(expr $DEFAULT_BAR_HEIGHT + $DEFAULT_GAP_Y)
+                        fi
+                        sed -i "$COL_GAP_Y s/.*/\tgap_y \= ${DEFAULT_GAP_Y_BINDKEY},/" "$config"
                         ;;
                 esac
             done

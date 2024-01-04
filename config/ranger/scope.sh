@@ -181,7 +181,7 @@ handle_image() {
             exit 1;;
 
         ## Font
-        application/font*|application/*opentype)
+        font/*|application/font*|application/*opentype)
             preview_png="/tmp/$(basename "${IMAGE_CACHE_PATH%.*}").png"
             if fontimage -o "${preview_png}" \
                          --pixelsize "120" \

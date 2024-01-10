@@ -39,6 +39,24 @@ But related to my favored workflow (i.e. keyboard-driven workflow).
         - `obsidian.vimrc`
             - Configuration file for vim-plugin in obisidian
 
+## fish
+- [Fish](https://fishshell.com/), friendly interactive shell
+    - `fish`:
+        - `config.fish`
+            - My minimal fish configuration file
+
+## ubuntu
+- [Ubuntu](https://ubuntu.com/), [Debian](https://www.debian.org/) based linux disto
+    - `ubuntu`:
+        - `conky`
+            - conky customized configurations for my ubuntu work laptop, specific network interface, OS logos, and etc.
+        - `picom`
+            - picom configuration for those distros that are not available for [picom (journaburg-fork)](https://github.com/jonaburg/picom)
+        - images: `*.png`
+            - Supplements for `~/.config/i3/share`
+        - scripts: `*.sh`
+            - Supplements for `~/.config/i3/script`
+
 # Reference
 - https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb
 - https://www.annepro.net/

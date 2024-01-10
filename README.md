@@ -256,9 +256,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with multiple monitor configurations, e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
-    - Modify monitor backlight level
-- __Redshift Mode (`[Ctrl]` + `[Alt]` + `[z]`)__
-    - Screen color temperature tuner
+    - Modify monitor backlight level, blue light filter
+        - __Redshift Mode (`[z]`)__
+            - Screen color temperature tuner, blue light filter
 - __Dunst Mode (`[Ctrl]` + `[Alt]` + `[n]`)__
     - Dunst actions, including pausing or resuming Dunst
 - __Open URL Mode (`[Ctrl]` + `[Alt]` + `[o]`)__
@@ -500,7 +500,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next existing workspace
     - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next free workspace (create one if it does not exist)
-    - `[Winkey]` + `[Ctrl]` + `[Tab]`: Go to next workspace back and forth
+    - `[Winkey]` + `[Ctrl]` + `[Tab]`: Go to the last visited workspace back and forth
     - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next existing workspace (create one if it does not exist)
 - __Swap Workspace (Relatively)__
     - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap current workspace with (prev)/next workspace (create one if it does not exist)
@@ -509,8 +509,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 #### Window
 - __List Windows__
     - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
-    - `[Alt]` + (`[Shift]`) + `[q]`: List all windows on all workspaces i.e. my customized GNOME-like keybinding
-    - `[Alt]` + `[Ctrl]` + `[Tab]`: List all windows in scratchpad
+    - `[Alt]` + (`[Shift]`) + `[q]`: List all windows on all workspaces with thumbnails i.e. my customized GNOME-like keybinding
 - __Send Window to Workspace (Absolutely)__
     - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
     - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
@@ -522,6 +521,7 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
     - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send window to prev/next workspace (create one if it does not exist)
 - __Manipulate Scratchpad__
+    - `[Ctrl]` + `[Alt]` + `[z]`: List all windows in scratchpad or send current focused window to scratchpad if there are no windows in scratchpad
     - `[Winkey]` + `[-/z]`: Send focused window to scratchpad (background workspace)
     - `[Winkey]` + `[Shift]` + `[-/z]`: Send all floating windows to scratchpad (background workspace)
     - `[Winkey]` + `[=/g]`: Bring the window in scratchpad to the foreground one by one

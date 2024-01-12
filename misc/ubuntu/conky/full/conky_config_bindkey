@@ -78,7 +78,7 @@ ${color2}open terminal ${alignr}${color1}[S]+([Shift])+[Enter]
 ${color2}system option ${alignr}${color1}[S]+[Shift]+[Esc]
 ${color2}reload/restart i3 ${alignr}${color1}[S]+([Shift])+[r]
 ${color2}app./exec. launcher ${alignr}${color1}[S]+([Shift])+[d]
-${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab]
+${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab/q]
 ${color2}bindkey cheatsheet ${alignr}${color1}[S]+[Shift]+[/]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Workspace / Window]${font}${voffset 5}
 ${color2}navigate to WS ${alignr}${color1}[S]+[(F)\#]
@@ -114,12 +114,11 @@ ${color2}mark mode ${alignr}${color1}[S]+[Shift]+[m]
 ${color2}display mode ${alignr}${color1}[S]+[Shift]+[x]
 ${color2}dunst mode ${alignr}${color1}[Ctrl]+[Alt]+[n]
 ${color2}gap mode ${alignr}${color1}[Ctrl]+[Alt]+[g]
-${color2}redshift mode ${alignr}${color1}[Ctrl]+[Alt]+[z]
 ${color2}resize mode ${alignr}${color1}[Ctrl]+[Alt]+[r]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
 ${color2}insert mode ${alignr}${color1}[Ctrl]+[Alt]+[i]
 ${voffset 5}${color3}${hr 2}${voffset 5}
 ${color1}${font DroidSanMono Nerd Font:bold:size=30}${alignc}${time %l}:${time %M} ${time %p}${font}
-${voffset 5}${color2}${font DroidSanMono Nerd Font:bold:size=12}${alignc}${time %A} ${time %B} ${time %e}, ${time %Y}${font}
+${voffset 5}${color2}${font DroidSanMono Nerd Font:bold:size=12}${alignc}${time %a}, ${time %b} ${time %e}, ${time %Y}${font}
 ${voffset 5}${color3}${hr 2}${voffset 8}
 ]]

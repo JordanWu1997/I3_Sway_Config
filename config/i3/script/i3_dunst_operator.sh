@@ -58,8 +58,9 @@ load_offset_and_text_alignment () {
     DEFAULT_BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print $3}' $I3_CONFIG | awk 'NR==1')
     DEFAULT_BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print $3}' $I3_CONFIG | awk 'NR==1')
     DEFAULT_BAR_POS=$(awk '$0~/default_i3bar_position/ {print $3}' $I3_CONFIG | awk 'NR==1')
-    DEFAULT_DUNST_OFFSET_Y=$(awk '$0~/default_dunst_offset_y/ {print $3}' $I3_CONFIG | awk 'NR==1')
-    DEFAULT_DUNST_OFFSET_X=$(awk '$0~/default_dunst_offset_x/ {print $3}' $I3_CONFIG | awk 'NR==1')
+    DEFAULT_INNER_GAP=$(awk '$0~/default_inner_gap/ {print $3}' $I3_CONFIG | awk 'NR==1')
+    DEFAULT_OUTER_GAP=$(awk '$0~/default_outer_gap/ {print $3}' $I3_CONFIG | awk 'NR==1')
+    DEFAULT_DUNST_OFFSET=$(expr ${DEFAULT_INNER_GAP} + ${DEFAULT_OUTER_GAP} + 15)
     DUNST_POS=$(awk '$0~/origin/' $DUNST_CONFIG | cut -d= -f 2 | cut -c 2-)
     DUNST_POS_Y=$(echo $DUNST_POS | cut -d- -f1)
     DUNST_POS_X=$(echo $DUNST_POS | cut -d- -f2)
@@ -80,12 +81,12 @@ load_offset_and_text_alignment () {
     # Dunst offset
     case ${DEFAULT_BAR_MODE}/${DEFAULT_BAR_POS}/${DUNST_POS} in
         dock/top/top-*|dock/bottom/bottom-*)
-            DUNST_OFFSET_Y=$(expr ${DEFAULT_DUNST_OFFSET_Y} + ${DEFAULT_BAR_HEIGHT})
-            DUNST_OFFSET_X=${DEFAULT_DUNST_OFFSET_X}
+            DUNST_OFFSET_Y=$(expr ${DEFAULT_DUNST_OFFSET} + ${DEFAULT_BAR_HEIGHT})
+            DUNST_OFFSET_X=${DEFAULT_DUNST_OFFSET}
             ;;
         *)
-            DUNST_OFFSET_Y=${DEFAULT_DUNST_OFFSET_Y}
-            DUNST_OFFSET_X=${DEFAULT_DUNST_OFFSET_X}
+            DUNST_OFFSET_Y=${DEFAULT_DUNST_OFFSET}
+            DUNST_OFFSET_X=${DEFAULT_DUNST_OFFSET}
     esac
     #
     COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_CONFIG | awk 'NR==1')

@@ -14,7 +14,7 @@ reload_i3bar () {
 
 reload_dunst () {
     # Dunst (notifier)
-    $I3_SCRIPT/i3_dunst_walcolor.sh reload_all
+    $I3_SCRIPT/i3_dunst_operator.sh reload_all
     notify-send -u low "Reload Mode" "Reload dunst (notifier)"
 }
 

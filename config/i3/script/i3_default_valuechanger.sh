@@ -28,7 +28,7 @@ COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $I3_CONFIG_FILE | awk 
 COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 COL_DUNST_POS=$(awk '$0~/origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-COL_DUNST_ALIGN=$(awk '$0~/alignment/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+COL_DUNST_ALIGN=$(awk '$0~/ alignment = / {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
 COL_CONKY_STARTUP=$(awk '$0~/default_conky_startup/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
@@ -162,27 +162,27 @@ case $CHANGE_ITEM in
         ;;
     "dunst_position")
         sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
-        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_xoffset")
         sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${NEW_DEFAULT_VALUE}x${DEFAULT_DUNST_YOFFSET}/" $DUNST_DIR/dunstrc
-        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_yoffset")
         sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DEFAULT_DUNST_XOFFSET}x${NEW_DEFAULT_VALUE}/" $DUNST_DIR/dunstrc
-        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_alignment")
         sed -i "$COL_DUNST_ALIGN s/.*/    alignment = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
-        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_fontsize")
         sed -i "$COL_DUNST_FONT s/.*/    font = \"$DEFAULT_FONT $NEW_DEFAULT_VALUE\"/" $DUNST_DIR/dunstrc
-        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_icon_position")
         sed -i "$COL_DUNST_ICON_POS s/.*/    icon_position = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
-        $I3_SCRIPT/i3_dunst_walcolor.sh reload
+        $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     *)
         show_wrong_usage_message

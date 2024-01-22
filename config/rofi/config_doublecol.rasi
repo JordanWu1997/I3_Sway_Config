@@ -1,0 +1,119 @@
+/*~/.config/rofi/config_singlecol.rasi*/
+
+configuration {
+
+    /*Enable modi*/
+    modi: "drun,run,window,windowcd";
+
+    /*Enable combined modi*/
+    combi-modi: "window,drun";
+
+    /*Font*/
+    font: "DroidSansMono Nerd Font Bold 16";
+
+    /*Show icons*/
+    show-icons: true;
+
+    /*Icon theme*/
+    icon-theme: "Papirus";
+
+    /*Border width*/
+    bw: 0;
+
+    /*Row height (unit: character)*/
+    eh: 1;
+
+    /*Margin between rows*/
+    line-margin: 2;
+
+    /*Separator between input and options*/
+    separator-style: "dash";
+
+    /*Hide scrollbar*/
+    hide-scrollbar: true;
+
+    /*Auto-select mode*/
+    auto-select: false;
+
+    /*Unmap default rofi shortcut*/
+    kb-mode-complete: "";
+    kb-row-select: "";
+    kb-custom-1: "";
+    kb-custom-2: "";
+    kb-custom-3: "";
+    kb-custom-4: "";
+    kb-custom-5: "";
+    kb-custom-6: "";
+    kb-custom-7: "";
+    kb-custom-8: "";
+    kb-custom-9: "";
+    kb-custom-10: "";
+
+    /*Key shortcut*/
+    kb-cancel: "Escape,Control+g,Control+c,Control+bracketleft";
+    kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+Shift+h";
+    kb-remove-to-eol: "Control+Shift+k";
+    kb-accept-entry: "!Alt+ISO_Left_Tab,!Alt-Tab,!Alt-Q,!Alt+q,Return,KP_Enter,Alt+space,Control+space";
+    kb-row-up: "Alt+ISO_Left_Tab,Alt-Q,Up,Alt+k,Control+k,Control+p";
+    kb-row-down: "Alt+Tab,Down,Alt+q,Alt+j,Control+j,Control+n";
+    kb-row-left: "Alt+h,Control+h";
+    kb-row-right: "Alt+l,Control+l";
+    kb-select-1: "Super+1,Alt+1";
+    kb-select-2: "Super+2,Alt+2";
+    kb-select-3: "Super+3,Alt+3";
+    kb-select-4: "Super+4,Alt+4";
+    kb-select-5: "Super+5,Alt+5";
+    kb-select-6: "Super+6,Alt+6";
+    kb-select-7: "Super+7,Alt+7";
+    kb-select-8: "Super+8,Alt+8";
+    kb-select-9: "Super+9,Alt+9";
+    kb-select-10: "Super+0,Alt+0";
+
+}
+
+@import "~/.cache/wal/colors-rofi-dark.rasi"
+
+#listview {
+
+    /*Number of lines (no effect when fullscreen is enable)*/
+    /*lines: 11;*/
+
+    /*Number of columns*/
+    columns: 2;
+
+}
+
+#window {
+
+    /*Fullscreen*/
+    fullscreen: true;
+
+    /*Padding (empty region around input pallette, preset in wal)*/
+    /*padding: 300;*/
+
+    /*Width (no effect when fullscreen is enable, preset in wal)*/
+    /*width: 1200;*/
+    /*width: 63%;*/
+
+}
+
+#inputbar {
+
+    /*Inputbar component*/
+    children: [prompt,textbox-prompt-colon,entry,num-filtered-rows];
+
+}
+
+#scrollbar {
+
+    /*Scrollbar width*/
+    handle-width: 0px;
+
+}
+
+#element-icon {
+
+    /*Size of icon*/
+    size: 2.0ch;
+
+}

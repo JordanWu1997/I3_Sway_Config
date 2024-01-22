@@ -20,6 +20,10 @@ show_help_message () {
     echo "  [load_offset]: Load x, y offset to dunst"
     echo "  [reload]: Reload dunst"
     echo "  [reload_all]: Load wal color and border width to dunst and reload dunst"
+    echo "  [enable_dunst_logger]: Enable dunst logger"
+    echo "  [disable_dunst_logger]: Disable dunst logger"
+    echo "  [show_dunst_logger_status]: Show dunst logger status"
+    echo "  [show_dunst_logger_history]: Show dunst logger history"
 }
 
 load_wal_border_width () {
@@ -103,6 +107,35 @@ reload_dunst () {
     notify-send -u low "Dunst" "Dunst is up and running"
 }
 
+enable_dunst_logger () {
+    i3-msg exec $I3_SCRIPT/i3_notify_logger.sh $HOME/.config/dunst/log.txt
+}
+
+disable_dunst_logger () {
+    ps -aux | \
+        grep "[bash] $HOME/.config/i3/script/i3_notify_logger.sh" | \
+        awk '{print $2}' | \
+        xargs -I {} kill {}
+}
+
+show_dunst_logger_status () {
+    if ps -aux | grep "[bash] $HOME/.config/i3/script/i3_notify_logger.sh"; then
+        notify-send "Dunst" "Dunst logger is running"
+    else
+        notify-send "Dunst" "Dunst logger is NOT running"
+    fi
+}
+
+show_dunst_logger_history () {
+    tac ~/.config/dunst/log.txt | \
+        sed 's/^string /\n/' | \
+        sed 's/,string/,/g' | \
+        sed 's/", /"\n/g' | \
+        sed 's/^---/\n---/' | \
+        rofi -dmenu -config $HOME/.config/rofi/config_doublecol.rasi -p "Notification History" | \
+        xargs -I {} notify-send -u low logger-history {}
+}
+
 dunst_operation () {
     case $1 in
         "load_wal_color")
@@ -122,6 +155,19 @@ dunst_operation () {
             load_wal_border_width
             load_offset_and_text_alignment
             reload_dunst
+            ;;
+        "enable_dunst_logger")
+            disable_dunst_logger
+            enable_dunst_logger
+            ;;
+        "disable_dunst_logger")
+            disable_dunst_logger
+            ;;
+        "show_dunst_logger_status")
+            show_dunst_logger_status
+            ;;
+        "show_dunst_logger_history")
+            show_dunst_logger_history
             ;;
         *)
             show_wrong_usage_message

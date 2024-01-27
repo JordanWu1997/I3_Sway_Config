@@ -271,7 +271,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __Player Mode (`[Ctrl]` + `[Alt]` + `[p]`)__
-    - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), player, vlc
+    - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), player, mpv and vlc
 - __Spotifyd Mode (`[Ctrl]` + `[Alt]` + `[s]`)__
     - Spotifyd control (e.g. enable, disable, reload) for spotifyd
 - __Volume Mode (`[Ctrl]` + `[Alt]` + `[v]`)__

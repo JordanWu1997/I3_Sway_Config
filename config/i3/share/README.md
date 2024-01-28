@@ -57,5 +57,6 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 [<img src="./lightbulb_icon.png" width="250"/>](./lightbulb_icon.png)
 [<img src="./mute_icon.png" width="250"/>](./mute_icon.png)
 [<img src="./volume_icon.png" width="250"/>](./volume_icon.png)
+[<img src="./video_player.png" width="250"/>](./video_player.png)
 
 </details>

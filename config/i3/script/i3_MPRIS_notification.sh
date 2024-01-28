@@ -18,17 +18,18 @@ show_help_message () {
 }
 
 MPRIS_notification () {
+    ICON="$HOME/.config/i3/share/video_player.png"
     case $1 in
         "playing")
             PLAYING=$(playerctl metadata --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}")
-            notify-send -u low "MPRIS: Playing" "$PLAYING"
+            notify-send -u low "MPRIS: Playing" "$PLAYING" --icon=${ICON}
             ;;
         "playing_all")
             PLAYING=$(playerctl metadata -a --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}\n")
-            notify-send -u low "MPRIS: All Playing" "$PLAYING"
+            notify-send -u low "MPRIS: All Playing" "$PLAYING" --icon=${ICON}
             ;;
         "player_all")
-            notify-send -u low "MPRIS: Active Players" "$(playerctl --list-all)"
+            notify-send -u low "MPRIS: Active Players" "$(playerctl --list-all)" --icon=${ICON}
             ;;
         *)
             show_wrong_usage_message

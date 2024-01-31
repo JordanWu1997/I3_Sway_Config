@@ -13,7 +13,13 @@ class SocketClosedException(Exception):
     pass
 
 
-MARKS = '1234567890qwertyuiopasdfghjklzxcvbnm'
+# MARKS = '1234567890qwertyuiopasdfghjklzxcvbnm'
+MARKS = ''
+with open(
+        os.path.expanduser('~') + '/.config/i3/share/i3_automark_list.txt',
+        'r') as automark_txt:
+    for mark in automark_txt.readlines():
+        MARKS += mark.strip('\n')
 
 COMMANDS = [
     'run_command',
@@ -83,11 +89,11 @@ def add_all_marks(sock, marks):
 
     # # Sort workspace in x-dir (left to right) and  y-dir (top to bottom)
     # workspaces = sorted(send_msg(sock, 'get_workspaces'),
-                        # key=lambda w: (w['rect']['x'], w['rect']['y']))
+    # key=lambda w: (w['rect']['x'], w['rect']['y']))
 
     # Sort workspace in y-dir (top to bottom) and x-dir (left to right)
     # workspaces = sorted(send_msg(sock, 'get_workspaces'),
-                        # key=lambda w: (w['rect']['y'], w['rect']['x']))
+    # key=lambda w: (w['rect']['y'], w['rect']['x']))
 
     # Sort workspace in workspace name (A1 -> A2 -> ... -> B1 -> ...)
     workspaces = sorted(

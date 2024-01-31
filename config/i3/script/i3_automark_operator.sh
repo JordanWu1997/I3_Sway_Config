@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 # Automark marks
-ALL_AUTOMARK_LIST=(\
-    1 2 3 4 5 6 7 8 9 0 \
-    q w e r t y u i o p \
-    a s d f g h j k l \
-    z x c v b n m)
+#ALL_AUTOMARK_LIST=(\
+    #1 2 3 4 5 6 7 8 9 0 \
+    #q w e r t y u i o p \
+    #a s d f g h j k l \
+    #z x c v b n m)
+readarray -t ALL_AUTOMARK_LIST < "$HOME/.config/i3/share/i3_automark_list.txt"
 
 # Wrong message
 show_wrong_usage_message () {
@@ -51,11 +52,11 @@ cycle_mark_focus () {
             for MARK_INDEX in ${MARK_INDEX_IN_ALL[@]}; do
                 if (( ${MARK_INDEX} > ${MAX_INDEX_IN_ALL} )); then
                     MAX_INDEX_IN_ALL=${MARK_INDEX}
-                    MAX_MARK=${ALL_AUTOMARK_LIST[${MAX_INDEX_IN_ALL}]}
                 fi
             done
+            MAX_MARK=${ALL_AUTOMARK_LIST[${MAX_INDEX_IN_ALL}]}
             # Cycle back when reach the maximal existing marks
-            if (( $(( ${MAX_MARK} == ${CURRENT_MARK} )) )); then
+            if [[ ${MAX_MARK} = ${CURRENT_MARK} ]]; then
                 NEXT_MARK_INDEX=0
             else
                 NEXT_MARK_INDEX=$(( ${CURRENT_MARK_INDEX_IN_ALL} + 1 ))
@@ -79,7 +80,7 @@ cycle_mark_focus () {
                 fi
             done
             # Cycle back when reach the minimal existing marks
-            if (( $CURRENT_MARK == $MIN_MARK)); then
+            if [[ ${CURRENT_MARK} = ${MIN_MARK} ]]; then
                 NEXT_MARK_INDEX=${MAX_INDEX_IN_ALL}
             else
                 NEXT_MARK_INDEX=$(( ${CURRENT_MARK_INDEX_IN_ALL} - 1 ))

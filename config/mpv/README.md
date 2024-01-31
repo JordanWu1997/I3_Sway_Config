@@ -45,13 +45,14 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ...
     ```
 - Keybindings
-    | Key Mapping         | Function                       | Description                     | Note |
-    | :-----------------: | :----------------------------: | :-----------------------------: | :--: |
-    | `[q]`               | Close file-browser             |                                 |      |
-    | `[j/k]`             | Scroll down/up                 |                                 |      |
-    | `[Enter]`           | Play file                      |                                 |      |
-    | `[Space]`           | Toggle select file             | Use [j/k] to move selected file |      |
-    | `[d]`               | Remove file from playlist      |                                 |      |
+    | Key Mapping         | Function                        | Description                        | Note |
+    | :-----------------: | :----------------------------:  | :--------------------------------: | :--: |
+    | `[q]`               | Close file-browser              |                                    |      |
+    | `[j/k]`             | Scroll down/up                  |                                    |      |
+    | `[Enter]`           | Play file                       |                                    |      |
+    | `[Space]`           | Toggle select file              | Use [j/k] to move selected file    |      |
+    | `[d]`               | Remove file from playlist       |                                    |      |
+    | `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]` |      |
 
 ### [mpv-file-browser](https://github.com/CogentRedTester/mpv-file-browser)
 - Modify keybindings in `$HOME/.config/mpv/scripts/mpv-file-browser/modules/keybinds.lua`

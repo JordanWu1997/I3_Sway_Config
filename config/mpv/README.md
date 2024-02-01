@@ -16,6 +16,7 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     | `[Ctrl/None/Alt]`+`[j/l]`        | Seek 1/10/60 sec backward/forward                  |             |      |
     | `[Space/k]`                      | Pause-Play                                         |             |      |
     | `[,/.]`                          | Previous/Next frame                                |             |      |
+    | `[[/]/Backspace]`                | Decrease/Increase/Reset play speed                 |             |      |
     | `[None/Shift/Alt]`+`[;]`         | Toggle A-B/current_file/current_playlist loop      |             |      |
     | `[Alt]`+`[Shift]`+`[h/j/k/l]`    | Pan left/down/up/right                             |             |      |
     | `[-/=/+]`                        | Zoom in/out/back_to_original                       |             |      |
@@ -24,12 +25,12 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     | `[t]`                            | Seek to specific time                              |             |      |
     | `[g]`                            | Toggle aspect ratio                                |             |      |
     | `[f]`                            | Toggle full-screen mode                            |             |      |
+    | `[Ctrl]`+(`[Shift]`)+`[r]`       | Rotate (anti-)clockwisely ,                        |             |      |
     | `[None/Shift/Ctrl]`+`[s]`        | Video_with_sub/Video_without_sub/Window screenshot |             |      |
     | `[Shift]`+`[i]`                  | Toggle MPV video information                       |             |      |
     | `[Shift]`+`[o]`                  | Toggle MPV on-screen-display (OSD)                 |             |      |
     | `[Shift]`+`[Enter]`              | Open playlist                                      |             |      |
-    | `[Backspace]`                    | Remove selected files from playlist                |             |      |
-    | `[Ctrl]`+`[o]`                   | Open `mpv-file-browser`                            |             |      |
+    | `[Ctrl]`+`[o]`   | Open `mpv-file-browser` |   |   |
 
 ### [playlistmanger](https://github.com/jonniek/mpv-playlistmanager)
 - Modify keybindings in `$HOME/.config/mpv/script-opts/playlistmanager.conf`

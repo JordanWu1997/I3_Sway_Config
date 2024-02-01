@@ -14,6 +14,7 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     | :------------------------------: | :------------------------------------------------: | :---------: | :--: |
     | `[Ctrl/None/Alt]`+`[Left/Right]` | Seek 1/10/60 sec backward/forward                  |             |      |
     | `[Ctrl/None/Alt]`+`[j/l]`        | Seek 1/10/60 sec backward/forward                  |             |      |
+    | `[Alt]` + `[1-9/0] `             | Seek to 10%-90%/0% in current playing              |             |      |
     | `[Space/k]`                      | Pause-Play                                         |             |      |
     | `[,/.]`                          | Previous/Next frame                                |             |      |
     | `[[/]/Backspace]`                | Decrease/Increase/Reset play speed                 |             |      |
@@ -30,7 +31,7 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     | `[Shift]`+`[i]`                  | Toggle MPV video information                       |             |      |
     | `[Shift]`+`[o]`                  | Toggle MPV on-screen-display (OSD)                 |             |      |
     | `[Shift]`+`[Enter]`              | Open playlist                                      |             |      |
-    | `[Ctrl]`+`[o]`   | Open `mpv-file-browser` |   |   |
+    | `[Ctrl]`+`[o]`                   | Open `mpv-file-browser`                            |             |      |
 
 ### [playlistmanger](https://github.com/jonniek/mpv-playlistmanager)
 - Modify keybindings in `$HOME/.config/mpv/script-opts/playlistmanager.conf`
@@ -46,14 +47,15 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ...
     ```
 - Keybindings
-    | Key Mapping         | Function                        | Description                        | Note |
-    | :-----------------: | :----------------------------:  | :--------------------------------: | :--: |
-    | `[q]`               | Close file-browser              |                                    |      |
-    | `[j/k]`             | Scroll down/up                  |                                    |      |
-    | `[Enter]`           | Play file                       |                                    |      |
-    | `[Space]`           | Toggle select file              | Use [j/k] to move selected file    |      |
-    | `[d]`               | Remove file from playlist       |                                    |      |
-    | `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]` |      |
+    | Key Mapping         | Function                        | Description                                | Note |
+    | :-----------------: | :----------------------------:  | :----------------------------------------: | :--: |
+    | `[q]`               | Close file-browser              |                                            |      |
+    | `[j/k]`             | Scroll down/up                  |                                            |      |
+    | `[Enter]`           | Play file                       |                                            |      |
+    | `[Space]`           | Toggle select file              | Use [j/k] to move selected file            |      |
+    | `[d]`               | Remove file from playlist       |                                            |      |
+    | `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |      |
+    | `[Alt]+[p]`         | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |      |
 
 ### [mpv-file-browser](https://github.com/CogentRedTester/mpv-file-browser)
 - Modify keybindings in `$HOME/.config/mpv/scripts/mpv-file-browser/modules/keybinds.lua`
@@ -92,6 +94,8 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 - https://github.com/stax76/awesome-mpv (MPV plug-in/settings collections)
 - https://mpv.io/manual/master/#script-location (MPV scripts)
 - https://github.com/Tsubajashi/mpv-settings (other MPV user settings)
+- https://github.com/CogentRedTester/mpv-user-input/tree/master (MPV user input plug-in)
 - https://github.com/CogentRedTester/mpv-file-browser (MPV file-browser plug-in)
 - https://github.com/po5/thumbfast (MPV thumbnail previewr plug-in)
 - https://github.com/jonniek/mpv-playlistmanager (MPV playlist plug-in)
+- https://github.com/hacel/recent (MPV recent file plug-in)

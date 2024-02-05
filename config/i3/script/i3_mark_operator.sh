@@ -5,11 +5,12 @@ ROFI_SELECTOR_CONFIG="$HOME/.config/rofi/config_i3mark.rasi"
 # Mark input list for rofi
 ROFI_AUTOMARK_INPUT_TEXT="$HOME/.config/rofi/i3_automark_list.txt"
 # Automark marks
-ALL_AUTOMARK_LIST=(\
-    1 2 3 4 5 6 7 8 9 0 \
-    q w e r t y u i o p \
-    a s d f g h j k l \
-    z x c v b n m)
+#ALL_AUTOMARK_LIST=(\
+    #1 2 3 4 5 6 7 8 9 0 \
+    #q w e r t y u i o p \
+    #a s d f g h j k l \
+    #z x c v b n m)
+readarray -t ALL_AUTOMARK_LIST < "$HOME/.config/i3/share/i3_automark_list.txt"
 
 # Wrong message
 show_wrong_usage_message () {

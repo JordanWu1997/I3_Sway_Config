@@ -84,6 +84,12 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     | `[j/k]`             | Scroll down/up                 |             |      |
     | `[Shift]`+`[Enter]` | Add selected files to playlist |             |      |
 
+### [mpv-webm](https://github.com/ekisu/mpv-webm)
+- Keybindings
+    | Key Mapping         | Function                       | Description | Note |
+    | :-----------------: | :----------------------------: | :---------: | :--: |
+    | `[Shift]`+`[w]`     | Video clipper (in webm format) |             |      |
+
 ## Miscellaneous
 - MPV on linux has a weird hidden title bar when running picom
     - You need to set `frame-opacity = 1.0` in `$HOME/.config/picom/picom.conf` to eliminate it.
@@ -99,3 +105,4 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 - https://github.com/po5/thumbfast (MPV thumbnail previewr plug-in)
 - https://github.com/jonniek/mpv-playlistmanager (MPV playlist plug-in)
 - https://github.com/hacel/recent (MPV recent file plug-in)
+- https://github.com/ekisu/mpv-webm (MPV video clipper plug-in)

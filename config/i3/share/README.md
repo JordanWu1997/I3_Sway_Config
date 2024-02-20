@@ -57,6 +57,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 <details open>
 
+[<img src="./keyboard.png" width="250"/>](./keyboard.png)
 [<img src="./language.png" width="250"/>](./language.png)
 [<img src="./lightbulb_icon.png" width="250"/>](./lightbulb_icon.png)
 [<img src="./monitor.png" width="250"/>](./monitor.png)
@@ -67,5 +68,6 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 [<img src="./reload.png" width="250"/>](./reload.png)
 [<img src="./video_player.png" width="250"/>](./video_player.png)
 [<img src="./volume_icon.png" width="250"/>](./volume_icon.png)
+[<img src="./wifi-connection.png" width="250"/>](./wifi-connection.png)
 
 </details>

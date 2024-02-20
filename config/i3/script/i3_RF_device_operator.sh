@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ICON="$HOME/.config/i3/share/wifi-connection.png"
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -25,7 +27,7 @@ RF_device_operation () {
             RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
             RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
             rfkill unblock ${RF_ID}
-            notify-send -u low "${RF_TYPE} Device" "${RF_NAME} is enabled"
+            notify-send -u low "${RF_TYPE} Device" "${RF_NAME} is enabled" --icon=${ICON}
             ;;
         'disable')
             RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -p "Disable RF Device:")
@@ -33,7 +35,7 @@ RF_device_operation () {
             RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
             RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
             rfkill block ${RF_ID}
-            notify-send -u low -a "${RF_TYPE} Device" "${RF_NAME} is disabled"
+            notify-send -u low -a "${RF_TYPE} Device" "${RF_NAME} is disabled" --icon=${ICON}
             ;;
         *)
             show_wrong_usage_message

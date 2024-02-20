@@ -84,6 +84,7 @@ bar_operation () {
             i3-msg exec 'killall i3bar && sleep 0.5'
             i3-msg exec 'i3bar -b bar_status && sleep 0.5'
             i3-msg exec 'i3bar -b bar_mode'
+            notify-send -u low "Bar Mode" "Reload i3bar" --icon="$HOME/.config/i3/share/reload.png"
             ;;
         *)
             show_wrong_usage_message

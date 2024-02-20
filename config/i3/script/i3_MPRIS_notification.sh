@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ICON="$HOME/.config/i3/share/video_player.png"
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -18,7 +20,6 @@ show_help_message () {
 }
 
 MPRIS_notification () {
-    ICON="$HOME/.config/i3/share/video_player.png"
     case $1 in
         "playing")
             PLAYING=$(playerctl metadata --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}")

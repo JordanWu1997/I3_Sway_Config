@@ -6,6 +6,7 @@ DEFAULT_I3_WALLPAPER="$HOME/.config/i3/share/default_i3_wallpaper.png"
 VARIETY_INFO="$HOME/.config/variety/wallpaper/wallpaper.jpg.txt"
 VARIETY_WALLPAPER="$(cat $VARIETY_INFO)"
 FEH_WALLPAPER=$(awk -F\' 'NR==2 {print $2}' $HOME/.fehbg | xargs)
+ICON="/home/jordankhwu/.config/i3/share/picture.png"
 
 # Wrong message
 show_wrong_usage_message () {
@@ -45,14 +46,14 @@ wallpaper_operation () {
                         rm -f "$DEFAULT_WALLPAPER"
                         cp "$VARIETY_WALLPAPER" "$DEFAULT_WALLPAPER"
                     else
-                        notify-send -u low "Variety Mode" "Already saved as default wallpaper"
+                        notify-send -u low "Variety Mode" "Already saved as default wallpaper" --icon=${ICON}
                     fi
                     ;;
                 "save_current")
                     cp "$VARIETY_WALLPAPER" "$WALLPAPERV"
                     ;;
                 "show_current")
-                    notify-send -u low "Variety Mode" "Current variety: $(echo $VARIETY_WALLPAPER | rev | cut -d\/ -f1 | rev)"
+                    notify-send -u low "Variety Mode" "Current variety: $(echo $VARIETY_WALLPAPER | rev | cut -d\/ -f1 | rev)" --icon=${ICON}
                     ;;
                 *)
                     show_wrong_usage_message
@@ -69,14 +70,14 @@ wallpaper_operation () {
                         rm -f "$DEFAULT_WALLPAPER"
                         cp "$FEH_WALLPAPER" "$DEFAULT_WALLPAPER"
                     else
-                        notify-send -u low "Wallpaper" "Already saved as default wallpaper"
+                        notify-send -u low "Wallpaper" "Already saved as default wallpaper" --icon=${ICON}
                     fi
                     ;;
                 "save_current")
                     cp "$FEH_WALLPAPER" "$WALLPAPERF"
                     ;;
                 "show_current")
-                    notify-send -u low "Wallpaper Mode" "Current feh: $(echo $FEH_WALLPAPER | rev | cut -d\/ -f1 | rev)"
+                    notify-send -u low "Wallpaper Mode" "Current feh: $(echo $FEH_WALLPAPER | rev | cut -d\/ -f1 | rev)" --icon=${ICON}
                     ;;
                 *)
                     show_wrong_usage_message

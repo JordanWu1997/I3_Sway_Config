@@ -8,6 +8,7 @@ HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
 HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
 HDMI1_HEIGHT=$(xrandr | awk -v var=$HDMI1_HEIGHT_ID '$1~/HDMI1/ {print $var}')
 HDMI1_WIDTH=$(xrandr | awk -v var=$HDMI1_WIDTH_ID '$1~/HDMI1/ {print $var}')
+ICON="$HOME/.config/i3/share/monitor.png"
 
 # Wrong message
 show_wrong_usage_message () {
@@ -78,7 +79,7 @@ auto_adjust () {
     if [ $HDMI1_STATUS == 'connected' ]; then
         # IOA 24': 520mm x 290mm
         if [ $HDMI1_WIDTH == "520mm" ] && [ $HDMI1_HEIGHT == "290mm" ]; then
-            notify-send -u low "Set Display Automatically" "IOA 24' connected"
+            notify-send -u low "Set Display Automatically" "IOA 24' connected" --icon=${ICON}
             # Adjust eDP1 & HDMI1
             HDMI1_extend; eDP1_shrink
             # Locate eDP1 & HDMI1
@@ -87,7 +88,7 @@ auto_adjust () {
                 --output HDMI1 --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # ACER 27': 600mm x 340mm
         elif [ $HDMI1_WIDTH == "600mm" ] && [ $HDMI1_HEIGHT == "340mm" ]; then
-            notify-send -u low "Set Display Automatically" "ACER 27' connected"
+            notify-send -u low "Set Display Automatically" "ACER 27' connected" --icon=${ICON}
             # Adjust eDP1
             eDP1_shrink
             # Locate eDP1 & HDMI1
@@ -96,7 +97,7 @@ auto_adjust () {
                 --output HDMI1 --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # Rent: 0mm x 0mm (unknown)
         elif [ $HDMI1_WIDTH == "0mm" ] && [ $HDMI1_HEIGHT == "0mm" ]; then
-            notify-send -u low "Set Display Automatically" "Rent unknown connected"
+            notify-send -u low "Set Display Automatically" "Rent unknown connected" --icon=${ICON}
             # Adjust eDP1 & HDMI1
             HDMI1_extend; eDP1_shrink
             # Locate eDP1 & HDMI1 (extented)
@@ -105,12 +106,12 @@ auto_adjust () {
                 --output HDMI1 --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # Other HDMI:
         else
-            notify-send -u low "Set Display Automatically" "External HDMI1 connected"
+            notify-send -u low "Set Display Automatically" "External HDMI1 connected" --icon=${ICON}
             xrandr --output HDMI1 --auto --primary --right-of eDP1
         fi
     # Laptop display only
     else
-        notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected"
+        notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected" --icon=${ICON}
         xrandr --output eDP1 --mode 1920x1080 --primary --output HDMI1 --off
     fi
 }
@@ -118,45 +119,45 @@ auto_adjust () {
 display_operation () {
     case $1 in
         "eDP1_only" )
-            notify-send -u low "Set Display" "Activate eDP1 only"
+            notify-send -u low "Set Display" "Activate eDP1 only" --icon=${ICON}
             xrandr --output HDMI1 --off --output eDP1 --auto --primary
             ;;
         "HDMI1_only" )
-            notify-send -u low "Set Display" "Activate HDMI1 only"
+            notify-send -u low "Set Display" "Activate HDMI1 only" --icon=${ICON}
             xrandr --output eDP1 --off --output HDMI1 --auto --primary
             ;;
         "eDP1_HDMI1_joint" )
-            notify-send -u low "Set Display" "Activate HDMI1 joint mode"
+            notify-send -u low "Set Display" "Activate HDMI1 joint mode" --icon=${ICON}
             xrandr --output eDP1 --auto --output HDMI1 --auto --primary --right-of eDP1
             ;;
         "eDP1_HDMI1_mirror" )
-            notify-send -u low "Set Display" "Activate HDMI1 mirror mode"
+            notify-send -u low "Set Display" "Activate HDMI1 mirror mode" --icon=${ICON}
             xrandr --output eDP1 --auto --output HDMI1 --auto --primary --same-as eDP1
             ;;
         "HDMI1_extend" )
-            notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200)"
+            notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200)" --icon=${ICON}
             HDMI1_extend
             xrandr --output HDMI1 --mode "1920x1200_50.00"
             ;;
         "HDMI1_default" )
-            notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)"
+            notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)" --icon=${ICON}
             xrandr --output HDMI1 --mode "1920x1080"
             ;;
         "eDP1_shrink" )
-            notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)"
+            notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)" --icon=${ICON}
             eDP1_shrink
             xrandr --output eDP1 --mode "1440x810_60.00"
             ;;
         "eDP1_default" )
-            notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)"
+            notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)" --icon=${ICON}
             xrandr --output eDP1 --mode "1920x1080"
             ;;
         "HDMI1_primary" )
-            notify-send -u low "Set Display" "Set HDMI1 as primary display"
+            notify-send -u low "Set Display" "Set HDMI1 as primary display" --icon=${ICON}
             xrandr --output HDMI1 --primary
             ;;
         "eDP1_primary" )
-            notify-send -u low "Set Display" "Set eDP1 as primary display"
+            notify-send -u low "Set Display" "Set eDP1 as primary display" --icon=${ICON}
             xrandr --output eDP1 --primary
             ;;
         *)

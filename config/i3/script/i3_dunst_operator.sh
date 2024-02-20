@@ -2,6 +2,7 @@
 
 DUNST_CONFIG="$HOME/.config/dunst/dunstrc"
 I3_CONFIG="$HOME/.config/i3/config"
+ICON="/home/jordankhwu/.config/i3/share/notification.png"
 
 # Wrong message
 show_wrong_usage_message () {
@@ -104,7 +105,7 @@ reload_dunst () {
     pidof dunst && killall dunst
     dunst > /dev/null 2>&1 &
     sleep 1
-    notify-send -u low "Dunst" "Dunst is up and running"
+    notify-send -u low "Dunst" "Dunst is up and running" --icon=${ICON}
 }
 
 enable_dunst_logger () {
@@ -120,9 +121,9 @@ disable_dunst_logger () {
 
 show_dunst_logger_status () {
     if ps -aux | grep "[bash] $HOME/.config/i3/script/i3_notify_logger.sh"; then
-        notify-send "Dunst" "Dunst logger is running"
+        notify-send "Dunst" "Dunst logger is running" --icon=${ICON}
     else
-        notify-send "Dunst" "Dunst logger is NOT running"
+        notify-send "Dunst" "Dunst logger is NOT running" --icon=${ICON}
     fi
 }
 
@@ -133,7 +134,7 @@ show_dunst_logger_history () {
         sed 's/", /"\n/g' | \
         sed 's/^---/\n---/' | \
         rofi -dmenu -config $HOME/.config/rofi/config_doublecol.rasi -p "Notification History" | \
-        xargs -I {} notify-send -u low logger-history {}
+        xargs -I {} notify-send -u low logger-history {} --icon=${ICON}
 }
 
 dunst_operation () {

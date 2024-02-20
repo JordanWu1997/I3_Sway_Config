@@ -6,14 +6,15 @@
 EN_IBUS="xkb:us::eng"
 CH_IBUS="chewing"
 INPUT_ENGINE=`ibus engine`
+ICON="$HOME/.config/i3/share/language.png"
 
 case $INPUT_ENGINE in
     $EN_IBUS)
-        notify-send "[ibus-CH]" "Chinese (chewing)"
+        notify-send "[ibus-CH]" "Chinese (chewing)" --icon=${ICON}
         ibus engine $CH_IBUS
         ;;
     $CH_IBUS)
-        notify-send "[ibus-EN]" "English (xkb:us::eng)"
+        notify-send "[ibus-EN]" "English (xkb:us::eng)" --icon=${ICON}
         ibus engine $EN_IBUS
         ;;
 esac

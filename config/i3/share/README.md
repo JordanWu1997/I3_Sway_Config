@@ -52,11 +52,20 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 </details open>
 
 ### Icons
+- Resources
+    - https://www.flaticon.com/
+
 <details open>
 
+[<img src="./language.png" width="250"/>](./language.png)
 [<img src="./lightbulb_icon.png" width="250"/>](./lightbulb_icon.png)
+[<img src="./monitor.png" width="250"/>](./monitor.png)
 [<img src="./mute_icon.png" width="250"/>](./mute_icon.png)
-[<img src="./volume_icon.png" width="250"/>](./volume_icon.png)
+[<img src="./notification.png" width="250"/>](./notification.png)
+[<img src="./paint_palette.png" width="250"/>](./paint_palette.png)
+[<img src="./picture.png" width="250"/>](./picture.png)
+[<img src="./reload.png" width="250"/>](./reload.png)
 [<img src="./video_player.png" width="250"/>](./video_player.png)
+[<img src="./volume_icon.png" width="250"/>](./volume_icon.png)
 
 </details>

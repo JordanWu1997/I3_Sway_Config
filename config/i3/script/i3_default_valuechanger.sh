@@ -193,4 +193,5 @@ case $CHANGE_ITEM in
 esac
 
 # Send notification
-notify-send -u low "i3 Default Value Changer" "Default $1 is set to $NEW_DEFAULT_VALUE"
+ICON="$HOME/.config/i3/share/32x32/list.png"
+notify-send -u low "i3 Default Value Changer" "Default $1 is set to $NEW_DEFAULT_VALUE" --icon="${ICON}"

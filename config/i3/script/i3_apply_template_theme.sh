@@ -10,6 +10,7 @@ FILE_NAME_LIST=( \
     colors-kitty.conf \
     colors-rofi-dark.rasi \
 )
+ICON="$HOME/.config/i3/share/32x32/paint_palette.png"
 
 show_available_theme_templates () {
     echo Available Templates:
@@ -47,11 +48,11 @@ if [ -z $1 ]; then
     THEME=$(command ls -D ${THEME_TEMPLATE_DIR}/ | rofi -dmenu -i -p "Theme Templates")
     replace_all_wal_color_files ${THEME}
     reload_after_replacement
-    notify-send -u low "Template Theme" "Theme ${THEME} is applied"
+    notify-send -u low "Template Theme" "Theme ${THEME} is applied" --icon="${ICON}"
 else
     if verify_input_template $1; then
         replace_all_wal_color_files $1
         reload_after_replacement
-        notify-send -u low "Template Theme" "Theme $1 is applied"
+        notify-send -u low "Template Theme" "Theme $1 is applied" --icon="${ICON}"
     fi
 fi

@@ -104,18 +104,19 @@ cursor_follow_focus () {
 }
 
 automark_operation () {
+    ICON="$HOME/.config/i3/share/32x32/abc.png"
     case $1 in
         "enable")
-            notify-send -u "low" "i3 Automark" "i3 automark is enabled"
+            notify-send -u "low" "i3 Automark" "i3 automark is enabled" --icon="${ICON}"
             python3 $I3_SCRIPT/i3_automark_daemon.py
             ;;
         "disable")
-            notify-send -u "low" "i3 Automark" "i3 automark is disabled"
+            notify-send -u "low" "i3 Automark" "i3 automark is disabled" --icon="${ICON}"
             ps -aux | grep "python3 ${I3_SCRIPT}/i3_automark_daemon.py" | \
                 awk 'NR==1 {print $2}' | xargs -I {} kill {}
             ;;
         "reload")
-            notify-send -u "low" "i3 Automark" "Reload i3 automark"
+            notify-send -u "low" "i3 Automark" "Reload i3 automark" --icon="${ICON}"
             ps -aux | grep "python3 $I3_SCRIPT/i3_automark_daemon.py" | \
                 awk 'NR==1 {print $2}' | xargs -I {} kill {}
             python3 $I3_SCRIPT/i3_automark_daemon.py

@@ -3,7 +3,7 @@
 # Wallpaper
 DEFAULT_WALLPAPER="$HOME/.config/i3/share/default_wallpaper"
 DEFAULT_I3_WALLPAPER="$HOME/.config/i3/share/default_i3_wallpaper.png"
-ICON="$HOME/.config/i3/share/picture.png"
+ICON="$HOME/.config/i3/share/32x32/picture.png"
 ROFI_SELECTOR_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
 
 # Wrong message

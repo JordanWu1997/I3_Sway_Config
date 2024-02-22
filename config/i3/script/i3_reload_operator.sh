@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ICON="$HOME/.config/i3/share/reload.png"
+ICON="$HOME/.config/i3/share/32x32/reload.png"
 
 reload_conky () {
     # Conky (system monitor & shortcut table)
@@ -34,13 +34,30 @@ reload_zathura () {
 
 # Main reload pipline
 reload_pipeline () {
-    # Reload programs for new color theme
-    reload_dunst
-    reload_conky
-    reload_i3bar
-    reload_zathura
-    reload_vis
+    case $1 in
+        'all')
+            reload_dunst
+            reload_conky
+            reload_i3bar
+            reload_zathura
+            reload_vis
+            ;;
+        'conky')
+            reload_conky
+            ;;
+        'dunst')
+            reload_dunst
+            ;;
+        'i3bar')
+            reload_i3_bar
+            ;;
+        'zathura')
+            reload_zathura
+            ;;
+        'vis')
+            reload_vis
+    esac
 }
 
 # Main
-reload_pipeline
+reload_pipeline $@

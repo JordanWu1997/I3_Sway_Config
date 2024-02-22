@@ -6,6 +6,7 @@ COL_UNCLUTTER=$(awk '$0~/exec --no-startup-id unclutter/ {print NR}' ${STARTUP_C
 COL_FOCUS=$(awk '$0~/focus_follows_mouse/ {print NR}' ${WINDOW_CONFIG})
 UNCLUTTER_OPTION="--start-hidden"
 TIMEOUT=3 # Unit: second
+ICON="$HOME/.config/i3/share/32x32/cursor.png"
 
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -28,20 +29,20 @@ show_help_message () {
 cursor_operation () {
     case $1 in
         "enable_unclutter")
-            notify-send -u low "Mouse Mode" "Cursor auto-hiding (unclutter) is enabled"
+            notify-send -u low "Mouse Mode" "Cursor auto-hiding (unclutter) is enabled" --icon=${ICON}
             unclutter --timeout ${TIMEOUT} ${UNCLUTTER_OPTION}
             ;;
         "disable_unclutter")
-            notify-send -u low "Mouse Mode" "Cursor auto-hiding (unclutter) is disabled"
+            notify-send -u low "Mouse Mode" "Cursor auto-hiding (unclutter) is disabled" --icon=${ICON}
             killall unclutter
             ;;
         "set_unclutter_as_default")
             sed -i "${COL_UNCLUTTER} s/.*/exec \-\-no\-startup\-id unclutter \-\-timeout ${TIMEOUT} ${UNCLUTTER_OPTION}/" "${STARTUP_CONFIG}"
-            notify-send -u "low" "Mouse Mode" "Set cursor auto-hiding (unclutter) as default"
+            notify-send -u "low" "Mouse Mode" "Set cursor auto-hiding (unclutter) as default" --icon=${ICON}
             ;;
         "set_no_unclutter_as_default")
             sed -i "${COL_UNCLUTTER} s/.*/\#exec \-\-no\-startup\-id unclutter \-\-timeout ${TIMEOUT} ${UNCLUTTER_OPTION}/" "${STARTUP_CONFIG}"
-            notify-send -u "low" "Mouse Mode" "Set no cursor auto-hiding (unclutter) as default"
+            notify-send -u "low" "Mouse Mode" "Set no cursor auto-hiding (unclutter) as default" --icon=${ICON}
             ;;
         "enable_focus_follows_mouse")
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse yes/" ${WINDOW_CONFIG}

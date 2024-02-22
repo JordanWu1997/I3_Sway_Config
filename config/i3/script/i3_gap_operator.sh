@@ -2,6 +2,7 @@
 
 GAP_CONFIG="$HOME/.config/i3/config.d/i3_gap.config"
 COL_SMART_GAP=$(awk '$1~/smart_gaps/ {print NR}' $GAP_CONFIG)
+ICON="$HOME/.config/i3/share/32x32/window.png"
 
 # Wrong message
 show_wrong_usage_message () {
@@ -38,7 +39,7 @@ gap_operation () {
             exit
     esac
     # Send notification
-    notify-send -u low "i3 Gap Operator" "Default gap_option is set to $1"
+    notify-send -u low "i3 Gap Operator" "Default gap_option is set to $1" --icon=${ICON}
     # Reload
     i3-msg reload
 }

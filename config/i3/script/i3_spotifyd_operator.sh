@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ICON="$HOME/.config/spotifyd/spotify.png"
+ICON="$HOME/.config/spotifyd/32x32/spotify.png"
 
 # Wrong message
 show_wrong_usage_message () {

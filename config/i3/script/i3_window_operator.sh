@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ICON="$HOME/.config/i3/share/32x32/window.png"
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -64,7 +66,7 @@ window_operation () {
                 fi
                 # Send notification if there is no titlebar
                 if [[ ${DEFAULT_FLOATING_STYLE} == "pixel" ]]; then
-                     notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky"
+                     notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky" --icon=${ICON}
                 fi
             elif [[ ${CURRENT_STICKY_STATUS} == "false" ]]; then
                 i3-msg "sticky enable"
@@ -72,7 +74,7 @@ window_operation () {
                 i3-msg border normal ${DEFAULT_WIDTH}
             else
                 i3-msg "sticky toggle"
-                notify-send -u low "i3 Window Manger" "Cannot get focused window sticky status\nWindow stickiness is just toggled"
+                notify-send -u low "i3 Window Manger" "Cannot get focused window sticky status\nWindow stickiness is just toggled" --icon=${ICON}
             fi
             ;;
         "float_all")

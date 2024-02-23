@@ -6,7 +6,7 @@
 EN_IBUS="xkb:us::eng"
 CH_IBUS="chewing"
 INPUT_ENGINE=`ibus engine`
-ICON="$HOME/.config/i3/share/language.png"
+ICON="$HOME/.config/i3/share/32x32/language.png"
 
 case $INPUT_ENGINE in
     $EN_IBUS)

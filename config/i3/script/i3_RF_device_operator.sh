@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ICON="$HOME/.config/i3/share/wifi-connection.png"
+ICON="$HOME/.config/i3/share/32x32/wifi-connection.png"
 
 # Wrong message
 show_wrong_usage_message () {

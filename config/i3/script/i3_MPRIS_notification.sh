@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ICON="$HOME/.config/i3/share/video_player.png"
+ICON="$HOME/.config/i3/share/32x32/video_player.png"
 
 # Wrong message
 show_wrong_usage_message () {

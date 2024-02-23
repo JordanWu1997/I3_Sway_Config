@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ICON="$HOME/.config/i3/share/keyboard.png"
+ICON="$HOME/.config/i3/share/32x32/keyboard.png"
 
 # Wrong message
 show_wrong_usage_message () {

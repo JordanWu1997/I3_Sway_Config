@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+ICON="$HOME/.config/i3/share/32x32/window.png"
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -25,7 +27,7 @@ scratchpad_operation () {
                     -p "scrachpad" -i -auto-select | cut -d' ' -f1)
                 i3-msg "[id="${WINDOW_ID}"] focus"
             else
-                notify-send -u "low" "i3 Scratchpad" "There are No more windows in scratchpad"
+                notify-send -u "low" "i3 Scratchpad" "There are No more windows in scratchpad" --icon=${ICON}
                 #notify-send -u "low" "i3 Scratchpad" "There are No more windows in scratchpad\nLast focus window is sent to scratchpad"
                 #i3-msg "floating focus"
                 #i3-msg "move scratchpad"

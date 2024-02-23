@@ -2,7 +2,7 @@
 
 DUNST_CONFIG="$HOME/.config/dunst/dunstrc"
 I3_CONFIG="$HOME/.config/i3/config"
-ICON="$HOME/.config/i3/share/notification.png"
+ICON="$HOME/.config/i3/share/32x32/notification.png"
 
 # Wrong message
 show_wrong_usage_message () {

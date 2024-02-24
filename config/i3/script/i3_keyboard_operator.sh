@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ICON="$HOME/.config/i3/share/32x32/keyboard.png"
-
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -24,7 +22,8 @@ show_help_message () {
 }
 
 # Operation
-RF_device_operation () {
+keyboard_operation () {
+    ICON="$HOME/.config/i3/share/32x32/keyboard.png"
     case $1 in
         'speed_up_repeat_key_rate')
             xset r rate 300 40
@@ -60,4 +59,4 @@ RF_device_operation () {
 }
 
 # Main
-RF_device_operation $1
+keyboard_operation $1

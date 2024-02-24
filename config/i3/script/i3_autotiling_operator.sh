@@ -2,6 +2,7 @@
 
 STARTUP_CONFIG="$HOME/.config/i3/config.d/i3_startup.config"
 COL_AUTOTILING=$(awk '$0~/exec_always --no-startup-id autotiling/{print NR}' ${STARTUP_CONFIG})
+ICON="$HOME/.config/i3/share/32x32/window.png"
 
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -25,30 +26,30 @@ show_help_message () {
 autotiling_operation () {
     case $1 in
         "disable_autotiling")
-            notify-send -u "low" "i3 Autotiling" "i3 Autotiling is disabled"
+            notify-send -u "low" "i3 Autotiling" "i3 Autotiling is disabled" --icon=${ICON}
             killall autotiling
             ;;
         "enable_dwindling")
             killall autotiling
-            notify-send -u "low" "i3 Autotiling" "i3 dwindling layout is enabled"
+            notify-send -u "low" "i3 Autotiling" "i3 dwindling layout is enabled" --icon=${ICON}
             autotiling
             ;;
         "enable_master_stack")
             killall autotiling
-            notify-send -u "low" "i3 Autotiling" "i3 master-stack layout is enabled"
+            notify-send -u "low" "i3 Autotiling" "i3 master-stack layout is enabled" --icon=${ICON}
             autotiling --limit 2
             ;;
         "set_dwindling_as_default")
             sed -i "$COL_AUTOTILING s/.*/exec_always \-\-no\-startup\-id autotiling/" "${STARTUP_CONFIG}"
-            notify-send -u "low" "i3 Autotiling" "Set dwindling layout as default"
+            notify-send -u "low" "i3 Autotiling" "Set dwindling layout as default" --icon=${ICON}
             ;;
         "set_master_stack_as_default")
             sed -i "$COL_AUTOTILING s/.*/exec_always \-\-no\-startup\-id autotiling \-\-limit 2/" "${STARTUP_CONFIG}"
-            notify-send -u "low" "i3 Autotiling" "Set master-stack layout as default"
+            notify-send -u "low" "i3 Autotiling" "Set master-stack layout as default" --icon=${ICON}
             ;;
         "set_no_autotiling_as_default")
             sed -i "$COL_AUTOTILING s/.*/\#exec_always \-\-no\-startup\-id autotiling/" "${STARTUP_CONFIG}"
-            notify-send -u "low" "i3 Autotiling" "Set no auto-tiling layout as default"
+            notify-send -u "low" "i3 Autotiling" "Set no auto-tiling layout as default" --icon=${ICON}
             ;;
         *)
             show_wrong_usage_message

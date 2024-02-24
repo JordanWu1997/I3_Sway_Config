@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-ICON="$HOME/.config/i3/share/32x32/window.png"
-
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -25,6 +23,7 @@ show_help_message () {
 }
 
 window_operation () {
+    ICON="$HOME/.config/i3/share/32x32/window.png"
     case $1 in
         "float_then_fullscreen")
             # Get workspace width and height

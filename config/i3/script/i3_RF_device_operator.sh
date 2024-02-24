@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ICON="$HOME/.config/i3/share/32x32/wifi-connection.png"
-
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -20,6 +18,7 @@ show_help_message () {
 
 # Operation
 RF_device_operation () {
+    ICON="$HOME/.config/i3/share/32x32/wifi-connection.png"
     case $1 in
         'enable')
             RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -p "Enable RF Device:")

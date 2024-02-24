@@ -20,18 +20,19 @@ show_help_message () {
 }
 
 kdeconnect_operation () {
+    ICON="$HOME/.config/i3/share/32x32/cursor.png"
     case $1 in
         "enable_pointer")
-            notify-send -u "low" "i3 kdeconnect" "Pointer daemon is enabled"
+            notify-send -u "low" "i3 kdeconnect" "Pointer daemon is enabled" --icon=${ICON}
             python3 $I3_SCRIPT/i3_kdeconnect_pointer_daemon.py
             ;;
         "disable_pointer")
-            notify-send -u "low" "i3 kdeconnect" "Pointer daemon is disabled"
+            notify-send -u "low" "i3 kdeconnect" "Pointer daemon is disabled" --icon=${ICON}
             ps -aux | grep "python3 ${I3_SCRIPT}/i3_kdeconnect_pointer_daemon.py" | \
                 awk 'NR==1 {print $2}' | xargs -I {} kill {}
             ;;
         "reload_pointer")
-            notify-send -u "low" "i3 kdeconnect" "Reload pointer daemon"
+            notify-send -u "low" "i3 kdeconnect" "Reload pointer daemon" --icon=${ICON}
             ps -aux | grep "python3 $I3_SCRIPT/i3_kdeconnect_pointer_daemon.py" | \
                 awk 'NR==1 {print $2}' | xargs -I {} kill {}
             python3 $I3_SCRIPT/i3_kdeconnect_pointer_daemon.py

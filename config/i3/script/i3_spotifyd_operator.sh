@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-ICON="$HOME/.config/spotifyd/32x32/spotify.png"
+ICON="$HOME/.config/i3/share/32x32/spotify.png"
+NOTIFY_ID=70920199
 
 # Wrong message
 show_wrong_usage_message () {
@@ -35,7 +36,13 @@ spotifyd_operation () {
             fi
             ;;
         "playing")
-            $HOME/.config/spotifyd/song_notification.sh
+            PODCAST=$(spt playback --device 'spotifyd' --format "%h")
+            if [[ $PODCAST == 'None' ]]; then
+                PLAYING=$(spt playback --device 'spotifyd' --format "Title: %t\nArtist: %a\nAlbum: %a")
+            else
+                PLAYING=$(spt playback --device 'spotifyd' --format "Title: %t\nPublisher: %a\nPodcast: %h")
+            fi
+            notify-send -u low -r ${NOTIFY_ID} "Spotifyd" "${PLAYING}" --icon="${ICON}"
             ;;
         "enable")
             spotifyd

@@ -48,6 +48,10 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![alt_text](./fedora_logo_blue.png)
 - `fedora_logo_blue.png`
 ![alt_text](./fedora_logo_white.png)
+- `ubuntu_logo_darkbackground.png`
+![alt_text](./ubuntu_logo_darkbackground.png)
+- `ubuntu_logo_darkbackground.png`
+![alt_text](./ubuntu_logo_orange.png)
 
 </details open>
 
@@ -57,20 +61,22 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 <details open>
 
-[<img src="./64x64/cursor.png" width="192"/>](./64x64/cursor.png)
-[<img src="./64x64/keyboard.png" width="192"/>](./64x64/keyboard.png)
-[<img src="./64x64/language.png" width="192"/>](./64x64/language.png)
-[<img src="./64x64/lightbulb_icon.png" width="192"/>](./64x64/lightbulb_icon.png)
-[<img src="./64x64/monitor.png" width="192"/>](./64x64/monitor.png)
-[<img src="./64x64/mute_icon.png" width="192"/>](./64x64/mute_icon.png)
-[<img src="./64x64/notification.png" width="192"/>](./64x64/notification.png)
-[<img src="./64x64/paint_palette.png" width="192"/>](./64x64/paint_palette.png)
-[<img src="./64x64/picture.png" width="192"/>](./64x64/picture.png)
-[<img src="./64x64/reload.png" width="192"/>](./64x64/reload.png)
-[<img src="./64x64/spotify.png" width="192"/>](./64x64/spotify.png)
-[<img src="./64x64/video_player.png" width="192"/>](./64x64/video_player.png)
-[<img src="./64x64/volume_icon.png" width="192"/>](./64x64/volume_icon.png)
-[<img src="./64x64/wifi-connection.png" width="192"/>](./64x64/wifi-connection.png)
-[<img src="./64x64/window.png width="192"/>](./64x64/window.png)
+[<img src="./64x64/abc.png" width="128"/>](./64x64/abc.png)
+[<img src="./64x64/cursor.png" width="128"/>](./64x64/cursor.png)
+[<img src="./64x64/keyboard.png" width="128"/>](./64x64/keyboard.png)
+[<img src="./64x64/language.png" width="128"/>](./64x64/language.png)
+[<img src="./64x64/lightbulb_icon.png" width="128"/>](./64x64/lightbulb_icon.png)
+[<img src="./64x64/list.png" width="128"/>](./64x64/list.png)
+[<img src="./64x64/monitor.png" width="128"/>](./64x64/monitor.png)
+[<img src="./64x64/mute_icon.png" width="128"/>](./64x64/mute_icon.png)
+[<img src="./64x64/notification.png" width="128"/>](./64x64/notification.png)
+[<img src="./64x64/paint_palette.png" width="128"/>](./64x64/paint_palette.png)
+[<img src="./64x64/picture.png" width="128"/>](./64x64/picture.png)
+[<img src="./64x64/reload.png" width="128"/>](./64x64/reload.png)
+[<img src="./64x64/spotify.png" width="128"/>](./64x64/spotify.png)
+[<img src="./64x64/video_player.png" width="128"/>](./64x64/video_player.png)
+[<img src="./64x64/volume_icon.png" width="128"/>](./64x64/volume_icon.png)
+[<img src="./64x64/wifi-connection.png" width="128"/>](./64x64/wifi-connection.png)
+[<img src="./64x64/window.png" width="128"/>](./64x64/window.png)
 
 </details>

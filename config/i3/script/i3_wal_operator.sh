@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 COL_WAL=$(expr $(awk '$0~/Startup-Wal/{print NR}' ~/.config/i3/config) + 1)
-ICON="$HOME/.config/i3/share/32x32/paint_palette.png"
+ICON="$HOME/.config/i3/share/64x64/paint_palette.png"
 
 # Wrong message
 show_wrong_usage_message () {

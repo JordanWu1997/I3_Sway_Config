@@ -10,7 +10,7 @@ FILE_NAME_LIST=( \
     colors-kitty.conf \
     colors-rofi-dark.rasi \
 )
-ICON="$HOME/.config/i3/share/32x32/paint_palette.png"
+ICON="$HOME/.config/i3/share/64x64/paint_palette.png"
 
 show_available_theme_templates () {
     echo Available Templates:

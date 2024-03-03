@@ -8,7 +8,7 @@ HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
 HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
 HDMI1_HEIGHT=$(xrandr | awk -v var=$HDMI1_HEIGHT_ID '$1~/HDMI1/ {print $var}')
 HDMI1_WIDTH=$(xrandr | awk -v var=$HDMI1_WIDTH_ID '$1~/HDMI1/ {print $var}')
-ICON="$HOME/.config/i3/share/32x32/monitor.png"
+ICON="$HOME/.config/i3/share/64x64/monitor.png"
 
 # Wrong message
 show_wrong_usage_message () {

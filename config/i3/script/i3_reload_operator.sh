@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ICON="$HOME/.config/i3/share/32x32/reload.png"
+ICON="$HOME/.config/i3/share/64x64/reload.png"
 
 reload_conky () {
     # Conky (system monitor & shortcut table)

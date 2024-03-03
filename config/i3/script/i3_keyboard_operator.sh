@@ -23,7 +23,7 @@ show_help_message () {
 
 # Operation
 keyboard_operation () {
-    ICON="$HOME/.config/i3/share/32x32/keyboard.png"
+    ICON="$HOME/.config/i3/share/64x64/keyboard.png"
     case $1 in
         'speed_up_repeat_key_rate')
             xset r rate 300 40

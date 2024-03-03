@@ -16,7 +16,7 @@ show_help_message () {
 }
 
 scratchpad_operation () {
-    ICON="$HOME/.config/i3/share/32x32/window.png"
+    ICON="$HOME/.config/i3/share/64x64/window.png"
     case $1 in
         'select')
             SCRATCHPAD_WD_NUM=$(wmctrl -l | awk '$2<0' | wc -l)

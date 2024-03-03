@@ -2,7 +2,7 @@
 
 BORDER_CONFIG="$HOME/.config/i3/config.d/i3_window.config"
 COL_EDGE_BORDER=$(awk '$1~/hide_edge_borders/ {print NR}' $BORDER_CONFIG)
-ICON="$HOME/.config/i3/share/32x32/window.png"
+ICON="$HOME/.config/i3/share/64x64/window.png"
 
 # Wrong message
 show_wrong_usage_message () {

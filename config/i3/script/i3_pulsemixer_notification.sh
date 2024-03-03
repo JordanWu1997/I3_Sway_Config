@@ -7,10 +7,10 @@ R_VOLUME=$(echo ${VOLUMES} | awk '{print $2}')
 
 # Mute label
 if [ $(pulsemixer --get-mute) == 0 ]; then
-    ICON="$HOME/.config/i3/share/32x32/volume_icon.png"
+    ICON="$HOME/.config/i3/share/64x64/volume_icon.png"
     CONTEXT="L:${L_VOLUME}% R:${R_VOLUME}%"
 else
-    ICON="$HOME/.config/i3/share/32x32/mute_icon.png"
+    ICON="$HOME/.config/i3/share/64x64/mute_icon.png"
     CONTEXT="MUTED (L:${L_VOLUME}% R:${R_VOLUME}%)"
 fi
 

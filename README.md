@@ -4,8 +4,7 @@ and configurations of applications for the working environment in X11/Wayland.
 For now, some functions do not work in Wayland, still searching for solutions or alternatives in Wayland.
 For more SwayWM details and i3WM migration progress, please check `./config/sway/README.md`
 
-Table of Contents
-=================
+# Table of Contents
 <details open>
 <summary>Click to expand/shrink</summary>
 
@@ -350,38 +349,41 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __2-finger Gesture__
-    | Gesture                     | Action          | Note                         |
-    | :-------------------------: | :-------------: | :--------------------------: |
-    | __Tap__                     | Right key click |                              |
-    | __Swipe Up__                | Scroll down     | Natural scrolling is enabled |
-    | __Swipe Down__              | Scroll up       | Natural scrolling is enabled |
-    | __Swipe Up On Border__      | Hide title bar  | Natural scrolling is enabled |
-    | __Swipe Down On Title Bar__ | Show title bar  | Natural scrolling is enabled |
-    | __Pinch In__                | Zoom in         | `[Ctrl]` + `[=]`             |
-    | __Pinch Out__               | Zoom out        | `[Ctrl]` + `[-]`             |
+
+| Gesture                     | Action          | Note                         |
+| :-------------------------: | :-------------: | :--------------------------: |
+| __Tap__                     | Right key click |                              |
+| __Swipe Up__                | Scroll down     | Natural scrolling is enabled |
+| __Swipe Down__              | Scroll up       | Natural scrolling is enabled |
+| __Swipe Up On Border__      | Hide title bar  | Natural scrolling is enabled |
+| __Swipe Down On Title Bar__ | Show title bar  | Natural scrolling is enabled |
+| __Pinch In__                | Zoom in         | `[Ctrl]` + `[=]`             |
+| __Pinch Out__               | Zoom out        | `[Ctrl]` + `[-]`             |
 
 - __3-finger Gesture__
-    | Gesture                 | Action                                                 | Note                                                          |
-    | :---------------------: | :----------------------------------------------------: | :-----------------------------------------------------------: |
-    | __Tap__                 | Middle key click                                       |                                                               |
-    | __Hold On__             | Toggle sticky window (floating window stays on screen) | `[Winkey]` + `[Shift]` + `[s]`                                |
-    | __Swipe Up__            | Toggle window full-screen mode                         | `[Winkey]` + `[f]`                                            |
-    | __Swipe Down__          | Toggle floating mode                                   | `[Winkey]` + `[Shift]` + `[Space]`                            |
-    | __Swipe Left__          | Focus and cursor go to previous marked window          | `[Winkey]` + `[i]`, requires i3-automark with my modification |
-    | __Swipe Right__         | Focus and cursor go to next marked window              | `[Winkey]` + `[n]`, requires i3-automark with my modification |
-    | __Swipe Left-Up/Down__  | Switch to previous tab                                 | `[Ctrl]` + `[Shift]` + `[Tab]`                                |
-    | __Swipe Right-Up/Down__ | Switch to next tab                                     | `[Ctrl]` + `[Tab]`                                            |
+
+| Gesture                 | Action                                                 | Note                                                          |
+| :---------------------: | :----------------------------------------------------: | :-----------------------------------------------------------: |
+| __Tap__                 | Middle key click                                       |                                                               |
+| __Hold On__             | Toggle sticky window (floating window stays on screen) | `[Winkey]` + `[Shift]` + `[s]`                                |
+| __Swipe Up__            | Toggle window full-screen mode                         | `[Winkey]` + `[f]`                                            |
+| __Swipe Down__          | Toggle floating mode                                   | `[Winkey]` + `[Shift]` + `[Space]`                            |
+| __Swipe Left__          | Focus and cursor go to previous marked window          | `[Winkey]` + `[i]`, requires i3-automark with my modification |
+| __Swipe Right__         | Focus and cursor go to next marked window              | `[Winkey]` + `[n]`, requires i3-automark with my modification |
+| __Swipe Left-Up/Down__  | Switch to previous tab                                 | `[Ctrl]` + `[Shift]` + `[Tab]`                                |
+| __Swipe Right-Up/Down__ | Switch to next tab                                     | `[Ctrl]` + `[Tab]`                                            |
 
 - __4-finger Gesture__
-    | Gesture                 | Action                                                       | Note                               |
-    | :------------:          | :----------------------------------------------------------: | :--------------------------------: |
-    | __Hold On__             | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
-    | __Swipe Up__            | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
-    | __Swipe Down__          | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
-    | __Swipe Left__          | Go to previous workspace (create one if it is not existing)  | `[Winkey]` + `[Shift]` + `[Grave]` |
-    | __Swipe Right__         | Go to next workspace  (create one if it is not existing)     | `[Winkey]` + `[Grave]`             |
-    | __Swipe Left-Up/Down__  | Go to previous workspace (existing ones only)                | `[Winkey]` + `[Shift]` + `[Tab]`   |
-    | __Swipe Right-Up/Down__ | Go to next workspace (existing ones only)                    | `[Winkey]` + `[Tab]`               |
+
+| Gesture                 | Action                                                       | Note                               |
+| :------------:          | :----------------------------------------------------------: | :--------------------------------: |
+| __Hold On__             | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
+| __Swipe Up__            | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
+| __Swipe Down__          | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
+| __Swipe Left__          | Go to previous workspace (create one if it is not existing)  | `[Winkey]` + `[Shift]` + `[Grave]` |
+| __Swipe Right__         | Go to next workspace  (create one if it is not existing)     | `[Winkey]` + `[Grave]`             |
+| __Swipe Left-Up/Down__  | Go to previous workspace (existing ones only)                | `[Winkey]` + `[Shift]` + `[Tab]`   |
+| __Swipe Right-Up/Down__ | Go to next workspace (existing ones only)                    | `[Winkey]` + `[Tab]`               |
 
 </details>
 
@@ -390,34 +392,39 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __Left Button (`Button1`)__
-    | Left Button (`Button1`) +         | Action               | Note |
-    | :-------------------------------: | :------------------: | :--: |
-    | __Drag Title Bar__                | Move window          |      |
+
+| Left Button (`Button1`) +         | Action               | Note |
+| :-------------------------------: | :------------------: | :--: |
+| __Drag Title Bar__                | Move window          |      |
 
 - __Middle Button (`Button2`)__
-    | Middle Button (`Button2`) +   | Action              | Note |
-    | :---------------------------: | :-----------------: | :--: |
-    | __Click Title Bar__           | Kill current window |      |
-    | __`[Winkey]` + Click Window__ | Kill current window |      |
+
+| Middle Button (`Button2`) +   | Action              | Note |
+| :---------------------------: | :-----------------: | :--: |
+| __Click Title Bar__           | Kill current window |      |
+| __`[Winkey]` + Click Window__ | Kill current window |      |
 
 - __Right Button (`[Button3]`)__
-    | Right Button (`Button3`) +    | Action               | Note                                          |
-    | :---------------------------: | :------------------: | :-------------------------------------------: |
-    | __Drag Window Border__        | Resize window        |                                               |
-    | __Click Title Bar__           | Toggle floating mode | this overwrites i3 default button3 keybinding |
-    | __`[Winkey]` + Click Window__ | Toggle floating mode |                                               |
+
+| Right Button (`Button3`) +    | Action               | Note                                          |
+| :---------------------------: | :------------------: | :-------------------------------------------: |
+| __Drag Window Border__        | Resize window        |                                               |
+| __Click Title Bar__           | Toggle floating mode | this overwrites i3 default button3 keybinding |
+| __`[Winkey]` + Click Window__ | Toggle floating mode |                                               |
 
 - __Scroll Wheel Up/Down (`[Button4]`/`[Button5]`)__
-    | Mouse Wheel                  | Action         | Note |
-    | :--------------------------: | :------------: | :--: |
-    | __Scroll Up On Border__      | Show title bar |      |
-    | __Scroll Down On Title Bar__ | Hide title bar |      |
+
+| Mouse Wheel                  | Action         | Note |
+| :--------------------------: | :------------: | :--: |
+| __Scroll Up On Border__      | Show title bar |      |
+| __Scroll Down On Title Bar__ | Hide title bar |      |
 
 - Thumb Button Up/Down (`[Button8]`/`[Button9]`)
-    | Thumb Button                    | Action                     | Note      |
-    | :-----------------------------: | :------------------------: | :-------: |
-    | __`[Ctrl]`+ Thumb Button Up__   | Enable cursor auto-hiding  | unclutter |
-    | __`[Ctrl]`+ Thumb Button Down__ | Disable cursor auto-hiding | unclutter |
+
+| Thumb Button                    | Action                     | Note      |
+| :-----------------------------: | :------------------------: | :-------: |
+| __`[Ctrl]`+ Thumb Button Up__   | Enable cursor auto-hiding  | unclutter |
+| __`[Ctrl]`+ Thumb Button Down__ | Disable cursor auto-hiding | unclutter |
 
 </details>
 </details>

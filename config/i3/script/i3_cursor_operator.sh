@@ -6,7 +6,7 @@ COL_UNCLUTTER=$(awk '$0~/exec --no-startup-id unclutter/ {print NR}' ${STARTUP_C
 COL_FOCUS=$(awk '$0~/focus_follows_mouse/ {print NR}' ${WINDOW_CONFIG})
 UNCLUTTER_OPTION="--start-hidden"
 TIMEOUT=3 # Unit: second
-ICON="$HOME/.config/i3/share/32x32/cursor.png"
+ICON="$HOME/.config/i3/share/64x64/cursor.png"
 
 show_wrong_usage_message () {
     echo "Wrong Usage:"

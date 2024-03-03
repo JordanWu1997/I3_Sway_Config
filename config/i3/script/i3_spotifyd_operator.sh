@@ -24,7 +24,7 @@ show_help_message () {
 }
 
 spotifyd_operation () {
-    ICON="$HOME/.config/i3/share/32x32/spotify.png"
+    ICON="$HOME/.config/i3/share/64x64/spotify.png"
     NOTIFY_ID=70920199
     case $1 in
         "status")

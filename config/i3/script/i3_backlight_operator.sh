@@ -29,7 +29,7 @@ show_xbacklight () {
     command -v xbacklight && printf -v BACKLIGHT "%0.0f" $(xbacklight)
     command -v brightnessctl && printf -v BACKLIGHT "%0.0f" $(brightnessctl | grep 'Current brightness' | tr '()%' '\n\n ' | awk 'NR==2')
     # Send notification
-    ICON="$HOME/.config/i3/share/32x32/lightbulb_icon.png"
+    ICON="$HOME/.config/i3/share/64x64/lightbulb_icon.png"
     NOTIFY_SEND_VERSION=$(notify-send -v | tr ' ' '\n' | grep '\.' | cut -d. -f 2)
     if (( $(echo ${NOTIFY_SEND_VERSION}) > 7 | bc -l )); then
         NOTIFY_ID=19970920

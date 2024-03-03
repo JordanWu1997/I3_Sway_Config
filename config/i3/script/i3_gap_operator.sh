@@ -2,7 +2,7 @@
 
 GAP_CONFIG="$HOME/.config/i3/config.d/i3_gap.config"
 COL_SMART_GAP=$(awk '$1~/smart_gaps/ {print NR}' $GAP_CONFIG)
-ICON="$HOME/.config/i3/share/32x32/window.png"
+ICON="$HOME/.config/i3/share/64x64/window.png"
 
 # Wrong message
 show_wrong_usage_message () {

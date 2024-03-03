@@ -20,7 +20,7 @@ show_help_message () {
 }
 
 kdeconnect_operation () {
-    ICON="$HOME/.config/i3/share/32x32/cursor.png"
+    ICON="$HOME/.config/i3/share/64x64/cursor.png"
     case $1 in
         "enable_pointer")
             notify-send -u "low" "i3 kdeconnect" "Pointer daemon is enabled" --icon=${ICON}

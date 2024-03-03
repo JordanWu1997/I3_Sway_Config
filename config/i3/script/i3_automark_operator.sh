@@ -104,7 +104,7 @@ cursor_follow_focus () {
 }
 
 automark_operation () {
-    ICON="$HOME/.config/i3/share/32x32/abc.png"
+    ICON="$HOME/.config/i3/share/64x64/abc.png"
     case $1 in
         "enable")
             notify-send -u "low" "i3 Automark" "i3 automark is enabled" --icon="${ICON}"

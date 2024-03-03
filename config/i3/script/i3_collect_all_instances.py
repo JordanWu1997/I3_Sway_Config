@@ -26,7 +26,7 @@ def move_all_instances_to_focused_workspace(target_instance,
     # Notification
     if verbose:
         os.system(
-            f'notify-send -u low "I3-IPC" "All *{target_instance}* instance windows are moved to workspace {focused_workspace}" --icon="$HOME/.config/i3/share/32x32/window.png"'
+            f'notify-send -u low "I3-IPC" "All *{target_instance}* instance windows are moved to workspace {focused_workspace}" --icon="$HOME/.config/i3/share/64x64/window.png"'
         )
 
 

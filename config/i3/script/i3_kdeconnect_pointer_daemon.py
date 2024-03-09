@@ -3,7 +3,7 @@
 
 from time import sleep
 
-from i3ipc import Connection, Event
+from i3ipc import Connection
 
 
 def find_kdeconnectd_window(container):

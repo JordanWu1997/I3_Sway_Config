@@ -173,6 +173,7 @@ main () {
     # Automatically setup display
     if [ $1 == "auto" ]; then
         auto_adjust
+        #setup_monitors.sh auto_in_office
     else
         display_operation $1
     fi

@@ -3,7 +3,7 @@
 # Promotes the focused window by swapping it with the largest window.
 # Source code: https://aduros.com/blog/hacking-i3-window-promoting/
 
-from i3ipc import Connection, Event
+from i3ipc import Connection
 
 
 def find_biggest_window(container):

@@ -35,7 +35,7 @@ def main():
     # Input instance to collect
     if len(sys.argv) < 2:
         print(f'Wrong Usage:\n  {sys.argv}\n')
-        print(f'Usage:\n  i3_collect_all_instances.py [target_instance]\n')
+        print('Usage:\n  i3_collect_all_instances.py [target_instance]\n')
         sys.exit()
 
     target_instance = sys.argv[1]

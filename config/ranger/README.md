@@ -78,3 +78,10 @@ cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin
 ```
 - https://github.com/ranger/ranger/wiki/Drag-and-Drop
 - https://github.com/mwh/dragon
+
+### archive function (extract/compress files)
+```bash
+cd ~/.config/ranger/plugins
+git clone https://github.com/maximtrp/ranger-archives.git
+```
+- https://github.com/maximtrp/ranger-archives

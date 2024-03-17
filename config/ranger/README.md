@@ -85,3 +85,22 @@ cd ~/.config/ranger/plugins
 git clone https://github.com/maximtrp/ranger-archives.git
 ```
 - https://github.com/maximtrp/ranger-archives
+
+### Ranger quit on working directory wrapper
+```fish
+function ranger
+    set tempfile (mktemp -t tmp.XXXXXX)
+    set command_argument "map Q chain shell echo %d > $tempfile; quitall"
+    set command_argument "map <C-w> chain shell echo %d > $tempfile; quitall"
+    command ranger --cmd="$command_argument" $argv
+    if test -s $tempfile
+        set ranger_pwd (cat $tempfile)
+        if test -n $ranger_pwd -a -d $ranger_pwd
+            builtin cd -- $ranger_pwd
+        end
+    end
+    command rm -f -- $tempfile
+    clear
+end
+```
+- https://github.com/ranger/ranger/wiki/Integration-with-other-programs

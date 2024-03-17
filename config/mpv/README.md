@@ -10,28 +10,29 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 
 ## Keybinding
 - Keybindings
-    | Key Mapping                      | Function                                           | Description | Note |
-    | :------------------------------: | :------------------------------------------------: | :---------: | :--: |
-    | `[Ctrl/None/Alt]`+`[Left/Right]` | Seek 1/10/60 sec backward/forward                  |             |      |
-    | `[Ctrl/None/Alt]`+`[j/l]`        | Seek 1/10/60 sec backward/forward                  |             |      |
-    | `[Alt]` + `[1-9/0] `             | Seek to 10%-90%/0% in current playing              |             |      |
-    | `[Space/k]`                      | Pause-Play                                         |             |      |
-    | `[,/.]`                          | Previous/Next frame                                |             |      |
-    | `[[/]/Backspace]`                | Decrease/Increase/Reset play speed                 |             |      |
-    | `[None/Shift/Alt]`+`[;]`         | Toggle A-B/current_file/current_playlist loop      |             |      |
-    | `[Alt]`+`[Shift]`+`[h/j/k/l]`    | Pan left/down/up/right                             |             |      |
-    | `[-/=/+]`                        | Zoom in/out/back_to_original                       |             |      |
-    | `[a]`                            | Cycle audios                                       |             |      |
-    | `[b]`                            | Cycle subtitles                                    |             |      |
-    | `[t]`                            | Seek to specific time                              |             |      |
-    | `[g]`                            | Toggle aspect ratio                                |             |      |
-    | `[f]`                            | Toggle full-screen mode                            |             |      |
-    | `[Ctrl]`+(`[Shift]`)+`[r]`       | Rotate (anti-)clockwisely ,                        |             |      |
-    | `[None/Shift/Ctrl]`+`[s]`        | Video_with_sub/Video_without_sub/Window screenshot |             |      |
-    | `[Shift]`+`[i]`                  | Toggle MPV video information                       |             |      |
-    | `[Shift]`+`[o]`                  | Toggle MPV on-screen-display (OSD)                 |             |      |
-    | `[Shift]`+`[Enter]`              | Open playlist                                      |             |      |
-    | `[Ctrl]`+`[o]`                   | Open `mpv-file-browser`                            |             |      |
+
+| Key Mapping                      | Function                                           | Description | Note |
+| :------------------------------: | :------------------------------------------------: | :---------: | :--: |
+| `[Ctrl/None/Alt]`+`[Left/Right]` | Seek 1/10/60 sec backward/forward                  |             |      |
+| `[Ctrl/None/Alt]`+`[j/l]`        | Seek 1/10/60 sec backward/forward                  |             |      |
+| `[Alt]` + `[1-9/0] `             | Seek to 10%-90%/0% in current playing              |             |      |
+| `[Space/k]`                      | Pause-Play                                         |             |      |
+| `[,/.]`                          | Previous/Next frame                                |             |      |
+| `[[/]/Backspace]`                | Decrease/Increase/Reset play speed                 |             |      |
+| `[None/Shift/Alt]`+`[;]`         | Toggle A-B/current_file/current_playlist loop      |             |      |
+| `[Alt]`+`[Shift]`+`[h/j/k/l]`    | Pan left/down/up/right                             |             |      |
+| `[-/=/+]`                        | Zoom in/out/back_to_original                       |             |      |
+| `[a]`                            | Cycle audios                                       |             |      |
+| `[b]`                            | Cycle subtitles                                    |             |      |
+| `[t]`                            | Seek to specific time                              |             |      |
+| `[g]`                            | Toggle aspect ratio                                |             |      |
+| `[f]`                            | Toggle full-screen mode                            |             |      |
+| `[Ctrl]`+(`[Shift]`)+`[r]`       | Rotate (anti-)clockwisely ,                        |             |      |
+| `[None/Shift/Ctrl]`+`[s]`        | Video_with_sub/Video_without_sub/Window screenshot |             |      |
+| `[Shift]`+`[i]`                  | Toggle MPV video information                       |             |      |
+| `[Shift]`+`[o]`                  | Toggle MPV on-screen-display (OSD)                 |             |      |
+| `[Shift]`+`[Enter]`              | Open playlist                                      |             |      |
+| `[Ctrl]`+`[o]`                   | Open `mpv-file-browser`                            |             |      |
 
 ### [playlistmanger](https://github.com/jonniek/mpv-playlistmanager)
 - Modify keybindings in `$HOME/.config/mpv/script-opts/playlistmanager.conf`
@@ -47,15 +48,16 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ...
     ```
 - Keybindings
-    | Key Mapping         | Function                        | Description                                | Note |
-    | :-----------------: | :----------------------------:  | :----------------------------------------: | :--: |
-    | `[q]`               | Close file-browser              |                                            |      |
-    | `[j/k]`             | Scroll down/up                  |                                            |      |
-    | `[Enter]`           | Play file                       |                                            |      |
-    | `[Space]`           | Toggle select file              | Use [j/k] to move selected file            |      |
-    | `[d]`               | Remove file from playlist       |                                            |      |
-    | `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |      |
-    | `[Alt]+[p]`         | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |      |
+
+| Key Mapping         | Function                        | Description                                | Note |
+| :-----------------: | :----------------------------:  | :----------------------------------------: | :--: |
+| `[q]`               | Close file-browser              |                                            |      |
+| `[j/k]`             | Scroll down/up                  |                                            |      |
+| `[Enter]`           | Play file                       |                                            |      |
+| `[Space]`           | Toggle select file              | Use [j/k] to move selected file            |      |
+| `[d]`               | Remove file from playlist       |                                            |      |
+| `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |      |
+| `[Alt]+[p]`         | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |      |
 
 ### [mpv-file-browser](https://github.com/CogentRedTester/mpv-file-browser)
 - Modify keybindings in `$HOME/.config/mpv/scripts/mpv-file-browser/modules/keybinds.lua`
@@ -75,20 +77,29 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ...
     ```
 - Keybindings
-    | Key Mapping         | Function                       | Description | Note |
-    | :-----------------: | :----------------------------: | :---------: | :--: |
-    | `[q]`               | Close file-browser             |             |      |
-    | `[v]`               | Enter select mode              |             |      |
-    | `[Space]`           | Toggle select file             |             |      |
-    | `[h/l]`             | Go to Parent/Child directory   |             |      |
-    | `[j/k]`             | Scroll down/up                 |             |      |
-    | `[Shift]`+`[Enter]` | Add selected files to playlist |             |      |
+
+| Key Mapping         | Function                       | Description | Note |
+| :-----------------: | :----------------------------: | :---------: | :--: |
+| `[q]`               | Close file-browser             |             |      |
+| `[v]`               | Enter select mode              |             |      |
+| `[Space]`           | Toggle select file             |             |      |
+| `[h/l]`             | Go to Parent/Child directory   |             |      |
+| `[j/k]`             | Scroll down/up                 |             |      |
+| `[Shift]`+`[Enter]` | Add selected files to playlist |             |      |
 
 ### [mpv-webm](https://github.com/ekisu/mpv-webm)
 - Keybindings
-    | Key Mapping         | Function                       | Description | Note |
-    | :-----------------: | :----------------------------: | :---------: | :--: |
-    | `[Shift]`+`[w]`     | Video clipper (in webm format) |             |      |
+
+| Key Mapping         | Function                       | Description | Note |
+| :-----------------: | :----------------------------: | :---------: | :--: |
+| `[Shift]`+`[w]`     | Video clipper (in webm format) |             |      |
+
+### [visualizer](https://github.com/mfcc64/mpv-scripts/blob/master/visualizer.lua)
+- Keybindings
+
+| Key Mapping         | Function         | Description | Note |
+| :-----------------: | :--------------: | :---------: | :--: |
+| `[Shift]`+`[d]`     | Audio visualizer |             |      |
 
 ## Miscellaneous
 - MPV on linux has a weird hidden title bar when running picom

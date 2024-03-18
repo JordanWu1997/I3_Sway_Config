@@ -49,15 +49,16 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ```
 - Keybindings
 
-| Key Mapping         | Function                        | Description                                | Note |
-| :-----------------: | :----------------------------:  | :----------------------------------------: | :--: |
-| `[q]`               | Close file-browser              |                                            |      |
-| `[j/k]`             | Scroll down/up                  |                                            |      |
-| `[Enter]`           | Play file                       |                                            |      |
-| `[Space]`           | Toggle select file              | Use [j/k] to move selected file            |      |
-| `[d]`               | Remove file from playlist       |                                            |      |
-| `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |      |
-| `[Alt]+[p]`         | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |      |
+| Key Mapping    | Function                        | Description                                | Note |
+| :------------: | :----------------------------:  | :----------------------------------------: | :--: |
+| `[q]`          | Close file-browser              |                                            |      |
+| `[j/k]`        | Scroll down/up                  |                                            |      |
+| `[Enter]`      | Play file                       |                                            |      |
+| `[Space]`      | Toggle select file              | Use [j/k] to move selected file            |      |
+| `[d]`          | Remove file from playlist       |                                            |      |
+| `[Ctrl]+[p/n]` | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |      |
+| `[Alt]+[p]`    | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |      |
+| `[l]`          | Load file in current directory  |                                            |      |
 
 ### [mpv-file-browser](https://github.com/CogentRedTester/mpv-file-browser)
 - Modify keybindings in `$HOME/.config/mpv/scripts/mpv-file-browser/modules/keybinds.lua`
@@ -78,14 +79,14 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ```
 - Keybindings
 
-| Key Mapping         | Function                       | Description | Note |
-| :-----------------: | :----------------------------: | :---------: | :--: |
-| `[q]`               | Close file-browser             |             |      |
-| `[v]`               | Enter select mode              |             |      |
-| `[Space]`           | Toggle select file             |             |      |
-| `[h/l]`             | Go to Parent/Child directory   |             |      |
-| `[j/k]`             | Scroll down/up                 |             |      |
-| `[Shift]`+`[Enter]` | Add selected files to playlist |             |      |
+| Key Mapping         | Function                          | Description | Note |
+| :-----------------: | :-------------------------------: | :---------: | :--: |
+| `[q]`               | Close file-browser                |             |      |
+| `[v]`               | Enter select mode                 |             |      |
+| `[Space]`           | Toggle select file                |             |      |
+| `[h/l]`             | Go to Parent/Child directory      |             |      |
+| `[j/k]`             | Scroll down/up                    |             |      |
+| `[Shift]`+`[Enter]` | Append selected files to playlist |             |      |
 
 ### [mpv-webm](https://github.com/ekisu/mpv-webm)
 - Keybindings

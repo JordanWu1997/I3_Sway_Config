@@ -218,4 +218,6 @@ function find_and_add_entries()
     add_files_at(pl_current, append[-1])
 end
 
-mp.register_event("start-file", find_and_add_entries)
+--mp.register_event("start-file", find_and_add_entries)
+
+mp.add_key_binding("L", find_and_add_entries)

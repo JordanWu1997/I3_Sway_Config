@@ -338,7 +338,12 @@ handle_fallback() {
     exit 1
 }
 
+# Ignore partial-downloaded crdownload
+if [[ ${FILE_EXTENSION} == 'crdownload' ]]; then
+    exit 1
+fi
 
+# MIMETYPE
 MIMETYPE="$( file --dereference --brief --mime-type -- "${FILE_PATH}" )"
 if [[ "${PV_IMAGE_ENABLED}" == 'True' ]]; then
     handle_image "${MIMETYPE}"
@@ -346,5 +351,4 @@ fi
 handle_extension
 handle_mime "${MIMETYPE}"
 handle_fallback
-
 exit 1

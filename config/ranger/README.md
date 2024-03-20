@@ -57,36 +57,37 @@ sudo dnf install calibre
 ## Extensions
 
 ### devicon
+- https://github.com/cdump/ranger-devicons2
 ```bash
 # icons
 git clone https://github.com/cdump/ranger-devicons2 ~/.config/ranger/plugins/devicons2
 ```
-- https://github.com/cdump/ranger-devicons2
 
 ### disk menu
+- https://github.com/SL-RU/ranger_udisk_menu
 ```bash
 # disk menu using udiskctl
 git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins/ranger_udisk_mnu
 ```
-- https://github.com/SL-RU/ranger_udisk_menu
 
 ### drag-and-drop function
+- https://github.com/ranger/ranger/wiki/Drag-and-Drop
+- https://github.com/mwh/dragon
 ```bash
 # drag-and-drop function
 git clone https://github.com/mwh/dragon.git ~/Desktop
 cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin
 ```
-- https://github.com/ranger/ranger/wiki/Drag-and-Drop
-- https://github.com/mwh/dragon
 
 ### archive function (extract/compress files)
+- https://github.com/maximtrp/ranger-archives
 ```bash
 cd ~/.config/ranger/plugins
 git clone https://github.com/maximtrp/ranger-archives.git
 ```
-- https://github.com/maximtrp/ranger-archives
 
-### Ranger quit on working directory wrapper
+### Ranger quit on working directory wrapper (fish function)
+- https://github.com/ranger/ranger/wiki/Integration-with-other-programs
 ```fish
 function ranger
     set tempfile (mktemp -t tmp.XXXXXX)
@@ -103,4 +104,8 @@ function ranger
     clear
 end
 ```
-- https://github.com/ranger/ranger/wiki/Integration-with-other-programs
+- However, the fish function wrapper does __NOT__ work well with `tmux-resurrect`
+- My solution is as follow (not as elegant as previous one, but at least it works with `tmux-resurrect`)
+    1. Wrap quit command in `rc.conf` with save current directory path to `/tmp/tmp.ranger` before quitting
+    2. Map `[Shift]+[x]` to `cd_tmp_dir` in `command.py` that changes directory to path in `/tmp/tmp.ranger`
+    3. Also map `[x]` to quit for keybinding consistency that (`[Shift]`)+`[key]` should (undo)/do something

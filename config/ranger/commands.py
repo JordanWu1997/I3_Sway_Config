@@ -218,3 +218,17 @@ class toggle_flat(Command):
             self.fm.thisdir.unload()
             self.fm.thisdir.flat = 0
             self.fm.thisdir.load_content()
+
+
+class cd_tmp_dir(Command):
+    """
+    Added by Jordan K.H. Wu
+
+    """
+
+    def execute(self):
+        if os.path.isfile('/tmp/tmp.ranger'):
+            with open('/tmp/tmp.ranger') as tmp:
+                tmp_dir = tmp.readlines()[0].strip('\n')
+            if os.path.isdir(tmp_dir):
+                self.fm.cd(tmp_dir)

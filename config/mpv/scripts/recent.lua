@@ -220,16 +220,16 @@ function display_list()
     draw_list(list, start, choice)
     list_drawn = true
 
-    mp.add_forced_key_binding("UP", "recent-UP", function()
+    mp.add_forced_key_binding("k", "recent-UP", function()
         start, choice = select(list, start, choice, -1)
     end, {repeatable=true})
-    mp.add_forced_key_binding("DOWN", "recent-DOWN", function()
+    mp.add_forced_key_binding("j", "recent-DOWN", function()
         start, choice = select(list, start, choice, 1)
     end, {repeatable=true})
     mp.add_forced_key_binding("ENTER", "recent-ENTER", function()
         load(list, start, choice)
     end)
-    mp.add_forced_key_binding("DEL", "recent-DEL", function()
+    mp.add_forced_key_binding("d", "recent-DEL", function()
         delete(list, start, choice)
         list = read_log_table()
         if not list or not list[1] then
@@ -262,7 +262,7 @@ function display_list()
     mp.add_forced_key_binding("8", "recent-8", function() load(list, start, 7) end)
     mp.add_forced_key_binding("9", "recent-9", function() load(list, start, 8) end)
     mp.add_forced_key_binding("0", "recent-0", function() load(list, start, 9) end)
-    mp.add_forced_key_binding("ESC", "recent-ESC", function() unbind() end)
+    mp.add_forced_key_binding("q", "recent-ESC", function() unbind() end)
 end
 
 if o.auto_save then

@@ -102,6 +102,14 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | :-----------------: | :--------------: | :---------: | :--: |
 | `[Shift]`+`[d]`     | Audio visualizer |             |      |
 
+### [SmartCopyPaste](https://github.com/Eisa01/mpv-scripts#smartcopypaste-ii-script)
+- Keybindings
+
+| Key Mapping    | Function                              | Description | Note |
+| :------------: | :-----------------------------------: | :---------: | :--: |
+| `[Ctrl]`+`[v]` | Append URL in clipboard to playlist   |             |      |
+| `[Ctrl]`+`[c]` | Copy current playing URL to clipboard |             |      |
+
 ## Miscellaneous
 - MPV on linux has a weird hidden title bar when running picom
     - You need to set `frame-opacity = 1.0` in `$HOME/.config/picom/picom.conf` to eliminate it.
@@ -118,3 +126,4 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 - https://github.com/jonniek/mpv-playlistmanager (MPV playlist plug-in)
 - https://github.com/hacel/recent (MPV recent file plug-in)
 - https://github.com/ekisu/mpv-webm (MPV video clipper plug-in)
+- https://github.com/Eisa01/mpv-scripts#smartcopypaste-ii-script (MPV scripts: SmartCopyPaste)

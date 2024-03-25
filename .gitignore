@@ -13,3 +13,7 @@
 /config/vis/vis.log
 /config/ranger/plugins/__pycache__
 /config/dunst/log.txt
+/config/mpv/playlists
+/config/mpv/watch_later
+/config/mpv/history.log
+/config/mpv/script-opts/file_browser_favourites.txt

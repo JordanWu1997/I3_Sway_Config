@@ -273,6 +273,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), player, mpv and vlc
         - __Spotifyd Mode (`[s]`)__
             - Spotifyd control (e.g. enable, disable, reload) for spotifyd
+        - __Mpv Mode (`[s]`)__
+            - Mpv control
 - __Volume Mode (`[Ctrl]` + `[Alt]` + `[v]`)__
     - Volume control with pulsemixer (e.g. volume up/down, mute)
 

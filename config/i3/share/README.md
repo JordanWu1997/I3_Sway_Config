@@ -76,6 +76,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 [<img src="./64x64/spotify.png" width="128"/>](./64x64/spotify.png)
 [<img src="./64x64/video_player.png" width="128"/>](./64x64/video_player.png)
 [<img src="./64x64/volume_icon.png" width="128"/>](./64x64/volume_icon.png)
+[<img src="./64x64/wrench.png" width="128"/>](./64x64/wrench.png)
 [<img src="./64x64/wifi-connection.png" width="128"/>](./64x64/wifi-connection.png)
 [<img src="./64x64/window.png" width="128"/>](./64x64/window.png)
 

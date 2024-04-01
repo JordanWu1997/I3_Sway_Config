@@ -43,34 +43,34 @@ desc_profile_and_enviroment_variables () {
 add_profile_to_shell_configuration () {
     case $1 in
         "$HOME/.zshrc")
-            echo ''                                               >> $1
-            echo '# ============================================' >> $1
-            echo '# Followings are added by i3 script install.sh' >> $1
-            echo "# At $(date)"                                   >> $1
-            echo '# ============================================' >> $1
-            echo '# Run ~/.profile'                               >> $1
-            echo 'emulate sh -c ". ~/.profile"'                   >> $1
+            echo ''                                               >> "$1"
+            echo '# ============================================' >> "$1"
+            echo '# Followings are added by i3 script install.sh' >> "$1"
+            echo "# At $(date)"                                   >> "$1"
+            echo '# ============================================' >> "$1"
+            echo '# Run ~/.profile'                               >> "$1"
+            echo 'emulate sh -c ". ~/.profile"'                   >> "$1"
             ;;
         *)
-            echo ''                                               >> $1
-            echo '# ============================================' >> $1
-            echo '# Followings are added by i3 script install.sh' >> $1
-            echo "# At $(date)"                                   >> $1
-            echo '# ============================================' >> $1
-            echo '# Run ~/.profile'                               >> $1
-            echo 'source ~/.profile'                              >> $1
+            echo ''                                               >> "$1"
+            echo '# ============================================' >> "$1"
+            echo '# Followings are added by i3 script install.sh' >> "$1"
+            echo "# At $(date)"                                   >> "$1"
+            echo '# ============================================' >> "$1"
+            echo '# Run ~/.profile'                               >> "$1"
+            echo 'source ~/.profile'                              >> "$1"
     esac
 }
 
 # Add following lines to configuration file
 add_enviroment_variables_to_profile () {
-    echo ''                                               >> $1
-    echo '# ============================================' >> $1
-    echo '# Followings are added by i3 script install.sh' >> $1
-    echo "# At $(date)"                                   >> $1
-    echo '# ============================================' >> $1
-    cat "./config/i3/share/default_profile"               >> $1
-    echo '# ============================================' >> $1
+    echo ''                                               >> "$1"
+    echo '# ============================================' >> "$1"
+    echo '# Followings are added by i3 script install.sh' >> "$1"
+    echo "# At $(date)"                                   >> "$1"
+    echo '# ============================================' >> "$1"
+    cat "./config/i3/share/default_profile"               >> "$1"
+    echo '# ============================================' >> "$1"
 }
 
 
@@ -91,8 +91,8 @@ select option_section1 in \
 do
     case ${option_section1} in
         'yes')
-            add_profile_to_shell_configuration $SHELL_CONFIG
-            add_enviroment_variables_to_profile $PROFILE
+            add_profile_to_shell_configuration "$SHELL_CONFIG"
+            add_enviroment_variables_to_profile "$PROFILE"
             echo "Environment variables are added to $PROFILE ..."
             echo "Profile-loading function is added to $ $SHELL_CONFIG"
             break
@@ -136,11 +136,10 @@ select option in \
 do
     case ${option} in
         'link')
-            mkdir ${USER_CONFIG_BACKUP}
-            for config in ${USER_CONFIG_LIST[@]}
-            do
-                mv ${USER_CONFIG_DIR}/${config} ${USER_CONFIG_BACKUP}/
-                command ln -s ${NEW_CONFIG_DIR}/${config} ${USER_CONFIG_DIR}
+            mkdir "${USER_CONFIG_BACKUP}"
+            for config in "${USER_CONFIG_LIST[@]}"; do
+                mv "${USER_CONFIG_DIR}/${config}" "${USER_CONFIG_BACKUP}/"
+                command ln -s "${NEW_CONFIG_DIR}/${config}" "${USER_CONFIG_DIR}"
                 echo "${USER_CONFIG_DIR}/${config} linked ..."
             done
             echo "Linking configuration done ..."
@@ -148,11 +147,10 @@ do
             break
             ;;
         'copy')
-            mkdir ${USER_CONFIG_BACKUP}
-            for config in ${USER_CONFIG_LIST[@]}
-            do
-                mv ${USER_CONFIG_DIR}/${config} ${USER_CONFIG_BACKUP}/
-                cp -fr ${NEW_CONFIG_DIR}/${config} ${USER_CONFIG_DIR}/${config}
+            mkdir "${USER_CONFIG_BACKUP}"
+            for config in "${USER_CONFIG_LIST[@]}"; do
+                mv "${USER_CONFIG_DIR}/${config}" "${USER_CONFIG_BACKUP}/"
+                cp -fr "${NEW_CONFIG_DIR}/${config}" "${USER_CONFIG_DIR}/${config}"
                 echo "${USER_CONFIG_DIR}/${config} copied ..."
             done
             echo "Copying configuration done ..."
@@ -182,8 +180,8 @@ desc_RPM_repositories () {
 add_RPM_repositories () {
     # Add free/non-free rpmfusion repository
     sudo dnf install -y \
-        https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-        https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+        "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
+        "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
     # TODO: Add rpmsphere repository
     #sudo dnf install -y rpmsphere-release
 }
@@ -196,7 +194,8 @@ desc_terminal_packages () {
     echo "-- Shell: fish"
     echo "-- TUI tool: tmux, git, htop"
     echo "-- Complier: golang"
-    echo "-- Package Manger: pip"
+    echo "-- Package Manager (Python): pip"
+    echo "-- Package Manager (Rust): cargo"
     echo "-- JSON processor: jq"
     echo "Installation requires sudo permission"
 }
@@ -209,6 +208,8 @@ install_terminal_packages () {
     sudo dnf install -y tmux git htop
     # Complier: golang
     sudo dnf install -y golang
+    # Package Manager (Rust): cargo
+    sudo dnf install -y cargo
     # JSON processor
     sudo dnf install -y jq
     # Install pip with dnf if there is no one
@@ -217,14 +218,14 @@ install_terminal_packages () {
 
 # Add environment variable for ibus
 add_environment_variables_for_ibus () {
-    echo ''                                               >> $1
-    echo '# =================== iBUS ===================' >> $1
-    echo 'export GTK_IM_MODULE=ibus'                      >> $1
-    echo 'export XMODIFIER="@im=ibus"'                    >> $1
-    echo 'export DefaultIMModule=ibus'                    >> $1
-    echo 'export QT_IM_MODULE=ibus'                       >> $1
-    echo 'export GLFW_IM_MODULE=ibus'                     >> $1
-    echo '# ============================================' >> $1
+    echo ''                                               >> "$1"
+    echo '# =================== iBUS ===================' >> "$1"
+    echo 'export GTK_IM_MODULE=ibus'                      >> "$1"
+    echo 'export XMODIFIER="@im=ibus"'                    >> "$1"
+    echo 'export DefaultIMModule=ibus'                    >> "$1"
+    echo 'export QT_IM_MODULE=ibus'                       >> "$1"
+    echo 'export GLFW_IM_MODULE=ibus'                     >> "$1"
+    echo '# ============================================' >> "$1"
 }
 
 # Input method packages
@@ -238,7 +239,7 @@ install_input_method_packages () {
     # Ibus input
     sudo dnf install -y ibus ibus-chewing
     # Add environment variable for ibus
-    add_environment_variables_for_ibus ${PROFILE}
+    add_environment_variables_for_ibus "${PROFILE}"
     echo "ibus environment variables are added to ${PROFILE} ..."
 }
 
@@ -274,7 +275,7 @@ desc_xwindow_tool_packages () {
     echo "X-window tool packages including:"
     echo "-- Display manager: xrandr, arandr"
     echo "-- Window controller: wmctrl"
-    echo "-- Screen: xbacklight, redshift, i3lock, xss-lock"
+    echo "-- Screen: xbacklight, redshift, i3lock, xss-lock, xcolor"
     echo "-- Mouse: imwheel, libinput, unclutter-xfixes"
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
     echo "-- System monitor: conky"
@@ -288,6 +289,8 @@ install_xwindow_tool_packages () {
     sudo dnf install -y wmctrl
     # Screen: xbacklight, redshift, i3lock, xss-lock
     sudo dnf install -y xbacklight redshift i3lock xss-lock
+    # Screen: xcolor
+    cargo install xcolor
     # Mouse: imwheel, libinput, unclutter-xfixes
     sudo dnf install -y imwheel libinput unclutter-xfixes
     # Keyboard: xdotool, xset, numlockx, screenkey
@@ -296,12 +299,12 @@ install_xwindow_tool_packages () {
     sudo dnf install -y conky
     # Touchpad: libinput-gestures
     sudo dnf install wmctrl xdotool
-    cd $HOME/Desktop
+    cd "$HOME/Desktop"
     git clone https://github.com/bulletmark/libinput-gestures.git
     cd libinput-gestures
     sudo ./libinput-gestures-setup install
     # libinput-gestures requires user to be in the group input
-    sudo gpasswd -a $USER input
+    sudo gpasswd -a "$USER" input
 }
 
 # Audio tools
@@ -372,14 +375,14 @@ install_customization_packages () {
     sudo dnf install -y feh variety
     sudo dnf install -y arc-theme papirus-icon-theme
     # Font
-    cd $HOME/Desktop
-    mkdir -p $HOME/.local/share/fonts
-    cd $HOME/.local/share/fonts
+    cd "$HOME/Desktop"
+    mkdir -p "$HOME/.local/share/fonts"
+    cd "$HOME/.local/share/fonts"
     curl -fLo \
         "Droid Sans Mono for Powerline Nerd Font Complete.otf" \
         "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf"
     # Theme: pywal
-    cd $HOME/Desktop
+    cd "$HOME/Desktop"
     git clone https://github.com/sonjiku/pywal.git
     cd pywal
     /usr/bin/python -m pip install . --user
@@ -410,7 +413,7 @@ install_editor_tool_packages () {
     # Zathura and pdf-plugins
     sudo dnf install -y zathura 'zathura-*'
     # Zathura-pywal [https://github.com/mlscarlson/zathura-pywal]
-    cd $HOME/Desktop
+    cd "$HOME/Desktop"
     git clone https://github.com/mlscarlson/zathura-pywal.git
     cd zathura-pywal
     sudo make install
@@ -477,18 +480,18 @@ install_misc_tool_packages () {
     sudo dnf install -y fontforge
     # Ueberzug
     sudo dnf install -y libXres-devel
-    cd $HOME/Desktop
+    cd "$HOME/Desktop"
     git clone https://github.com/ueber-devel/ueberzug.git
     cd ueberzug
     /usr/bin/python setup.py install --user
     # Modeline Devicons
-    cd $HOME/Desktop
+    cd "$HOME/Desktop"
     git clone \
         https://github.com/alexanderjeurissen/ranger_devicons.git \
-        $HOME/.config/ranger/plugins/ranger_devicons
+        "$HOME/.config/ranger/plugins/ranger_devicons"
     git clone \
         https://github.com/cdump/ranger-devicons2 \
-        $HOME/.config/ranger/plugins/devicons2
+        "$HOME/.config/ranger/plugins/devicons2"
     # Miscellaneous
     sudo dnf install -y flameshot
 }
@@ -511,8 +514,7 @@ section3_greetings () {
     echo '# This section is to install needed packages for working environment #'
     echo '# ================================================================== #'
     echo '# Package list:'
-    for package in ${PACKAGE_LIST[@]};
-    do
+    for package in "${PACKAGE_LIST[@]}"; do
         echo "# -- ${package}"
     done
     echo
@@ -554,10 +556,9 @@ do
                 esac
             done
             # Install packages one-by-one
-            for package in ${PACKAGE_LIST[@]};
-            do
+            for package in "${PACKAGE_LIST[@]}"; do
                 echo "Do you want to install ${package} ?"
-                desc_${package}
+                "desc_${package}"
                 echo
                 select option in \
                     'no' \
@@ -570,7 +571,7 @@ do
                             break
                             ;;
                         'yes')
-                            install_${package}
+                            "install_${package}"
                             echo "${package} installation is done ..."
                             echo
                             break
@@ -604,12 +605,11 @@ do
                 esac
             done
             # Install all packages
-            for package in ${PACKAGE_LIST[@]};
-            do
-                echo ${package}
-                desc_${package}
+            for package in "${PACKAGE_LIST[@]}"; do
+                echo "${package}"
+                "desc_${package}"
                 echo
-                install_${package}
+                "install_${package}"
             done
             echo "Package installation is done ..."
             break
@@ -632,16 +632,16 @@ section4_greetings () {
 
 section4_greetings
 # Set default picom
-if [ ! -f $HOME/.config/picom/picom.conf ]; then
+if [ ! -f "$HOME/.config/picom/picom.conf" ]; then
     i3_default_valuechanger.sh picom transparency
 fi
 # Set default flashfocus
-if [ ! -f $HOME/.config/flashfocus/flashfocus.yml ]; then
+if [ ! -f "$HOME/.config/flashfocus/flashfocus.yml" ]; then
     i3_default_valuechanger.sh flashfocus opaque
 fi
 # Set default conky
-if [ ! -f $HOME/.config/conky/conky_config_bindkey ] \
-    && [ -f $HOM#/.config/conky/conky_config_system ]; then
+if [ ! -f "$HOME/.config/conky/conky_config_bindkey" ] \
+    && [ -f "$HOME/.config/conky/conky_config_system" ]; then
     i3_default_valuechanger.sh conky_style minimal
 fi
 

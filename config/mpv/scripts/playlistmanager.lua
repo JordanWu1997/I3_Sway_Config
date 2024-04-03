@@ -744,6 +744,55 @@ function save_playlist()
   end
 end
 
+--saves the current playlist into a m3u file
+function save_playlist_interactive(input_playlist_name)
+  local length = mp.get_property_number('playlist-count', 0)
+  if length == 0 then return end
+
+  --get playlist save path
+  local savepath
+  if settings.playlist_savepath == nil or settings.playlist_savepath == "" then
+    savepath = mp.command_native({"expand-path", "~~home/"}).."/playlists"
+  else
+    savepath = parse_home(settings.playlist_savepath)
+    if savepath == nil then return end
+  end
+
+  --create savepath if it doesn't exist
+  if utils.readdir(savepath) == nil then
+    local windows_args = {'powershell', '-NoProfile', '-Command', 'mkdir', savepath}
+    local unix_args = { 'mkdir', savepath }
+    local args = settings.system == 'windows' and windows_args or unix_args
+    local res = utils.subprocess({ args = args, cancellable = false })
+    if res.status ~= 0 then
+      msg.error("Failed to create playlist save directory "..savepath..". Error: "..(res.error or "unknown"))
+      return
+    end
+  end
+
+  local savepath = utils.join_path(savepath, input_playlist_name)
+  local file, err = io.open(savepath, "w")
+  if not file then
+    msg.error("Error in creating playlist file, check permissions. Error: "..(err or "unknown"))
+  else
+    local i=0
+    while i < length do
+      local pwd = mp.get_property("working-directory")
+      local filename = mp.get_property('playlist/'..i..'/filename')
+      local fullpath = filename
+      if not filename:match("^%a%a+:%/%/") then
+        fullpath = utils.join_path(pwd, filename)
+      end
+      local title = mp.get_property('playlist/'..i..'/title')
+      if title then file:write("#EXTINF:,"..title.."\n") end
+      file:write(fullpath, "\n")
+      i=i+1
+    end
+    msg.info("Playlist written to: "..savepath)
+    file:close()
+  end
+end
+
 function alphanumsort(a, b)
   local function padnum(d)
     local dec, n = string.match(d, "(%.?)0*(.+)")
@@ -973,6 +1022,7 @@ function handlemessage(msg, value, value2)
   if msg == "reverse" then reverseplaylist() ; return end
   if msg == "loadfiles" then playlist(value) ; return end
   if msg == "save" then save_playlist() ; return end
+  if msg == "save_interactive" then save_playlist_interactive(value) ; return end
   if msg == "playlist-next" then playlist_next(true) ; return end
   if msg == "playlist-prev" then playlist_prev(true) ; return end
 end
@@ -983,7 +1033,7 @@ mp.add_key_binding("r", "sortplaylist", sortplaylist)
 mp.add_key_binding("R", "shuffleplaylist", shuffleplaylist)
 mp.add_key_binding("AlT+r", "reverseplaylist", reverseplaylist)
 --mp.add_key_binding("L", "loadfiles", playlist)
---mp.add_key_binding("p", "saveplaylist", save_playlist)
+mp.add_key_binding("CTRL+E", "saveplaylist", save_playlist)
 mp.add_key_binding("SHIFT+ENTER", "showplaylist", toggle_playlist)
 
 mp.register_event("file-loaded", on_loaded)

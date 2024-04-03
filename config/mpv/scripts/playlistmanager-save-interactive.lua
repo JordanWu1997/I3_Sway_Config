@@ -33,6 +33,18 @@ function activate()
     mp.add_forced_key_binding(key, "playlist-save-interactive-key-"..key, function() typer(key) end, {repeatable=true})
   end
 
+  input = ""
+  typer("")
+end
+
+function activate_with_preset()
+  for key, func in pairs(controls) do
+    mp.add_forced_key_binding(key, "playlist-save-interactive-key-"..key, func, {repeatable=true})
+  end
+  for i, key in ipairs(keys) do
+    mp.add_forced_key_binding(key, "playlist-save-interactive-key-"..key, function() typer(key) end, {repeatable=true})
+  end
+
   local date = os.date("*t")
   input = ("%02d-%02d-%02d_%02d-%02d-%02d"):format(date.year, date.month, date.day, date.hour, date.min, date.sec)
   typer("")
@@ -40,7 +52,8 @@ end
 
 function commit()
   deactivate()
-  mp.command("script-message playlistmanager save \""..input..".m3u\" \"save playlist with a custom name\"")
+  --mp.command("script-message playlistmanager save \""..input..".m3u\" \"save playlist with a custom name\"")
+  mp.command("script-message playlistmanager save_interactive \""..input..".m3u\" \"save playlist with a custom name\"")
 end
 
 function deactivate()
@@ -66,6 +79,8 @@ end
 
 -- this will be called from playlistmanager
 mp.register_script_message("playlistmanager-save-interactive", activate)
+mp.register_script_message("playlistmanager-save-interactive-with-preset", activate_with_preset)
 
 -- this will enable the feature in playlistmanager
 mp.command("script-message playlistmanager enable-interactive-save \"enable interactive filenaming in playlistmanager\"")
+mp.command("script-message playlistmanager enable-interactive-save-with-preset \"enable interactive filenaming in playlistmanager\"")

@@ -12,29 +12,53 @@ show_help_message () {
     echo "  i3_RF_device_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [enable]: enable selected RF device"
-    echo "  [disable]: disable selected RF device"
+    echo "  [enable_RF_device]: enable selected RF device"
+    echo "  [disable_RF_device]: disable selected RF device"
+    echo "  [connect_bluetooth_device]: connect to bluetooth device"
+    echo "  [disconnect_bluetooth_device]: disconnect from bluetooth device"
 }
 
 # Operation
 RF_device_operation () {
     ICON="$HOME/.config/i3/share/64x64/wifi-connection.png"
     case $1 in
-        'enable')
+        'enable_RF_device')
             RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -p "Enable RF Device:")
             RF_ID=$(echo ${RF_DEVICE} | cut -d: -f1)
             RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
             RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
-            rfkill unblock ${RF_ID}
-            notify-send -u low "${RF_TYPE} Device" "${RF_NAME} is enabled" --icon=${ICON}
+            if [[ -n ${RF_ID} ]]; then
+                rfkill unblock ${RF_ID}
+                notify-send -u low "${RF_TYPE} Device" "${RF_NAME} is enabled" --icon=${ICON}
+            fi
             ;;
-        'disable')
+        'disable_RF_device')
             RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -p "Disable RF Device:")
             RF_ID=$(echo ${RF_DEVICE} | cut -d: -f1)
             RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
             RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
-            rfkill block ${RF_ID}
-            notify-send -u low -a "${RF_TYPE} Device" "${RF_NAME} is disabled" --icon=${ICON}
+            if [[ -n ${RF_ID} ]]; then
+                rfkill block ${RF_ID}
+                notify-send -u low -a "${RF_TYPE} Device" "${RF_NAME} is disabled" --icon=${ICON}
+            fi
+            ;;
+        'connect_bluetooth_device')
+            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -p "Connect to Bluetooth Device:")
+            BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
+            BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
+            if [[ -n ${BT_ADDR} ]]; then
+                notify-send -u low -a "Bluetooth" "Connecting to ${BT_NAME}" --icon=${ICON}
+                bluetoothctl connect ${BT_ADDR}
+            fi
+            ;;
+        'disconnect_bluetooth_device')
+            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -p "Disconnect from Bluetooth Device:")
+            BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
+            BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
+            if [[ -n ${BT_ADDR} ]]; then
+                notify-send -u low -a "Bluetooth" "Disconnecting from ${BT_NAME}" --icon=${ICON}
+                bluetoothctl disconnect ${BT_ADDR}
+            fi
             ;;
         *)
             show_wrong_usage_message

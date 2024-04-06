@@ -38,4 +38,4 @@ xsslock_operation () {
 
 # Main
 killall xss-lock
-xsslock_operation $1
+xsslock_operation "$@"

@@ -115,6 +115,7 @@ ${color2}display mode ${alignr}${color1}[Win]+[Shift]+[x]
 ${color2}dunst mode ${alignr}${color1}[Ctrl]+[Alt]+[n]
 ${color2}gap mode ${alignr}${color1}[Ctrl]+[Alt]+[g]
 ${color2}resize mode ${alignr}${color1}[Ctrl]+[Alt]+[r]
+${color2}toolkit mode ${alignr}${color1}[Ctrl]+[Alt]+[t]
 ${color2}mouse mode ${alignr}${color1}[Ctrl]+[Alt]+[m]
 ${color2}insert mode ${alignr}${color1}[Ctrl]+[Alt]+[i]
 ${voffset 5}${color3}${hr 2}${voffset 5}

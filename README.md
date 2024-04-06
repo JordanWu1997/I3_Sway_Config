@@ -246,15 +246,19 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate
+        - __Device Mode (`[d]`)__
+            - Turn on/off RF device, connect/disconnect Bluetooth device
+- __Toolkit Mode (`[Ctrl]` + `[Alt]` + `[t]`)__
+    - Tool script, e.g. pick up color, take screenshot and do OCR
+        - __Caffeine Mode (`[c]`)__
+            - Enable/Disable caffeine (disable/enable X screen saver)
         - __Keyboard Mode (`[k]`)__
             - Map keys, tune repeat key speed
-        - __Device Mode__ (`[d]`)
-            - Turn on/off RF device
-        - __Toolkit Mode (`[t]`)__
-            - Caffeine (screen saver), kdeconnect pointer daemon, reload Xresource
+        - __KDE Connect Mode (`[Shift]` + `[k]`)__
+            - KDE Connect pointer daemon
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Deal with multiple monitor configurations, e.g. joint monitor, mirror monitor
-- __Backlight Mode (`[Ctrl]`+`[Alt]`+`[x]`)__
+- __Backlight Mode (`[Ctrl]` + `[Alt]` + `[x]`)__
     - Modify monitor backlight level, blue light filter
         - __Redshift Mode (`[z]`)__
             - Screen color temperature tuner, blue light filter

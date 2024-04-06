@@ -448,7 +448,8 @@ desc_misc_tool_packages () {
     echo "   -- Font previewer: fontforge"
     echo "-- Bluetooth: blueman"
     echo "-- Network: NetworkManager, brave-browser, firefox"
-    echo "-- Miscellaneous: flameshot"
+    echo "-- Screenshot: flameshot"
+    echo "-- OCR Tool: tesseract, tesseract-langpak-eng, tesseract-langpack-chi_tra"
     echo "Installation requires sudo permission"
 }
 install_misc_tool_packages () {
@@ -492,8 +493,10 @@ install_misc_tool_packages () {
     git clone \
         https://github.com/cdump/ranger-devicons2 \
         "$HOME/.config/ranger/plugins/devicons2"
-    # Miscellaneous
+    # Screenshot
     sudo dnf install -y flameshot
+    # OCR Tool
+    sudo dnf install -y tesseract tesseract-langpak-eng tesseract-langpack-chi_tra
 }
 
 PACKAGE_LIST=( terminal_packages \

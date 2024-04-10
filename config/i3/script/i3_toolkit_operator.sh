@@ -36,8 +36,8 @@ toolkit_operation () {
             notify-send -u low "Toolkit Mode" "${CONTEXT}" --icon="${ICON}"
             ;;
         'collect_all_instances')
-            "$I3_SCRIPT/i3_collect_all_instances.py" \
-                "$(wmctrl -l -x | rofi -dmenu -p "Collect all" | cut -d' ' -f4 | cut -d. -f1)"
+            INSTANCE=$(wmctrl -l -x | rofi -dmenu -p 'Collect all' | cut -d' ' -f4 | cut -d. -f1)
+            [[ -n "${INSTANCE}" ]] && $I3_SCRIPT/i3_collect_all_instances.py ${INSTANCE}
             ;;
         'enable_caffeine')
             xset s 0 0 dpms 0 0 0

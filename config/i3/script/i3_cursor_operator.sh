@@ -2,6 +2,7 @@
 
 STARTUP_CONFIG="$HOME/.config/i3/config.d/i3_startup.config"
 WINDOW_CONFIG="$HOME/.config/i3/config.d/i3_window.config"
+BINDKEY_CONFIG="$HOME/.config/i3/config.d/i3_bindkey.config"
 COL_UNCLUTTER=$(awk '$0~/exec --no-startup-id unclutter/ {print NR}' ${STARTUP_CONFIG})
 COL_FOCUS=$(awk '$0~/focus_follows_mouse/ {print NR}' ${WINDOW_CONFIG})
 UNCLUTTER_OPTION="--start-hidden"
@@ -24,6 +25,59 @@ show_help_message () {
     echo "  [set_no_unclutter_as_default]: disable unclutter as default"
     echo "  [enable_focus_follows_mouse]: set i3wm focus_follows_mouse to yes"
     echo "  [disable_focus_follows_mouse]: set i3wm focus_follows_mouse to no"
+    echo "  [move_cursor_inside_window]: move cursor to inside focus window"
+}
+
+move_cursor_inside_window () {
+    # Source Code: https://github.com/i3/i3/issues/2971
+    WINDOW=$(xdotool getwindowfocus)
+    # This brings in variables WIDTH and HEIGHT
+    eval `xdotool getwindowgeometry --shell $WINDOW`
+    CENTER_X=`expr $WIDTH / 2`
+    CENTER_Y=`expr $HEIGHT / 2`
+    BLOCK_W=`expr $WIDTH / 3`
+    BLOCK_H=`expr $HEIGHT / 3`
+    case $1 in
+        "1")
+            TX=`expr $CENTER_X - $BLOCK_W`
+            TY=`expr $CENTER_Y - $BLOCK_H`
+            ;;
+        "2")
+            TX=$CENTER_X
+            TY=`expr $CENTER_Y - $BLOCK_H`
+            ;;
+        "3")
+            TX=`expr $CENTER_X + $BLOCK_W`
+            TY=`expr $CENTER_Y - $BLOCK_H`
+            ;;
+        "4")
+            TX=`expr $CENTER_X - $BLOCK_W`
+            TY=$CENTER_Y
+            ;;
+        "5"|"")
+            TX=$CENTER_X
+            TY=$CENTER_Y
+            ;;
+        "6")
+            TX=`expr $CENTER_X + $BLOCK_W`
+            TY=$CENTER_Y
+            ;;
+        "7")
+            TX=`expr $CENTER_X - $BLOCK_W`
+            TY=`expr $CENTER_Y + $BLOCK_H`
+            ;;
+        "8")
+            TX=$CENTER_X
+            TY=`expr $CENTER_Y + $BLOCK_H`
+            ;;
+        "9")
+            TX=`expr $CENTER_X + $BLOCK_W`
+            TY=`expr $CENTER_Y + $BLOCK_H`
+            ;;
+        *)
+            return
+    esac
+    xdotool mousemove -window $WINDOW $TX $TY
 }
 
 cursor_operation () {
@@ -46,11 +100,22 @@ cursor_operation () {
             ;;
         "enable_focus_follows_mouse")
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse yes/" ${WINDOW_CONFIG}
+            sed -i "s/Mod4+h focus left$/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${BINDKEY_CONFIG}
+            sed -i "s/Mod4+j focus down$/Mod4+j focus down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${BINDKEY_CONFIG}
+            sed -i "s/Mod4+k focus up$/Mod4+k focus up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${BINDKEY_CONFIG}
+            sed -i "s/Mod4+l focus right$/Mod4+l focus right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${BINDKEY_CONFIG}
             i3-msg reload
             ;;
         "disable_focus_follows_mouse")
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse no/" ${WINDOW_CONFIG}
+            sed -i "s/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+h focus left/" ${BINDKEY_CONFIG}
+            sed -i "s/Mod4+j focus down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+j focus down/" ${BINDKEY_CONFIG}
+            sed -i "s/Mod4+k focus up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+k focus up/" ${BINDKEY_CONFIG}
+            sed -i "s/Mod4+l focus right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+l focus right/" ${BINDKEY_CONFIG}
             i3-msg reload
+            ;;
+        "move_cursor_inside_window")
+            move_cursor_inside_window $2
             ;;
         *)
             show_wrong_usage_message
@@ -61,4 +126,4 @@ cursor_operation () {
 }
 
 # Main
-cursor_operation $1
+cursor_operation "$@"

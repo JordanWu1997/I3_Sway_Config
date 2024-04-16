@@ -31,8 +31,8 @@ keyboard_operation () {
             notify-send -u low "Keyboard Mode" "Caplocks key is pressed" --icon=${ICON}
             ;;
         'speed_up_repeat_key_rate')
-            xset r rate 300 40
-            notify-send -u low "Keyboard Mode" "Speed up repeat key rate (300/40)" --icon=${ICON}
+            xset r rate 250 50
+            notify-send -u low "Keyboard Mode" "Speed up repeat key rate (250/50)" --icon=${ICON}
             ;;
         'restore_repeat_key_rate')
             xset r rate 660 25
@@ -51,7 +51,7 @@ keyboard_operation () {
             notify-send -u low "Keyboard Mode" "Restore Caplock" --icon=${ICON}
             ;;
         'default')
-            xset r rate 300 40
+            xset r rate 250 50
             setxkbmap -option "ctrl:nocaps"
             notify-send -u low "Keyboard Mode" "Speed up repeat key rate and map Caplock to Ctrl" --icon=${ICON}
             ;;

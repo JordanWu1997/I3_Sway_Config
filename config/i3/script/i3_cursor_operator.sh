@@ -11,7 +11,6 @@ UNCLUTTER_OPTION="--start-hidden"
 TIMEOUT=3 # Unit: second
 ICON="$HOME/.config/i3/share/64x64/cursor.png"
 
-
 show_wrong_usage_message () {
     echo "Wrong Usage:"
     echo "  $0"

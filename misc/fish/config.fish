@@ -57,6 +57,38 @@ if test -n "$DESKTOP_SESSION"
 end
 
 # ============================================================================
+# My Functions
+# ============================================================================
+
+# Update tmux display (e.g. localhost:XX -> localhost:XX)
+function tmux_update_display
+    set LAST_DISPLAY $DISPLAY
+    set DISPLAY (tmux show-env | sed -n 's/^DISPLAY=//p')
+    echo "UPDATE_TMUX_DISPLAY: $LAST_DISPLAY (OLD) -> $DISPLAY (NEW)"
+end
+
+# BASH !!
+function bind_bang
+    switch (commandline -t)[-1]
+        case "!"
+            commandline -t -- $history[1]
+            commandline -f repaint
+        case "*"
+            commandline -i !
+    end
+end
+
+# BASH !$
+function bind_dollar
+    switch (commandline -t)[-1]
+        case "!"
+            commandline -f backward-delete-char history-token-search-backward
+        case "*"
+            commandline -i '$'
+    end
+end
+
+# ============================================================================
 # My Keybindings
 # ============================================================================
 
@@ -66,15 +98,10 @@ bind \ej fish_vi_key_bindings
 # Fish default keybinding (alt+k)
 bind \ek fish_default_key_bindings
 
-# ============================================================================
-# My Functions
-# ============================================================================
-
-# Update tmux display (e.g. localhost:XX -> localhost:XX)
-function tmux_update_display
-    set LAST_DISPLAY $DISPLAY
-    set DISPLAY (tmux show-env | sed -n 's/^DISPLAY=//p')
-    echo "UPDATE_TMUX_DISPLAY: $LAST_DISPLAY (OLD) -> $DISPLAY (NEW)"
+# User-defined Keybindings
+function fish_user_key_bindings
+    bind ! bind_bang
+    bind '$' bind_dollar
 end
 
 # ============================================================================

@@ -23,7 +23,8 @@ scratchpad_operation () {
             if [[ ${SCRATCHPAD_WD_NUM} -gt "0" ]]; then
                 WINDOW_ID=$(wmctrl -l | awk '$2<0' | \
                     rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
-                    -p "scrachpad" -i -auto-select | cut -d' ' -f1)
+                    -p "scrachpad" -i | cut -d' ' -f1)
+                    #-p "scrachpad" -i -auto-select | cut -d' ' -f1)
                 i3-msg "[id="${WINDOW_ID}"] focus"
             else
                 notify-send -u "low" "i3 Scratchpad" "There are No more windows in scratchpad" --icon=${ICON}

@@ -31,6 +31,11 @@ MPRIS_notification () {
         "player_all")
             notify-send -u low "MPRIS: Active Players" "$(playerctl --list-all)" --icon=${ICON}
             ;;
+        "read_playing")
+            PLAYING=$(playerctl metadata --format "Title: {{ title }}\nArtist: {{ artist }}\nAlbum: {{ album }}")
+            notify-send -u low "MPRIS: Playing" "$PLAYING" --icon=${ICON}
+            espeak -v zh+f3 "$(playerctl metadata --format 'Now playing: {{ title }}')"
+            ;;
         *)
             show_wrong_usage_message
             echo

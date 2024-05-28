@@ -22,7 +22,7 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | `[None/Shift/Alt]`+`[;]`                   | Toggle A-B/current_file/current_playlist loop              |             |                                                                        |
 | (`[Ctrl]`)+`[Alt]`+`[Shift]`+`[h/j/k/l/o]` | Pan left/down/up/right/back_to_original                    |             | `[Ctrl]`+`[Alt]`+`[Shift]`+`[h/j/k/l/o]` conflicts with my i3 bindkeys |
 | (`[Ctrl]`)+(`[Alt]`)+`[-/=/+]`             | Zoom in/out/back_to_original                               |             | `[Ctrl]`+`[Alt]`+`[Shift]`+`[-/=/+]` conflicts with my i3 bindkeys     |
-| (`[Ctrl]`)+(`[Shift]`)+`[r]`               | Rotate clock-wisely                                        |             | Step in (+/-)(15/90) degrees                                          |
+| (`[Ctrl/Alt]`)+(`[Shift]`)+`[r]`           | Rotate clock-wisely                                        |             | Step in (+/-)(1/15/90) degrees                                         |
 | `[x]`                                      | Cycle audios                                               |             |                                                                        |
 | `[c]`                                      | Cycle subtitles                                            |             |                                                                        |
 | `[t]`                                      | Seek to specific time                                      |             |                                                                        |

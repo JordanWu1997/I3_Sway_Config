@@ -28,7 +28,7 @@ spotifyd_operation () {
     NOTIFY_ID=70920199
     case $1 in
         "status")
-            if [ ! -z $(pgrep -f ^spotifyd) ]; then
+            if [[ -n $(pgrep -f ^spotifyd) ]]; then
                 notify-send "Spotifyd" "Spotifyd is active" --icon=${ICON}
             else
                 notify-send "Spotifyd" "Spotifyd is not active" --icon=${ICON}

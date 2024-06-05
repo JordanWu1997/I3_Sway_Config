@@ -18,6 +18,7 @@ show_help_message () {
     echo "  [map_capslock_to_ctrl]"
     echo "  [swap_capslock_with_ctrl]"
     echo "  [restore_capslock]"
+    echo "  [customize_tex_shinobi]"
     echo "  [default]"
     echo
 }
@@ -49,6 +50,18 @@ keyboard_operation () {
         'restore_capslock')
             setxkbmap -option "ctrl:aa_ctrl"
             notify-send -u low "Keyboard Mode" "Restore Caplock" --icon=${ICON}
+            ;;
+        'customize_tex_shinobi')
+            DEVICE='USB-HID Keyboard Mouse'
+            xinput set-prop "${DEVICE}" 315 0
+            xinput set-prop "${DEVICE}" 329 0 1 0
+            xinput set-prop "${DEVICE}" 326 0.45
+            ;;
+        'restore_tex_shinobi')
+            DEVICE='USB-HID Keyboard Mouse'
+            xinput set-prop "${DEVICE}" 315 0
+            xinput set-prop "${DEVICE}" 329 1 0 0
+            xinput set-prop "${DEVICE}" 326 0.0
             ;;
         'default')
             xset r rate 250 50

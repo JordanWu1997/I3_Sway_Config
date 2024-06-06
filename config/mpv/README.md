@@ -52,7 +52,7 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 - Keybindings
 
 | Key Mapping     | Function                        | Description                                | Note |
-| :-------------: | :----------------------------:  | :----------------------------------------: | :--: |
+| :-------------: | :-----------------------------: | :----------------------------------------: | :--: |
 | `[q]`           | Close file-browser              |                                            |      |
 | `[j/k]`         | Scroll down/up                  |                                            |      |
 | `[Enter]`       | Play file                       |                                            |      |
@@ -96,16 +96,16 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 ### [mpv-webm](https://github.com/ekisu/mpv-webm)
 - Keybindings
 
-| Key Mapping         | Function                       | Description | Note |
-| :-----------------: | :----------------------------: | :---------: | :--: |
-| `[Shift]`+`[w]`     | Video clipper (in webm format) |             |      |
+| Key Mapping     | Function                       | Description | Note |
+| :-------------: | :----------------------------: | :---------: | :--: |
+| `[Shift]`+`[w]` | Video clipper (in webm format) |             |      |
 
 ### [visualizer](https://github.com/mfcc64/mpv-scripts/blob/master/visualizer.lua)
 - Keybindings
 
-| Key Mapping         | Function         | Description | Note |
-| :-----------------: | :--------------: | :---------: | :--: |
-| `[Shift]`+`[d]`     | Audio visualizer |             |      |
+| Key Mapping     | Function         | Description | Note |
+| :-------------: | :--------------: | :---------: | :--: |
+| `[Shift]`+`[d]` | Audio visualizer |             |      |
 
 ### [SmartCopyPaste](https://github.com/Eisa01/mpv-scripts#smartcopypaste-ii-script)
 - Keybindings

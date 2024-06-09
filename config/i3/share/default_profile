@@ -7,7 +7,10 @@ export WALLPAPERI3="$HOME/.config/i3/share"
 # ------------ I3 PATH Variables -------------
 export PATH="$I3_SCRIPT:$PATH"
 
-# ------------- IBUS Variables ---------------
+# ----------- I3 BROWSER Variables -----------
+export BROWSER='/usr/bin/brave-browser'
+
+# -------------- IBUS Variables --------------
 export GTK_IM_MODULE=ibus
 export XMODIFIER="@im=ibus"
 export DefaultIMModule=ibus
@@ -25,5 +28,5 @@ export FZF_DEFAULT_OPTS="\
     --bind 'alt-d:preview-page-down,alt-u:preview-page-up' \
     --bind 'alt-/:change-preview-window(down|hidden|)'"
 
-# ------------- Ranger Variables --------------
+# ------------- Ranger Variables -------------
 export RANGER_LOAD_DEFAULT_RC="False"

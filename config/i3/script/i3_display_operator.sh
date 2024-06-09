@@ -174,6 +174,7 @@ main () {
     if [ $1 == "auto" ]; then
         auto_adjust
         #setup_monitors.sh auto_in_office
+        #setup_monitors.sh auto_at_home
     else
         display_operation $1
     fi

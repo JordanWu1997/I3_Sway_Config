@@ -12,7 +12,8 @@ show_help_message () {
     echo "  i3_keyboard_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [send_caplocks_key]"
+    echo "  [send_capslock_key]"
+    echo "  [send_numlock_key]"
     echo "  [speed_up_repeat_key_rate]"
     echo "  [restore_repeat_key_rate]"
     echo "  [map_capslock_to_ctrl]"
@@ -27,9 +28,13 @@ show_help_message () {
 keyboard_operation () {
     ICON="$HOME/.config/i3/share/64x64/keyboard.png"
     case $1 in
-        'send_caplocks_key')
+        'send_capslock_key')
             xdotool key Caps_Lock
-            notify-send -u low "Keyboard Mode" "Caplocks key is pressed" --icon=${ICON}
+            notify-send -u low "Keyboard Mode" "Capslock key is pressed" --icon=${ICON}
+            ;;
+        'send_numlock_key')
+            xdotool key Num_Lock
+            notify-send -u low "Keyboard Mode" "Numlock key is pressed" --icon=${ICON}
             ;;
         'speed_up_repeat_key_rate')
             xset r rate 250 50

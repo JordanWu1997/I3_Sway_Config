@@ -26,8 +26,8 @@ show_help_message () {
 
 show_xbacklight () {
     # Try xbacklight first, and then brightnessctl
-    command -v xbacklight && printf -v BACKLIGHT "%0.0f" $(xbacklight)
-    command -v brightnessctl && printf -v BACKLIGHT "%0.0f" $(brightnessctl | grep 'Current brightness' | tr '()%' '\n\n ' | awk 'NR==2')
+    command -v xbacklight && printf -v BACKLIGHT "%0.0f" "$(xbacklight)"
+    command -v brightnessctl && printf -v BACKLIGHT "%0.0f" "$(brightnessctl | grep 'Current brightness' | tr '()%' '\n\n ' | awk 'NR==2')"
     # Send notification
     ICON="$HOME/.config/i3/share/64x64/lightbulb_icon.png"
     NOTIFY_SEND_VERSION=$(notify-send -v | tr ' ' '\n' | grep '\.' | cut -d. -f 2)
@@ -54,8 +54,8 @@ backlight_operation () {
             FOCUS_OUTPUT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).output')
             # Set backlight
             xrandr \
-                --output ${FOCUS_OUTPUT} \
-                --brightness ${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}
+                --output "${FOCUS_OUTPUT}" \
+                --brightness "${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}"
             ;;
         "set_all_connected_displays_backlight_with_rofi")
             # Get backlight input level from user input via rofi
@@ -69,8 +69,8 @@ backlight_operation () {
             for FOCUS_OUTPUT in $(xrandr | grep ' connected' | awk '{print $1}'); do
                 # Set backlight
                 xrandr \
-                    --output ${FOCUS_OUTPUT} \
-                    --brightness ${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}
+                    --output "${FOCUS_OUTPUT}" \
+                    --brightness "${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}"
             done
             ;;
         "set_xbacklight_with_rofi")
@@ -82,8 +82,8 @@ backlight_operation () {
                 INPUT_LEVEL=100
             fi
             # Set backlight
-            command -v xbacklight && xbacklight -set ${INPUT_LEVEL}
-            command -v brightnessctl && brightnessctl set ${INPUT_LEVEL}%
+            command -v xbacklight && xbacklight -set "${INPUT_LEVEL}"
+            command -v brightnessctl && brightnessctl set "${INPUT_LEVEL}%"
             # Show backlight
             show_xbacklight
             ;;

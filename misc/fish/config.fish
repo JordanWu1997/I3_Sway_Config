@@ -92,14 +92,15 @@ end
 # My Keybindings
 # ============================================================================
 
-# Fish vi-mode keybinding (alt+j)
-bind \ej fish_vi_key_bindings
+## Fish vi-mode keybinding (alt+j)
+#bind \ej fish_vi_key_bindings
 
-# Fish default keybinding (alt+k)
-bind \ek fish_default_key_bindings
+## Fish default keybinding (alt+k)
+#bind \ek fish_default_key_bindings
 
 # User-defined Keybindings
 function fish_user_key_bindings
+    fzf_key_bindings
     bind ! bind_bang
     bind '$' bind_dollar
 end

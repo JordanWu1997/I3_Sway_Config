@@ -29,6 +29,10 @@ source ~/.bash_aliases
 alias if_fish_login_shell='status --is-login; and echo yes; or echo no'
 alias if_fish_interactive_shell='status --is-interactive; and echo yes; or echo no'
 alias zkill="kill (ps aux | fzf | awk '{print $2}')"
+alias capslock2ctrl='setxkbmap -option "ctrl:nocaps"'
+alias restore_capslock='setxkbmap -option "ctrl:aa_ctrl"'
+alias speedup_repeatkey='xset r rate 250 50'
+alias reset_repeatkey='xset r rate 660 25'
 
 # ============================================================================
 # Fish Prompt Init

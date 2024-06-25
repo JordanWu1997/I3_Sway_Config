@@ -60,7 +60,7 @@ keyboard_operation () {
             DEVICE='USB-HID Keyboard Mouse'
             xinput set-prop "${DEVICE}" 315 0
             xinput set-prop "${DEVICE}" 329 0 1 0
-            xinput set-prop "${DEVICE}" 326 0.25
+            xinput set-prop "${DEVICE}" 326 0.45
             notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
         'restore_tex_shinobi')

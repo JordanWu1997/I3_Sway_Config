@@ -244,7 +244,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- __System Mode (`[Winkey]` + `[Shift]` + `[Esc]`)__
+- __System Option Mode (`[Ctrl]` + `[Alt]` + `[s]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate
         - __Device Mode (`[d]`)__
             - Turn on/off RF device, connect/disconnect Bluetooth device
@@ -274,11 +274,11 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __Player Mode (`[Ctrl]` + `[Alt]` + `[p]`)__
-    - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), player, mpv and vlc
+    - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), MPV, VLC, and all MPRIS players
         - __Spotifyd Mode (`[s]`)__
             - Spotifyd control (e.g. enable, disable, reload) for spotifyd
-        - __Mpv Mode (`[s]`)__
-            - Mpv control
+        - __MPV Mode (`[m]`)__
+            - MPV function (e.g. playlist)
 - __Volume Mode (`[Ctrl]` + `[Alt]` + `[v]`)__
     - Volume control with pulsemixer (e.g. volume up/down, mute)
 
@@ -520,6 +520,8 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
     - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace with selected workspace (interactively)
 
 #### Window
+- __Kill Windows__
+    - `[Winkey]` + `[Shift]` + `[Esc]`: Kill all windows on current workspace
 - __List Windows__
     - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
     - `[Alt]` + (`[Shift]`) + `[q]`: List all windows on all workspaces with thumbnails i.e. my customized GNOME-like keybinding

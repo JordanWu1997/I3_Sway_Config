@@ -75,7 +75,7 @@ conky.config = {
 conky.text = [[
 ${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[System Command]${font}${voffset 5}
 ${color2}open terminal ${alignr}${color1}[Win]+([Shift])+[Enter]
-${color2}system option ${alignr}${color1}[Win]+[Shift]+[Esc]
+${color2}system option mode ${alignr}${color1}[Ctrl]+[Alt]+[s]
 ${color2}reload/restart i3 ${alignr}${color1}[Win]+([Shift])+[r]
 ${color2}app./exec. launcher ${alignr}${color1}[Win]+([Shift])+[d]
 ${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab/q]

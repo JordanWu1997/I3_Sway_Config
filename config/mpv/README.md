@@ -100,6 +100,14 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | :-------------: | :----------------------------: | :---------: | :--: |
 | `[Shift]`+`[w]` | Video clipper (in webm format) |             |      |
 
+### [mpv-cut](https://github.com/familyfriendlymikey/mpv-cut)
+- Keybindings
+
+| Key Mapping             | Function                               | Description | Note |
+| :---------------------: | :------------------------------------: | :---------: | :--: |
+| `[Alt]`+`[Shift]`+`[c]` | Set cut start/end and copy as new file |             |      |
+| `[Alt]`+`[Shift]`+`[x]` | Cancel cutting                         |             |      |
+
 ### [visualizer](https://github.com/mfcc64/mpv-scripts/blob/master/visualizer.lua)
 - Keybindings
 
@@ -115,6 +123,16 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | `[Ctrl]`+`[v]` | Append URL in clipboard to playlist   |             |      |
 | `[Ctrl]`+`[c]` | Copy current playing URL to clipboard |             |      |
 
+### [mpv-image-viewer](https://github.com/occivink/mpv-image-viewer)
+- Here I only pick up two plug-in from original repository to achieve mouse-centric panning function and visualization
+    - `scripts/`
+        - `image-positioning.lua`
+        - `minimap.lua`
+    - `script-opts`
+        - `image-positioning.conf`
+        - `minimap.conf`
+- Note that this function conflicts with built-in double-click to full-screen function
+
 ## Miscellaneous
 - MPV on linux has a weird hidden title bar when running picom
     - You need to set `frame-opacity = 1.0` in `$HOME/.config/picom/picom.conf` to eliminate it.
@@ -127,8 +145,10 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 - https://github.com/Tsubajashi/mpv-settings (other MPV user settings)
 - https://github.com/CogentRedTester/mpv-user-input/tree/master (MPV user input plug-in)
 - https://github.com/CogentRedTester/mpv-file-browser (MPV file-browser plug-in)
-- https://github.com/po5/thumbfast (MPV thumbnail previewr plug-in)
+- https://github.com/po5/thumbfast (MPV thumbnail previewer plug-in)
 - https://github.com/jonniek/mpv-playlistmanager (MPV playlist plug-in)
 - https://github.com/hacel/recent (MPV recent file plug-in)
 - https://github.com/ekisu/mpv-webm (MPV video clipper plug-in)
+- https://github.com/familyfriendlymikey/mpv-cut (MPV video clipper plug-in)
 - https://github.com/Eisa01/mpv-scripts#smartcopypaste-ii-script (MPV scripts: SmartCopyPaste)
+- https://github.com/occivink/mpv-image-viewerhttps://github.com/occivink/mpv-image-viewer (MPV mouse-centric functions)

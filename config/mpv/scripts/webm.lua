@@ -89,7 +89,7 @@ local base64_chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567
 
 -- encoding
 function base64_encode(data)
-    return ((data:gsub('.', function(x) 
+    return ((data:gsub('.', function(x)
         local r,b='',x:byte()
         for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
         return r;
@@ -1278,7 +1278,7 @@ do
   local _base_0 = {
     add_keybinds = function(self)
       if not self.keybinds then
-        return 
+        return
       end
       for key, func in pairs(self.keybinds) do
         mp.add_forced_key_binding(key, key, func, {
@@ -1288,7 +1288,7 @@ do
     end,
     remove_keybinds = function(self)
       if not self.keybinds then
-        return 
+        return
       end
       for key, _ in pairs(self.keybinds) do
         mp.remove_key_binding(key)
@@ -1335,7 +1335,7 @@ do
     end,
     show = function(self)
       if self.visible then
-        return 
+        return
       end
       self.visible = true
       self:observe_properties()
@@ -1346,7 +1346,7 @@ do
     end,
     hide = function(self)
       if not self.visible then
-        return 
+        return
       end
       self.visible = false
       self:unobserve_properties()
@@ -1397,7 +1397,7 @@ do
       local matchTime = string.match(line, "Encode time[-]pos: ([0-9.]+)")
       local matchExit = string.match(line, "Exiting... [(]([%a ]+)[)]")
       if matchTime == nil and matchExit == nil then
-        return 
+        return
       end
       if matchTime ~= nil and tonumber(matchTime) > self.currentTime then
         self.currentTime = tonumber(matchTime)
@@ -1759,7 +1759,7 @@ encode = function(region, startTime, endTime)
   path, is_stream, is_temporary, startTime, endTime = find_path(startTime, endTime)
   if not path then
     message("No file is being played")
-    return 
+    return
   end
   local command = {
     "mpv",
@@ -1897,7 +1897,7 @@ encode = function(region, startTime, endTime)
     if not res then
       message("First pass failed! Check the logs for details.")
       emit_event("encode-finished", "fail")
-      return 
+      return
     end
     append(command, {
       "--ovcopts-add=flags=+pass2"
@@ -2793,15 +2793,15 @@ do
       self:hide()
       if self.startTime < 0 then
         message("No start time, aborting")
-        return 
+        return
       end
       if self.endTime < 0 then
         message("No end time, aborting")
-        return 
+        return
       end
       if self.startTime >= self.endTime then
         message("Start time is ahead of end time, aborting")
-        return 
+        return
       end
       return encode(self.region, self.startTime, self.endTime)
     end

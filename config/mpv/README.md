@@ -9,6 +9,8 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 - `$HOME/.config/mpv/mpv.conf`: Where you put all the MPV settings
 
 ## Keybinding
+
+### MPV
 - Keybindings
 
 | Key Mapping                                | Function                                                   | Description | Note                                                                   |
@@ -103,10 +105,10 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 ### [mpv-cut](https://github.com/familyfriendlymikey/mpv-cut)
 - Keybindings
 
-| Key Mapping             | Function                               | Description | Note |
-| :---------------------: | :------------------------------------: | :---------: | :--: |
-| `[Alt]`+`[Shift]`+`[c]` | Set cut start/end and copy as new file |             |      |
-| `[Alt]`+`[Shift]`+`[x]` | Cancel cutting                         |             |      |
+| Key Mapping   | Function                               | Description | Note |
+| :-----------: | :------------------------------------: | :---------: | :--: |
+| `[Alt]`+`[c]` | Set cut start/end and copy as new file |             |      |
+| `[Alt]`+`[x]` | Cancel cutting                         |             |      |
 
 ### [visualizer](https://github.com/mfcc64/mpv-scripts/blob/master/visualizer.lua)
 - Keybindings
@@ -124,14 +126,20 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | `[Ctrl]`+`[c]` | Copy current playing URL to clipboard |             |      |
 
 ### [mpv-image-viewer](https://github.com/occivink/mpv-image-viewer)
-- Here I only pick up two plug-in from original repository to achieve mouse-centric panning function and visualization
+- Here I only pick up some plug-ins from original repository to achieve mouse-centric panning function and visualization
     - `scripts/`
         - `image-positioning.lua`
         - `minimap.lua`
+        - `ruler.lua`
     - `script-opts`
         - `image-positioning.conf`
         - `minimap.conf`
-- Note that this function conflicts with built-in double-click to full-screen function
+        - `ruler.conf`
+- Keybindings
+
+| Key Mapping   | Function       | Description | Note |
+| :-----------: | :------------: | :---------: |      |
+| `[Alt]`+`[z]` | Toggle minimap |             |      |
 
 ## Miscellaneous
 - MPV on linux has a weird hidden title bar when running picom

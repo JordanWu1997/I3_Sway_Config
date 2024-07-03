@@ -13,7 +13,7 @@ local o = {
 	osd_timeout = 4000,
 	filter_label = mp.get_script_name(),
 
-	key_toggle = 'n',
+	key_toggle = 'Shift+F12',
 	key_increase_threshold = 'F1',
 	key_decrease_threshold = 'Shift+F1',
 	key_increase_ratio = 'F2',

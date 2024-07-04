@@ -198,4 +198,4 @@ end
 
 mp.add_key_binding(nil, "minimap-enable", enable)
 mp.add_key_binding(nil, "minimap-disable", disable)
-mp.add_key_binding("ALT+z", "minimap-toggle", toggle)
+mp.add_key_binding("ALT+m", "minimap-toggle", toggle)

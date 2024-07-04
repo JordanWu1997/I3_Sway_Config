@@ -53,19 +53,19 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
     ```
 - Keybindings
 
-| Key Mapping     | Function                        | Description                                | Note |
-| :-------------: | :-----------------------------: | :----------------------------------------: | :--: |
-| `[q]`           | Close file-browser              |                                            |      |
-| `[j/k]`         | Scroll down/up                  |                                            |      |
-| `[Enter]`       | Play file                       |                                            |      |
-| `[Space]`       | Toggle select file              | Use [j/k] to move selected file            |      |
-| `[d]`           | Remove file from playlist       |                                            |      |
-| `[Ctrl]+[p/n]`  | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |      |
-| `[Ctrl]+[e]`    | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |      |
-| `[r]`           | Sort playlist                   |                                            |      |
-| `[Shift]`+`[r]` | Shuffle playlist                |                                            |      |
-| `[Alt]+[r]`     | Reverse playlist                |                                            |      |
-| `[l]`           | Load file in current directory  |                                            |      |
+| Key Mapping     | Function                        | Description                                | Note               |
+| :-------------: | :-----------------------------: | :----------------------------------------: | :----------------: |
+| `[q]`           | Close file-browser              |                                            |                    |
+| `[j/k]`         | Scroll down/up                  |                                            | dynamic keybinding |
+| `[Enter]`       | Play file                       |                                            | dynamic keybinding |
+| `[Space]`       | Toggle select file              | Use [j/k] to move selected file            | dynamic keybinding |
+| `[d]`           | Remove file from playlist       |                                            | dynamic keybinding |
+| `[Ctrl]+[p/n]`  | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |                    |
+| `[Ctrl]+[e]`    | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |                    |
+| `[Shift]`+`[l]` | Load file in current directory  |                                            |                    |
+| `[z]`           | Sort playlist                   |                                            |                    |
+| `[Shift]`+`[z]` | Shuffle playlist                |                                            |                    |
+| `[Alt]+[z]`     | Reverse playlist                |                                            |                    |
 
 ### [mpv-file-browser](https://github.com/CogentRedTester/mpv-file-browser)
 - Modify keybindings in `$HOME/.config/mpv/scripts/mpv-file-browser/modules/keybinds.lua`
@@ -139,7 +139,7 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 
 | Key Mapping   | Function       | Description | Note |
 | :-----------: | :------------: | :---------: |      |
-| `[Alt]`+`[z]` | Toggle minimap |             |      |
+| `[Alt]`+`[m]` | Toggle minimap |             |      |
 
 ## Miscellaneous
 - MPV on linux has a weird hidden title bar when running picom

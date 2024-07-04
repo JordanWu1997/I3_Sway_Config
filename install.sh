@@ -450,6 +450,7 @@ desc_misc_tool_packages () {
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Screenshot: flameshot"
     echo "-- OCR Tool: tesseract, tesseract-langpak-eng, tesseract-langpack-chi_tra"
+    echo "-- Magnifier: magnus"
     echo "Installation requires sudo permission"
 }
 install_misc_tool_packages () {
@@ -497,6 +498,12 @@ install_misc_tool_packages () {
     sudo dnf install -y flameshot
     # OCR Tool
     sudo dnf install -y tesseract tesseract-langpak-eng tesseract-langpack-chi_tra
+    # Magnifier
+    sudo dnf install python3-setproctitle
+    cd "$HOME/Desktop"
+    git clone https://github.com/stuartlangridge/magnus.git
+    cd magnus
+    sudo python setup.py install
 }
 
 PACKAGE_LIST=( terminal_packages \

@@ -1029,9 +1029,9 @@ end
 
 mp.register_script_message("playlistmanager", handlemessage)
 
-mp.add_key_binding("r", "sortplaylist", sortplaylist)
-mp.add_key_binding("R", "shuffleplaylist", shuffleplaylist)
-mp.add_key_binding("AlT+r", "reverseplaylist", reverseplaylist)
+mp.add_key_binding("z", "sortplaylist", sortplaylist)
+mp.add_key_binding("Z", "shuffleplaylist", shuffleplaylist)
+mp.add_key_binding("ALT+z", "reverseplaylist", reverseplaylist)
 mp.add_key_binding("L", "loadfiles", playlist)
 mp.add_key_binding("CTRL+E", "saveplaylist", save_playlist)
 mp.add_key_binding("SHIFT+ENTER", "showplaylist", toggle_playlist)

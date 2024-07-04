@@ -23,7 +23,7 @@ local user_opts = {
     showwindowed = true,            -- show OSC when windowed?
     showfullscreen = true,          -- show OSC when fullscreen?
     noxmas = false,                 -- disable santa hat in December
-    
+
     -- scaling settings --
     vidscale = false,               -- whether to scale the controller with the video
     scalewindowed = 1.0,            -- scaling of the controller when windowed
@@ -46,13 +46,13 @@ local user_opts = {
     showwindowtitle = true,         -- show window title in borderless/fullscreen mode
     titleBarStrip = true,           -- whether to make the title bar a singular bar instead of a black fade
     title = '${media-title}',       -- title shown on OSC - turn off dynamictitle for this option to apply
-    dynamictitle = true,            -- change the title depending on if {media-title} and {filename} 
+    dynamictitle = true,            -- change the title depending on if {media-title} and {filename}
                                     -- differ (like with playing urls, audio or some media)
     font = 'mpv-osd-symbols',	    -- default osc font
                                     -- to be shown as OSC title
     titlefontsize = 28,             -- the font size of the title text
     chapterformat = 'Chapter: %s',  -- chapter print format for seekbar-hover. "no" to disable
-    dateformat = "%Y-%m-%d",        -- how dates should be formatted, when read from metadata 
+    dateformat = "%Y-%m-%d",        -- how dates should be formatted, when read from metadata
                                     -- (uses standard lua date formatting)
     osc_color = '000000',           -- accent of the OSC and the title bar
     OSCfadealpha = 150,             -- alpha of the background box for the OSC
@@ -79,7 +79,7 @@ local user_opts = {
                                     -- 'exact', 'relative+keyframes', etc.
     volumecontrol = true,           -- whether to show mute button and volume slider
     volumecontroltype = 'linear',   -- use linear or logarithmic volume scale
-    showjump = true,                -- show "jump forward/backward 5 seconds" buttons 
+    showjump = true,                -- show "jump forward/backward 5 seconds" buttons
     showskip = true,                -- show the skip back and forward (chapter) buttons
     compactmode = true,             -- replace the jump buttons with the chapter buttons, clicking the
                                     -- buttons will act as jumping, and shift clicking will act as
@@ -92,13 +92,13 @@ local user_opts = {
     ytdlpQuality = '-S res,ext:mp4:m4a' -- what quality of video the download button uses (max quality mp4 by default)
 }
 
--- Icons for jump button depending on jumpamount 
-local jumpicons = { 
-    [5] = {'\239\142\177', '\239\142\163'}, 
-    [10] = {'\239\142\175', '\239\142\161'}, 
-    [30] = {'\239\142\176', '\239\142\162'}, 
-    default = {'\239\142\178	', '\239\142\178'}, -- second icon is mirrored in layout() 
-} 
+-- Icons for jump button depending on jumpamount
+local jumpicons = {
+    [5] = {'\239\142\177', '\239\142\163'},
+    [10] = {'\239\142\175', '\239\142\161'},
+    [30] = {'\239\142\176', '\239\142\162'},
+    default = {'\239\142\178	', '\239\142\178'}, -- second icon is mirrored in layout()
+}
 
 local icons = {
   previous = '\239\142\181',
@@ -114,9 +114,9 @@ local icons = {
   volumemute = '',
   sub = '',
   minimize = '',
-  fullscreen = '',  
+  fullscreen = '',
   loopoff = '',
-  loopon = '', 
+  loopon = '',
   info = '',
   download = '',
   downloading = '',
@@ -673,7 +673,7 @@ function prepare_elements()
             if not (element.slider.markerF == nil) and (slider_lo.gap > 0) then
                 local markers = element.slider.markerF()
                 for _,marker in pairs(markers) do
-                    if (marker >= element.slider.min.value) and 
+                    if (marker >= element.slider.min.value) and
                     (marker <= element.slider.max.value) then
                         local s = get_slider_ele_pos_for(element, marker)
                         if (slider_lo.gap > 5) then -- draw triangles
@@ -742,7 +742,7 @@ function render_elements(master_ass)
     -- then we use it instead of the normal title. we calculate it before the
     -- render iterations because the title may be rendered before the slider.
     state.forced_title = nil
-    
+
     -- disable displaying chapter name in title when thumbfast is available
     -- because thumbfast will render it above the thumbnail instead
     if thumbfast.disabled then
@@ -783,10 +783,10 @@ function render_elements(master_ass)
                 state.mouse_down_counter = state.mouse_down_counter + 1
             end
         end
-        
+
         local elem_ass = assdraw.ass_new()
         elem_ass:merge(style_ass)
-        
+
         if not (element.type == 'button') then
             elem_ass:merge(element.static_ass)
         end
@@ -802,7 +802,7 @@ function render_elements(master_ass)
             local seekRanges = element.slider.seekRangesF()
 			local rh = user_opts.seekbarhandlesize * elem_geo.h / 2 -- Handle radius
             local xp
-            
+
             if pos then
                 xp = get_slider_ele_pos_for(element, pos)
                 ass_draw_cir_cw(elem_ass, xp, elem_geo.h/2, rh)
@@ -823,7 +823,7 @@ function render_elements(master_ass)
             end
 
             elem_ass:draw_stop()
-            
+
             -- add tooltip
             if not (element.slider.tooltipF == nil) then
                 if mouse_hit(element) then
@@ -853,7 +853,7 @@ function render_elements(master_ass)
                             tx = tx + 10
                         end
                     end
-                    
+
                     -- thumbfast
                     if element.thumbnailable and not thumbfast.disabled then
                         local osd_w = mp.get_property_number("osd-width")
@@ -944,7 +944,7 @@ function render_elements(master_ass)
             end
 
             elem_ass:append(buttontext)
-            
+
             -- add tooltip for audio and subtitle tracks
 			if not (element.tooltipF == nil) then
                 if mouse_hit(element) then
@@ -1087,7 +1087,7 @@ function checktitle()
         if (state.localDescription == nil) then -- only metadata
             state.localDescription = album
         else -- append to other metadata
-            if (state.localDescriptionClick ~= nil) then 
+            if (state.localDescriptionClick ~= nil) then
                 state.localDescriptionClick = state.localDescriptionClick .. " / " .. album
             else
                 state.localDescriptionClick = album
@@ -1147,10 +1147,10 @@ function checkWebLink()
 
         if user_opts.downloadbutton then
             msg.info("WEB: Loading filesize...")
-            local command = { 
-                "yt-dlp", 
-                "--no-download", 
-                "-O%(filesize,filesize_approx)s", 
+            local command = {
+                "yt-dlp",
+                "--no-download",
+                "-O%(filesize,filesize_approx)s",
                 path
             }
             exec_filesize(command)
@@ -1159,14 +1159,14 @@ function checkWebLink()
         -- Youtube Return Dislike API
         -- API get probably windows only right now
         state.dislikes = ""
-        exec_dislikes({"curl","https://returnyoutubedislikeapi.com/votes?videoId="..string.gsub(mp.get_property_osd("filename"), "watch%?v=", "")}) 
-        
+        exec_dislikes({"curl","https://returnyoutubedislikeapi.com/votes?videoId="..string.gsub(mp.get_property_osd("filename"), "watch%?v=", "")})
+
         if user_opts.showdescription then
             msg.info("WEB: Loading description...")
-            local command = { 
-                "yt-dlp", 
-                "--no-download", 
-                "-O %(title)s\\N----------\\N%(description)s\\N----------\\NUploaded by: %(uploader)s\nUploaded on: %(upload_date>".. user_opts.dateformat ..")s\nLikes: %(like_count)s", 
+            local command = {
+                "yt-dlp",
+                "--no-download",
+                "-O %(title)s\\N----------\\N%(description)s\\N----------\\NUploaded by: %(uploader)s\nUploaded on: %(upload_date>".. user_opts.dateformat ..")s\nLikes: %(like_count)s",
                 path
             }
             exec_description(command)
@@ -1390,18 +1390,18 @@ function show_description(text)
     text = string.gsub(text, '\n', '\\N')
 
     -- enable scrolling of menu --
-    bind_keys("UP WHEEL_UP", "move_up", function() 
+    bind_keys("UP WHEEL_UP", "move_up", function()
         state.scrolledlines = state.scrolledlines + user_opts.scrollingSpeed
-        if (state.scrolledlines > 25) then 
-            state.scrolledlines = 25 
+        if (state.scrolledlines > 25) then
+            state.scrolledlines = 25
         end
         state.message_hide_timer:kill()
         state.message_hide_timer.timeout = duration
         state.message_hide_timer:resume()
         request_tick()
     end, { repeatable = true })
-    bind_keys("DOWN WHEEL_DOWN", "move_down", function() 
-        state.scrolledlines = state.scrolledlines - user_opts.scrollingSpeed 
+    bind_keys("DOWN WHEEL_DOWN", "move_down", function()
+        state.scrolledlines = state.scrolledlines - user_opts.scrollingSpeed
         state.message_hide_timer:kill()
         state.message_hide_timer.timeout = duration
         state.message_hide_timer:resume()
@@ -1602,7 +1602,7 @@ function window_controls()
     lo = add_layout('minimize')
     lo.geometry = first_geo
     lo.style = osc_styles.WinCtrl
-    
+
     -- Maximize: 🗖/🗗
     ne = new_element('maximize', 'button')
     if state.maximized or state.fullscreen then
@@ -1654,7 +1654,7 @@ layouts = function ()
 
     -- Controller Background
 	local lo, geo
-    
+
 	new_element('TransBg', 'box')
 	lo = add_layout('TransBg')
 	lo.geometry = {x = posX, y = posY, an = 7, w = osc_w, h = 1}
@@ -1670,11 +1670,11 @@ layouts = function ()
         lo.layer = 10
         lo.alpha[3] = 0
     end
-	
+
     -- Alignment
 	local refX = osc_w / 2
 	local refY = posY
-	
+
     -- Seekbar
     new_element('seekbarbg', 'box')
     lo = add_layout('seekbarbg')
@@ -1731,7 +1731,7 @@ layouts = function ()
     lo.layer = 13
     lo.alpha[1] = 128
     lo.style = osc_styles.VolumebarBg
-    
+
     lo = add_layout('volumebar')
     lo.geometry = {x = 155, y = refY - 40, an = 4, w = 80, h = 8}
     lo.style = osc_styles.VolumebarFg
@@ -1748,7 +1748,7 @@ layouts = function ()
     end
     lo.style = osc_styles.Ctrl2
 
-    if showskip then 
+    if showskip then
         lo = add_layout('skipback')
         lo.geometry = {x = refX - 60 - offset, y = refY - 40 , an = 5, w = 30, h = 24}
         lo.style = osc_styles.Ctrl2
@@ -1762,7 +1762,7 @@ layouts = function ()
 
     lo = add_layout('playpause')
     lo.geometry = {x = refX, y = refY - 40 , an = 5, w = 45, h = 45}
-    lo.style = osc_styles.Ctrl1	
+    lo.style = osc_styles.Ctrl1
 
     if showjump then
         lo = add_layout('jumpfrwd')
@@ -1775,7 +1775,7 @@ layouts = function ()
     if showskip then
         lo = add_layout('skipfrwd')
         lo.geometry = {x = refX + 60 + offset, y = refY - 40 , an = 5, w = 30, h = 24}
-        lo.style = osc_styles.Ctrl2	
+        lo.style = osc_styles.Ctrl2
     end
 
     lo = add_layout('pl_next')
@@ -1789,18 +1789,18 @@ layouts = function ()
 	-- Time
     lo = add_layout('tc_left')
     lo.geometry = {x = 25, y = refY - 84, an = 7, w = 64, h = 20}
-    lo.style = osc_styles.Time	
-	
+    lo.style = osc_styles.Time
+
     lo = add_layout('tc_right')
     lo.geometry = {x = osc_geo.w - 25 , y = refY -84, an = 9, w = 64, h = 20}
-    lo.style = osc_styles.Time	
+    lo.style = osc_styles.Time
 
     -- Audio/Subtitle
     lo = add_layout('cy_audio')
 	lo.geometry = {x = 37, y = refY - 40, an = 5, w = 24, h = 24}
     lo.style = osc_styles.Ctrl3
     lo.visible = (osc_param.playresx >= 500 - outeroffset)
-	
+
     lo = add_layout('cy_sub')
     lo.geometry = {x = 82, y = refY - 40, an = 5, w = 24, h = 24}
     lo.style = osc_styles.Ctrl3
@@ -1815,7 +1815,7 @@ layouts = function ()
 	lo = add_layout('tog_fs')
     lo.geometry = {x = osc_geo.w - 37, y = refY - 40, an = 5, w = 24, h = 24}
     lo.style = osc_styles.Ctrl3
-    lo.visible = (osc_param.playresx >= 250 - outeroffset)    
+    lo.visible = (osc_param.playresx >= 250 - outeroffset)
 
     if showontop then
         lo = add_layout('tog_ontop')
@@ -1828,7 +1828,7 @@ layouts = function ()
         lo = add_layout('tog_loop')
         lo.geometry = {x = osc_geo.w - 82, y = refY - 40, an = 5, w = 24, h = 24}
         lo.style = osc_styles.Ctrl3
-        lo.visible = (osc_param.playresx >= 600 - outeroffset)    
+        lo.visible = (osc_param.playresx >= 600 - outeroffset)
     end
 
     if showinfo then
@@ -1988,7 +1988,7 @@ function osc_init()
     ne.eventresponder['enter'] =
         function ()
             mp.commandv('playlist-prev', 'weak')
-            show_message(get_playlist()) 
+            show_message(get_playlist())
         end
     ne.eventresponder['mbtn_right_up'] =
         function () show_message(get_playlist()) end
@@ -2003,7 +2003,7 @@ function osc_init()
     ne.eventresponder['mbtn_left_up'] =
         function () mp.commandv('playlist-next', 'weak') end
     ne.eventresponder['enter'] =
-        function () 
+        function ()
             mp.commandv('playlist-next', 'weak')
             show_message(get_playlist())
         end
@@ -2041,7 +2041,7 @@ function osc_init()
                 show_message("Looping disabled")
             else
                 show_message("Looping enabled")
-            end    
+            end
             state.looping = not state.looping
             mp.set_property_native("loop-file", state.looping)
         end
@@ -2080,7 +2080,7 @@ function osc_init()
         ne.eventresponder['shift+mbtn_left_down'] =
             function () mp.commandv('frame-step') end
     end
-    
+
 
     --skipback
     local jumpamount = user_opts.jumpamount
@@ -2092,7 +2092,7 @@ function osc_init()
     ne.content = icons.backward
     ne.enabled = (have_ch) or compactmode -- disables button when no chapters available.
     ne.eventresponder['mbtn_left_down'] =
-        function () 
+        function ()
             if compactmode then
                 mp.commandv('seek', -jumpamount, jumpmode)
             else
@@ -2100,8 +2100,8 @@ function osc_init()
             end
         end
     ne.eventresponder['mbtn_right_down'] =
-        function () 
-            if compactmode then     
+        function ()
+            if compactmode then
                 mp.commandv("add", "chapter", -1)
                 show_message(get_chapterlist())
                 show_message(get_chapterlist()) -- run twice as it might show the wrong chapter without another function
@@ -2136,7 +2136,7 @@ function osc_init()
             if compactmode then
                 mp.commandv("add", "chapter", 1)
                 show_message(get_chapterlist())
-                show_message(get_chapterlist()) -- run twice as it might show the wrong chapter without another function    
+                show_message(get_chapterlist()) -- run twice as it might show the wrong chapter without another function
             else
                 show_message(get_chapterlist())
             end
@@ -2150,7 +2150,7 @@ function osc_init()
 
     --
     update_tracklist()
-    
+
     --cy_audio
     ne = new_element('cy_audio', 'button')
     ne.enabled = (#tracks_osc.audio > 0)
@@ -2178,20 +2178,20 @@ function osc_init()
         return msg
     end
     ne.nothingavailable = texts.noaudio
-    ne.eventresponder['mbtn_left_up'] = 
+    ne.eventresponder['mbtn_left_up'] =
     function () set_track('audio', 1) show_message(get_tracklist('audio')) end
-    ne.eventresponder['enter'] = 
-        function () 
-            set_track('audio', 1) 
+    ne.eventresponder['enter'] =
+        function ()
+            set_track('audio', 1)
             show_message(get_tracklist('audio'))
         end
-    ne.eventresponder['mbtn_right_up'] = 
+    ne.eventresponder['mbtn_right_up'] =
         function () set_track('audio', -1) show_message(get_tracklist('audio')) end
     ne.eventresponder['shift+mbtn_left_down'] =
     function () set_track('audio', 1) show_message(get_tracklist('audio')) end
     ne.eventresponder['shift+mbtn_right_down'] =
         function () show_message(get_tracklist('audio')) end
-                
+
     --cy_sub
     ne = new_element('cy_sub', 'button')
     ne.enabled = (#tracks_osc.sub > 0)
@@ -2217,9 +2217,9 @@ function osc_init()
         return msg
     end
     ne.nothingavailable = texts.nosub
-    ne.eventresponder['mbtn_left_up'] = 
+    ne.eventresponder['mbtn_left_up'] =
         function () set_track('sub', 1) show_message(get_tracklist('sub')) end
-    ne.eventresponder['enter'] = 
+    ne.eventresponder['enter'] =
         function ()
             set_track('sub', 1)
             show_message(get_tracklist('sub'))
@@ -2230,7 +2230,7 @@ function osc_init()
     function () set_track('sub', 1) show_message(get_tracklist('sub')) end
     ne.eventresponder['shift+mbtn_right_down'] =
         function () show_message(get_tracklist('sub')) end
-    
+
     -- vol_ctrl
     ne = new_element('vol_ctrl', 'button')
     ne.enabled = (get_track('audio')>0)
@@ -2248,20 +2248,20 @@ function osc_init()
         end
     end
     ne.eventresponder['mbtn_left_up'] =
-        function () 
+        function ()
             mp.commandv('cycle', 'mute')
         end
     ne.eventresponder["wheel_up_press"] =
-        function () 
+        function ()
             if (state.mute) then mp.commandv('cycle', 'mute') end
             mp.commandv("osd-auto", "add", "volume", 5)
         end
     ne.eventresponder["wheel_down_press"] =
-        function () 
+        function ()
             if (state.mute) then mp.commandv('cycle', 'mute') end
             mp.commandv("osd-auto", "add", "volume", -5)
         end
-    
+
     --tog_fs
     ne = new_element('tog_fs', 'button')
     ne.content = function ()
@@ -2297,7 +2297,7 @@ function osc_init()
         function ()
             state.looping = not state.looping
             mp.set_property_native("loop-file", state.looping)
-        end    
+        end
 
     --download
     ne = new_element('download', 'button')
@@ -2334,7 +2334,7 @@ function osc_init()
 
                 if state.downloading then
                     show_message("\\N{\\an9}Already downloading...")
-                    
+
                     -- open file system
                     local cmd = "start $path\\"
                     cmd = cmd:gsub("$path", localpath)
@@ -2344,7 +2344,7 @@ function osc_init()
 
                 show_message("\\N{\\an9}Downloading...")
                 state.downloading = true
-                local command = { 
+                local command = {
                     "yt-dlp",
                     user_opts.ytdlpQuality,
                     "--add-metadata",
@@ -2352,7 +2352,7 @@ function osc_init()
                     "--embed-subs",
                     "-o%(title)s",
                     "-P " .. localpathnormal,
-                    state.path 
+                    state.path
                 }
                 local status = exec(command, downloadDone)
             else
@@ -2386,8 +2386,8 @@ function osc_init()
     end
     ne.visible = (osc_param.playresx >= 700 - outeroffset - (user_opts.showloop and 0 or 100))
     ne.eventresponder['mbtn_left_up'] =
-        function () 
-            mp.commandv('cycle', 'ontop') 
+        function ()
+            mp.commandv('cycle', 'ontop')
             if (state.initialborder == 'yes') then
                 if (mp.get_property('ontop') == 'yes') then
                     mp.commandv('set', 'border', "no")
@@ -2399,10 +2399,10 @@ function osc_init()
         end
 
     ne.eventresponder['mbtn_right_up'] =
-        function () 
-            mp.commandv('cycle', 'ontop') 
+        function ()
+            mp.commandv('cycle', 'ontop')
         end
-    
+
     --seekbar
     ne = new_element('seekbar', 'slider')
     ne.enabled = not (mp.get_property('percent-pos') == nil)
@@ -2563,7 +2563,7 @@ function osc_init()
         function () mp.commandv("osd-auto", "add", "volume", 5) end
     ne.eventresponder["wheel_down_press"] =
         function () mp.commandv("osd-auto", "add", "volume", -5) end
-    
+
     -- tc_left (current pos)
     ne = new_element('tc_left', 'button')
     ne.content = function ()
@@ -2595,7 +2595,7 @@ function osc_init()
 		else
 			return (mp.get_property_osd('duration'))
 		end
-			
+
         end
     end
     ne.eventresponder['mbtn_left_up'] =
@@ -2669,7 +2669,7 @@ function adjustSubtitles(visible)
         end
 	else
 		mp.commandv('set', 'sub-pos', 100)
-	end	
+	end
 end
 
 function pause_state(name, enabled)
@@ -3018,7 +3018,7 @@ function tick()
     if (not state.enabled) then return end
 
     if (state.idle) then -- this is the screen mpv opens to (not playing a file directly), or if you quit a video (idle=yes in mpv.conf)
-	   
+
         -- render idle message
         msg.trace('idle message')
         local _, _, display_aspect = mp.get_osd_size()
@@ -3047,7 +3047,7 @@ function tick()
                 ass:append(line_prefix .. line)
             end
         end
-   
+
         if user_opts.welcomescreen then
             ass:new_event()
             ass:pos(display_w / 2, icon_y + 65)
@@ -3151,7 +3151,7 @@ function changeChapter(number)
 end
 
 -- extra key bindings
-mp.add_key_binding("x", "cycleaudiotracks", function()
+mp.add_key_binding("a", "cycleaudiotracks", function()
     set_track('audio', 1) show_message(get_tracklist('audio'))
 end);
 
@@ -3161,7 +3161,7 @@ end);
 
 mp.add_key_binding("TAB", 'get_chapterlist', function() show_message(get_chapterlist()) end)
 
-mp.add_key_binding("p", "pinwindow", function()
+mp.add_key_binding("ALT+p", "pinwindow", function()
     mp.commandv('cycle', 'ontop')
     if (state.initialborder == 'yes') then
         if (mp.get_property('ontop') == 'yes') then
@@ -3187,9 +3187,9 @@ mp.observe_property('mute', 'bool',
 )
 mp.observe_property('loop-file', 'bool',
     function(name, val) -- ensure compatibility with auto looping scripts (eg: a script that sets videos under 2 seconds to loop by default)
-        if (val == nil) then 
+        if (val == nil) then
             state.looping = true;
-        else 
+        else
             state.looping = false
         end
     end
@@ -3269,7 +3269,7 @@ function get_hidetimeout()
 end
 
 function resetTimeout()
-    state.showtime = mp.get_time() 
+    state.showtime = mp.get_time()
 end
 
 -- mode can be auto/always/never/cycle

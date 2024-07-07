@@ -6,12 +6,12 @@ HDMI1_STATUS=$(xrandr | awk '$1~/HDMI-?1/ {print $2}')
 HDMI1_STATUS_LEN=$(xrandr | awk '$1~/HDMI-?1/ {print NF}')
 HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
 HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
-HDMI1_HEIGHT=$(xrandr | awk -v var=$HDMI1_HEIGHT_ID '$1~/HDMI-?1/ {print $var}')
-HDMI1_WIDTH=$(xrandr | awk -v var=$HDMI1_WIDTH_ID '$1~/HDMI-?1/ {print $var}')
+HDMI1_HEIGHT=$(xrandr | awk -v var="$HDMI1_HEIGHT_ID" '$1~/HDMI-?1/ {print $var}')
+HDMI1_WIDTH=$(xrandr | awk -v var="$HDMI1_WIDTH_ID" '$1~/HDMI-?1/ {print $var}')
 ICON="$HOME/.config/i3/share/64x64/monitor.png"
 
 # eDP-1, eDP1; HDMI-1, HDMI1
-if $(xrandr | grep eDP1 -q); then
+if xrandr | grep eDP1 -q; then
     eDP1='eDP1'
     HDMI1='HDMI1'
 else
@@ -31,19 +31,25 @@ show_help_message () {
     echo "  i3_display_operator.sh [options] [conky]"
     echo ""
     echo "OPTIONS"
+    echo "  [eDP1]"
+    echo "      [eDP1_default]: activate HDMI1 in default mode"
+    echo "      [eDP1_auto]: activate eDP1"
+    echo "      [eDP1_shrink1]: activate eDP1 in shrink mode (1440x810_60)"
+    echo "      [eDP1_shrink2]: activate eDP1 in shrink mode (1368x768)"
+    echo "      [eDP1_primary]: set eDP1 as primary display"
+    echo "      [eDP1_off]: deactivate eDP1"
+    echo "  [HDMI1]"
+    echo "      [HDMI1_auto]: activate HDMI1"
+    echo "      [HDMI1_default]: activate HDMI1 in default mode"
+    echo "      [HDMI1_extend]: activate HDMI1 in extended mode"
+    echo "      [HDMI1_primary]: set HDMI1 as primary display"
+    echo "      [HDMI1_off]: deactivate HDMI1"
+    echo "  [Combination]"
+    echo "      [eDP1_HDMI1_joint]: activate eDP1 and HDMI1 in joint mode (eDP1+HDMI1)"
+    echo "      [HDMI1_eDP1_joint]: activate eDP1 and HDMI1 in joint mode (HDMI1+eDP1)"
+    echo "      [eDP1_HDMI1_mirror]: activate eDP1 and HDMi1 in mirror mode"
     echo "  [auto]: use preset configuration"
-    echo "  [eDP1_only]: activate eDP1 only"
-    echo "  [HDMI1_only]: activate HDMI1 only"
-    echo "  [eDP1_HDMI1_joint]: activate eDP1 and HDMI1 in joint mode"
-    echo "  [eDP1_HDMI1_mirror]: activate eDP1 and HDMi1 in mirror mode"
-    echo "  [HDMI1_default]: activate HDMI1 in default mode"
-    echo "  [HDMI1_extend]: activate HDMI1 in extended mode"
-    echo "  [HDMI1_primary]: set HDMI1 as primary display"
-    echo "  [eDP1_default]: activate HDMI1 in default mode"
-    echo "  [eDP1_shrink1]: activate eDP1 in shrink mode (1440x810_60)"
-    echo "  [eDP1_shrink2]: activate eDP1 in shrink mode (1368x768)"
-    echo "  [eDP1_primary]: set eDP1 as primary display"
-    echo
+    echo ""
     echo "CONKY"
     echo "  [enable]: show conky after changing"
     echo "  [disable]: do not show conky after changing"
@@ -61,7 +67,7 @@ reload_misc () {
     # Reload wallpaper
     feh --bg-fill "$HOME/.config/i3/share/default_wallpaper"
     # Reload compositor
-    $I3_SCRIPT/i3_picom_operator.sh default
+    "$I3_SCRIPT/i3_picom_operator.sh" default
 }
 
 HDMI1_shrink () {
@@ -128,49 +134,63 @@ auto_adjust () {
 
 display_operation () {
     case $1 in
-        "eDP1_only" )
-            notify-send -u low "Set Display" "Activate eDP1 only" --icon=${ICON}
-            xrandr --output "${HDMI1}" --off --output "${eDP1}" --auto --primary
-            ;;
-        "HDMI1_only" )
-            notify-send -u low "Set Display" "Activate HDMI1 only" --icon=${ICON}
-            xrandr --output "${eDP1}" --off --output "${HDMI1}" --auto --primary
-            ;;
-        "eDP1_HDMI1_joint" )
-            notify-send -u low "Set Display" "Activate HDMI1 joint mode" --icon=${ICON}
+        # Combination of HDMI1, eDP1
+        "eDP1_HDMI1_joint")
+            notify-send -u low "Set Display" "Activate eDP1-HDMI1 joint mode" --icon="${ICON}"
             xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
             ;;
-        "eDP1_HDMI1_mirror" )
-            notify-send -u low "Set Display" "Activate HDMI1 mirror mode" --icon=${ICON}
+        "eDP1_HDMI1_mirror")
+            notify-send -u low "Set Display" "Activate eDP1-HDMI1 mirror mode" --icon="${ICON}"
             xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --same-as "${eDP1}"
             ;;
-        "HDMI1_extend" )
-            notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200)" --icon="${ICON}"
+        "HDMI1_eDP1_joint")
+            notify-send -u low "Set Display" "Activate eDP1-HDMI1 joint mode" --icon="${ICON}"
+            xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --left-of "${eDP1}"
+        # HDMI1
+        "HDMI1_auto")
+            notify-send -u low "Set Display" "Activate HDMI1 (auto)" --icon="${ICON}"
+            xrandr --output "${HDMI1}" --auto
+            ;;
+        "HDMI1_off")
+            notify-send -u low "Set Display" "Deactivate HDMI1 (off)" --icon="${ICON}"
+            xrandr --output "${HDMI1}" --off
+            ;;
+        "HDMI1_extend")
+            notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200_50.00)" --icon="${ICON}"
             HDMI1_extend
             xrandr --output "${HDMI1}" --mode "1920x1200_50.00"
             ;;
-        "HDMI1_default" )
+        "HDMI1_default")
             notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)" --icon="${ICON}"
             xrandr --output "${HDMI1}" --mode "1920x1080"
             ;;
-        "eDP1_shrink1" )
+        "HDMI1_primary")
+            notify-send -u low "Set Display" "Set HDMI1 as primary display" --icon="${ICON}"
+            xrandr --output "${HDMI1}" --primary
+            ;;
+        # eDP1
+        "eDP1_auto")
+        notify-send -u low "Set Display" "Activate eDP1 (auto)" --icon="${ICON}"
+            xrandr --output "${eDP1}" --auto
+            ;;
+        "eDP1_off")
+            notify-send -u low "Set Display" "Deactivate eDP1 (off)" --icon="${ICON}"
+            xrandr --output "${eDP1}" --off
+            ;;
+        "eDP1_shrink1")
             notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)" --icon="${ICON}"
             eDP1_shrink
             xrandr --output "${eDP1}" --mode "1440x810_60.00"
             ;;
-        "eDP1_shrink2" )
+        "eDP1_shrink2")
             notify-send -u low "Set Display" "Activate eDP1 shrink mode (1368x768)" --icon="${ICON}"
             xrandr --output "${eDP1}" --mode "1368x768"
             ;;
-        "eDP1_default" )
+        "eDP1_default")
             notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)" --icon="${ICON}"
             xrandr --output "${eDP1}" --mode "1920x1080"
             ;;
-        "HDMI1_primary" )
-            notify-send -u low "Set Display" "Set HDMI1 as primary display" --icon="${ICON}"
-            xrandr --output "${HDMI1}" --primary
-            ;;
-        "eDP1_primary" )
+        "eDP1_primary")
             notify-send -u low "Set Display" "Set eDP1 as primary display" --icon="${ICON}"
             xrandr --output "${eDP1}" --primary
             ;;
@@ -201,4 +221,4 @@ main () {
 }
 
 # Main
-main $1 $2
+main "$1" "$2"

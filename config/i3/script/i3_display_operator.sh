@@ -146,6 +146,7 @@ display_operation () {
         "HDMI1_eDP1_joint")
             notify-send -u low "Set Display" "Activate eDP1-HDMI1 joint mode" --icon="${ICON}"
             xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --left-of "${eDP1}"
+            ;;
         # HDMI1
         "HDMI1_auto")
             notify-send -u low "Set Display" "Activate HDMI1 (auto)" --icon="${ICON}"

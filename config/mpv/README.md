@@ -13,26 +13,27 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 ### MPV
 - Keybindings
 
-| Key Mapping                                | Function                                                   | Description | Note                                                                   |
-| :----------------------------------------: | :--------------------------------------------------------: | :---------: | :--------------------------------------------------------------------: |
-| `[Ctrl/None/Alt]`+`[Left/Right]`           | Seek 1/10/60 sec backward/forward                          |             |                                                                        |
-| `[Ctrl/None/Alt]`+`[j/l]`                  | Seek 1/10/60 sec backward/forward                          |             |                                                                        |
-| `[1-9/0] `                                 | Seek to 10%-90%/0% in current playing                      |             |                                                                        |
-| `[Space/k]`                                | Pause-Play                                                 |             |                                                                        |
-| `[,/.]`                                    | Previous/Next frame                                        |             |                                                                        |
-| `[[/]/Backspace]`                          | Decrease/Increase/Reset play speed                         |             |                                                                        |
-| `[None/Shift/Alt]`+`[;]`                   | Toggle A-B/current_file/current_playlist loop              |             |                                                                        |
-| (`[Ctrl]`)+`[Alt]`+`[Shift]`+`[h/j/k/l/o]` | Pan left/down/up/right/back_to_original                    |             | `[Ctrl]`+`[Alt]`+`[Shift]`+`[h/j/k/l/o]` conflicts with my i3 bindkeys |
-| (`[Ctrl]`)+(`[Alt]`)+`[-/=/+]`             | Zoom in/out/back_to_original                               |             | `[Ctrl]`+`[Alt]`+`[Shift]`+`[-/=/+]` conflicts with my i3 bindkeys     |
-| (`[Ctrl/Alt]`)+(`[Shift]`)+`[r]`           | Rotate clock-wisely                                        |             | Step in (+/-)(1/15/90) degrees                                         |
-| `[t]`                                      | Seek to specific time                                      |             | From `seek-to.lua`                                                     |
-| `[g]`                                      | Toggle aspect ratio                                        |             |                                                                        |
-| `[f]`                                      | Toggle full-screen mode                                    |             |                                                                        |
-| `[Ctrl]`+(`[Shift]`)+`[r]`                 | Rotate (anti-)clockwisely ,                                |             |                                                                        |
-| `[None/Shift/Ctrl]`+`[s]`                  | Video_with_sub/Video_without_sub/Resized_window screenshot |             |                                                                        |
-| `[Shift]`+`[i]`                            | Toggle MPV video information                               |             |                                                                        |
-| `[Shift]`+`[o]`                            | Toggle MPV on-screen-display (OSD)                         |             |                                                                        |
-| `[b]`                                      | Cycle MPV progress bar location top/center/bottom          |             |                                                                        |
+| Key Mapping                              | Function                                                   | Description | Note                                                               |
+| :--------------------------------------: | :--------------------------------------------------------: | :---------: | :----------------------------------------------------------------: |
+| `[Ctrl/None/Alt]`+`[Left/Right]`         | Seek 1/10/60 sec backward/forward                          |             |                                                                    |
+| `[Ctrl/None/Alt]`+`[j/l]`                | Seek 1/10/60 sec backward/forward                          |             |                                                                    |
+| `[1-9/0] `                               | Seek to 10%-90%/0% in current playing                      |             |                                                                    |
+| `[Space/k]`                              | Pause-Play                                                 |             |                                                                    |
+| `[,/.]`                                  | Previous/Next frame                                        |             |                                                                    |
+| `[[/]/Backspace]`                        | Decrease/Increase/Reset play speed                         |             |                                                                    |
+| `[None/Shift/Alt]`+`[;]`                 | Toggle A-B/current_file/current_playlist loop              |             |                                                                    |
+| (`[Ctrl]`)+`[Alt]`+`[Shift]`+`[h/j/k/l]` | Pan left/down/up/right                                     |             |                                                                    |
+| (`[Ctrl]`)+(`[Alt]`)+`[-/=/+]`           | Zoom in/out/back_to_original                               |             | `[Ctrl]`+`[Alt]`+`[Shift]`+`[-/=/+]` conflicts with my i3 bindkeys |
+| `[Alt]`+(`[Shift]`) + `[\]`              | (Zoom)/Pan to original                                     |             |                                                                    |
+| (`[Ctrl]/[Alt]`)+(`[Shift]`)+`[r]`       | Rotate clock-wisely                                        |             | Step in (+/-)(1/15/90) degrees                                     |
+| `[t]`                                    | Seek to specific time                                      |             | From `seek-to.lua`                                                 |
+| `[g]`                                    | Toggle aspect ratio                                        |             |                                                                    |
+| `[f]`                                    | Toggle full-screen mode                                    |             |                                                                    |
+| `[Ctrl]`+(`[Shift]`)+`[r]`               | Rotate (anti-)clockwisely ,                                |             |                                                                    |
+| `[None/Shift/Ctrl]`+`[s]`                | Video_with_sub/Video_without_sub/Resized_window screenshot |             |                                                                    |
+| `[Shift]`+`[i]`                          | Toggle MPV video information                               |             |                                                                    |
+| `[Shift]`+`[o]`                          | Toggle MPV on-screen-display (OSD)                         |             |                                                                    |
+| `[b]`                                    | Cycle MPV progress bar location top/center/bottom          |             |                                                                    |
 
 ### [ModernX](https://github.com/cyl0/ModernX)
 
@@ -67,12 +68,12 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | `[Enter]`           | Play file                       |                                            | dynamic keybinding |
 | `[Space]`           | Toggle select file              | Use [j/k] to move selected file            | dynamic keybinding |
 | `[d]`               | Remove file from playlist       |                                            | dynamic keybinding |
-| `[Ctrl]+[p/n]`      | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |                    |
-| `[Ctrl]+[e]`        | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |                    |
+| `[Ctrl]`+`[p/n]`    | Play prev/next file in playlist | You can also use `[Shift]`+`[k/j]`         |                    |
+| `[Ctrl]`+`[e]`      | Export current playlist         | Save playlist to `~/.config/mpv/playlists` |                    |
 | `[Shift]`+`[l]`     | Load file in current directory  |                                            |                    |
 | `[z]`               | Sort playlist                   |                                            |                    |
 | `[Shift]`+`[z]`     | Shuffle playlist                |                                            |                    |
-| `[Alt]+[z]`         | Reverse playlist                |                                            |                    |
+| `[Alt]`+`[z]`       | Reverse playlist                |                                            |                    |
 
 ### [mpv-file-browser](https://github.com/CogentRedTester/mpv-file-browser)
 - Modify keybindings in `$HOME/.config/mpv/scripts/mpv-file-browser/modules/keybinds.lua`

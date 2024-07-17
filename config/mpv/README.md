@@ -20,11 +20,12 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | `[1-9/0] `                               | Seek to 10%-90%/0% in current playing                      |             |                                                                    |
 | `[Space/k]`                              | Pause-Play                                                 |             |                                                                    |
 | `[,/.]`                                  | Previous/Next frame                                        |             |                                                                    |
-| `[[/]/Backspace]`                        | Decrease/Increase/Reset play speed                         |             |                                                                    |
+| `[[/]/\]`                                | Decrease/Increase/Reset play speed                         |             |                                                                    |
 | `[None/Shift/Alt]`+`[;]`                 | Toggle A-B/current_file/current_playlist loop              |             |                                                                    |
 | (`[Ctrl]`)+`[Alt]`+`[Shift]`+`[h/j/k/l]` | Pan left/down/up/right                                     |             |                                                                    |
 | (`[Ctrl]`)+(`[Alt]`)+`[-/=/+]`           | Zoom in/out/back_to_original                               |             | `[Ctrl]`+`[Alt]`+`[Shift]`+`[-/=/+]` conflicts with my i3 bindkeys |
-| `[Alt]`+(`[Shift]`) + `[\]`              | (Zoom)/Pan to original                                     |             |                                                                    |
+| `[Alt]`+`[Shift]` + `[\]`                | Pan to original                                            |             |                                                                    |
+| (`[Alt]`+`[Shift]`) + `[Backspace]`      | (Pan and) Zoom to original                                 |             |                                                                    |
 | (`[Ctrl]/[Alt]`)+(`[Shift]`)+`[r]`       | Rotate clock-wisely                                        |             | Step in (+/-)(1/15/90) degrees                                     |
 | `[t]`                                    | Seek to specific time                                      |             | From `seek-to.lua`                                                 |
 | `[g]`                                    | Toggle aspect ratio                                        |             |                                                                    |

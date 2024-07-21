@@ -20,6 +20,8 @@ show_help_message () {
     echo "  [swap_capslock_with_ctrl]"
     echo "  [restore_capslock]"
     echo "  [customize_tex_shinobi]"
+    echo "  [restore_tex_shinobi]"
+    echo "  [swap_escape_keybinding_with_grave_keybinding]"
     echo "  [default]"
     echo
 }
@@ -69,6 +71,14 @@ keyboard_operation () {
             xinput set-prop "${DEVICE}" 329 1 0 0
             xinput set-prop "${DEVICE}" 326 0.0
             notify-send -u low "Keyboard Mode" "Restore TEX Shinobi (Trackpoint)" --icon=${ICON}
+            ;;
+        'swap_escape_keybinding_with_grave_keybinding')
+            CONFIG="$HOME/.config/i3/config.d/i3_workspace.config"
+            sed -i "s/\+grave/\+tmp/g" ${CONFIG}
+            sed -i "s/\+Escape/\+grave/g" ${CONFIG}
+            sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
+            notify-send -u low "Keyboard Mode" "Swap Esc-related keybindings w/ Grave-related keybindings" --icon=${ICON}
+            i3-msg reload
             ;;
         'default')
             xset r rate 250 50

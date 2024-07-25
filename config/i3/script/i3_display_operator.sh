@@ -118,8 +118,8 @@ auto_adjust () {
             HDMI1_extend; eDP1_shrink
             # Locate eDP1 & HDMI1 (extented)
             xrandr \
-                --output "${eDP1}" --mode 1440x810_60.00 --pos 0x390 --rotate normal \
-                --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
+                --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
+                --output "${eDP1}" --mode 1440x810_60.00 --pos 0x390 --rotate normal
         # Other HDMI:
         else
             notify-send -u low "Set Display Automatically" "External HDMI1 connected" --icon="${ICON}"

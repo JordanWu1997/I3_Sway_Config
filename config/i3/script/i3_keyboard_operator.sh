@@ -21,6 +21,10 @@ show_help_message () {
     echo "  [restore_capslock]"
     echo "  [customize_tex_shinobi]"
     echo "  [restore_tex_shinobi]"
+    echo "  [swap_backslash_with_backspace]"
+    echo "  [restore_backslash_and_backspace]"
+    echo "  [swap_escape_with_grave]"
+    echo "  [restore_escape_and_grave]"
     echo "  [swap_escape_keybinding_with_grave_keybinding]"
     echo "  [default]"
     echo
@@ -30,6 +34,7 @@ show_help_message () {
 keyboard_operation () {
     ICON="$HOME/.config/i3/share/64x64/keyboard.png"
     case $1 in
+        # Caps_Lock/Num_Lock
         'send_capslock_key')
             xdotool key Caps_Lock
             notify-send -u low "Keyboard Mode" "Capslock key is pressed" --icon=${ICON}
@@ -38,26 +43,52 @@ keyboard_operation () {
             xdotool key Num_Lock
             notify-send -u low "Keyboard Mode" "Numlock key is pressed" --icon=${ICON}
             ;;
-        'speed_up_repeat_key_rate')
-            xset r rate 250 50
-            notify-send -u low "Keyboard Mode" "Speed up repeat key rate (250/50)" --icon=${ICON}
-            ;;
-        'restore_repeat_key_rate')
-            xset r rate 660 25
-            notify-send -u low "Keyboard Mode" "Reset repeat key rate (600/25)" --icon=${ICON}
-            ;;
+        # For non-HHKB
         'map_capslock_to_ctrl')
-            setxkbmap -option "ctrl:nocaps"
+            #setxkbmap -option "ctrl:nocaps"
+            xmodmap -e 'keycode 66 = Control_L'
             notify-send -u low "Keyboard Mode" "Map Caplock to Ctrl" --icon=${ICON}
             ;;
         'swap_capslock_with_ctrl')
-            setxkbmap -option "ctrl:swapcaps"
+            #setxkbmap -option "ctrl:swapcaps"
+            xmodmap -e 'keycode 66 = Control_L'; xmodmap -e 'keycode 37 = Caps_Lock'
             notify-send -u low "Keyboard Mode" "Swap Caplock with Ctrl" --icon=${ICON}
             ;;
         'restore_capslock')
-            setxkbmap -option "ctrl:aa_ctrl"
+            #setxkbmap -option "ctrl:aa_ctrl"
+            xmodmap -e 'keycode 66 = Caps_Lock'; xmodmap -e 'keycode 37 = Control_L'
             notify-send -u low "Keyboard Mode" "Restore Caplock" --icon=${ICON}
             ;;
+        'swap_backslash_with_backspace')
+            xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
+            notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
+            ;;
+        'restore_backslash_and_backspace')
+            xmodmap -e 'keycode 22 = BackSpace'; xmodmap -e 'keycode 51 = backslash bar'
+            notify-send -u low "Keyboard Mode" "Restore Backslash and Backspace" --icon=${ICON}
+            ;;
+        # For HHKB
+        'swap_escape_with_grave')
+            xmodmap -e 'keycode 9 = grave asciitilde'; xmodmap -e 'keycode 49 = Escape'
+            notify-send -u low "Keyboard Mode" "Swap Escape with Grave" --icon=${ICON}
+            ;;
+        'restore_escape_and_grave')
+            xmodmap -e 'keycode 9 = Escape'; xmodmap -e 'keycode 49 = grave asciitilde'
+            notify-send -u low "Keyboard Mode" "Restore Escape and Grave" --icon=${ICON}
+            ;;
+        'map_shift_escape_to_tilde')
+            xmodmap -e 'keycode 9 = Escape asciitilde'
+            notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
+            ;;
+        'swap_escape_keybinding_with_grave_keybinding')
+            CONFIG="$HOME/.config/i3/config.d/i3_workspace.config"
+            sed -i "s/\+grave/\+tmp/g" ${CONFIG}
+            sed -i "s/\+Escape/\+grave/g" ${CONFIG}
+            sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
+            notify-send -u low "Keyboard Mode" "Swap Esc-related keybindings w/ Grave-related keybindings" --icon=${ICON}
+            i3-msg reload
+            ;;
+        # For TEX Shinobi
         'customize_tex_shinobi')
             DEVICE='USB-HID Keyboard Mouse'
             xinput set-prop "${DEVICE}" 315 0
@@ -72,17 +103,11 @@ keyboard_operation () {
             xinput set-prop "${DEVICE}" 326 0.0
             notify-send -u low "Keyboard Mode" "Restore TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
-        'swap_escape_keybinding_with_grave_keybinding')
-            CONFIG="$HOME/.config/i3/config.d/i3_workspace.config"
-            sed -i "s/\+grave/\+tmp/g" ${CONFIG}
-            sed -i "s/\+Escape/\+grave/g" ${CONFIG}
-            sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
-            notify-send -u low "Keyboard Mode" "Swap Esc-related keybindings w/ Grave-related keybindings" --icon=${ICON}
-            i3-msg reload
-            ;;
+        # Default behavior
         'default')
             xset r rate 250 50
-            setxkbmap -option "ctrl:nocaps"
+            #setxkbmap -option "ctrl:nocaps"
+            xmodmap -e 'keycode 66 = Control_L'
             notify-send -u low "Keyboard Mode" "Speed up repeat key rate and map Caplock to Ctrl" --icon=${ICON}
             ;;
         *)

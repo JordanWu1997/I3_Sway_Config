@@ -25,6 +25,7 @@ show_help_message () {
     echo "  [restore_backslash_and_backspace]"
     echo "  [swap_escape_with_grave]"
     echo "  [restore_escape_and_grave]"
+    echo "  [map_shift_escape_to_tilde]"
     echo "  [swap_escape_keybinding_with_grave_keybinding]"
     echo "  [default]"
     echo
@@ -105,10 +106,21 @@ keyboard_operation () {
             ;;
         # Default behavior
         'default')
+            # Speed up Repeat Key Rate
             xset r rate 250 50
-            #setxkbmap -option "ctrl:nocaps"
+            notify-send -u low "Keyboard Mode" "Speed up repeat key rate" --icon=${ICON}
+            # Map Capslock to Ctrl
             xmodmap -e 'keycode 66 = Control_L'
-            notify-send -u low "Keyboard Mode" "Speed up repeat key rate and map Caplock to Ctrl" --icon=${ICON}
+            notify-send -u low "Keyboard Mode" "Map Caplock to Ctrl" --icon=${ICON}
+            # Map Shift+Escape to Tilde
+            xmodmap -e 'keycode 9 = Escape asciitilde'
+            notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
+            # Customize TEX Shinobi Trackpoint
+            DEVICE='USB-HID Keyboard Mouse'
+            xinput set-prop "${DEVICE}" 315 0
+            xinput set-prop "${DEVICE}" 329 0 1 0
+            xinput set-prop "${DEVICE}" 326 0.45
+            notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
         *)
             show_wrong_usage_message

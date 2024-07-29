@@ -253,7 +253,7 @@ Note: the term "window" used in this configuration actually refers to "container
         - __Caffeine Mode (`[c]`)__
             - Enable/Disable caffeine (disable/enable X screen saver)
         - __Keyboard Mode (`[k]`)__
-            - Map keys, tune repeat key speed
+            - Map keys for non-HHKB, HHKB, TEX Shinobi keyboards, tune repeat key speed
         - __KDE Connect Mode (`[Shift]` + `[k]`)__
             - KDE Connect pointer daemon
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__

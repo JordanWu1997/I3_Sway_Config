@@ -26,6 +26,7 @@ show_help_message () {
     echo "  [swap_escape_with_grave]"
     echo "  [restore_escape_and_grave]"
     echo "  [map_shift_escape_to_tilde]"
+    echo "  [map_right_super_to_left_ctrl]"
     echo "  [swap_escape_keybinding_with_grave_keybinding]"
     echo "  [default]"
     echo
@@ -77,6 +78,10 @@ keyboard_operation () {
             xmodmap -e 'keycode 9 = Escape'; xmodmap -e 'keycode 49 = grave asciitilde'
             notify-send -u low "Keyboard Mode" "Restore Escape and Grave" --icon=${ICON}
             ;;
+        'map_right_super_to_left_ctrl')
+            xmodmap -e 'keycode 134 = Control_L'
+            notify-send -u low "Keyboard Mode" "Map Super_R to Control_L" --icon=${ICON}
+            ;;
         'map_shift_escape_to_tilde')
             xmodmap -e 'keycode 9 = Escape asciitilde'
             notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
@@ -115,6 +120,9 @@ keyboard_operation () {
             # Map Shift+Escape to Tilde
             xmodmap -e 'keycode 9 = Escape asciitilde'
             notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
+            # Map Super_R to Control_L
+            xmodmap -e 'keycode 134 = Control_L'
+            notify-send -u low "Keyboard Mode" "Map Super_R to Control_L" --icon=${ICON}
             # Customize TEX Shinobi Trackpoint
             DEVICE='USB-HID Keyboard Mouse'
             xinput set-prop "${DEVICE}" 315 0

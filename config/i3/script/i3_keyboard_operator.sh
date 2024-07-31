@@ -26,8 +26,8 @@ show_help_message () {
     echo "  [swap_escape_with_grave]"
     echo "  [restore_escape_and_grave]"
     echo "  [map_shift_escape_to_tilde]"
-    echo "  [map_right_super_to_left_ctrl]"
     echo "  [swap_escape_keybinding_with_grave_keybinding]"
+    echo "  [restore_keyboard_layout]"
     echo "  [default]"
     echo
 }
@@ -47,18 +47,15 @@ keyboard_operation () {
             ;;
         # For non-HHKB
         'map_capslock_to_ctrl')
-            #setxkbmap -option "ctrl:nocaps"
-            xmodmap -e 'keycode 66 = Control_L'
+            setxkbmap -option "ctrl:nocaps"
             notify-send -u low "Keyboard Mode" "Map Caplock to Ctrl" --icon=${ICON}
             ;;
         'swap_capslock_with_ctrl')
-            #setxkbmap -option "ctrl:swapcaps"
-            xmodmap -e 'keycode 66 = Control_L'; xmodmap -e 'keycode 37 = Caps_Lock'
+            setxkbmap -option "ctrl:swapcaps"
             notify-send -u low "Keyboard Mode" "Swap Caplock with Ctrl" --icon=${ICON}
             ;;
         'restore_capslock')
-            #setxkbmap -option "ctrl:aa_ctrl"
-            xmodmap -e 'keycode 66 = Caps_Lock'; xmodmap -e 'keycode 37 = Control_L'
+            setxkbmap -option "ctrl:aa_ctrl"
             notify-send -u low "Keyboard Mode" "Restore Caplock" --icon=${ICON}
             ;;
         'swap_backslash_with_backspace')
@@ -77,10 +74,6 @@ keyboard_operation () {
         'restore_escape_and_grave')
             xmodmap -e 'keycode 9 = Escape'; xmodmap -e 'keycode 49 = grave asciitilde'
             notify-send -u low "Keyboard Mode" "Restore Escape and Grave" --icon=${ICON}
-            ;;
-        'map_right_super_to_left_ctrl')
-            xmodmap -e 'keycode 134 = Control_L'
-            notify-send -u low "Keyboard Mode" "Map Super_R to Control_L" --icon=${ICON}
             ;;
         'map_shift_escape_to_tilde')
             xmodmap -e 'keycode 9 = Escape asciitilde'
@@ -109,20 +102,25 @@ keyboard_operation () {
             xinput set-prop "${DEVICE}" 326 0.0
             notify-send -u low "Keyboard Mode" "Restore TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
+        'restore_keyboard_layout')
+            setxkbmap -option
+            setxkbmap -layout us
+            notify-send -u low "Keyboard Mode" "Restore all with setxkbmap" --icon=${ICON}
+            ;;
         # Default behavior
         'default')
             # Speed up Repeat Key Rate
             xset r rate 250 50
             notify-send -u low "Keyboard Mode" "Speed up repeat key rate" --icon=${ICON}
             # Map Capslock to Ctrl
-            xmodmap -e 'keycode 66 = Control_L'
+            setxkbmap -option "ctrl:nocaps"
             notify-send -u low "Keyboard Mode" "Map Caplock to Ctrl" --icon=${ICON}
             # Map Shift+Escape to Tilde
             xmodmap -e 'keycode 9 = Escape asciitilde'
             notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
-            # Map Super_R to Control_L
-            xmodmap -e 'keycode 134 = Control_L'
-            notify-send -u low "Keyboard Mode" "Map Super_R to Control_L" --icon=${ICON}
+            # Swap BackSlash with BackSpace
+            xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
+            notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
             # Customize TEX Shinobi Trackpoint
             DEVICE='USB-HID Keyboard Mouse'
             xinput set-prop "${DEVICE}" 315 0

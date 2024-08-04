@@ -16,6 +16,7 @@ show_help_message () {
     echo "OPERATIONS"
     echo "  [enable_caffeine]: disable X screensaver"
     echo "  [disable_caffeine]: enable X screensaver"
+    echo "  [kill_window]: click window on screen to kill (X window)"
     echo "  [pickup_color]: pick up color on screen (X window)"
     echo "  [get_screenshot_text]: screenshot, apply OCR to it and copy context to clipboard"
     echo "  [collect_all_instances]: collect all window instances"
@@ -23,6 +24,10 @@ show_help_message () {
 
 toolkit_operation () {
     case $1 in
+        'kill_window')
+            notify-send -t 1500 -u low "Toolkit Mode" "Click Window to kill" --icon="${ICON}"
+            xkill
+            ;;
         'pickup_color')
             notify-send -t 1500 -u low "Toolkit Mode" "Select Color on Screen" --icon="${ICON}"
             COLOR=$(xcolor --format 'HEX' -S 3)

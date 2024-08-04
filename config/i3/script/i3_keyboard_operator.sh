@@ -118,9 +118,9 @@ keyboard_operation () {
             # Map Shift+Escape to Tilde
             xmodmap -e 'keycode 9 = Escape asciitilde'
             notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
-            # Swap BackSlash with BackSpace
-            xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
-            notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
+            ## Swap BackSlash with BackSpace
+            #xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
+            #notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
             # Customize TEX Shinobi Trackpoint
             DEVICE='USB-HID Keyboard Mouse'
             xinput set-prop "${DEVICE}" 315 0

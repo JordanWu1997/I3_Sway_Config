@@ -29,6 +29,15 @@ But related to my favored workflow (i.e. keyboard-driven workflow).
     - `Anne_Pro_2`:
         - `Custom.json`
             - Customized keyboard profile for Anne Pro 2
+        - `HHKB.json`
+            - Mimic HHKB keyboard layout for Anne Pro 2
+            - But in HHKB, backspace is swapped with backslash and backslash is split into backtick and backslash
+            - To make Anne Pro 2 as close as possible to HHKB, I use tap layer to mimic two keys on one backslash key
+            - Note that Tap Key Combination must be turned on for tilde (Shift+Tap)
+                - Tap: backtick
+                - Shift+Tap: tilde
+                - Normal: backslash
+                - Shift+Normal: pipe
 
 ## obsidian
 - [Obsidian](https://obsidian.md/), brilliant markdown editor for note-taking
@@ -61,3 +70,4 @@ But related to my favored workflow (i.e. keyboard-driven workflow).
 - https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb
 - https://www.annepro.net/
 - https://obsidian.md/
+- https://hhkb.io/layout/

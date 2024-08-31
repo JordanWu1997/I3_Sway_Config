@@ -15,6 +15,7 @@ show_help_message () {
     echo "  [float_then_fullscreen]: make current window floating and resize to monitor size"
     echo "  [center_current]: make current window floating and move to center of monitor"
     echo "  [toggle_sticky_current]: toggle current window stickiness"
+    echo "  [resize_to_input]: resize window to input height and input width"
     echo "  [float_all]: make all windows in current workspace floating"
     echo "  [tile_all]: make all windows in current workspace tiled"
     echo "  [hide_all]: send all windows to scratchpad"
@@ -75,6 +76,45 @@ window_operation () {
                 i3-msg "sticky toggle"
                 notify-send -u low "i3 Window Manger" "Cannot get focused window sticky status\nWindow stickiness is just toggled" --icon=${ICON}
             fi
+            ;;
+        "resize_to_input")
+            # Get workspace width and height
+            HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
+            WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
+            FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
+            # Parse input height
+            INPUT_HEIGHT=$(rofi -dmenu -p "Set height to")
+            if [[ -n ${INPUT_HEIGHT} ]]; then
+                if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
+                    TMP=$(echo ${INPUT_HEIGHT} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
+                    INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${PERCENTAGE} / 100 * ${HEIGHT}" | bc -l))
+                elif [[ $(echo "${INPUT_HEIGHT} <= 1" | bc -l) == "1" ]]; then
+                    INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                fi
+            fi
+            # Parse input width
+            INPUT_WIDTH=$(rofi -dmenu -p "Set width to")
+            if [[ -n ${INPUT_WIDTH} ]]; then
+                if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
+                    TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
+                    INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${PERCENTAGE} / 100 * ${WIDTH}" | bc -l))
+                elif [[ $(echo "${INPUT_WIDTH} <= 1" | bc -l) == "1" ]]; then
+                    INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${INPUT_WIDTH} * ${WIDTH}" | bc -l))
+                fi
+            fi
+            # Resize
+            if [[ -n ${INPUT_HEIGHT} ]] && [[ -n ${INPUT_WIDTH} ]]; then
+                echo ${INPUT_WIDTH} ${INPUT_HEIGHT}
+                i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px height ${INPUT_HEIGHT} px"
+            elif [[ -n ${INPUT_HEIGHT} ]] && [[ -z ${INPUT_WIDTH} ]]; then
+                echo ${INPUT_WIDTH} ${INPUT_HEIGHT}
+                i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
+            elif [[ -z ${INPUT_HEIGHT} ]] && [[ -n ${INPUT_WIDTH} ]]; then
+                echo ${INPUT_WIDTH} ${INPUT_HEIGHT}
+                i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${WIDTH} px"
+            fi
+            # Force to switch focus back (for floating window)
+            i3-msg "[id=${FOCUS_WINDOW_ID}] focus"
             ;;
         "float_all")
             i3-msg [workspace='__focused__'] floating enable

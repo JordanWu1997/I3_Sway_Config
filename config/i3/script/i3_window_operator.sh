@@ -32,7 +32,7 @@ window_operation () {
             HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
             # Get window border width
             I3_CONFIG="$HOME/.config/i3/config"
-            BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' $I3_CONFIG)
+            BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' ${I3_CONFIG})
             # Floating
             i3-msg "floating enable"
             i3-msg "border pixel ${BORDER_WIDTH}"
@@ -78,41 +78,37 @@ window_operation () {
             fi
             ;;
         "resize_to_input")
+            # Get focus window
+            FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
             # Get workspace width and height
             HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
             WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
-            FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
-            # Parse input height
+            # Resize window height
             INPUT_HEIGHT=$(rofi -dmenu -p "Set height to")
             if [[ -n ${INPUT_HEIGHT} ]]; then
                 if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
                     TMP=$(echo ${INPUT_HEIGHT} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
                     INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${PERCENTAGE} / 100 * ${HEIGHT}" | bc -l))
+                elif [[ $(echo ${INPUT_HEIGHT} | grep / -q) ]]; then
+                    INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
                 elif [[ $(echo "${INPUT_HEIGHT} <= 1" | bc -l) == "1" ]]; then
                     INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
                 fi
             fi
-            # Parse input width
+            [[ -n ${INPUT_HEIGHT} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
+            # Resize window width
             INPUT_WIDTH=$(rofi -dmenu -p "Set width to")
             if [[ -n ${INPUT_WIDTH} ]]; then
                 if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
                     TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
                     INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${PERCENTAGE} / 100 * ${WIDTH}" | bc -l))
+                elif [[ $(echo ${INPUT_WIDTH} | grep / -q) ]]; then
+                    INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${INPUT_WIDTH} * ${WIDTH}" | bc -l))
                 elif [[ $(echo "${INPUT_WIDTH} <= 1" | bc -l) == "1" ]]; then
                     INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${INPUT_WIDTH} * ${WIDTH}" | bc -l))
                 fi
             fi
-            # Resize
-            if [[ -n ${INPUT_HEIGHT} ]] && [[ -n ${INPUT_WIDTH} ]]; then
-                echo ${INPUT_WIDTH} ${INPUT_HEIGHT}
-                i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px height ${INPUT_HEIGHT} px"
-            elif [[ -n ${INPUT_HEIGHT} ]] && [[ -z ${INPUT_WIDTH} ]]; then
-                echo ${INPUT_WIDTH} ${INPUT_HEIGHT}
-                i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
-            elif [[ -z ${INPUT_HEIGHT} ]] && [[ -n ${INPUT_WIDTH} ]]; then
-                echo ${INPUT_WIDTH} ${INPUT_HEIGHT}
-                i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${WIDTH} px"
-            fi
+            [[ -n ${INPUT_WIDTH} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px"
             # Force to switch focus back (for floating window)
             i3-msg "[id=${FOCUS_WINDOW_ID}] focus"
             ;;
@@ -141,4 +137,4 @@ window_operation () {
 }
 
 # Main
-window_operation $1
+window_operation $@

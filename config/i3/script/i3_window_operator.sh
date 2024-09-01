@@ -93,11 +93,9 @@ window_operation () {
                 if [[ -n ${INPUT_HEIGHT} ]]; then
                     if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
                         TMP=$(echo ${INPUT_HEIGHT} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-                        INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${PERCENTAGE} / 100 * ${HEIGHT}" | bc -l))
-                    elif [[ $(echo ${INPUT_HEIGHT} | grep / -q) ]]; then
-                        INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                        INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE} / 100 * ${HEIGHT}" | bc -l))
                     elif [[ $(echo "${INPUT_HEIGHT} <= 1" | bc -l) == "1" ]]; then
-                        INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=1; ${INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                        INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
                     fi
                 fi
                 [[ -n ${INPUT_HEIGHT} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
@@ -109,11 +107,9 @@ window_operation () {
                 if [[ -n ${INPUT_WIDTH} ]]; then
                     if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
                         TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-                        INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${PERCENTAGE} / 100 * ${WIDTH}" | bc -l))
-                    elif [[ $(echo ${INPUT_WIDTH} | grep / -q) ]]; then
-                        INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${INPUT_WIDTH} * ${WIDTH}" | bc -l))
+                        INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE} / 100 * ${WIDTH}" | bc -l))
                     elif [[ $(echo "${INPUT_WIDTH} <= 1" | bc -l) == "1" ]]; then
-                        INPUT_WIDTH=$(printf "%.0f" $(echo "scale=1; ${INPUT_WIDTH} * ${WIDTH}" | bc -l))
+                        INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${INPUT_WIDTH} * ${WIDTH}" | bc -l))
                     fi
                 fi
                 [[ -n ${INPUT_WIDTH} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px"

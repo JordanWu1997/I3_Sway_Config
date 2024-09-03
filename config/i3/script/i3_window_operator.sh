@@ -74,8 +74,16 @@ window_operation () {
                 i3-msg border normal ${DEFAULT_WIDTH}
             else
                 i3-msg "sticky toggle"
-                notify-send -u low "i3 Window Manger" "Cannot get focused window sticky status\nWindow stickiness is just toggled" --icon=${ICON}
+                notify-send -u low "i3 Window Manager" "Cannot get focused window sticky status\nWindow stickiness is just toggled" --icon=${ICON}
             fi
+            ;;
+        "show_geometry")
+            FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
+            WINDOW_GEOMETRY=$(xdotool getwindowgeometry $(xdotool getwindowfocus) | grep Geometry | tr -d ' ' | cut -d: -f2)
+            HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
+            WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
+            NAME=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).name')
+            notify-send -u low "i3 Window Manager" "Current WD: ${WINDOW_GEOMETRY} (ID: ${FOCUS_WINDOW_ID})\nCurrent WS: ${WIDTH}x${HEIGHT} (NAME: ${NAME})" --icon=${ICON}
             ;;
         "resize_to_input")
             # Get focus window

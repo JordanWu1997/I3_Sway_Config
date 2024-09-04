@@ -248,6 +248,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - System command, e.g. exit, power off, reboot, lock, hibernate
         - __Device Mode (`[d]`)__
             - Turn on/off RF device, connect/disconnect Bluetooth device
+        - __Terminal Mode (`[t]`)__
+            - Gnome-terminal, kitty, alacrity and other terminals
 - __Toolkit Mode (`[Ctrl]` + `[Alt]` + `[t]`)__
     - Tool script, e.g. pick up color, take screenshot and do OCR
         - __Caffeine Mode (`[c]`)__

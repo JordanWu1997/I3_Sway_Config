@@ -111,8 +111,6 @@ case $CHANGE_ITEM in
         i3-msg reload
         ;;
     "i3bar_height")
-        echo $COL_I3BAR_HEIGHT
-        echo $NEW_DEFAULT_VALUE
         sed -i "$COL_I3BAR_HEIGHT s/.*/set \$default_i3bar_height $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;

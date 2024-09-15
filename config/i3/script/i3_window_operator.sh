@@ -28,6 +28,8 @@ show_help_message () {
 }
 
 resize_to_input () {
+    # Assign resize threshold
+    THRESHOLD="${1:-100}"
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
     WINDOW_GEOMETRY=$(xdotool getwindowgeometry $(xdotool getwindowfocus) | grep Geometry | tr -d ' ' | cut -d: -f2)
@@ -37,7 +39,6 @@ resize_to_input () {
     HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
     WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
     # Resize window width
-    THRESHOLD=100
     if [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
         INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to")
         if [[ -n ${INPUT_WIDTH} ]]; then
@@ -51,7 +52,6 @@ resize_to_input () {
         [[ -n ${INPUT_WIDTH} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px"
     fi
     # Resize window height
-    THRESHOLD=100
     if [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
         INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to")
         if [[ -n ${INPUT_HEIGHT} ]]; then
@@ -187,7 +187,7 @@ window_operation () {
             notify-send -u low "i3 Window Manager" "Current WD: ${WINDOW_GEOMETRY} (ID: ${FOCUS_WINDOW_ID})\nCurrent WS: ${WIDTH}x${HEIGHT} (NAME: ${NAME})" --icon=${ICON}
             ;;
         "resize_to_input")
-            resize_to_input
+            resize_to_input 50
             ;;
         "move_floating_to_input")
             move_floating_to_input
@@ -195,10 +195,10 @@ window_operation () {
         "resize_to_input_and_move_floating_to_input")
             FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep $(xdotool getwindowfocus) -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
             if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
-                resize_to_input
+                resize_to_input 0
                 move_floating_to_input
             else
-                resize_to_input
+                resize_to_input 50
             fi
             ;;
         "float_all")

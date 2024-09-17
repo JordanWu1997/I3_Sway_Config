@@ -112,7 +112,7 @@ move_floating_to_input () {
         INPUT_Y=$(expr ${INPUT_Y} + ${Y} )
     else
         # Add border offset
-        INPUT_Y=$(expr ${WINDOW_Y} + ${BORDER_WIDTH})
+        INPUT_Y=$(expr ${WINDOW_Y} - ${BORDER_WIDTH})
         # Add bar offset
         DEFAULT_BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
         DEFAULT_BAR_POS=$(awk '$0~/default_i3bar_position/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')

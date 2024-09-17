@@ -1,7 +1,13 @@
 {
-    "icons": [ "ascii" ],
+    "icons": [
+        "awesome-fonts"
+    ],
     "defaults": {
         "urgent": true,
-        "fg": "#aabbcc"
+        "fg": "#aabbcc",
+        "separator-block-width": 0,
+        "separator": "",
+        "padding": " ",
+        "default-separators": false
     }
 }

@@ -20,7 +20,7 @@ show_help_message () {
     echo "  i3_window_decoractor.sh [options]"
     echo ""
     echo "OPTIONS"
-    echo "  [default]: same as [monochromic]"
+    echo "  [default]: i3 default window colorscheme"
     echo "  [monochromic]: border color scheme in monochrmic style"
     echo "  [dichromatic]: border color scheme in dichromatic style"
     echo "  [monochromic_inversed]: border color scheme in inversely monochromic style"

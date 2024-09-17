@@ -11,6 +11,8 @@ COL_BAR1_5=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG)
 COL_BAR1_6=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 8)
 COL_BAR1_7=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 9)
 COL_BAR1_8=$(expr $(awk '$0~/bar_status workspace color/{print NR}' $BAR_CONFIG) + 10)
+# Bumblebee status
+COL_BUMBLEBEE_THEME=$(awk '$0~/bumblebee-status theme/{print NR}' $BAR_CONFIG)
 # Bar2
 COL_BAR2_1=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 2)
 COL_BAR2_2=$(expr $(awk '$0~/bar_mode workspace color/{print NR}' $BAR_CONFIG) + 3)
@@ -33,13 +35,13 @@ show_help_message () {
     echo "  i3_bar_decorator.sh [options]"
     echo ""
     echo "OPTIONS"
-    echo "  [default]: disalbe pywal"
-    echo "  [pywal]: enable pywal"
+    echo "  [i3]: i3 default colorscheme"
+    echo "  [pywal]: pywal colorscheme"
 }
 
 bar_decoration () {
     case $1 in
-        "default")
+        "i3")
             # Bar_base
             sed -i "$COL_BAR1_1 s/.*/        #background \$bg/" "$BAR_CONFIG"
             sed -i "$COL_BAR1_2 s/.*/        #statusline \$fg/" "$BAR_CONFIG"
@@ -58,6 +60,8 @@ bar_decoration () {
             sed -i "$COL_BAR2_6 s/.*/        #inactive_workspace \$c0       \$c8       \$c15/" "$BAR_CONFIG"
             sed -i "$COL_BAR2_7 s/.*/        #urgent_workspace   \$c1       \$c15      \$c0/" "$BAR_CONFIG"
             sed -i "$COL_BAR2_8 s/.*/        #binding_mode       \$bg       \$bg       \$fg/" "$BAR_CONFIG"
+            # Bumblebee status (Bar_base)
+            sed -i "$COL_BUMBLEBEE_THEME s/.*/        -t default # bumblebee-status theme/" "$BAR_CONFIG"
             ;;
         "pywal")
             # Bar_base
@@ -78,6 +82,9 @@ bar_decoration () {
             sed -i "$COL_BAR2_6 s/.*/        inactive_workspace \$c0       \$c8       \$c15/" "$BAR_CONFIG"
             sed -i "$COL_BAR2_7 s/.*/        urgent_workspace   \$c1       \$c15      \$c0/" "$BAR_CONFIG"
             sed -i "$COL_BAR2_8 s/.*/        binding_mode       \$bg       \$bg       \$fg/" "$BAR_CONFIG"
+            # Bumblebee status (Bar_base)
+            sed -i "$COL_BUMBLEBEE_THEME s/.*/        -t i3bar-wal # bumblebee-status theme/" "$BAR_CONFIG"
+            #
             ;;
         *)
             show_wrong_usage_message

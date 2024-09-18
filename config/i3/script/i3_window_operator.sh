@@ -72,7 +72,6 @@ move_floating_to_input () {
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
     WINDOW_LOCATION=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Position | cut -d' ' -f4)
-    WINDOW_LOCATION=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Position | cut -d' ' -f4)
     # Get window border width
     I3_CONFIG="$HOME/.config/i3/config"
     BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' ${I3_CONFIG})
@@ -96,7 +95,7 @@ move_floating_to_input () {
             INPUT_X=$(printf "%.0f" $(echo "scale=2; ${INPUT_X} * ${WIDTH}" | bc -l))
         fi
         # Add workspace offset
-        INPUT_X=$(expr ${INPUT_X} + ${X} )
+        INPUT_X=$(expr ${INPUT_X} + ${X})
     else
         # Add border offset
         INPUT_X=$(expr ${WINDOW_X} - ${BORDER_WIDTH})
@@ -109,7 +108,7 @@ move_floating_to_input () {
             INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${INPUT_Y} * ${HEIGHT}" | bc -l))
         fi
         # Add workspace offset
-        INPUT_Y=$(expr ${INPUT_Y} + ${Y} )
+        INPUT_Y=$(expr ${INPUT_Y} + ${Y})
     else
         # Add border offset
         INPUT_Y=$(expr ${WINDOW_Y} - ${BORDER_WIDTH})
@@ -124,7 +123,6 @@ move_floating_to_input () {
     # Move window location to X, Y
     i3-msg "[id=${FOCUS_WINDOW_ID}] move position ${INPUT_X} px ${INPUT_Y} px"
 }
-
 
 window_operation () {
     ICON="$HOME/.config/i3/share/64x64/window.png"

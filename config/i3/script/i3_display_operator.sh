@@ -205,18 +205,27 @@ display_operation () {
 
 # Main
 main () {
+
     # Automatically setup display
-    if [ "$1" == "auto" ]; then
-        auto_adjust
-        #setup_monitors.sh auto_in_office
-        #setup_monitors.sh auto_at_home
-    else
-        display_operation "$1"
-    fi
+    case $1 in
+        "auto")
+            auto_adjust
+            ;;
+        "auto_in_office")
+            setup_monitors.sh auto_in_office
+            ;;
+        "auto_at_home")
+            setup_monitors.sh auto_at_home
+            ;;
+        *)
+            display_operation "$1"
+    esac
+
     # Conky
     if [ "$2" == "enable" ]; then
         reload_conky
     fi
+
     # Miscellaneous
     reload_misc
 }

@@ -37,14 +37,16 @@ This modified configuration file is highly refered to link below
 
 ### Install i3-gaps in Fedora 33
 - Installation:
-    ```
+
+    ```bash
     sudo dnf copr enable fuhrmann/i3-gaps
     sudo dnf install i3-gaps
     ```
 
 ### Add I3 working environment
 - Below commands must be added to shell dotfile (e.g. .bashrc .zshrc and etc.)
-    ```
+
+    ```bash
     # export I3_SCRIPT="$HOME/.config/i3/script"
     # export PATH="$I3_SCRIPT:$PATH"
     ```
@@ -108,6 +110,7 @@ Detailed theme and font Setup
 This session modifies keyboard keymap and operation for laptop trackpad
 
 ### Trackpad
+
 ```
 # Setup trackpad natural scrolling in i3 && Setup trackpad tap in i3
 # In /usr/share/X11/xorg.conf.d/40-libinput.conf, add the following
@@ -125,6 +128,7 @@ This session modifies keyboard keymap and operation for laptop trackpad
 ```
 
 ### Keyboard
+
 ```
 # Remap Capslock to Win/Ctrl
 #

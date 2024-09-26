@@ -21,6 +21,8 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - `conky_config_system`: Display system information (e.g. CPU usage and etc.)
 
 ## Configurations
+
+### Directory
 - `full`:
     - Display all detailed information
         - `bindkey`: show all i3 binding keys
@@ -36,11 +38,13 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
         - `bindkey`: show most important i3 binding keys (e.g. kill window, move focus)
         - `system`: show minimal system information including processor, memory, network
     - No needs to be tweaked for new usage, works out of box for virtual machine
-`conky_config_bindkey`
+
+### Symbolic Link
+- `conky_config_bindkey`
     - Symbolic link for the above configuration (full/light/minimal)
     - Linking is available in conky mode embedded within custom mode
         - Check `configs/i3/config.d/i3_custom.config`
-`conky_config_system`
+- `conky_config_system`
     - Symbolic link for the above configuration (full/light/minimal)
     - Linking is available in conky mode embedded within custom mode
         - Check `configs/i3/config.d/i3_custom.config`

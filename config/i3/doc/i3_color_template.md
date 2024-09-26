@@ -39,6 +39,7 @@ problem for pywal color.
 ## I3BAR
 
 ### Default theme with minor modified
+
 ```
 background #161821
 statusline #FFFFFF
@@ -50,7 +51,9 @@ inactive_workspace #333333  #222222 #888888
 urgent_workspace   #2F343A  #900000 #FFFFFF
 binding_mode       #161821  #161821 #FFFFFF
 ```
+
 ### Monochrome color style (red -> blue, low -> high)
+
 ```
 background $bg
 statusline $fg
@@ -64,6 +67,7 @@ binding_mode       $bg       $bg       $fg
 ```
 
 ### Non-monochrome color style (red - blue, high -> low)
+
 ```
 background $bg
 statusline $fg
@@ -79,6 +83,7 @@ binding_mode       $bg       $bg       $fg
 ## I3CONTAINTER
 
 ### Gruvbox theme
+
 ```
 # class                 border  backgr. text    indic.  child_border
 client.focused          #665c54 #665c54 #eddbb2 #2e9ef4 #665c54
@@ -90,6 +95,7 @@ client.background       #ffffff
 ```
 
 ### Default theme with minor change
+
 ```
 # class                 border  backgr. text    indic.  child_border
 client.focused          #4c7899 #285577 #ffffff #2e9ef4 #285577
@@ -101,6 +107,7 @@ client.background       #ffffff
 ```
 
 ### Monochrome color style (red -> blue, low -> high)
+
 ```
 # class                 border  backgr. text    indic.  child_border
 client.focused          $c13    $c13    $c15    $c14    $c13
@@ -112,6 +119,7 @@ client.background               $c0
 ```
 
 ### Non-monochrome color style (red - bue, high -> low)
+
 ```
 # class                 border  backgr. text    indic.  child_border
 client.focused          $c1     $c1     $c0     $c14    $c1

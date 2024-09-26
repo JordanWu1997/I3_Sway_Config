@@ -28,6 +28,7 @@ Binding `numpad` key in i3 needs additional settings [https://unix.stackexchange
 Also, if you want to map `shift + numpad key`, both `Mod2` and `shift` are needed in every keybindings.
 
 - `Numpad` key in i3
+
     ```
     Mod2+KP_1
     Mod2+KP_2
@@ -40,7 +41,9 @@ Also, if you want to map `shift + numpad key`, both `Mod2` and `shift` are neede
     Mod2+KP_9
     Mod2+KP_0
     ```
+
 - `Shift+Numpad` key in i3
+
     ```
     Mod2+Shift+KP_End
     Mod2+Shift+KP_Down
@@ -109,6 +112,7 @@ There also is the (new) i3-dmenu-desktop which only displays applications
 shipping a .desktop file. It is a wrapper around dmenu, so you need dmenu installed.
 
 - Run dmenu (application launcher) in i3
+
     ```
     bindsym Mod4+Shift+Return exec --no-startup-id dmenu_run -l 16 \
       -fn "DroidSansMono Nerd Font 16" -p "Dmenu [Program Launcher]" \
@@ -116,6 +120,7 @@ shipping a .desktop file. It is a wrapper around dmenu, so you need dmenu instal
     ```
 
 - Run i3-dmenu-desktop in i3
+
     ```
     bindsym Mod4+Shift+Return exec --no-startup-id i3-dmenu-desktop \
       --dmenu="dmenu -fn 'pango:DroidSansMono Nerd Font 16' -l 10 -p 'Program launcher'"
@@ -124,6 +129,7 @@ shipping a .desktop file. It is a wrapper around dmenu, so you need dmenu instal
 ## I3-lock
 
 - I3 lock mode with I3-lock
+
     ```
     # Lock mode (i3lock)
     bindsym Ctrl+Mod1+Shift+l mode "i3lock: Return to lock/Escape to Cancel"

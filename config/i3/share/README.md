@@ -29,13 +29,20 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 
 - `default_fedora_wallpaper_1.png`
-![alt_text](./default_fedora_wallpaper_01.png)
+
+    ![alt_text](./default_fedora_wallpaper_01.png)
+
 - `default_fedora_wallpaper_2.png`
-![alt_text](./default_fedora_wallpaper_02.png)
+
+    ![alt_text](./default_fedora_wallpaper_02.png)
+
 - `default_i3_wallpaper.png`
-![alt_text](./default_i3_wallpaper.png)
+
+    ![alt_text](./default_i3_wallpaper.png)
+
 - `default_thinkpad_wallpaper.png`
-![alt_text](./default_thinkpad_wallpaper.png)
+
+    ![alt_text](./default_thinkpad_wallpaper.png)
 
 </details>
 
@@ -43,15 +50,24 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 
 - `fedora_logo_darkbackground.png`
-![alt_text](./fedora_logo_darkbackground.png)
+
+    ![alt_text](./fedora_logo_darkbackground.png)
+
 - `fedora_logo_white.png`
-![alt_text](./fedora_logo_blue.png)
+
+    ![alt_text](./fedora_logo_blue.png)
+
 - `fedora_logo_blue.png`
-![alt_text](./fedora_logo_white.png)
+
+    ![alt_text](./fedora_logo_white.png)
+
 - `ubuntu_logo_darkbackground.png`
-![alt_text](./ubuntu_logo_darkbackground.png)
+
+    ![alt_text](./ubuntu_logo_darkbackground.png)
+
 - `ubuntu_logo_darkbackground.png`
-![alt_text](./ubuntu_logo_orange.png)
+
+    ![alt_text](./ubuntu_logo_orange.png)
 
 </details open>
 

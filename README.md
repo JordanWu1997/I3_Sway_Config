@@ -184,24 +184,30 @@ Note: the term "window" used in this configuration actually refers to "container
     - __1. Terminal Emulator Pywal Color Support__
         - __NO NEED__ for kitty terminal emulator if using my configuration `./config/kitty/kitty.conf`
         - Add the following lines to shell (e.g. bash/zsh/fish) dotfile (e.g. `~/.bashrc`/`~/.zshrc`/`~/.config/fish/config`) for pywal color support
+
             ```
             [ -f {$HOME}/.cache/wal/sequences ] && /usr/bin/cat {$HOME}/.cache/wal/sequences
             ```
+
     - __2. Preset Workspace Name Renaming__
         - My preset workspace naming style is a combination of a capital letter (A\~D) and a one-digit number (1\~9+0), which has 40 workspaces in total
         - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using the following syntax (the prefix number will be stripped in i3bar workspace)
             - From
+
                 ```
                 set $ws1 "1:A1" # Change 1:A1 to 1:NEW_NAME_1
                 set $ws2 "2:A2" # Change 2:A2 to 2:NEW_NAME_2
                 ...
                 ```
+
             - To
+
                 ```
                 set $ws1 "1:NEW_NAME_1" # Now workspace 1 is renamed to 1:NEW_NAME_1
                 set $ws2 "2:NEW_NAME_2" # Now workspace 2 is renamed to 2:NEW_NAME_2
                 ...
                 ```
+
         - After finishing renaming process, run `./config/i3/script/i3_genereate_workspace_name_list.sh`
             - This is to generate a workspace name list for rofi selector for further workspace manipulation
 
@@ -444,9 +450,11 @@ Note: the term "window" used in this configuration actually refers to "container
 - Cheat sheet format, and color theme here are the same as the i3 user guide
 - It is __HIGHLY RECOMMENDED__ to map `caplocks` to `ctrl` for your little finger (default in this configuration)
     - `caplocks` can be mapped to `ctrl` with the following command in the shell
+
         ```bash
         setxkbmap -option "ctrl:nocaps"
         ```
+
     - The remapping command will be automatically activated as you enter i3
         - Check `./config/i3/config.d/i3_startup.config`
 - All following keybindings can be configured in

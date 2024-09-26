@@ -10,13 +10,15 @@ My ranger configuration file and post-installation
 ### preview tool installation
 
 #### PDF
-```bash
+
+```sh
 # pdf preview
 sudo dnf install poppler-utils pdftoppm
 ```
 
 #### Text, Word, Excel, Markdown
-```bash
+
+```sh
 # word/odt preview
 sudo dnf install odt2txt
 # excel preview
@@ -26,13 +28,15 @@ sudo dnf install pandoc
 ```
 
 #### HTML
-```bash
+
+```sh
 # html preview
 sudo dnf install w3m
 ```
 
 #### Image
-```bash
+
+```sh
 # image preview
 sudo dnf install w3m-img imagemagick
 # image preview
@@ -43,13 +47,15 @@ cd ueberzug; python setup.py install --user
 ```
 
 #### Video
-```bash
+
+```sh
 # video preview
 sudo dnf install ffmpegthumbnailer
 ```
 
 #### EPUB
-```bash
+
+```sh
 # epub preview
 sudo dnf install calibre
 ```
@@ -58,52 +64,58 @@ sudo dnf install calibre
 
 ### devicon
 - https://github.com/cdump/ranger-devicons2
-```bash
-# icons
-git clone https://github.com/cdump/ranger-devicons2 ~/.config/ranger/plugins/devicons2
-```
+
+    ```sh
+    # icons
+    git clone https://github.com/cdump/ranger-devicons2 ~/.config/ranger/plugins/devicons2
+    ```
 
 ### disk menu
 - https://github.com/SL-RU/ranger_udisk_menu
-```bash
-# disk menu using udiskctl
-git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins/ranger_udisk_mnu
-```
+
+    ```sh
+    # disk menu using udiskctl
+    git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins/ranger_udisk_mnu
+    ```
 
 ### drag-and-drop function
 - https://github.com/ranger/ranger/wiki/Drag-and-Drop
 - https://github.com/mwh/dragon
-```bash
-# drag-and-drop function
-git clone https://github.com/mwh/dragon.git ~/Desktop
-cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin
-```
+
+    ```sh
+    # drag-and-drop function
+    git clone https://github.com/mwh/dragon.git ~/Desktop
+    cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin
+    ```
 
 ### archive function (extract/compress files)
 - https://github.com/maximtrp/ranger-archives
-```bash
-cd ~/.config/ranger/plugins
-git clone https://github.com/maximtrp/ranger-archives.git
-```
+
+    ```sh
+    cd ~/.config/ranger/plugins
+    git clone https://github.com/maximtrp/ranger-archives.git
+    ```
 
 ### Ranger quit on working directory wrapper (fish function)
 - https://github.com/ranger/ranger/wiki/Integration-with-other-programs
-```fish
-function ranger
-    set tempfile (mktemp -t tmp.XXXXXX)
-    set command_argument "map Q chain shell echo %d > $tempfile; quitall"
-    set command_argument "map <C-w> chain shell echo %d > $tempfile; quitall"
-    command ranger --cmd="$command_argument" $argv
-    if test -s $tempfile
-        set ranger_pwd (cat $tempfile)
-        if test -n $ranger_pwd -a -d $ranger_pwd
-            builtin cd -- $ranger_pwd
+
+    ```fish
+    function ranger
+        set tempfile (mktemp -t tmp.XXXXXX)
+        set command_argument "map Q chain shell echo %d > $tempfile; quitall"
+        set command_argument "map <C-w> chain shell echo %d > $tempfile; quitall"
+        command ranger --cmd="$command_argument" $argv
+        if test -s $tempfile
+            set ranger_pwd (cat $tempfile)
+            if test -n $ranger_pwd -a -d $ranger_pwd
+                builtin cd -- $ranger_pwd
+            end
         end
+        command rm -f -- $tempfile
+        clear
     end
-    command rm -f -- $tempfile
-    clear
-end
-```
+    ```
+
 - However, the fish function wrapper does __NOT__ work well with `tmux-resurrect`
 - My solution is as follow (not as elegant as previous one, but at least it works with `tmux-resurrect`)
     1. Wrap quit command in `rc.conf` with save current directory path to `/tmp/tmp.ranger` before quitting

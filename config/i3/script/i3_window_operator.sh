@@ -12,7 +12,7 @@ show_help_message () {
     echo "  i3_window_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [float_then_fullfil_workspace]: make current window floating and resize to fullfil the workspace"
+    echo "  [float_then_fulfill_workspace]: make current window floating and resize to fulfill the workspace"
     echo "  [center_current]: make current window floating and move to center of monitor"
     echo "  [toggle_sticky_current]: toggle current window stickiness"
     echo "  [resize_to_input]: resize window to input width and height"
@@ -127,7 +127,7 @@ move_floating_to_input () {
 window_operation () {
     ICON="$HOME/.config/i3/share/64x64/window.png"
     case $1 in
-        "float_then_fullfil_workspace")
+        "float_then_fulfill_workspace")
             # Get focus window ID
             CURRENT_WINDOW_ID=$(xdotool getwindowfocus)
             # Get workspace width and height

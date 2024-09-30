@@ -144,6 +144,9 @@ move_floating_to_input () {
 
 resize_to_input_and_move_floating_to_input () {
 
+    # One input or multiple inputs
+    ONE_INPUT_FOR_ALL=0
+
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
     # Get current window floating status
@@ -171,15 +174,24 @@ resize_to_input_and_move_floating_to_input () {
         THRESHOLD=${1:-100}
     fi
 
-    #INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to:")
-    #INPUT_X=$(echo ${INPUTS} | cut -d',' -f1)
-    #INPUT_Y=$(echo ${INPUTS} | cut -d',' -f2)
-    #INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f3)
-    #INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f4)
+    # One prompt for all
+    if [[ ${ONE_INPUT_FOR_ALL} ]]; then
+        if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
+            INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
+            INPUT_X=$(echo ${INPUTS} | cut -d',' -f1)
+            INPUT_Y=$(echo ${INPUTS} | cut -d',' -f2)
+            INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f3)
+            INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f4)
+        else
+            INPUTS=$(rofi -dmenu -p "Set WD W,H to")
+            INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f1)
+            INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f2)
+        fi
+    fi
 
     # INPUT_WIDTH
     if [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
-        INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to")
+        [[ ! ${ONE_INPUT_FOR_ALL} ]] && INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to")
         if [[ -n ${INPUT_WIDTH} ]]; then
             if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
@@ -195,7 +207,7 @@ resize_to_input_and_move_floating_to_input () {
 
     # INPUT_HEIGHT
     if [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
-        INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to")
+        [[ ! ${ONE_INPUT_FOR_ALL} ]] && INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to")
         if [[ -n ${INPUT_HEIGHT} ]]; then
             if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_HEIGHT} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
@@ -215,7 +227,7 @@ resize_to_input_and_move_floating_to_input () {
     fi
 
     # INPUT_X
-    INPUT_X=$(rofi -dmenu -p "Set WD Top-Left X to")
+    [[ ! ${ONE_INPUT_FOR_ALL} ]] && INPUT_X=$(rofi -dmenu -p "Set WD Top-Left X to")
     if [[ -n ${INPUT_X} ]]; then
         if [[ ${INPUT_X: -1} == '%' ]]; then
             TMP=$(echo ${INPUT_X} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
@@ -233,7 +245,7 @@ resize_to_input_and_move_floating_to_input () {
     fi
 
     # INPUT_Y
-    INPUT_Y=$(rofi -dmenu -p "Set WD Top-Left Y to")
+    [[ ! ${ONE_INPUT_FOR_ALL} ]] && INPUT_Y=$(rofi -dmenu -p "Set WD Top-Left Y to")
     if [[ -n ${INPUT_Y} ]]; then
         if [[ ${INPUT_Y: -1} == '%' ]]; then
             TMP=$(echo ${INPUT_Y} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)

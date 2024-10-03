@@ -67,7 +67,7 @@ set $default_inner_gap 0
 set $default_outer_gap 10
 
 # Set default conky startup (enable/disable)
-set $default_conky_startup enable
+set $default_conky_startup disable
 
 # Set default conky location (for both system monitor and bindkey cheatsheet)
 set $default_conky_system_alignment top_right

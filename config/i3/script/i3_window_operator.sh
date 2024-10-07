@@ -20,6 +20,8 @@ show_help_message () {
     echo "  [resize_to_input_and_move_floating_to_input]: including"
     echo "      (1) resize tiling or floating window to input width and height"
     echo "      (2) move floating window to input X and Y"
+    echo "  [resize_to_input_and_move_floating_to_input_in_one]:"
+    echo "       function the same as previous option but you only need to input once"
     echo "  [float_all]: make all windows in current workspace floating"
     echo "  [tile_all]: make all windows in current workspace tiled"
     echo "  [hide_all]: send all windows to scratchpad"
@@ -30,16 +32,16 @@ show_help_message () {
 resize_to_input () {
 
     # Assign resize threshold
-    THRESHOLD="${1:-100}"
+    THRESHOLD="${1:-50}"
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
     # Get window geometry
     WINDOW_GEOMETRY=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Geometry | tr -d ' ' | cut -d: -f2)
-    WINDOW_HEIGHT=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f2)
     WINDOW_WIDTH=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f1)
+    WINDOW_HEIGHT=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f2)
     # Get workspace geometry (NOTE: i3 gap_size, bar_height are all included)
-    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
     WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
+    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
 
     # INPUT_WIDTH
     if [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
@@ -147,9 +149,6 @@ move_floating_to_input () {
 
 resize_to_input_and_move_floating_to_input () {
 
-    # One input or multiple inputs
-    ONE_INPUT_FOR_ALL=0
-
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
 
@@ -162,8 +161,8 @@ resize_to_input_and_move_floating_to_input () {
 
     # Get window geometry
     WINDOW_GEOMETRY=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Geometry | tr -d ' ' | cut -d: -f2)
-    WINDOW_HEIGHT=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f2)
     WINDOW_WIDTH=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f1)
+    WINDOW_HEIGHT=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f2)
     # Get window position
     WINDOW_POSITION=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Position | cut -d' ' -f4)
     WINDOW_X=$(echo ${WINDOW_POSITION} | cut -d',' -f1)
@@ -171,14 +170,17 @@ resize_to_input_and_move_floating_to_input () {
     # Get workspace location and geometry (NOTE: i3 gap size is included)
     Y=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.y')
     X=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.x')
-    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
     WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
+    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
+
+    # One input or multiple inputs
+    ONE_INPUT_FOR_ALL=${1:-0}
 
     # Assign resize threshold
     if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
         THRESHOLD=0
     else
-        THRESHOLD=${1:-100}
+        THRESHOLD=${2:-50}
     fi
 
     # One prompt for all
@@ -367,13 +369,16 @@ window_operation () {
             notify-send -u low "i3 Window Manager" "Current WD: ${WINDOW_GEOMETRY} (ID: ${FOCUS_WINDOW_ID})\nCurrent WS: ${WIDTH}x${HEIGHT} (NAME: ${NAME})" --icon=${ICON}
             ;;
         "resize_to_input")
-            resize_to_input 50
+            resize_to_input
             ;;
         "move_floating_to_input")
             move_floating_to_input
             ;;
         "resize_to_input_and_move_floating_to_input")
-            resize_to_input_and_move_floating_to_input 50
+            resize_to_input_and_move_floating_to_input 0
+            ;;
+        "resize_to_input_and_move_floating_to_input_in_one")
+            resize_to_input_and_move_floating_to_input 1
             ;;
         "float_all")
             i3-msg [workspace='__focused__'] floating enable

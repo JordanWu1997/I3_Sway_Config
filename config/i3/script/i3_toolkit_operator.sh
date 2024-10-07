@@ -20,6 +20,7 @@ show_help_message () {
     echo "  [pickup_color]: pick up color on screen (X window)"
     echo "  [get_screenshot_text]: screenshot, apply OCR to it and copy context to clipboard"
     echo "  [collect_all_instances]: collect all window instances"
+    echo "  [toggle_oneko]: toggle oneko on/off"
 }
 
 toolkit_operation () {
@@ -51,6 +52,13 @@ toolkit_operation () {
         'disable_caffeine')
             xset s 600 600 dpms 600 600 600
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
+            ;;
+        'toggle_oneko')
+            if $(killall oneko); then
+                notify-send -u low "Toolkit Mode" "Oneko is killed" --icon="${ICON}"
+            else
+                oneko -fg black -bg white -neko -speed 50
+            fi
             ;;
         *)
             show_wrong_usage_message

@@ -205,7 +205,7 @@ resize_to_input_and_move_floating_to_input () {
             if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
                 RATIO_INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH}" | bc -l))
+                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
             elif [[ $(echo "${INPUT_WIDTH} <= 1" | bc -l) == "1" ]]; then
                 RATIO_INPUT_WIDTH=${INPUT_WIDTH}
                 INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))

@@ -32,7 +32,7 @@ show_help_message () {
 resize_to_input () {
 
     # Assign resize threshold
-    THRESHOLD="${1:-50}"
+    THRESHOLD="${1:-150}"
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
     # Get window geometry
@@ -180,7 +180,7 @@ resize_to_input_and_move_floating_to_input () {
     if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
         THRESHOLD=0
     else
-        THRESHOLD=${2:-50}
+        THRESHOLD=${2:-150}
     fi
 
     # One prompt for all

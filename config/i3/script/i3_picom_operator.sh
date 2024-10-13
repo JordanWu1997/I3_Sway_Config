@@ -21,15 +21,15 @@ picom_operation () {
     case $1 in
         "default")
             killall picom
-            i3-msg exec "picom"
+            i3-msg exec "picom --daemon"
             ;;
         "transparency")
             killall picom
-            i3-msg exec "picom --config $HOME/.config/picom/picom_transparency.conf"
+            i3-msg exec "picom --config $HOME/.config/picom/picom_transparency.conf --daemon"
             ;;
         "blur")
             killall picom
-            i3-msg exec "picom --config $HOME/.config/picom/picom_blur.conf"
+            i3-msg exec "picom --config $HOME/.config/picom/picom_blur.conf --daemon"
             ;;
         *)
             show_wrong_usage_message

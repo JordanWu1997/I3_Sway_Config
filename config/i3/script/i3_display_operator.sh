@@ -49,6 +49,8 @@ show_help_message () {
     echo "      [HDMI1_eDP1_joint]: activate eDP1 and HDMI1 in joint mode (HDMI1+eDP1)"
     echo "      [eDP1_HDMI1_mirror]: activate eDP1 and HDMi1 in mirror mode"
     echo "  [auto]: use preset configuration"
+    echo "  [turn_on_display_interactively]: use rofi to select display to turn on interactively"
+    echo "  [turn_off_display_interactively]: use rofi to select display to turn off interactively"
     echo ""
     echo "CONKY"
     echo "  [enable]: show conky after changing"
@@ -194,6 +196,15 @@ display_operation () {
         "eDP1_primary")
             notify-send -u low "Set Display" "Set eDP1 as primary display" --icon="${ICON}"
             xrandr --output "${eDP1}" --primary
+            ;;
+        "turn_off_display_interactively")
+            SELECTED_DISPLAY=$(xrandr | grep ' connected' | awk '{print $1}' | rofi -dmenu -p "Select Display to Turn OFF")
+            echo ${SELECTED_DISPLAY}
+            [[ -n ${SELECTED_DISPLAY} ]] && xrandr --output "${SELECTED_DISPLAY}" --off
+            ;;
+        "turn_on_display_interactively")
+            SELECTED_DISPLAY=$(xrandr | grep ' connected' | awk '{print $1}' | rofi -dmenu -p "Select Display to Turn ON")
+            [[ -n ${SELECTED_DISPLAY} ]] && xrandr --output "${SELECTED_DISPLAY}" --auto
             ;;
         *)
             show_wrong_usage_message

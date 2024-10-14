@@ -40,8 +40,9 @@ resize_to_input () {
     WINDOW_WIDTH=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f1)
     WINDOW_HEIGHT=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f2)
     # Get workspace geometry (NOTE: i3 gap_size, bar_height are all included)
-    WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
-    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
+    I3_WORKSPACES=$(i3-msg -t get_workspaces)
+    WIDTH=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.width')
+    HEIGHT=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.height')
 
     # INPUT_WIDTH
     if [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
@@ -90,10 +91,11 @@ move_floating_to_input () {
     BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' ${I3_CONFIG})
 
     # Get workspace location and geometry (NOTE: i3 gap_size, bar_height are all included)
-    X=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.x')
-    Y=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.y')
-    WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
-    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
+    I3_WORKSPACES=$(i3-msg -t get_workspaces)
+    X=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.x')
+    Y=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.y')
+    WIDTH=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.width')
+    HEIGHT=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.height')
 
     # Get window position
     WINDOW_POSITION=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Position | cut -d' ' -f4)
@@ -168,10 +170,11 @@ resize_to_input_and_move_floating_to_input () {
     WINDOW_X=$(echo ${WINDOW_POSITION} | cut -d',' -f1)
     WINDOW_Y=$(echo ${WINDOW_POSITION} | cut -d',' -f2)
     # Get workspace location and geometry (NOTE: i3 gap size is included)
-    Y=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.y')
-    X=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.x')
-    WIDTH=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.width')
-    HEIGHT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).rect.height')
+    I3_WORKSPACES=$(i3-msg -t get_workspaces)
+    X=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.x')
+    Y=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.y')
+    WIDTH=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.width')
+    HEIGHT=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.height')
 
     # One input or multiple inputs
     ONE_INPUT_FOR_ALL=${1:-0}

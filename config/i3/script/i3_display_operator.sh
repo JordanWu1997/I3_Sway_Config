@@ -144,7 +144,7 @@ select_display_mode () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/connected/ {print $1}'))
     DISPLAY_NLS=($(xrandr | awk '$0~/connected/ {print NR}'))
-    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY')
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY')
     if [[ -z ${SELECTED_DISPLAY} ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
@@ -160,21 +160,21 @@ select_display_mode () {
         echo "[ERROR] NO Available DISPLAY Mode for ${SELECTED_DISPLAY}. Exiting ..."
         return
     fi
-    SELECTED_DISPLAY_MODE=$(echo ${DISPLAY_MODES[*]} | tr ' ' '\n' | rofi -dmenu -p "Select ${SELECTED_DISPLAY} mode")
+    SELECTED_DISPLAY_MODE=$(echo ${DISPLAY_MODES[*]} | tr ' ' '\n' | rofi -dmenu -i --auto-select -p "Select ${SELECTED_DISPLAY} mode")
     xrandr --output "${SELECTED_DISPLAY}" --mode "${SELECTED_DISPLAY_MODE}"
 }
 
 select_display_position () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY')
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY')
     if [[ -z ${SELECTED_DISPLAY} ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
         return
     fi
     # Input DISPLAY position
-    INPUT_POS=$(xrandr | grep ' connected' | rofi -dmenu -p "Set ${SELECTED_DISPLAY} Position (x,y)")
+    INPUT_POS=$(xrandr | grep ' connected' | rofi -dmenu -i -p "Set ${SELECTED_DISPLAY} Position (x,y)")
     if [[ -z ${INPUT_POS} ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY Position for ${SELECTED_DISPLAY} is set. Exiting ..."
@@ -190,7 +190,7 @@ select_display_position () {
 select_primary_display () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY as primary')
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY as primary')
     if [[ -z ${SELECTED_DISPLAY} ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
@@ -202,14 +202,14 @@ select_primary_display () {
 select_display_to_rotate () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY')
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY')
     if [[ -z ${SELECTED_DISPLAY} ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
         return
     fi
     # Select rotation
-    SELECTED_ROTATION=$(echo 'normal left right inverted' | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY rotation')
+    SELECTED_ROTATION=$(echo 'normal left right inverted' | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY rotation')
     if [[ -n ${SELECTED_ROTATION} ]]; then
         xrandr --output ${SELECTED_DISPLAY} --rotate ${SELECTED_ROTATION}
     fi
@@ -218,7 +218,7 @@ select_display_to_rotate () {
 select_display_to_turn_off () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY to Turn OFF')
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -i -p 'Select DISPLAY to Turn OFF')
     # Turn off display
     if [[ -n ${SELECTED_DISPLAY} ]]; then
         xrandr --output "${SELECTED_DISPLAY}" --off

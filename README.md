@@ -265,7 +265,9 @@ Note: the term "window" used in this configuration actually refers to "container
         - __KDE Connect Mode (`[Shift]` + `[k]`)__
             - KDE Connect pointer daemon
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
-    - Deal with multiple monitor configurations, e.g. joint monitor, mirror monitor
+    - Modify display configuration, e.g. position, mode, primary, rotation and etc.
+        - __Preset Mode__ (`[p]`)
+            - Preset monitor configuration e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]` + `[Alt]` + `[x]`)__
     - Modify monitor backlight level, blue light filter
         - __Redshift Mode (`[z]`)__

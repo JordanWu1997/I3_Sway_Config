@@ -48,9 +48,15 @@ show_help_message () {
     echo "      [eDP1_HDMI1_joint]: activate eDP1 and HDMI1 in joint mode (eDP1+HDMI1)"
     echo "      [HDMI1_eDP1_joint]: activate eDP1 and HDMI1 in joint mode (HDMI1+eDP1)"
     echo "      [eDP1_HDMI1_mirror]: activate eDP1 and HDMi1 in mirror mode"
-    echo "  [auto]: use preset configuration"
-    echo "  [turn_on_display_interactively]: use rofi to select display to turn on interactively"
-    echo "  [turn_off_display_interactively]: use rofi to select display to turn off interactively"
+    echo "  [Preset/Auto]"
+    echo "      [auto]: use preset configuration"
+    echo "      [auto_in_office]: use preset configuration in office"
+    echo "      [auto_at_home]: use preset configuration at home"
+    echo "  [Interactive Selection]"
+    echo "      [select_display_mode]: select display mode"
+    echo "      [select_primary_display]: select primary display"
+    echo "      [select_display_to_rotate]: select display to rotate"
+    echo "      [select_display_to_turn_off]: select display to turn off"
     echo ""
     echo "CONKY"
     echo "  [enable]: show conky after changing"
@@ -134,6 +140,91 @@ auto_adjust () {
     fi
 }
 
+select_display_mode () {
+    # Select DISPLAY
+    DISPLAYS=($(xrandr | awk '$0~/connected/ {print $1}'))
+    DISPLAY_NLS=($(xrandr | awk '$0~/connected/ {print NR}'))
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY')
+    if [[ -z ${SELECTED_DISPLAY} ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+        return
+    fi
+    # Select DISPLAY mode
+    SELECTED_DISPLAY_ID=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | awk -v SELECTED_DISPLAY="$SELECTED_DISPLAY" '$1 == SELECTED_DISPLAY {print NR}')
+    AWK_START=$(expr ${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID} - 1)]} + 1)
+    AWK_END=${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID})]}
+    DISPLAY_MODES=$(xrandr | awk -v start_NL="$AWK_START" -v end_NL="$AWK_END" 'NR >= start_NL && NR < end_NL {print $1}')
+    if [[ -z ${DISPLAY_MODES} ]]; then
+        # Early stop
+        echo "[ERROR] NO Available DISPLAY Mode for ${SELECTED_DISPLAY}. Exiting ..."
+        return
+    fi
+    SELECTED_DISPLAY_MODE=$(echo ${DISPLAY_MODES[*]} | tr ' ' '\n' | rofi -dmenu -p "Select ${SELECTED_DISPLAY} mode")
+    xrandr --output "${SELECTED_DISPLAY}" --mode "${SELECTED_DISPLAY_MODE}"
+}
+
+select_display_position () {
+    # Select DISPLAY
+    DISPLAYS=($(xrandr | awk '$0~/connected/ {print $1}'))
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY')
+    if [[ -z ${SELECTED_DISPLAY} ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+        return
+    fi
+    # Input DISPLAY position
+    INPUT_POS=$(xrandr | grep ' connected' | rofi -dmenu -p "Set ${SELECTED_DISPLAY} Position (x,y)")
+    if [[ -z ${INPUT_POS} ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY Position for ${SELECTED_DISPLAY} is set. Exiting ..."
+        return
+    fi
+    INPUT_POS_X=$(echo ${INPUT_POS} | cut -d, -f1)
+    INPUT_POS_Y=$(echo ${INPUT_POS} | cut -d, -f2)
+    POS_X=$(printf "%.0f" $(echo "scale=2; ${INPUT_POS_X}" | bc -l))
+    POS_Y=$(printf "%.0f" $(echo "scale=2; ${INPUT_POS_Y}" | bc -l))
+    xrandr --output ${SELECTED_DISPLAY} --pos ${POS_X}x${POS_Y}
+}
+
+select_primary_display () {
+    # Select DISPLAY
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY as primary')
+    if [[ -z ${SELECTED_DISPLAY} ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+        return
+    fi
+    xrandr --output ${SELECTED_DISPLAY} --primary
+}
+
+select_display_to_rotate () {
+    # Select DISPLAY
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY')
+    if [[ -z ${SELECTED_DISPLAY} ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+        return
+    fi
+    # Select rotation
+    SELECTED_ROTATION=$(echo 'normal left right inverted' | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY rotation')
+    if [[ -n ${SELECTED_ROTATION} ]]; then
+        xrandr --output ${SELECTED_DISPLAY} --rotate ${SELECTED_ROTATION}
+    fi
+}
+
+select_display_to_turn_off () {
+    # Select DISPLAY
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
+    SELECTED_DISPLAY=$(echo ${DISPLAYS[*]} | tr ' ' '\n' | rofi -dmenu -p 'Select DISPLAY to Turn OFF')
+    # Turn off display
+    if [[ -n ${SELECTED_DISPLAY} ]]; then
+        xrandr --output "${SELECTED_DISPLAY}" --off
+    fi
+}
+
 display_operation () {
     case $1 in
         # Combination of HDMI1, eDP1
@@ -197,14 +288,21 @@ display_operation () {
             notify-send -u low "Set Display" "Set eDP1 as primary display" --icon="${ICON}"
             xrandr --output "${eDP1}" --primary
             ;;
-        "turn_off_display_interactively")
-            SELECTED_DISPLAY=$(xrandr | grep ' connected' | awk '{print $1}' | rofi -dmenu -p "Select Display to Turn OFF")
-            echo ${SELECTED_DISPLAY}
-            [[ -n ${SELECTED_DISPLAY} ]] && xrandr --output "${SELECTED_DISPLAY}" --off
+        # Interactive selection
+        "select_display_position")
+            select_display_position
             ;;
-        "turn_on_display_interactively")
-            SELECTED_DISPLAY=$(xrandr | grep ' connected' | awk '{print $1}' | rofi -dmenu -p "Select Display to Turn ON")
-            [[ -n ${SELECTED_DISPLAY} ]] && xrandr --output "${SELECTED_DISPLAY}" --auto
+        "select_display_mode")
+            select_display_mode
+            ;;
+        "select_primary_display")
+            select_primary_display
+            ;;
+        "select_display_to_rotate")
+            select_display_to_rotate
+            ;;
+        "select_display_to_turn_off")
+            select_display_to_turn_off
             ;;
         *)
             show_wrong_usage_message

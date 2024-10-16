@@ -57,6 +57,8 @@ show_help_message () {
     echo "      [select_display_mode]: select display mode"
     echo "      [select_display_as_primary]: select display as primary display"
     echo "      [select_display_orientation]: select display orientation"
+    echo "      [select_display_scale]: select display scale"
+    echo "      [show_display_layout]: show display layout"
     echo ""
     echo "CONKY"
     echo "  [enable]: show conky after changing"
@@ -204,6 +206,22 @@ select_display_as_primary () {
     xrandr --output "${SELECTED_DISPLAY}" --primary
 }
 
+select_display_scale () {
+    # Select DISPLAY
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
+    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY as primary')
+    if [[ -z "${SELECTED_DISPLAY}" ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+        return
+    fi
+    # Select scale
+    SELECTED_SCALE=$(rofi -dmenu -p 'Set DISPLAY scale')
+    if [[ ! $(echo "${SELECTED_SCALE}" | bc -l) == "0" ]]; then
+        xrandr --output "${SELECTED_DISPLAY}" --scale "${SELECTED_SCALE}x${SELECTED_SCALE}"
+    fi
+}
+
 select_display_orientation () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
@@ -295,6 +313,12 @@ display_operation () {
             ;;
         "select_display_orientation")
             select_display_orientation
+            ;;
+        "select_display_scale")
+            select_display_scale
+            ;;
+        "show_display_layout")
+            notify-send -u low "Display Mode" "$(xrandr --listmonitors)" --icon="${ICON}"
             ;;
         *)
             show_wrong_usage_message

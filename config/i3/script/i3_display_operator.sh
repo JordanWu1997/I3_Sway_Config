@@ -155,7 +155,11 @@ select_display_mode () {
     # Select DISPLAY mode
     SELECTED_DISPLAY_ID=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | awk -v SELECTED_DISPLAY="${SELECTED_DISPLAY}" '$1 == SELECTED_DISPLAY {print NR}')
     AWK_START=$(expr ${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID} - 1)]} + 1)
-    AWK_END=${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID})]}
+    if [[ ${SELECTED_DISPLAY_ID} == ${#DISPLAYS[@]} ]]; then
+        AWK_END=$(xrandr | wc -l)
+    else
+        AWK_END=${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID})]}
+    fi
     DISPLAY_MODES=$(xrandr | awk -v start_NL="${AWK_START}" -v end_NL="${AWK_END}" 'NR >= start_NL && NR < end_NL {print $1}')
     if [[ -z "${DISPLAY_MODES}" ]]; then
         # Early stop
@@ -163,7 +167,7 @@ select_display_mode () {
         return
     fi
     # Add "off" option
-    SELECTED_DISPLAY_MODE=$(echo "${DISPLAY_MODES[*]} off" | tr ' ' '\n' | rofi -dmenu -i --auto-select -p "Select ${SELECTED_DISPLAY} mode")
+    SELECTED_DISPLAY_MODE=$(echo "${DISPLAY_MODES[*]} off" | tr ' ' '\n' | rofi -dmenu -i -p "Select ${SELECTED_DISPLAY} mode")
     if [[ ${SELECTED_DISPLAY_MODE} == 'off' ]]; then
         xrandr --output "${SELECTED_DISPLAY}" --off
     else

@@ -50,11 +50,11 @@ resize_to_input () {
         if [[ -n ${INPUT_WIDTH} ]]; then
             if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-                RATIO_INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH}" | bc -l))
+                RATIO_INPUT_WIDTH=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_WIDTH}" | bc -l))
             elif [[ $(echo "${INPUT_WIDTH} <= 1" | bc -l) == "1" ]]; then
                 RATIO_INPUT_WIDTH=${INPUT_WIDTH}
-                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
+                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
             fi
         fi
         [[ -n ${INPUT_WIDTH} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px"
@@ -66,11 +66,11 @@ resize_to_input () {
         if [[ -n ${INPUT_HEIGHT} ]]; then
             if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_HEIGHT} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-                RATIO_INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                RATIO_INPUT_HEIGHT=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
             elif [[ $(echo "${INPUT_HEIGHT} <= 1" | bc -l) == "1" ]]; then
                 RATIO_INPUT_HEIGHT=${INPUT_HEIGHT}
-                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
             fi
         fi
         [[ -n ${INPUT_HEIGHT} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
@@ -110,11 +110,11 @@ move_floating_to_input () {
     if [[ -n ${INPUT_X} ]]; then
         if [[ ${INPUT_X: -1} == '%' ]]; then
             TMP=$(echo ${INPUT_X} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-            RATIO_INPUT_X=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-            INPUT_X=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
+            RATIO_INPUT_X=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+            INPUT_X=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
         elif [[ $(echo "${INPUT_X} <= 1" | bc -l) == "1" ]]; then
             RATIO_INPUT_X=${INPUT_X}
-            INPUT_X=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
+            INPUT_X=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
         fi
         # Add workspace offset
         INPUT_X=$(expr ${INPUT_X} + ${X})
@@ -128,11 +128,11 @@ move_floating_to_input () {
     if [[ -n ${INPUT_Y} ]]; then
         if [[ ${INPUT_Y: -1} == '%' ]]; then
             TMP=$(echo ${INPUT_Y} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-            RATIO_INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-            INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
+            RATIO_INPUT_Y=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+            INPUT_Y=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
         elif [[ $(echo "${INPUT_Y} <= 1" | bc -l) == "1" ]]; then
             RATIO_INPUT_Y=${INPUT_Y}
-            INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
+            INPUT_Y=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
         fi
         # Add workspace offset
         INPUT_Y=$(expr ${INPUT_Y} + ${Y})
@@ -207,11 +207,11 @@ resize_to_input_and_move_floating_to_input () {
         if [[ -n ${INPUT_WIDTH} ]]; then
             if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_WIDTH} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-                RATIO_INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
+                RATIO_INPUT_WIDTH=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
             elif [[ $(echo "${INPUT_WIDTH} <= 1" | bc -l) == "1" ]]; then
                 RATIO_INPUT_WIDTH=${INPUT_WIDTH}
-                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
+                INPUT_WIDTH=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_WIDTH} * ${WIDTH}" | bc -l))
             fi
         fi
         [[ -n ${INPUT_WIDTH} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px"
@@ -223,11 +223,11 @@ resize_to_input_and_move_floating_to_input () {
         if [[ -n ${INPUT_HEIGHT} ]]; then
             if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
                 TMP=$(echo ${INPUT_HEIGHT} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-                RATIO_INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                RATIO_INPUT_HEIGHT=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
             elif [[ $(echo "${INPUT_HEIGHT} <= 1" | bc -l) == "1" ]]; then
                 RATIO_INPUT_HEIGHT=${INPUT_HEIGHT}
-                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
+                INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_HEIGHT} * ${HEIGHT}" | bc -l))
             fi
         fi
         [[ -n ${INPUT_HEIGHT} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
@@ -246,11 +246,11 @@ resize_to_input_and_move_floating_to_input () {
     if [[ -n ${INPUT_X} ]]; then
         if [[ ${INPUT_X: -1} == '%' ]]; then
             TMP=$(echo ${INPUT_X} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-            RATIO_INPUT_X=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-            INPUT_X=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
+            RATIO_INPUT_X=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+            INPUT_X=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
         elif [[ $(echo "${INPUT_X} <= 1" | bc -l) == "1" ]]; then
             RATIO_INPUT_X=${INPUT_X}
-            INPUT_X=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
+            INPUT_X=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_X} * ${WIDTH}" | bc -l))
         fi
         # Add workspace offset
         INPUT_X=$(expr ${INPUT_X} + ${X})
@@ -264,11 +264,11 @@ resize_to_input_and_move_floating_to_input () {
     if [[ -n ${INPUT_Y} ]]; then
         if [[ ${INPUT_Y: -1} == '%' ]]; then
             TMP=$(echo ${INPUT_Y} | rev); TMP=${TMP:1}; PERCENTAGE=$(echo ${TMP} | rev)
-            RATIO_INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${PERCENTAGE}" / 100 | bc -l ))
-            INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
+            RATIO_INPUT_Y=$(printf "%.3f" $(echo "scale=3; ${PERCENTAGE} / 100" | bc -l ))
+            INPUT_Y=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
         elif [[ $(echo "${INPUT_Y} <= 1" | bc -l) == "1" ]]; then
             RATIO_INPUT_Y=${INPUT_Y}
-            INPUT_Y=$(printf "%.0f" $(echo "scale=2; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
+            INPUT_Y=$(printf "%.0f" $(echo "scale=3; ${RATIO_INPUT_Y} * ${HEIGHT}" | bc -l))
         fi
         # Add workspace offset
         INPUT_Y=$(expr ${INPUT_Y} + ${Y})
@@ -279,18 +279,18 @@ resize_to_input_and_move_floating_to_input () {
 
     # Extend to border if RATIO_INPUT_X + RATIO_INPUT_WIDTH is close to 1
     if [[ -n ${RATIO_INPUT_X} ]] && [[ -n ${RATIO_INPUT_WIDTH} ]];then
-        RATIO=$(printf "%.2f" $(echo "scale=2; ${RATIO_INPUT_X} + ${RATIO_INPUT_WIDTH}" | bc -l))
+        RATIO=$(printf "%.3f" $(echo "scale=3; ${RATIO_INPUT_X} + ${RATIO_INPUT_WIDTH}" | bc -l))
         if [[ $(echo "${RATIO} >= 0.99" | bc -l) == "1" ]]; then
-            INPUT_WIDTH=$(printf "%.0f" $(echo "scale=2; ${WIDTH} - ${INPUT_X} + ${X}" | bc -l ))
+            INPUT_WIDTH=$(printf "%.0f" $(echo "scale=3; ${WIDTH} - ${INPUT_X} + ${X}" | bc -l ))
             i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px"
         fi
     fi
 
     # Extend to border if RATIO_INPUT_Y + RATIO_INPUT_HEIGHT is close to 1
     if [[ -n ${RATIO_INPUT_Y} ]] && [[ -n ${RATIO_INPUT_HEIGHT} ]];then
-        RATIO=$(printf "%.2f" $(echo "scale=2; ${RATIO_INPUT_Y} + ${RATIO_INPUT_HEIGHT}" | bc -l))
+        RATIO=$(printf "%.3f" $(echo "scale=3; ${RATIO_INPUT_Y} + ${RATIO_INPUT_HEIGHT}" | bc -l))
         if [[ $(echo "${RATIO} >= 0.99" | bc -l) == "1" ]]; then
-            INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=2; ${HEIGHT} - ${INPUT_Y} + ${Y}" | bc -l ))
+            INPUT_HEIGHT=$(printf "%.0f" $(echo "scale=3; ${HEIGHT} - ${INPUT_Y} + ${Y}" | bc -l ))
             i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
         fi
     fi

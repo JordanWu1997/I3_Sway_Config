@@ -24,7 +24,7 @@ attach_to_tmux_session () {
     if $(tmux list-sessions | grep -q -w $1); then
         i3-msg exec "kitty --class floating_kitty -e tmux attach -t $1"
     else
-        i3-msg exec "kitty --class floating_kitty -e $TARGET"
+        i3-msg exec "kitty --class floating_kitty -e $1"
     fi
 }
 

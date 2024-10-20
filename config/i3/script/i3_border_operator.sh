@@ -19,7 +19,7 @@ show_help_message () {
     echo "  [show_both_edge]: show both top/bottom and left/right borders"
     echo "  [hide_both_edge]: hide both top/bottom and left/right borders"
     echo "  [hide_both_edge_if_only_one]: if there is only one window, hide both borders"
-    echo "  [hide_both_edge_if_no_outer_gaps]: if there is no outer gap, hide both borders"
+    echo "  [hide_both_edge_if_no_outer_gaps]: if there are no outer gaps, hide both borders"
 }
 
 border_operation () {
@@ -39,7 +39,7 @@ border_operation () {
         "hide_both_edge_if_only_one")
             sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders smart/" $BORDER_CONFIG
             ;;
-        "hide_both_edge_if_no_gaps")
+        "hide_both_edge_if_no_outer_gaps")
             sed -i "$COL_EDGE_BORDER s/.*/hide_edge_borders smart_no_gaps/" $BORDER_CONFIG
             ;;
         *)

@@ -110,6 +110,9 @@ move_floating_to_input () {
     I3_CONFIG="$HOME/.config/i3/config"
     BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' ${I3_CONFIG})
 
+    # Hide titlebar BEFORE requiring geometry
+    i3-msg "[id=${FOCUS_WINDOW_ID}] border pixel ${BORDER_WIDTH}"
+
     # Get workspace location and geometry (NOTE: i3 gap_size, bar_height are all included)
     I3_WORKSPACES=$(i3-msg -t get_workspaces)
     X=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.x')
@@ -121,9 +124,6 @@ move_floating_to_input () {
     WINDOW_POSITION=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Position | cut -d' ' -f4)
     WINDOW_X=$(echo ${WINDOW_POSITION} | cut -d',' -f1)
     WINDOW_Y=$(echo ${WINDOW_POSITION} | cut -d',' -f2)
-
-    # Hide titlebar BEFORE moving the window
-    i3-msg "[id=${FOCUS_WINDOW_ID}] border pixel ${BORDER_WIDTH}"
 
     # INPUT_X
     INPUT_X=$(rofi -dmenu -p "Set WD Top-Left X to")
@@ -174,12 +174,17 @@ resize_to_input_and_move_floating_to_input () {
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
 
-    # Get current window floating status
-    FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep ${FOCUS_WINDOW_ID} -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
-
     # Get default window border width
     I3_CONFIG="$HOME/.config/i3/config"
     BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' ${I3_CONFIG})
+
+    # Get current window floating status
+    FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep ${FOCUS_WINDOW_ID} -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
+
+    # Hide titlebar BEFORE requiring geometry
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
+        i3-msg "[id=${FOCUS_WINDOW_ID}] border pixel ${BORDER_WIDTH}"
+    fi
 
     # Get window geometry
     WINDOW_GEOMETRY=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Geometry | tr -d ' ' | cut -d: -f2)
@@ -221,11 +226,6 @@ resize_to_input_and_move_floating_to_input () {
             INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f1)
             INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f2)
         fi
-    fi
-
-    # Hide titlebar BEFORE resizing the window
-    if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
-        i3-msg "[id=${FOCUS_WINDOW_ID}] border pixel ${BORDER_WIDTH}"
     fi
 
     # INPUT_WIDTH
@@ -278,9 +278,6 @@ resize_to_input_and_move_floating_to_input () {
         fi
         # Add workspace offset
         INPUT_X=$(expr ${INPUT_X} + ${X})
-    else
-        # Add border offset
-        INPUT_X=$(expr ${WINDOW_X} - ${BORDER_WIDTH})
     fi
 
     # INPUT_Y
@@ -296,9 +293,6 @@ resize_to_input_and_move_floating_to_input () {
         fi
         # Add workspace offset
         INPUT_Y=$(expr ${INPUT_Y} + ${Y})
-    else
-        # Add border offset
-        INPUT_Y=$(expr ${WINDOW_Y} - ${BORDER_WIDTH})
     fi
 
     # Move window location to X, Y (Note: x, y here mean x, y of top-left corner of titlebar)

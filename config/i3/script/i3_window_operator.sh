@@ -164,8 +164,14 @@ move_floating_to_input () {
     # Move window location to X, Y (Note: x, y here mean x, y of top-left corner of titlebar)
     i3-msg "[id=${FOCUS_WINDOW_ID}] move position ${INPUT_X} px ${INPUT_Y} px"
 
-    # Restore titlebar AFTER moving the window and force to focus
-    i3-msg "[id=${FOCUS_WINDOW_ID}] border normal ${BORDER_WIDTH}, focus"
+    # Restore titlebar AFTER moving the window
+    DEFAULT_FLOATING_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print $3}' ${I3_CONFIG} | awk 'NR==1')
+    if [[ ${DEFAULT_FLOATING_STYLE} == "normal" ]]; then
+        i3-msg "[id=${FOCUS_WINDOW_ID}] border normal ${BORDER_WIDTH}"
+    fi
+
+    # Switch focus back to window
+    i3-msg "[id=${FOCUS_WINDOW_ID}] focus"
 
 }
 
@@ -298,8 +304,14 @@ resize_to_input_and_move_floating_to_input () {
     # Move window location to X, Y (Note: x, y here mean x, y of top-left corner of titlebar)
     i3-msg "[id=${FOCUS_WINDOW_ID}] move position ${INPUT_X} px ${INPUT_Y} px"
 
-    # Restore titlebar AFTER moving the window and force to focus
-    i3-msg "[id=${FOCUS_WINDOW_ID}] border normal ${BORDER_WIDTH}, focus"
+    # Restore titlebar AFTER moving the window
+    DEFAULT_FLOATING_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print $3}' ${I3_CONFIG} | awk 'NR==1')
+    if [[ ${DEFAULT_FLOATING_STYLE} == "normal" ]]; then
+        i3-msg "[id=${FOCUS_WINDOW_ID}] border normal ${BORDER_WIDTH}"
+    fi
+
+    # Switch focus back to window
+    i3-msg "[id=${FOCUS_WINDOW_ID}] focus"
 
 }
 

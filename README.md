@@ -492,7 +492,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 ![alt text](./demo/Shortcut_Sheet/i3_shortcut_ctrl_alt.png "Title")
-- __Program shortcut (`[Ctrl]`+`[Alt]`+[`1`~`9`,`0`,`-`,`=`])__
+- __Application shortcut (`[Ctrl]`+`[Alt]`+[`1`~`9`,`0`,`-`,`=`])__
     - `1`: [Neovim (text editor)](https://neovim.io/)
     - `2`: [Ranger (file manager)](https://github.com/ranger/ranger)
     - `3`: [Pulsemixer (audio manager)](https://pypi.org/project/pulsemixer/)
@@ -505,7 +505,7 @@ Note: the term "window" used in this configuration actually refers to "container
     - `0`: [Nautilus (GUI file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)
     - `-`: [Brave browser (web browser)](https://brave.com/)
     - `=`: [Firefox (web browser)](https://www.mozilla.org/en-US/firefox/)
-- __Program in floating mode shortcut (`[Ctrl]`+`[Alt]`+`[Shift]`+[`1`~`7`])__
+- __Application in floating mode shortcut (`[Ctrl]`+`[Alt]`+`[Shift]`+[`1`~`7`])__
     - Note that you will need a kitty terminal for floating windows
 
 </details>

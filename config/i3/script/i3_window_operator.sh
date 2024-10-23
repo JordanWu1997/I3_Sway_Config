@@ -44,6 +44,11 @@ resize_to_input () {
     # Get current window floating status
     FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep ${FOCUS_WINDOW_ID} -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
 
+    # Hide titlebar BEFORE requiring geometry
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
+        i3-msg "[id=${FOCUS_WINDOW_ID}] border pixel ${BORDER_WIDTH}"
+    fi
+
     # Get window geometry
     WINDOW_GEOMETRY=$(xdotool getwindowgeometry ${FOCUS_WINDOW_ID} | grep Geometry | tr -d ' ' | cut -d: -f2)
     WINDOW_WIDTH=$(echo ${WINDOW_GEOMETRY} | cut -d'x' -f1)
@@ -54,13 +59,8 @@ resize_to_input () {
     WIDTH=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.width')
     HEIGHT=$(echo ${I3_WORKSPACES} | jq -r '.[] | select(.focused).rect.height')
 
-    # For floating window, hide titlebar BEFORE resizing the window
-    if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
-        i3-msg "[id=${FOCUS_WINDOW_ID}] border pixel ${BORDER_WIDTH}"
-    fi
-
     # INPUT_WIDTH
-    if [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]] || [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
         INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to")
         if [[ -n ${INPUT_WIDTH} ]]; then
             if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
@@ -76,7 +76,7 @@ resize_to_input () {
     fi
 
     # INPUT_HEIGHT
-    if [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]] || [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
         INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to")
         if [[ -n ${INPUT_HEIGHT} ]]; then
             if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then
@@ -105,6 +105,14 @@ move_floating_to_input () {
 
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
+
+    # Get current window floating status
+    FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep ${FOCUS_WINDOW_ID} -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
+
+    # If window is not floating -> return
+    if [[ ! ${FLOATING_STATUS} == '"user_on"' ]]; then
+        return
+    fi
 
     # Get default window border width
     I3_CONFIG="$HOME/.config/i3/config"
@@ -235,7 +243,7 @@ resize_to_input_and_move_floating_to_input () {
     fi
 
     # INPUT_WIDTH
-    if [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]] || [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
         [[ ! ${ONE_INPUT_FOR_ALL} == "1" ]] && INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to")
         if [[ -n ${INPUT_WIDTH} ]]; then
             if [[ ${INPUT_WIDTH: -1} == '%' ]]; then
@@ -251,7 +259,7 @@ resize_to_input_and_move_floating_to_input () {
     fi
 
     # INPUT_HEIGHT
-    if [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]] || [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
         [[ ! ${ONE_INPUT_FOR_ALL} == "1" ]] && INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to")
         if [[ -n ${INPUT_HEIGHT} ]]; then
             if [[ ${INPUT_HEIGHT: -1} == '%' ]]; then

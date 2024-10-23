@@ -201,7 +201,7 @@ select_display_position () {
 select_display_as_primary () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY as primary')
+    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[PRIMARY] Select DISPLAY as primary')
     if [[ -z "${SELECTED_DISPLAY}" ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
@@ -213,7 +213,7 @@ select_display_as_primary () {
 select_display_scale () {
     # Select DISPLAY
     DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY as primary')
+    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[SCALE] Select DISPLAY')
     if [[ -z "${SELECTED_DISPLAY}" ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."

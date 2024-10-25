@@ -264,6 +264,8 @@ Note: the term "window" used in this configuration actually refers to "container
             - Map keys for non-HHKB, HHKB, TEX Shinobi keyboards, tune repeat key speed
         - __KDE Connect Mode (`[Shift]` + `[k]`)__
             - KDE Connect pointer daemon
+        - __Flameshot Mode (`[f]`)__
+            - Flameshot screenshot tool
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Modify display configuration, e.g. position, mode, primary, rotation and etc.
         - __Preset Mode__ (`[p]`)
@@ -285,9 +287,9 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - __Player Mode (`[Ctrl]` + `[Alt]` + `[p]`)__
     - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), MPV, VLC, and all MPRIS players
-        - __Volume Mode (`[v]`)__
-            - Volume control with pulsemixer (e.g. volume up/down, mute)
-        - __Micrphone Mode__ (`[m]`)
+        - __Audio Output Mode (`[o]`)__
+            - Speaker volume control with pulsemixer (e.g. volume up/down, mute)
+        - __Audio Input Mode (`[i]`)__
             - Microphone usage (e.g. recording)
         - __Spotifyd Mode (`[s]`)__
             - Spotifyd control (e.g. enable, disable, reload) for spotifyd

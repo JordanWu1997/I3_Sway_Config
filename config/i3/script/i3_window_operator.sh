@@ -31,7 +31,7 @@ show_help_message () {
 
 resize_to_input () {
 
-    # Assign resize threshold
+    # Assign resize threshold for i3 stacking titlebars
     THRESHOLD="${1:-150}"
 
     # Get focus window
@@ -220,7 +220,7 @@ resize_to_input_and_move_floating_to_input () {
     # One input or multiple inputs
     ONE_INPUT_FOR_ALL=${1:-0}
 
-    # Assign resize threshold
+    # Assign resize threshold for i3 stacking titlebars
     if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
         THRESHOLD=0
     else

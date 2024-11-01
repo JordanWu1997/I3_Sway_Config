@@ -1,0 +1,23 @@
+# ~/.nanorc
+# -- https://medium.com/@sonoratek/the-perfect-nano-use-your-nano-editor-like-a-boss-8500333b51f3
+
+## Enable line numbers
+set linenumbers
+
+## Include syntax highlighting for various languages
+include "/usr/share/nano/*.nanorc"
+
+## Set tab size to 4 spaces
+set tabsize 4
+
+## Enable auto-indentation
+set autoindent
+
+## Set text wrapping (or use nowrap if you prefer no wrapping)
+set nowrap
+
+# Enable backup files
+set backup
+
+## Specify backup directory (replace with an absolute path)
+set backupdir /home/jordan/.nano_backup

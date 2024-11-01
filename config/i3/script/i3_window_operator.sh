@@ -92,7 +92,8 @@ resize_to_input () {
     fi
 
     # For floating window, restore titlebar AFTER resizing the window
-    if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
+    DEFAULT_FLOATING_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print $3}' ${I3_CONFIG} | awk 'NR==1')
+    if [[ ${FLOATING_STATUS} == '"user_on"' ]] && [[ ${DEFAULT_FLOATING_STYLE} == "normal" ]]; then
         i3-msg "[id=${FOCUS_WINDOW_ID}] border normal ${BORDER_WIDTH}"
     fi
 

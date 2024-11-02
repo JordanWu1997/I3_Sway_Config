@@ -266,6 +266,8 @@ Note: the term "window" used in this configuration actually refers to "container
             - KDE Connect pointer daemon
         - __Flameshot Mode (`[f]`)__
             - Flameshot screenshot tool
+        - __Recording Mode (`[r]`)__
+            - Screen recording tool e.g. peek, screenkey and etc.
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
     - Modify display configuration, e.g. position, mode, primary, rotation and etc.
         - __Preset Mode__ (`[p]`)

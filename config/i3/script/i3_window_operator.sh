@@ -230,17 +230,24 @@ resize_to_input_and_move_floating_to_input () {
 
     # One prompt for all
     if [[ ${ONE_INPUT_FOR_ALL} == "1" ]]; then
-        if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
-            INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
-            INPUT_X=$(echo ${INPUTS} | cut -d',' -f1)
-            INPUT_Y=$(echo ${INPUTS} | cut -d',' -f2)
-            INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f3)
-            INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f4)
-        else
-            INPUTS=$(rofi -dmenu -p "Set WD W,H to")
-            INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f1)
-            INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f2)
-        fi
+
+        #if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
+        #    INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
+        #    INPUT_X=$(echo ${INPUTS} | cut -d',' -f1)
+        #    INPUT_Y=$(echo ${INPUTS} | cut -d',' -f2)
+        #    INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f3)
+        #    INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f4)
+        #else
+        #    INPUTS=$(rofi -dmenu -p "Set WD W,H to")
+        #    INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f1)
+        #    INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f2)
+        #fi
+
+        INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
+        INPUT_X=$(echo ${INPUTS} | cut -d',' -f1)
+        INPUT_Y=$(echo ${INPUTS} | cut -d',' -f2)
+        INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f3)
+        INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f4)
     fi
 
     # INPUT_WIDTH
@@ -275,10 +282,10 @@ resize_to_input_and_move_floating_to_input () {
         [[ -n ${INPUT_HEIGHT} ]] && i3-msg "[id=${FOCUS_WINDOW_ID}] resize set height ${INPUT_HEIGHT} px"
     fi
 
-    # Early stop if window is not floating
-    if [[ ! ${FLOATING_STATUS} == '"user_on"' ]]; then
-        return
-    fi
+    ## Early stop if window is not floating
+    #if [[ ! ${FLOATING_STATUS} == '"user_on"' ]]; then
+    #    return
+    #fi
 
     # INPUT_X
     [[ ! ${ONE_INPUT_FOR_ALL} == "1" ]] && INPUT_X=$(rofi -dmenu -p "Set WD Top-Left X to")
@@ -399,10 +406,10 @@ window_operation () {
             move_floating_to_input
             ;;
         "resize_to_input_and_move_floating_to_input")
-            resize_to_input_and_move_floating_to_input 0
+            resize_to_input_and_move_floating_to_input 0 0
             ;;
         "resize_to_input_and_move_floating_to_input_in_one")
-            resize_to_input_and_move_floating_to_input 1
+            resize_to_input_and_move_floating_to_input 1 0
             ;;
         "float_all")
             i3-msg [workspace='__focused__'] floating enable

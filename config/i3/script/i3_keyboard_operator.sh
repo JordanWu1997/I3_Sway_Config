@@ -36,6 +36,15 @@ show_help_message () {
 keyboard_operation () {
     ICON="$HOME/.config/i3/share/64x64/keyboard.png"
     case $1 in
+        # Repeat Key Rate
+        'speed_up_repeat_key_rate')
+            xset r rate 220 50
+            notify-send -u low "Keyboard Mode" "Speed up repeat key rate (220/50)" --icon=${ICON}
+            ;;
+        'restore_repeat_key_rate')
+            xset r rate 660 25
+            notify-send -u low "Keyboard Mode" "Restore default repeat key rate (660/25)" --icon=${ICON}
+            ;;
         # Caps_Lock/Num_Lock
         'send_capslock_key')
             xdotool key Caps_Lock
@@ -110,7 +119,7 @@ keyboard_operation () {
         # Default behavior
         'default')
             # Speed up Repeat Key Rate
-            xset r rate 250 50
+            xset r rate 220 50
             notify-send -u low "Keyboard Mode" "Speed up repeat key rate" --icon=${ICON}
             # Map Capslock to Ctrl
             setxkbmap -option "ctrl:nocaps"

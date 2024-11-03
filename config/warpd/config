@@ -1,0 +1,29 @@
+# Options
+normal_system_cursor: 1
+
+# System
+exit: C-[ esc C-c Return A-m A-u n
+# Button
+buttons: u i o
+drag: C-u
+
+# Grid Mode
+grid: '
+grid_exit: C-[ esc C-c Return ' n
+grid_nr: 3
+grid_nc: 5
+grid_left: h
+grid_down: j
+grid_up: k
+grid_right: l
+grid_keys: q w e r t a s d f g z x c v b
+grid_color: FFFFFF
+
+# Hint Mode
+hint: ;
+hint_exit: C-[ esc C-c Return ;
+hint_bgcolor: FFFFFF
+hint_fgcolor: 000000
+
+# History Mode
+history: /

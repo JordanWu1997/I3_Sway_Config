@@ -243,6 +243,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - Mouse emulator using the keyboard, e.g. move, left/right click, cursor auto-hide
         - __Cursor Mode (`[c]`)__
             - Cursor auto-hiding (unclutter)
+        - __Warpd Normal Mode (`[Alt]`+`[m]`)__
+            - Additional key layer to emulate mouse
 
 </details>
 

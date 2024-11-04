@@ -1,41 +1,43 @@
+# ~/.config/warpd/config
+
 # Options
 normal_system_cursor: 1
 
 # System
-exit: C-[ esc C-c Return A-m A-u n
+exit: C-[ esc C-c Return A-m
 
 # Screen
 screen: p quotedbl
 screen_chars: uiopjkl;m,./
 
 # Normal
-left: h a Left
-down: j s Down
-up: k w Up
-right: l d Right
+left: h Left
+down: j Down
+up: k Up
+right: l Right
 
 # Button
-buttons: u i o
+buttons: u i o . , [ ] g y
 drag: C-u v
-copy_and_exit: y c
-scroll_down: ,
+copy_and_exit: c Y
+accelerator: f s
+decelerator: d a
 scroll_up: .
-accelerator: ] f q
-decelerator: [ g e r
+scroll_down: ,
 
 # Grid Mode
 grid: '
-grid_exit: C-[ esc C-c Return ' n
+grid_exit: C-[ esc C-c Return ' A-m
 grid_nr: 3
 grid_nc: 5
-grid_left: h a
-grid_down: j s
-grid_up: k w
-grid_right: l d
-grid_cut_left: H A
-grid_cut_down: J S
-grid_cut_up: K W
-grid_cut_right: L D
+grid_left: h
+grid_down: j
+grid_up: k
+grid_right: l
+grid_cut_left: H
+grid_cut_down: J
+grid_cut_up: K
+grid_cut_right: L
 grid_keys: q w e r t a s d f g z x c v b
 grid_color: FFFFFF
 

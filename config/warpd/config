@@ -3,27 +3,49 @@ normal_system_cursor: 1
 
 # System
 exit: C-[ esc C-c Return A-m A-u n
+
+# Screen
+screen: p quotedbl
+screen_chars: uiopjkl;m,./
+
+# Normal
+left: h a Left
+down: j s Down
+up: k w Up
+right: l d Right
+
 # Button
 buttons: u i o
-drag: C-u
+drag: C-u v
+copy_and_exit: y c
+scroll_down: ,
+scroll_up: .
+accelerator: ] f q
+decelerator: [ g e r
 
 # Grid Mode
 grid: '
 grid_exit: C-[ esc C-c Return ' n
 grid_nr: 3
 grid_nc: 5
-grid_left: h
-grid_down: j
-grid_up: k
-grid_right: l
+grid_left: h a
+grid_down: j s
+grid_up: k w
+grid_right: l d
+grid_cut_left: H A
+grid_cut_down: J S
+grid_cut_up: K W
+grid_cut_right: L D
 grid_keys: q w e r t a s d f g z x c v b
 grid_color: FFFFFF
 
 # Hint Mode
 hint: ;
-hint_exit: C-[ esc C-c Return ;
+hint2: colon
+hint_exit: C-[ esc C-c
 hint_bgcolor: FFFFFF
 hint_fgcolor: 000000
+hint_size: 25
 
 # History Mode
 history: /

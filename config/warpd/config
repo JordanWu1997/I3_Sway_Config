@@ -4,7 +4,7 @@
 normal_system_cursor: 1
 
 # System
-exit: C-[ esc C-c Return A-m
+exit: C-[ esc C-c Return A-m C-w
 
 # Screen
 screen: p quotedbl
@@ -20,14 +20,14 @@ right: l Right
 buttons: u i o . , [ ] g y
 drag: C-u v
 copy_and_exit: c Y
-accelerator: f s
-decelerator: d a
+accelerator: f s Alt_L
+decelerator: d a Control_L
 scroll_up: .
 scroll_down: ,
 
 # Grid Mode
 grid: '
-grid_exit: C-[ esc C-c Return ' A-m
+grid_exit: C-[ esc C-c Return ' A-m C-w
 grid_nr: 3
 grid_nc: 5
 grid_left: h
@@ -40,13 +40,16 @@ grid_cut_up: K
 grid_cut_right: L
 grid_keys: q w e r t a s d f g z x c v b
 grid_color: FFFFFF
+grid_border_color: 000000
+grid_size: 3
+grid_border_size: 3
 
 # Hint Mode
 hint: ;
 hint2: colon
-hint_exit: C-[ esc C-c
-hint_bgcolor: FFFFFF
-hint_fgcolor: 000000
+hint_exit: C-[ esc C-c C-w
+hint_bgcolor: 000000
+hint_fgcolor: FFFFFF
 hint_size: 25
 
 # History Mode

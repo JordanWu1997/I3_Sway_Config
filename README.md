@@ -244,7 +244,7 @@ Note: the term "window" used in this configuration actually refers to "container
         - __Cursor Mode (`[c]`)__
             - Cursor auto-hiding (unclutter)
         - __Warpd Normal Mode (`[Alt]`+`[m]`)__
-            - Additional key layer to emulate mouse
+            - Additional keyboard layer to emulate mouse action
 
 </details>
 

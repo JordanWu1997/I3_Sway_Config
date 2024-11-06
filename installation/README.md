@@ -105,7 +105,7 @@ Here use [Feodra 34 i3 Spin](https://spins.fedoraproject.org/en/i3/) as demo for
         dnf install python-netifaces
         # sensors module
         dnf install lm_sensors
-        # pasink, pasource  modules
+        # pasink, pasource modules
         dnf install pulseaudio-utils
         ```
 

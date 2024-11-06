@@ -33,10 +33,10 @@ This directory contains all sections that be included in `config` file.
 - `i3_workspace_name.config`: settings for workspace name in i3 (must be included before `i3_workspace.config`)
 
 ## doc
-Document problems I met in customization of i3wm, backup configurations and some notes
+Document problems I met in customization of i3 wm, backup configurations and some notes
 
 ## script
-Scripts for i3wm working environment customized for my favored workflow
+Scripts for i3 wm working environment customized for my favored workflow
 
 ## share
 Files for other programs (e.g. wallpapers, auto-mark-list, app-icons)

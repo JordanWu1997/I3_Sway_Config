@@ -1,5 +1,5 @@
 # Rofi_Config
-My customized rofi (multi-purpose selector) configuration files
+My customized rofi (multipurpose selector) configuration files
 
 Table of Contents
 =================
@@ -20,7 +20,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
     - Configuration for fullscreen wal-themed rofi with max 3 columns
     - Main usage: application launcher, executable launcher
 - `config_single_col.rasi`
-    - Configuration for fullscreen wal-themed rofi with max 1 columns
+    - Configuration for fullscreen wal-themed rofi with max 1 column
     - Main usage: window selector, binding key maps
     - Note: release `[Alt]`+([`Shift]`)+`[Tab]` as enter for convention
 - `config_i3mark.rasi`

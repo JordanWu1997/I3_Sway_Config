@@ -84,7 +84,7 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - Display Manager: [GNOME display manager (GDM)](https://gitlab.gnome.org/GNOME/gdm)
 - i3 Window Manager: [i3](https://github.com/Airblader/i3) `4.22`
-- Status Bar: [i3bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
+- Status Bar: [i3 bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
 - Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.26.5`
 - Shell: [fish](https://github.com/fish-shell/fish-shell) `3.5.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7` + [starship](https://starship.rs/) `1.2.1`
 - Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.3a` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
@@ -191,7 +191,7 @@ Note: the term "window" used in this configuration actually refers to "container
 
     - __2. Preset Workspace Name Renaming__
         - My preset workspace naming style is a combination of a capital letter (A\~D) and a one-digit number (1\~9+0), which has 40 workspaces in total
-        - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using the following syntax (the prefix number will be stripped in i3bar workspace)
+        - Workspace name is preset in my configuration `./config/i3/config.d/i3_workspace_name.config`, you can modify it using the following syntax (the prefix number will be stripped in i3 bar workspace)
             - From
 
                 ```
@@ -269,9 +269,9 @@ Note: the term "window" used in this configuration actually refers to "container
         - __Flameshot Mode (`[f]`)__
             - Flameshot screenshot tool
         - __Recording Mode (`[r]`)__
-            - Screen recording tool e.g. peek, screenkey and etc.
+            - Screen recording tool e.g. peek, screenkey etc.
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
-    - Modify display configuration, e.g. position, mode, primary, rotation and etc.
+    - Modify display configuration, e.g. position, mode, primary, rotation etc.
         - __Preset Mode__ (`[p]`)
             - Preset monitor configuration e.g. joint monitor, mirror monitor
 - __Backlight Mode (`[Ctrl]` + `[Alt]` + `[x]`)__
@@ -334,9 +334,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - __Gap Mode (`[Ctrl]` + `[Alt]` + `[g]`)__
     - Modify i3 gaps, e.g. inner gaps, outer gaps
 - __Bar Mode (`[Winkey]` + `[Shift]` + `[b]`)__
-    - Show/hide i3bar, reload i3bar, set default bar options (e.g. mode, position, font size)
+    - Show/hide i3 bar, reload i3 bar, set default bar options (e.g. mode, position, font size)
 - __Customization Mode (`[Winkey]` + `[Shift]` + `[c]`)__
-    - Customize i3wm, e.g. wallpaper, theme, X compositor
+    - Customize i3 wm, e.g. wallpaper, theme, X compositor
         - __Border Mode (`[b]`)__
             - Window border width, color scheme, and edge border option
         - __Conky Mode (`[c]`)__
@@ -374,15 +374,15 @@ Note: the term "window" used in this configuration actually refers to "container
 
 - __2-finger Gesture__
 
-| Gesture                     | Action          | Note                         |
-| :-------------------------: | :-------------: | :--------------------------: |
-| __Tap__                     | Right key click |                              |
-| __Swipe Up__                | Scroll down     | Natural scrolling is enabled |
-| __Swipe Down__              | Scroll up       | Natural scrolling is enabled |
-| __Swipe Up On Border__      | Hide title bar  | Natural scrolling is enabled |
-| __Swipe Down On Title Bar__ | Show title bar  | Natural scrolling is enabled |
-| __Pinch In__                | Zoom in         | `[Ctrl]` + `[=]`             |
-| __Pinch Out__               | Zoom out        | `[Ctrl]` + `[-]`             |
+| Gesture                     | Action          | Note                                       |
+| :-------------------------: | :-------------: | :----------------------------------------: |
+| __Tap__                     | Right key click |                                            |
+| __Swipe Up__                | Scroll down     | Here assuming natural scrolling is enabled |
+| __Swipe Down__              | Scroll up       | Here assuming natural scrolling is enabled |
+| __Swipe Up On Border__      | Hide title bar  | Here assuming natural scrolling is enabled |
+| __Swipe Down On Title Bar__ | Show title bar  | Here assuming natural scrolling is enabled |
+| __Pinch In__                | Zoom in         | `[Ctrl]` + `[=]`                           |
+| __Pinch Out__               | Zoom out        | `[Ctrl]` + `[-]`                           |
 
 - __3-finger Gesture__
 
@@ -401,7 +401,7 @@ Note: the term "window" used in this configuration actually refers to "container
 
 | Gesture                 | Action                                                       | Note                               |
 | :------------:          | :----------------------------------------------------------: | :--------------------------------: |
-| __Hold On__             | Toggle i3bar visibility                                      | Requires `libinput` >= 1.19        |
+| __Hold On__             | Toggle i3 bar visibility                                     | Requires `libinput` >= 1.19        |
 | __Swipe Up__            | Bring scratchpad (background workspace) window to foreground | `[Winkey]` + `[=]`                 |
 | __Swipe Down__          | Send window to scratchpad (background workspace)             | `[Winkey]` + `[-]`                 |
 | __Swipe Left__          | Go to previous workspace (create one if it is not existing)  | `[Winkey]` + `[Shift]` + `[Grave]` |

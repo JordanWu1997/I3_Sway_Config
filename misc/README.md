@@ -58,7 +58,7 @@ But related to my favored workflow (i.e. keyboard-driven workflow).
 - [Ubuntu](https://ubuntu.com/), [Debian](https://www.debian.org/) based linux disto
     - `ubuntu`:
         - `conky`
-            - conky customized configurations for my ubuntu work laptop, specific network interface, OS logos, and etc.
+            - conky customized configurations for my ubuntu work laptop, specific network interface, OS logos, etc.
         - `picom`
             - picom configuration for those distros that are not available for [picom (journaburg-fork)](https://github.com/jonaburg/picom)
         - images: `*.png`

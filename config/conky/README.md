@@ -18,7 +18,7 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 - Conky is the background system monitor that shows up in the desktop
 - In my customization, there are two kinds of conky:
     - `conky_config_binkey`: Display my i3 binding keys and date time
-    - `conky_config_system`: Display system information (e.g. CPU usage and etc.)
+    - `conky_config_system`: Display system information (e.g. CPU usage etc.)
 
 ## Configurations
 

@@ -20,6 +20,8 @@ show_help_message () {
     echo "  [pickup_color]: pick up color on screen (X window)"
     echo "  [get_screenshot_text]: screenshot, apply OCR to it and copy context to clipboard"
     echo "  [collect_all_instances]: collect all window instances"
+    echo "  [connection_up]: set connection up"
+    echo "  [connection_down]: set connection down"
     echo "  [toggle_oneko]: toggle oneko on/off"
 }
 
@@ -52,6 +54,14 @@ toolkit_operation () {
         'disable_caffeine')
             xset s 600 600 dpms 600 600 600
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
+            ;;
+        'connection_up')
+            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -config ~/.config/rofi/config_singlecol.rasi -p "[UP] Connection" | cut -c -27)
+            nmcli connection up "${SELECTED_NETWORK}"
+            ;;
+        'connection_down')
+            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -config ~/.config/rofi/config_singlecol.rasi -p "[DOWN] Connection" | cut -c -27)
+            nmcli connection down "${SELECTED_NETWORK}"
             ;;
         'toggle_oneko')
             if $(killall oneko); then

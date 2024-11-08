@@ -56,11 +56,11 @@ toolkit_operation () {
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
             ;;
         'connection_up')
-            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -config $HOME/.config/rofi/config_singlecol.rasi -p "[UP] Connection" | cut -c -27)
+            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -i -config $HOME/.config/rofi/config_singlecol.rasi -p "[UP] Connection" | cut -c -27)
             [[ -n ${SELECTED_NETWORK} ]] && nmcli connection up "$(echo ${SELECTED_NETWORK} | awk 'NR==1')" # Here uses awk to remove trailing white spaces
             ;;
         'connection_down')
-            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -config $HOME/.config/rofi/config_singlecol.rasi -p "[DOWN] Connection" | cut -c -27)
+            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -i -config $HOME/.config/rofi/config_singlecol.rasi -p "[DOWN] Connection" | cut -c -27)
             [[ -n ${SELECTED_NETWORK} ]] && nmcli connection down "$(echo ${SELECTED_NETWORK} | awk 'NR==1')" # Here uses awk to remove trailing white spaces
             ;;
         'toggle_oneko')

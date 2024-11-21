@@ -93,7 +93,7 @@ load_offset_and_text_alignment () {
             DUNST_OFFSET_Y=${DEFAULT_DUNST_OFFSET}
             DUNST_OFFSET_X=${DEFAULT_DUNST_OFFSET}
     esac
-    #
+    # Assign value
     COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_CONFIG | awk 'NR==1')
     COL_DUNST_ALIGN=$(awk '$0~/ alignment = / {print NR}' $DUNST_CONFIG | awk 'NR==1')
     sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DUNST_OFFSET_X}x${DUNST_OFFSET_Y}/" $DUNST_CONFIG

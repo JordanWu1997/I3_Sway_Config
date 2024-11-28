@@ -134,6 +134,7 @@ def get_windows(node, workspace):
 if __name__ == '__main__':
     no_socket_counter = 0
     marks = sys.argv[1] if len(sys.argv) > 1 else MARKS
+    verbose = False
     while True:
         try:
             socketpath = subprocess.check_output(['i3', '--get-socketpath'
@@ -150,7 +151,8 @@ if __name__ == '__main__':
                 send_msg(sock, 'run_command', 'mark --add \'')
                 while True:
                     type, event = read_msg(sock)
-                    print("{}: {}".format(type, event['change']))
+                    if verbose:
+                        print("{}: {}".format(type, event['change']))
                     # Delete all marks when window is close
                     if (type == 'window' and event['change']
                             == 'close') or (type == 'workspace'
@@ -166,12 +168,14 @@ if __name__ == '__main__':
                             send_msg(sock, 'run_command',
                                      '[con_mark=" "] mark --add \'')
                         except:
-                            print('No markable window for mark \'')
+                            if verbose:
+                                print('No markable window for mark \'')
                         # Mark current window with space  (" ").
                         try:
                             send_msg(sock, 'run_command', 'mark --add " "')
                         except:
-                            print('No markable window for mark \" \"')
+                            if verbose:
+                                print('No markable window for mark \" \"')
 
         except SocketClosedException:
             pass

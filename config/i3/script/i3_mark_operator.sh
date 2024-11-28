@@ -60,7 +60,11 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "mark --add %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                i3-msg "mark --add $(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Mark')"
+                mark_mark=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Mark')
+                if [[ -z ${mark_mark} ]]; then
+                    return
+                fi
+                i3-msg "mark --add ${mark_mark}"
             else
                 i3-input -F "mark --add %s" -l 1 -P "Mark: "
             fi
@@ -70,9 +74,9 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "unmark %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                MK=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Unmark')
-                if [[ ! -z ${MK} ]]; then
-                    i3-msg unmark ${MK}
+                mark_mark=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Unmark')
+                if [[ ! -z ${mark_mark} ]]; then
+                    i3-msg unmark ${mark_mark}
                 fi
             else
                 i3-input -F "unmark %s" -l 1 -P "Unmark: "
@@ -99,9 +103,14 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto Window [Mark]: "
             elif [ $2 == "rofi" ]; then
-                i3-msg [con_mark="$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} \
+                mark_mark=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} \
                     -select -input ${ROFI_AUTOMARK_INPUT_TEXT} \
-                    -p 'Goto Window [Mark]')"] focus
+                    -p 'Goto Window [Mark]')
+                if [[ -z ${mark_mark} ]]; then
+                    return
+                fi
+                i3-msg [con_mark="${mark_mark}"] focus
+
             fi
             ;;
         "show_then_goto")
@@ -110,6 +119,9 @@ mark_operation () {
                 sed 's/\"\,/\"/g' | sed 's/--/\n/g' | awk -F '  ' '{print $2,$1}' | \
                 rofi -dmenu -sort -auto-select -p 'Goto Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
+            if [[ -z ${mark_mark} ]]; then
+                return
+            fi
             i3-msg [con_mark="$mark_mark"] focus
             ;;
         # Swap current window to mark window but remain focus
@@ -125,6 +137,9 @@ mark_operation () {
                 mark_title="$(rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -select \
                     -input "${ROFI_AUTOMARK_INPUT_TEXT}" -p 'Swap with Window [Mark]')"
                 mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
+                if [[ -z ${mark_mark} ]]; then
+                    return
+                fi
                 # Keep focus stay in current container
                 if [ $3 == "stay" ]; then
                     i3-msg "swap container with mark $mark_mark, [con_mark=$mark_mark] focus"
@@ -139,6 +154,9 @@ mark_operation () {
                 sed 's/\"\,/\"/g' | sed 's/--/\n/g' | awk -F '  ' '{print $2,$1}' | \
                 rofi -dmenu -sort -auto-select -p 'Swap with Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
+            if [[ -z ${mark_mark} ]]; then
+                return
+            fi
             # Keep focus stay in current container
             if [ $3 == "stay" ]; then
                 i3-msg "swap container with mark $mark_mark, [con_mark=$mark_mark] focus"
@@ -166,9 +184,9 @@ if [ $4 == 'title_on' ]; then
     # Operation with mark
     mark_operation $1 $2 $3
     # Restore defaults
-    i3-msg "[all] border $DEFAULT_STYLE $DEFAULT_WIDTH; \
-            [floating] border $DEFAULT_FLOATING_STYLE $DEFAULT_WIDTH; \
-            [tiling_from='user'] border $DEFAULT_STYLE $DEFAULT_WIDTH"
+    i3-msg "[all] border $DEFAULT_STYLE $DEFAULT_WIDTH"
+    i3-msg "[floating] border $DEFAULT_FLOATING_STYLE $DEFAULT_WIDTH"
+    #i3-msg "[tiling_from='user'] border $DEFAULT_STYLE $DEFAULT_WIDTH"
 else
     # Do not show titlebar for all windows
     mark_operation $1 $2 $3

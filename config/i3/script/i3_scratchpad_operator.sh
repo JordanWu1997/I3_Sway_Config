@@ -26,6 +26,9 @@ scratchpad_operation () {
                     rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
                     -p "scrachpad" -i | cut -d' ' -f1)
                     #-p "scrachpad" -i -auto-select | cut -d' ' -f1)
+                if [[ -z ${WINDOW_ID} ]]; then
+                    return
+                fi
                 i3-msg "[id="${WINDOW_ID}"] focus"
             else
                 notify-send -u "low" "i3 Scratchpad" "There are NO windows in scratchpad" --icon=${ICON}
@@ -38,6 +41,9 @@ scratchpad_operation () {
                     rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
                     -p "scrachpad" -i | cut -d' ' -f1)
                     #-p "scrachpad" -i -auto-select | cut -d' ' -f1)
+                if [[ -z ${WINDOW_ID} ]]; then
+                    return
+                fi
                 i3-msg "[id="${WINDOW_ID}"] focus"
             else
                 notify-send -u "low" "i3 Scratchpad" "There are NO more windows in scratchpad\nLast focus window is sent to scratchpad"

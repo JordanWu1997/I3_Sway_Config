@@ -44,6 +44,9 @@ backlight_operation () {
         "set_focused_display_backlight_with_rofi")
             # Get backlight input level from user input via rofi
             INPUT_LEVEL=$(rofi -dmenu -p "Set focused display backlight to [0~100]: ")
+            if [[ -z ${INPUT_LEVEL} ]]; then
+                return
+            fi
             if (( $(echo "${INPUT_LEVEL} < 0" | bc -l) )); then
                 INPUT_LEVEL=1
             elif (( $(echo "${INPUT_LEVEL} > 100" | bc -l) )); then
@@ -60,6 +63,9 @@ backlight_operation () {
         "set_all_connected_displays_backlight_with_rofi")
             # Get backlight input level from user input via rofi
             INPUT_LEVEL=$(rofi -dmenu -p "Set all connected displays backlight to [0~100]: ")
+            if [[ -z ${INPUT_LEVEL} ]]; then
+                return
+            fi
             if (( $(echo "${INPUT_LEVEL} < 0" | bc -l) )); then
                 INPUT_LEVEL=1
             elif (( $(echo "${INPUT_LEVEL} > 100" | bc -l) )); then
@@ -76,6 +82,9 @@ backlight_operation () {
         "set_xbacklight_with_rofi")
             # Get backlight input level from user input via rofi
             INPUT_LEVEL=$(rofi -dmenu -p "Set xbacklight to [0~100]:")
+            if [[ -z ${INPUT_LEVEL} ]]; then
+                return
+            fi
             if (( $(echo "${INPUT_LEVEL} < 0" | bc -l) )); then
                 INPUT_LEVEL=1
             elif (( $(echo "${INPUT_LEVEL} > 100" | bc -l) )); then

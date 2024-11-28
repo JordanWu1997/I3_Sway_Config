@@ -51,6 +51,9 @@ MPRIS_operation () {
         'fast-forward')
             select_MPRIS_player fast-forward
             TIME=$(rofi -dmenu -p 'Fast-forward (sec)')
+            if [[ -z ${TIME} ]]; then
+                return
+            fi
             if [[ ${PLAYER} == *'spotifyd'* ]]; then
                 spt playback --device spotifyd --seek +${TIME}
             else
@@ -60,6 +63,9 @@ MPRIS_operation () {
         'rewind')
             select_MPRIS_player rewind
             TIME=$(rofi -dmenu -p 'Rewind (sec)')
+            if [[ -z ${TIME} ]]; then
+                return
+            fi
             if [[ ${PLAYER} == *'spotifyd'* ]]; then
                 spt playback --device spotifyd --seek -${TIME}
             else

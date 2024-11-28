@@ -37,6 +37,9 @@ kitty_operation () {
             SESSION=$(tmux list-sessions | \
                 rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
                 -p "TMUX session" -i -auto-select | awk -F: '{print $1}')
+            if [[ -z ${SESSION} ]]; then
+                return
+            fi
             attach_to_tmux_session ${SESSION}
             ;;
         *)

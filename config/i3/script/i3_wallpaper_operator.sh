@@ -74,6 +74,9 @@ feh_operation () {
             ;;
         "select")
             WALLPAPER=$(find "$3" -name '*.*g' | rofi -config "$ROFI_SELECTOR_CONFIG" -dmenu -i -p "$(basename $3)")
+            if [[ -z "$WALLPAPER" ]]; then
+                return
+            fi
             feh --bg-fill "$WALLPAPER"
             notify-send -u low "Wallpaper Mode" "Select from $(basename $3)\n$WALLPAPER" --icon=${ICON}
             ;;

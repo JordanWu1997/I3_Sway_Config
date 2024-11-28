@@ -23,6 +23,7 @@ show_help_message () {
     echo "  [connection_up]: set connection up"
     echo "  [connection_down]: set connection down"
     echo "  [toggle_oneko]: toggle oneko on/off"
+    echo "  [toggle_parcellite]: toggle parcellite (clipboard manager) on/off"
 }
 
 toolkit_operation () {
@@ -68,6 +69,15 @@ toolkit_operation () {
                 notify-send -u low "Toolkit Mode" "Oneko is killed" --icon="${ICON}"
             else
                 oneko -fg black -bg white -neko -speed 50
+            fi
+            ;;
+        'toggle_parcellite')
+            PARCELLITE_PID=$(pgrep -l 'parcellite' | cut -d' ' -f1)
+            if [[ -z ${PARCELLITE_PID} ]]; then
+                i3-msg exec parcellite
+            else
+                kill ${PARCELLITE_PID}
+                notify-send -u low "Toolkit Mode" "Parcellite is killed" --icon="${ICON}"
             fi
             ;;
         *)

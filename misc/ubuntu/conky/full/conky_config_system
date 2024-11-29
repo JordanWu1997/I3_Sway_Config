@@ -39,7 +39,7 @@ conky.config = {
 -- Font --
 	use_xft = true,
 	xftalpha = 1.0,
-	font = 'DroidSanMono Nerd Font:bold:size=9',
+	font = 'DroidSanMNerdFont-Regular:size=9',
 	uppercase = false,
 	use_spacer = 'none',
 	extra_newline = false,
@@ -81,7 +81,7 @@ ${voffset 5}${color2}Kernel ${alignr}${color1}${kernel}
 ${color2}Local Hostname ${alignr}${color1}${nodename}
 ${color2}Machine Uptime ${alignr}${color1}${uptime}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Processor]${font}${voffset 5}
-${alignc}${color1}${exec cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq | awk -F ' CPU ' '{print $1,$2}'}${font}
+${alignc}${color1}${exec cat /proc/cpuinfo 2> /dev/null | grep 'model name' | sed -e 's/model name.*: //'| uniq | awk -F ' CPU ' '{print $1,$2}'}${font}
 ${color2}Temp. / Fan ${alignr}${color1}${exec sensors | grep 'Package id' | awk '{print $4}'} / ${alignr}${color1}${exec sensors | grep 'cpu_fan' | awk '{print $2}'} RPM
 ${color2}Usage / Freq. ${alignr}${color1}${cpu} % / ${alignr}${color1}${exec awk '/cpu MHz/{i++}i==1{printf "%.f",$4; exit}' /proc/cpuinfo} MHz
 ${color2}Processes (Running) ${alignr}${color1}${processes} (${running_processes})
@@ -107,16 +107,16 @@ ${color2}${top_mem name 4} ${alignr}${color1}${top_mem cpu 4}	${alignr}${top_mem
 ${color2}${top_mem name 5} ${alignr}${color1}${top_mem cpu 5}	${alignr}${top_mem mem 5}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Graphics]${font}${voffset 5}
 ${alignc}${color1}${exec lspci | grep VGA | awk -F 'VGA compatible controller: ' '{print $2}' | cut -d '(' -f 1} ${font}
-${color2}GPU Freq. ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card0/gt_cur_freq_mhz)} MHz / ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card0/gt_max_freq_mhz)} MHz
+${color2}GPU Freq. ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card1/gt_cur_freq_mhz 2> /dev/null)} MHz / ${alignr}${color1}${execpi .001 (cat /sys/class/drm/card1/gt_max_freq_mhz 2> /dev/null)} MHz
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Disk]${font}${voffset 5}
 ${color2}Disk Usage ${alignr}${color1}${fs_used /home} / ${fs_size /home}
 ${voffset -5}${color2}${hr 1}
 ${color2}Disk IO ${alignr}${color1}Speed
 ${voffset -5}${color2}${hr 1}
-${color2}Read ${alignr}${color1}${diskio_read /dev/sda}/s
-${color2}Write ${alignr}${color1}${diskio_write /dev/sda}/s
+${color2}Read ${alignr}${color1}${diskio_read /dev/nvme0n1}/s
+${color2}Write ${alignr}${color1}${diskio_write /dev/nvme0n1}/s
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Network]${font}${voffset 5}${color1}
-${color2}External IP ${alignr}${color1}${execi 5 curl ipinfo.io/ip}
+${color2}External IP ${alignr}${color1}${execi 3 curl ifconfig.me 2> /dev/null}
 ${color2}Gateway IP ${alignr}${color1}${gw_ip}${if_existing /sys/class/net/eno2/operstate up}
 ${color2}Internal IP (eno2) ${alignr}${color1}${exec ip a | grep inet | grep eno2 | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enx00e04c686e68/operstate up}
 ${color2}Internal IP (enox) ${alignr}${color1}${exec ip a | grep inet | grep enx0 | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/wlo1/operstate up}

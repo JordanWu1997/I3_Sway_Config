@@ -1,0 +1,95 @@
+/*~/.config/rofi/config_i3mark.rasi*/
+
+configuration {
+
+    /*Font*/
+    /*font: "DroidSansMono Nerd Font Bold 16";*/
+    font: "ComicShannsMono Nerd Font Bold 20";
+
+    /*Show icons*/
+    show-icons: false;
+
+    /*Icon theme*/
+    icon-theme: "Papirus";
+
+    /*Border width*/
+    /*bw: 0;*/
+
+    /*Row height (unit: character)*/
+    eh: 1;
+
+    /*Margin between rows*/
+    /*line-margin: 2;*/
+
+    /*Separator between input and options*/
+    /*separator-style: "dash";*/
+
+    /*Hide scrollbar*/
+    /*hide-scrollbar: true;*/
+
+    /*Auto-select mode*/
+    auto-select: true;
+
+    /*Unmap default rofi shortcut*/
+    kb-mode-complete: "";
+    kb-row-select: "";
+
+    /*Key shortcut*/
+    kb-remove-char-back: "BackSpace,Shift+BackSpace,Control+Shift+h";
+    kb-remove-to-eol: "Control+Shift+k";
+    kb-accept-entry: "!Alt+ISO_Left_Tab,!Alt-Tab,Return,KP_Enter,Alt+space,Control+space";
+    kb-row-up: "Alt+ISO_Left_Tab,Up,Alt+k,Control+k,Control+p";
+    kb-row-down: "Alt+Tab,Down,Alt+j,Control+j,Control+n";
+    kb-row-left: "Alt+h,Control+h";
+    kb-row-right: "Alt+l,Control+l";
+
+}
+
+@import "~/.cache/wal/colors-rofi-dark.rasi"
+
+#listview {
+
+    /*Number of lines (no effect when fullscreen is enable)*/
+    lines: 10;
+
+    /*Number of columns*/
+    columns: 4;
+
+}
+
+#inputbar {
+
+    /*Inputbar component*/
+    children: [prompt,textbox-prompt-colon,entry];
+
+}
+
+#window {
+
+    /*Fullscreen*/
+    fullscreen: false;
+
+    /*Width (no effect when fullscreen is enable, preset in wal)*/
+    width: 25%;
+
+    /*Border width*/
+    border: 5;
+
+    /*Border color*/
+    border-color: @selected-active-background;
+
+}
+
+#scrollbar {
+
+    /*Scrollbar width*/
+    handle-width: 0px;
+
+}
+
+#element-text {
+
+    /*Align center*/
+    horizontal-align: 0.50;
+
+}

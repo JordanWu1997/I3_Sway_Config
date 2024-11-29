@@ -23,7 +23,7 @@ show_help_message () {
     echo "  [connection_up]: set connection up"
     echo "  [connection_down]: set connection down"
     echo "  [toggle_oneko]: toggle oneko on/off"
-    echo "  [toggle_parcellite]: toggle parcellite (clipboard manager) on/off"
+    echo "  [reload_parcellite]: reload parcellite (clipboard manager)"
 }
 
 toolkit_operation () {
@@ -71,14 +71,14 @@ toolkit_operation () {
                 oneko -fg black -bg white -neko -speed 50
             fi
             ;;
-        'toggle_parcellite')
+        'reload_parcellite')
             PARCELLITE_PID=$(pgrep -l 'parcellite' | cut -d' ' -f1)
-            if [[ -z ${PARCELLITE_PID} ]]; then
-                i3-msg exec parcellite
-            else
+            if [[ -n ${PARCELLITE_PID} ]]; then
                 kill ${PARCELLITE_PID}
-                notify-send -u low "Toolkit Mode" "Parcellite is killed" --icon="${ICON}"
             fi
+            # Send stderr to null to prevent "Error converting selection from UTF8_STRING" log spamming
+            i3-msg exec 'parcellite 2> /dev/null'
+            notify-send -u low "Toolkit Mode" "Parcellite is reloaded" --icon="${ICON}"
             ;;
         *)
             show_wrong_usage_message

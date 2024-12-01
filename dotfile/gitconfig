@@ -4,12 +4,12 @@
 [diff]
     tool = nvimdiff
 [difftool]
-    prompt = false
+    prompt = true
 [difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" -c 'wincmd w'"
 [merge]
     tool = nvimdiff
 [mergetool]
     prompt = true
 [mergetool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd w' -c 'wincmd J'"

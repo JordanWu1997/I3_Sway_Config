@@ -24,37 +24,37 @@ conky_display () {
         "all")
             killall conky
             xrandr --output eDP1 --primary --left-of HDMI1
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey &> /dev/null'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system &> /dev/null'
             sleep 2
             xrandr --output HDMI1 --primary --right-of eDP1
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey &> /dev/null'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system &> /dev/null'
             i3-msg restart
             ;;
         "primary")
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey &> /dev/null'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system &> /dev/null'
             i3-msg restart
             ;;
         "primary_only")
             killall conky
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey &> /dev/null'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system &> /dev/null'
             i3-msg restart
             ;;
         "eDP1")
             killall conky
             xrandr --output eDP1 --primary --left-of HDMI1
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey &> /dev/null'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system &> /dev/null'
             sleep 2
             xrandr --output HDMI1 --primary --right-of eDP1
             i3-msg restart
             ;;
         "default")
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey'
-            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_bindkey &> /dev/null'
+            i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system &> /dev/null'
             ;;
         *)
             show_wrong_usage_message

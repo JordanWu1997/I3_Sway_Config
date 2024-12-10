@@ -87,25 +87,32 @@ def read_msg(sock):
 
 def add_all_marks(sock, marks):
 
-    # # Sort workspace in x-dir (left to right) and  y-dir (top to bottom)
-    # workspaces = sorted(send_msg(sock, 'get_workspaces'),
-    # key=lambda w: (w['rect']['x'], w['rect']['y']))
-
-    # # Sort workspace in y-dir (top to bottom) and x-dir (left to right)
-    # workspaces = sorted(send_msg(sock, 'get_workspaces'),
-    # key=lambda w: (w['rect']['y'], w['rect']['x']))
-
-    # # Sort workspace in workspace name (A1 -> A2 -> ... -> B1 -> ...)
-    #workspaces = sorted(
-    #    send_msg(sock, 'get_workspaces'),
-    #    key=lambda w: w['name']
-    #    if len(w['name'].split(':')) <= 1 else w['name'].split(':')[1])
-
+    # Sort workspace in x-dir (left to right) and  y-dir (top to bottom)
+    if sort_by == 'x_then_y':
+        workspaces = sorted(send_msg(sock, 'get_workspaces'),
+                            key=lambda w:
+                            (int(w['rect']['x']), int(w['rect']['y'])))
+    # Sort workspace in y-dir (top to bottom) and x-dir (left to right)
+    elif sort_by == 'y_then_x':
+        workspaces = sorted(send_msg(sock, 'get_workspaces'),
+                            key=lambda w:
+                            (int(w['rect']['y']), int(w['rect']['x'])))
+    # Sort workspace in workspace name (A1 -> A2 -> ... -> B1 -> ...)
+    elif sort_by == 'WS_name':
+        workspaces = sorted(
+            send_msg(sock, 'get_workspaces'),
+            key=lambda w: w['name']
+            if len(w['name'].split(':')) <= 1 else w['name'].split(':')[1])
     # Sort workspace in workspace ID (1 -> 2 -> ... -> 11 -> ...)
-    workspaces = sorted(
-        send_msg(sock, 'get_workspaces'),
-        key=lambda w: w['name']
-        if len(w['name'].split(':')) <= 1 else w['name'].split(':')[0])
+    elif sort_by == 'WS_ID':
+        workspaces = sorted(send_msg(sock, 'get_workspaces'),
+                            key=lambda w: -1 if len(w['name'].split(':')) <= 1
+                            else int(w['name'].split(':')[0]))
+    else:
+        print(
+            f'[ERROR] Unsupported sort_by option: {sort_by} (Available: x_then_y, y_then_x, WS_name, WS_ID)'
+        )
+        return
 
     visible_ws = [w['name'] for w in workspaces if w['visible']]
     tree = send_msg(sock, 'get_tree')

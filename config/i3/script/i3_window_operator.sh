@@ -22,6 +22,7 @@ show_help_message () {
     echo "      (2) move floating window to input X and Y"
     echo "  [resize_to_input_and_move_floating_to_input_in_one]:"
     echo "       function the same as previous option but you only need to input once"
+    echo "  [resize_move_floating]: read command line arguments as inputs"
     echo "  [float_all]: make all windows in current workspace floating"
     echo "  [tile_all]: make all windows in current workspace tiled"
     echo "  [hide_all]: send all windows to scratchpad"
@@ -228,8 +229,14 @@ resize_to_input_and_move_floating_to_input () {
         THRESHOLD=${2:-150}
     fi
 
+    # Input arguments
+    if [[ $# -eq 6 ]]; then
+        INPUT_X=$3
+        INPUT_Y=$4
+        INPUT_WIDTH=$5
+        INPUT_HEIGHT=$6
     # One prompt for all
-    if [[ ${ONE_INPUT_FOR_ALL} == "1" ]]; then
+    elif [[ ${ONE_INPUT_FOR_ALL} == "1" ]]; then
 
         #if [[ ${FLOATING_STATUS} == '"user_on"' ]]; then
         #    INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
@@ -410,6 +417,9 @@ window_operation () {
             ;;
         "resize_to_input_and_move_floating_to_input_in_one")
             resize_to_input_and_move_floating_to_input 1 0
+            ;;
+        "resize_and_move_floating")
+            resize_to_input_and_move_floating_to_input $2 $3 $4 $5 $6 $7
             ;;
         "float_all")
             i3-msg [workspace='__focused__'] floating enable

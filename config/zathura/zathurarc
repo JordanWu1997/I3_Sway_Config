@@ -32,6 +32,7 @@ map <C-i> jumplist forward
 map <A-M> feedkeys ":set default-bg rgba(1,1,1,1.0)<Return>"
 map <A-P> feedkeys ":set default-bg rgba(1,1,1,0.0)<Return>"
 map <A-D> feedkeys ":set default-bg rgba(1,1,1,0.7)<Return>"
+map <C-c> feedkeys ":exec sh -c \"echo $FILE | xclip -i -sel clip\"<Return>"
 
 ### zathura-pywal ###
 # Allow recolor
@@ -56,7 +57,7 @@ set completion-highlight-fg "#010101"
 set completion-highlight-bg "#bfbfbf"
 
 # Default foreground/background color
-set default-bg rgba(1,1,1,0.7)
+set default-bg rgba(1,1,1,1.0)
 
 # Input bar
 set inputbar-fg "#bfbfbf"

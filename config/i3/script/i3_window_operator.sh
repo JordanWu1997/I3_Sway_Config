@@ -22,7 +22,7 @@ show_help_message () {
     echo "      (2) move floating window to input X and Y"
     echo "  [resize_to_input_and_move_floating_to_input_in_one]:"
     echo "       function the same as previous option but you only need to input once"
-    echo "  [resize_move_floating]: read command line arguments as inputs"
+    echo "  [resize_and_move_floating]: CLI API that reads command line arguments as inputs (1 0 X Y W H)"
     echo "  [float_all]: make all windows in current workspace floating"
     echo "  [tile_all]: make all windows in current workspace tiled"
     echo "  [hide_all]: send all windows to scratchpad"

@@ -603,5 +603,6 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 - https://arcolinux.com/
 - https://github.com/endeavouros-team/endeavouros-i3wm-setup
 - https://gitlab.com/garuda-linux/themes-and-settings/settings/garuda-i3-settings/-/tree/master/
+- https://www.hugchange.life/posts/i3wm.html
 
 </details>

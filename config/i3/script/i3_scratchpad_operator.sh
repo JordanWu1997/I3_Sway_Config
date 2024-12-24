@@ -24,8 +24,8 @@ scratchpad_operation () {
             if [[ ${SCRATCHPAD_WD_NUM} -gt "0" ]]; then
                 WINDOW_ID=$(wmctrl -l | awk '$2<0' | \
                     rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
-                    -p "scrachpad" -i | cut -d' ' -f1)
-                    #-p "scrachpad" -i -auto-select | cut -d' ' -f1)
+                    -p "scratchpad" -i | cut -d' ' -f1)
+                    #-p "scrtachpad" -i -auto-select | cut -d' ' -f1)
                 if [[ -z ${WINDOW_ID} ]]; then
                     return
                 fi
@@ -39,8 +39,8 @@ scratchpad_operation () {
             if [[ ${SCRATCHPAD_WD_NUM} -gt "0" ]]; then
                 WINDOW_ID=$(wmctrl -l | awk '$2<0' | \
                     rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
-                    -p "scrachpad" -i | cut -d' ' -f1)
-                    #-p "scrachpad" -i -auto-select | cut -d' ' -f1)
+                    -p "scratchpad" -i | cut -d' ' -f1)
+                    #-p "scratchpad" -i -auto-select | cut -d' ' -f1)
                 if [[ -z ${WINDOW_ID} ]]; then
                     return
                 fi

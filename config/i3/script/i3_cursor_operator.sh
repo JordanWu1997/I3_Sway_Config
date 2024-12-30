@@ -7,6 +7,7 @@ CUSTOM_CONFIG="$HOME/.config/i3/config.d/i3_custom.config"
 MODE_CONFIG="$HOME/.config/i3/config.d/i3_mode.config"
 COL_UNCLUTTER=$(awk '$0~/exec --no-startup-id unclutter/ {print NR}' ${STARTUP_CONFIG})
 COL_FOCUS=$(awk '$0~/focus_follows_mouse/ {print NR}' ${WINDOW_CONFIG})
+COL_WARP=$(awk '$0~/mouse_warping/ {print NR}' ${WINDOW_CONFIG})
 UNCLUTTER_OPTION="--start-hidden"
 TIMEOUT=3 # Unit: second
 ICON="$HOME/.config/i3/share/64x64/cursor.png"
@@ -102,6 +103,7 @@ cursor_operation () {
             ;;
         "enable_focus_follows_mouse")
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse yes/" ${WINDOW_CONFIG}
+            sed -i "${COL_WARP} s/.*/mouse_warping output/" ${WINDOW_CONFIG}
             for CONFIG in "${BINDKEY_CONFIG}" "${CUSTOM_CONFIG}" "${MODE_CONFIG}"; do
                 sed -i "s/Mod4+h focus left$/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+j focus down$/Mod4+j focus down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
@@ -112,6 +114,7 @@ cursor_operation () {
             ;;
         "disable_focus_follows_mouse")
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse no/" ${WINDOW_CONFIG}
+            sed -i "${COL_WARP} s/.*/mouse_warping none/" ${WINDOW_CONFIG}
             for CONFIG in "${BINDKEY_CONFIG}" "${CUSTOM_CONFIG}" "${MODE_CONFIG}"; do
                 sed -i "s/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+h focus left/" ${CONFIG}
                 sed -i "s/Mod4+j focus down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+j focus down/" ${CONFIG}

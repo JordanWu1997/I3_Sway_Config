@@ -24,7 +24,7 @@
     #shrink = yes
     # Geometry (dunst version >= 1.7)
     width = (0, 640)
-    height = 360
+    height = 640
     origin = bottom-right
     offset = 25x25
 
@@ -104,7 +104,7 @@
     ### Icon ###
     icon_position = left
     min_icon_size = 30
-    max_icon_size = 100
+    max_icon_size = 600
 
     ### Misc/Advanced ###
     dmenu = /usr/bin/rofi -dmenu -p dunst

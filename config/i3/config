@@ -47,7 +47,7 @@ set $default_i3bar_fontsize 12
 set $default_i3bar_height 25
 
 # Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
-set $default_i3bar_mode hide
+set $default_i3bar_mode dock
 
 # Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
 set $default_i3bar_position top

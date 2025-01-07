@@ -7,8 +7,9 @@ normal_system_cursor: 1
 exit: C-[ esc C-c Return A-m C-w
 
 # Screen
-screen: p quotedbl
-screen_chars: uiopjkl;m,./
+screen: q p quotedbl
+#screen_chars: uiopjkl;m,./
+screen_chars: 1234567890qwertyuiop
 
 # Normal
 left: h Left

@@ -85,8 +85,7 @@ def read_msg(sock):
     return type, json.loads(recv(sock, length))
 
 
-def add_all_marks(sock, marks):
-
+def add_all_marks(sock, marks, sort_by='WS_ID'):
     # Sort workspace in x-dir (left to right) and  y-dir (top to bottom)
     if sort_by == 'x_then_y':
         workspaces = sorted(send_msg(sock, 'get_workspaces'),

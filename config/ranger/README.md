@@ -75,7 +75,7 @@ sudo dnf install calibre
 
     ```sh
     # disk menu using udiskctl
-    git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins/ranger_udisk_mnu
+    git clone https://github.com/SL-RU/ranger_udisk_menu ~/.config/ranger/plugins/ranger_udisk_menu
     ```
 
 ### drag-and-drop function
@@ -92,8 +92,7 @@ sudo dnf install calibre
 - https://github.com/maximtrp/ranger-archives
 
     ```sh
-    cd ~/.config/ranger/plugins
-    git clone https://github.com/maximtrp/ranger-archives.git
+    git clone https://github.com/maximtrp/ranger-archives ~/.config/ranger/plugins/ranger-archives
     ```
 
 ### Ranger quit on working directory wrapper (fish function)

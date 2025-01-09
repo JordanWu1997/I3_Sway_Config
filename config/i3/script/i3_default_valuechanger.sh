@@ -5,35 +5,17 @@ CHANGE_ITEM=$1
 
 # Configuration files
 I3_CONFIG_FILE="$HOME/.config/i3/config"
+KITTY_CONFIG_FILE="$HOME/.config/kitty/kitty_common.conf"
 PICOM_DIR="$HOME/.config/picom"
 FLASHFOCUS_DIR="$HOME/.config/flashfocus"
 CONKY_DIR="$HOME/.config/conky"
 DUNST_DIR="$HOME/.config/dunst"
+ROFI_DIR="$HOME/.config/rofi"
 
 # Default value
-DEFAULT_FONT=$(awk '$0~/default_font/' $I3_CONFIG_FILE | awk 'NR==1' | cut -d' ' -f3-)
+DEFAULT_FONT=$(awk '$0~/^set \$default_font/' $I3_CONFIG_FILE | awk 'NR==1' | cut -d' ' -f3-)
 DEFAULT_DUNST_XOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f1)
 DEFAULT_DUNST_YOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f2)
-
-# Column number of default value in $I3_CONFIG_FILE
-COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_FLOATING_TITLEBAR_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_I3BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_DUNST_POS=$(awk '$0~/origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-COL_DUNST_ALIGN=$(awk '$0~/ alignment = / {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-COL_CONKY_STARTUP=$(awk '$0~/default_conky_startup/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_CONKY_SYSTEM_POS=$(awk '$0~/default_conky_system_alignment/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
-COL_CONKY_BINDKEY_POS=$(awk '$0~/default_conky_bindkey_alignment/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
 
 # Wrong message
 show_wrong_usage_message () {
@@ -47,6 +29,7 @@ show_help_message () {
         echo "  i3_default_valuechanger [options] [new_value]"
         echo ""
         echo "OPTION: NEW_VALUE (TYPE or valiable options, or use 'input' to input manually)"
+        echo "  [i3_default_font]: ANYTHING, just select font on pop-up rofi menu"
         echo "  [border_width]: INTEGER"
         echo "  [outer_gap]: INTEGER"
         echo "  [inner_gap]: INTEGER"
@@ -71,6 +54,9 @@ show_help_message () {
         echo "  [conky_startup]: enable, disable"
         echo "  [conky_system_position]: top_left, top_right"
         echo "  [conky_bindkey_position]: bottom_left, bottom_right"
+        echo "  [kitty_font]: ANYTHING, just select font on pop-up rofi menu"
+        echo "  [kitty_fontsize] INTEGER"
+        echo "  [rofi_fontsize] INTEGER"
 }
 
 # Input new default value
@@ -86,43 +72,81 @@ fi
 
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
+    "i3_default_font")
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -p 'i3 Default Font')
+        NEW_DEFAULT_VALUE=$FONT
+        if [[ -n $FONT ]]; then
+            COL=$(grep -n -m 1 -w '^set $default_font' $I3_CONFIG_FILE | cut -d: -f1)
+            sed -i "$COL s/.*/set \$default_font $FONT/" $I3_CONFIG_FILE
+        fi
+        i3-msg reload
+        ;;
+    "kitty_font")
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -p 'Kitty Font')
+        NEW_DEFAULT_VALUE=$FONT
+        if [[ -n ${FONT} ]]; then
+            COL=$(grep -n -m 1 -w '^font_family' $KITTY_CONFIG_FILE | cut -d: -f1)
+            sed -i "$COL s/.*/font_family $FONT/" $KITTY_CONFIG_FILE
+        fi
+        ;;
+    "kitty_fontsize")
+        COL=$(grep -n -m 1 -w '^font_size' $KITTY_CONFIG_FILE | cut -d: -f1)
+        echo $COL
+        sed -i "$COL s/.*/font_size $NEW_DEFAULT_VALUE/" $KITTY_CONFIG_FILE
+        ;;
+    "rofi_fontsize")
+        for ROFI_FILE in $ROFI_DIR/*.rasi; do
+            COL=$(grep -n -m 1 -w ' font: ' $ROFI_FILE | cut -d: -f1)
+            sed -i "$COL s/.*/    font: \"$DEFAULT_FONT $NEW_DEFAULT_VALUE\";/" $ROFI_FILE
+        done
+        ;;
     "outer_gap")
+        COL_OUTER_GAP_WIDTH=$(awk '$0~/default_outer_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_OUTER_GAP_WIDTH s/.*/set \$default_outer_gap $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "inner_gap")
+        COL_INNER_GAP_WIDTH=$(awk '$0~/default_inner_gap/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_INNER_GAP_WIDTH s/.*/set \$default_inner_gap $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "border_width")
+        COL_BORDER_WIDTH=$(awk '$0~/default_border_width/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_BORDER_WIDTH s/.*/set \$default_border_width $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "titlebar_style")
+        COL_TITLEBAR_STYLE=$(awk '$0~/default_titlebar_style/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_TITLEBAR_STYLE s/.*/set \$default_titlebar_style $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "floating_titlebar_style")
+        COL_FLOATING_TITLEBAR_STYLE=$(awk '$0~/default_floating_titlebar_style/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_FLOATING_TITLEBAR_STYLE s/.*/set \$default_floating_titlebar_style $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "titlebar_fontsize")
+        COL_TITLEBAR_FONTSIZE=$(awk '$0~/default_titlebar_fontsize/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_TITLEBAR_FONTSIZE s/.*/set \$default_titlebar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "i3bar_height")
+        COL_I3BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_I3BAR_HEIGHT s/.*/set \$default_i3bar_height $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "i3bar_fontsize")
+        COL_I3BAR_FONTSIZE=$(awk '$0~/default_i3bar_fontsize/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_I3BAR_FONTSIZE s/.*/set \$default_i3bar_fontsize $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "i3bar_mode")
+        COL_I3BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_I3BAR_MODE s/.*/set \$default_i3bar_mode $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "i3bar_position")
+        COL_I3BAR_POS=$(awk '$0~/default_i3bar_position/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_I3BAR_POS s/.*/set \$default_i3bar_position $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
@@ -147,38 +171,47 @@ case $CHANGE_ITEM in
         i3-msg 'exec --no-startup-id conky -c ~/.config/conky/conky_config_system'
         ;;
     "conky_startup")
+        COL_CONKY_STARTUP=$(awk '$0~/default_conky_startup/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_CONKY_STARTUP s/.*/set \$default_conky_startup $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "conky_system_position")
+        COL_CONKY_SYSTEM_POS=$(awk '$0~/default_conky_system_alignment/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_CONKY_SYSTEM_POS s/.*/set \$default_conky_system_alignment $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "conky_bindkey_position")
+        COL_CONKY_BINDKEY_POS=$(awk '$0~/default_conky_bindkey_alignment/ {print NR}' $I3_CONFIG_FILE | awk 'NR==1')
         sed -i "$COL_CONKY_BINDKEY_POS s/.*/set \$default_conky_bindkey_alignment $NEW_DEFAULT_VALUE/" $I3_CONFIG_FILE
         i3-msg reload
         ;;
     "dunst_position")
+        COL_DUNST_POS=$(awk '$0~/origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_xoffset")
+        COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${NEW_DEFAULT_VALUE}x${DEFAULT_DUNST_YOFFSET}/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_yoffset")
+        COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DEFAULT_DUNST_XOFFSET}x${NEW_DEFAULT_VALUE}/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_alignment")
+        COL_DUNST_ALIGN=$(awk '$0~/ alignment = / {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_ALIGN s/.*/    alignment = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_fontsize")
+        COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_FONT s/.*/    font = \"$DEFAULT_FONT $NEW_DEFAULT_VALUE\"/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_icon_position")
+        COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_ICON_POS s/.*/    icon_position = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;

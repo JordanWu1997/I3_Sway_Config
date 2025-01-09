@@ -353,6 +353,8 @@ Note: the term "window" used in this configuration actually refers to "container
             - Select wallpaper, set default wallpaper
         - __Variety Mode (`[v]`)__
             - Variety wallpaper selector, set default wallpaper
+        - __Font Mode (`[Shift]` + `[f]`)__
+            - Set font and font size for i3, kitty, dunst etc
         - __Reload Mode (`[r]`)__
             - Reload configuration (e.g. conky) after auto-theming
 

@@ -12,11 +12,6 @@ CONKY_DIR="$HOME/.config/conky"
 DUNST_DIR="$HOME/.config/dunst"
 ROFI_DIR="$HOME/.config/rofi"
 
-# Default value
-DEFAULT_FONT=$(awk '$0~/^set \$default_font/' $I3_CONFIG_FILE | awk 'NR==1' | cut -d' ' -f3-)
-DEFAULT_DUNST_XOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f1)
-DEFAULT_DUNST_YOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f2)
-
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -46,6 +41,7 @@ show_help_message () {
         echo "  [dunst_xoffset]: INTEGER"
         echo "  [dunst_yoffset]: INTEGER"
         echo "  [dunst_alignment]: left, center, right"
+        echo "  [dunst_font]: ANYTHING, just select font on pop-up rofi menu"
         echo "  [dunst_fontsize]: INTEGER"
         echo "  [dunst_icon_position]: left, top, right, off"
         echo "  [picom]: blur, transparency"
@@ -56,12 +52,13 @@ show_help_message () {
         echo "  [conky_bindkey_position]: bottom_left, bottom_right"
         echo "  [kitty_font]: ANYTHING, just select font on pop-up rofi menu"
         echo "  [kitty_fontsize] INTEGER"
+        echo "  [rofi_font]: ANYTHING, just select font on pop-up rofi menu"
         echo "  [rofi_fontsize] INTEGER"
 }
 
 # Input new default value
 if [[ $2 == 'input' ]]; then
-    NEW_DEFAULT_VALUE=$(rofi -dmenu -p "Set $1 to")
+    NEW_DEFAULT_VALUE=$(rofi -dmenu -i -p "Set $1 to")
     # Avoid empty input
     if [ -z ${NEW_DEFAULT_VALUE} ]; then
         exit
@@ -73,7 +70,7 @@ fi
 # Set new default value in i3 configuration file
 case $CHANGE_ITEM in
     "i3_default_font")
-        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -p 'i3 Default Font')
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -i -p 'i3 Default Font')
         NEW_DEFAULT_VALUE=$FONT
         if [[ -n $FONT ]]; then
             COL=$(grep -n -m 1 -w '^set $default_font' $I3_CONFIG_FILE | cut -d: -f1)
@@ -82,7 +79,7 @@ case $CHANGE_ITEM in
         i3-msg reload
         ;;
     "kitty_font")
-        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -p 'Kitty Font')
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -i -p 'Kitty Font')
         NEW_DEFAULT_VALUE=$FONT
         if [[ -n ${FONT} ]]; then
             COL=$(grep -n -m 1 -w '^font_family' $KITTY_CONFIG_FILE | cut -d: -f1)
@@ -94,10 +91,24 @@ case $CHANGE_ITEM in
         echo $COL
         sed -i "$COL s/.*/font_size $NEW_DEFAULT_VALUE/" $KITTY_CONFIG_FILE
         ;;
+    "rofi_font")
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -i -p 'Rofi Font')
+        NEW_DEFAULT_VALUE=$FONT
+        if [[ -n ${FONT} ]]; then
+            for ROFI_FILE in $ROFI_DIR/*.rasi; do
+                COL=$(grep -n -m 1 -w ' font: ' $ROFI_FILE | cut -d: -f1)
+                # Get fontsize
+                FONTSIZE=$(grep -m 1 -w ' font' $ROFI_FILE | cut -d: -f2- | cut -d\; -f1 |cut -d \" -f2 | rev | cut -d' ' -f1 | rev)
+                sed -i "$COL s/.*/    font: \"$NEW_DEFAULT_VALUE $FONTSIZE\";/" $ROFI_FILE
+            done
+        fi
+        ;;
     "rofi_fontsize")
         for ROFI_FILE in $ROFI_DIR/*.rasi; do
             COL=$(grep -n -m 1 -w ' font: ' $ROFI_FILE | cut -d: -f1)
-            sed -i "$COL s/.*/    font: \"$DEFAULT_FONT $NEW_DEFAULT_VALUE\";/" $ROFI_FILE
+            # Get font
+            FONT=$(grep -m 1 -w ' font' $ROFI_FILE | cut -d: -f2- | cut -d\; -f1 |cut -d \" -f2 | rev | cut -d' ' -f2- | rev)
+            sed -i "$COL s/.*/    font: \"$FONT $NEW_DEFAULT_VALUE\";/" $ROFI_FILE
         done
         ;;
     "outer_gap")
@@ -186,17 +197,21 @@ case $CHANGE_ITEM in
         i3-msg reload
         ;;
     "dunst_position")
-        COL_DUNST_POS=$(awk '$0~/origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        COL_DUNST_POS=$(awk '$0~/ origin/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_POS s/.*/    origin = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_xoffset")
-        COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        COL_DUNST_OFFSET=$(awk '$0~/ offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        DEFAULT_DUNST_XOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f1)
+        DEFAULT_DUNST_YOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f2)
         sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${NEW_DEFAULT_VALUE}x${DEFAULT_DUNST_YOFFSET}/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_yoffset")
-        COL_DUNST_OFFSET=$(awk '$0~/offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        COL_DUNST_OFFSET=$(awk '$0~/ offset/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        DEFAULT_DUNST_XOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f1)
+        DEFAULT_DUNST_YOFFSET=$(awk '$0~/offset =/{print $3}' $DUNST_DIR/dunstrc | cut -dx -f2)
         sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DEFAULT_DUNST_XOFFSET}x${NEW_DEFAULT_VALUE}/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
@@ -205,13 +220,24 @@ case $CHANGE_ITEM in
         sed -i "$COL_DUNST_ALIGN s/.*/    alignment = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
+    "dunst_font")
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -i -p 'Dunst Font')
+        NEW_DEFAULT_VALUE=$FONT
+        if [[ -n ${FONT} ]]; then
+            COL_DUNST_FONT=$(awk '$0~/ font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+            FONTSIZE=$(grep -m 1 -w ' font =' $DUNST_DIR/dunstrc | cut -d: -f2- | cut -d \" -f2 | rev | cut -d' ' -f1 | rev)
+            sed -i "$COL_DUNST_FONT s/.*/    font = \"$NEW_DEFAULT_VALUE $FONTSIZE\"/" $DUNST_DIR/dunstrc
+            $I3_SCRIPT/i3_dunst_operator.sh reload
+        fi
+        ;;
     "dunst_fontsize")
-        COL_DUNST_FONT=$(awk '$0~/font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
-        sed -i "$COL_DUNST_FONT s/.*/    font = \"$DEFAULT_FONT $NEW_DEFAULT_VALUE\"/" $DUNST_DIR/dunstrc
+        COL_DUNST_FONT=$(awk '$0~/ font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        FONT=$(grep -m 1 -w ' font =' $DUNST_DIR/dunstrc | cut -d: -f2- | cut -d \" -f2 | rev | cut -d' ' -f2- | rev)
+        sed -i "$COL_DUNST_FONT s/.*/    font = \"$FONT $NEW_DEFAULT_VALUE\"/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "dunst_icon_position")
-        COL_DUNST_ICON_POS=$(awk '$0~/icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+        COL_DUNST_ICON_POS=$(awk '$0~/ icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_ICON_POS s/.*/    icon_position = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;

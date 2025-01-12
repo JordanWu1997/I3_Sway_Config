@@ -54,6 +54,7 @@ show_help_message () {
         echo "  [kitty_fontsize] INTEGER"
         echo "  [rofi_font]: ANYTHING, just select font on pop-up rofi menu"
         echo "  [rofi_fontsize] INTEGER"
+        echo "  [all_font]: ANYTHIN, just select font on pop-up rofi menu"
 }
 
 # Input new default value
@@ -88,7 +89,6 @@ case $CHANGE_ITEM in
         ;;
     "kitty_fontsize")
         COL=$(grep -n -m 1 -w '^font_size' $KITTY_CONFIG_FILE | cut -d: -f1)
-        echo $COL
         sed -i "$COL s/.*/font_size $NEW_DEFAULT_VALUE/" $KITTY_CONFIG_FILE
         ;;
     "rofi_font")
@@ -240,6 +240,31 @@ case $CHANGE_ITEM in
         COL_DUNST_ICON_POS=$(awk '$0~/ icon_position/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
         sed -i "$COL_DUNST_ICON_POS s/.*/    icon_position = $NEW_DEFAULT_VALUE/" $DUNST_DIR/dunstrc
         $I3_SCRIPT/i3_dunst_operator.sh reload
+        ;;
+    "all_font")
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -i -p 'i3 Default Font')
+        NEW_DEFAULT_VALUE=$FONT
+        if [[ -n $FONT ]]; then
+            # I3
+            COL=$(grep -n -m 1 -w '^set $default_font' $I3_CONFIG_FILE | cut -d: -f1)
+            sed -i "$COL s/.*/set \$default_font $FONT/" $I3_CONFIG_FILE
+            i3-msg reload
+            # Kitty
+            COL=$(grep -n -m 1 -w '^font_family' $KITTY_CONFIG_FILE | cut -d: -f1)
+            sed -i "$COL s/.*/font_family $FONT/" $KITTY_CONFIG_FILE
+            # Dunst
+            COL_DUNST_FONT=$(awk '$0~/ font/ {print NR}' $DUNST_DIR/dunstrc | awk 'NR==1')
+            FONTSIZE=$(grep -m 1 -w ' font =' $DUNST_DIR/dunstrc | cut -d: -f2- | cut -d \" -f2 | rev | cut -d' ' -f1 | rev)
+            sed -i "$COL_DUNST_FONT s/.*/    font = \"$NEW_DEFAULT_VALUE $FONTSIZE\"/" $DUNST_DIR/dunstrc
+            $I3_SCRIPT/i3_dunst_operator.sh reload
+            # Rofi
+            for ROFI_FILE in $ROFI_DIR/*.rasi; do
+                COL=$(grep -n -m 1 -w ' font: ' $ROFI_FILE | cut -d: -f1)
+                # Get fontsize
+                FONTSIZE=$(grep -m 1 -w ' font' $ROFI_FILE | cut -d: -f2- | cut -d\; -f1 |cut -d \" -f2 | rev | cut -d' ' -f1 | rev)
+                sed -i "$COL s/.*/    font: \"$NEW_DEFAULT_VALUE $FONTSIZE\";/" $ROFI_FILE
+            done
+        fi
         ;;
     *)
         show_wrong_usage_message

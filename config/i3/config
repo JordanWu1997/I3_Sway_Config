@@ -37,7 +37,8 @@ set $monitor4 VIRTUAL2
 set $default_font JetBrainsMono Nerd Font
 
 # Set terminal
-# If you want to use specific terminal emulator, $TERMINAL must be set in .profile
+# For i3-sensible-terminal, if you want to use specific terminal emulator,
+# $TERMINAL variable must be set in .profile
 set $terminal i3-sensible-terminal
 
 # Set i3bar fontsize (RECOMMENDED: 12)

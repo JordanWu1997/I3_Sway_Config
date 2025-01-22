@@ -255,7 +255,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - __System Option Mode (`[Ctrl]` + `[Alt]` + `[s]`)__
     - System command, e.g. exit, power off, reboot, lock, hibernate
         - __Device Mode (`[d]`)__
-            - Turn on/off RF device, connect/disconnect Bluetooth device
+            - Turn on/off RF device, connect/disconnect Bluetooth device, network connection
         - __Terminal Mode (`[t]`)__
             - Gnome-terminal, kitty, alacrity and other terminals
 - __Toolkit Mode (`[Ctrl]` + `[Alt]` + `[t]`)__

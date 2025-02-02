@@ -24,6 +24,7 @@ show_help_message () {
     echo "  [connection_down]: set connection down"
     echo "  [toggle_oneko]: toggle oneko on/off"
     echo "  [reload_parcellite]: reload parcellite (clipboard manager)"
+    echo "  [show_brave_browser]: show brave=browser windows"
 }
 
 toolkit_operation () {
@@ -81,6 +82,10 @@ toolkit_operation () {
             # Send stderr to null to prevent "Error converting selection from UTF8_STRING" log spamming
             i3-msg exec 'parcellite 2> /dev/null'
             notify-send -u low "Toolkit Mode" "Parcellite is reloaded" --icon="${ICON}"
+            ;;
+        'show_brave_browser')
+            WINDOW_ID=$(wmctrl -l | grep ' - Brave$' | rofi -dmenu -p 'Brave-browser' | cut -d' ' -f1)
+            [[ -n ${WINDOW_ID} ]] && i3-msg "[id="${WINDOW_ID}"] focus" && $I3_SCRIPT/i3_cursor_operator.sh move_cursor_inside_window
             ;;
         *)
             show_wrong_usage_message

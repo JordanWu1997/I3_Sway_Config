@@ -23,7 +23,7 @@ RF_device_operation () {
     ICON="$HOME/.config/i3/share/64x64/wifi-connection.png"
     case $1 in
         'enable_RF_device')
-            RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -i -p "Enable RF Device:")
+            RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -i -p "Enable RF Device")
             RF_ID=$(echo ${RF_DEVICE} | cut -d: -f1)
             RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
             RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
@@ -33,7 +33,7 @@ RF_device_operation () {
             fi
             ;;
         'disable_RF_device')
-            RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -i -p "Disable RF Device:")
+            RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -i -p "Disable RF Device")
             RF_ID=$(echo ${RF_DEVICE} | cut -d: -f1)
             RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
             RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
@@ -43,7 +43,7 @@ RF_device_operation () {
             fi
             ;;
         'connect_bluetooth_device')
-            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Connect to Bluetooth Device:")
+            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Connect to Bluetooth Device")
             BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
             BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
             if [[ -n ${BT_ADDR} ]]; then
@@ -52,7 +52,7 @@ RF_device_operation () {
             fi
             ;;
         'disconnect_bluetooth_device')
-            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Disconnect from Bluetooth Device:")
+            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Disconnect from Bluetooth Device")
             BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
             BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
             if [[ -n ${BT_ADDR} ]]; then

@@ -22,12 +22,14 @@ show_help_message () {
     echo "  pdf_keyword_search.sh [options]"
     echo ""
     echo "OPTIONS"
-    echo "  --keywords=KEYWORD1,KEYWORD2  [REQUIRED] Keyword to search (separated by comma)"
-    echo "  --dir=DIR                     Directory to search (DEFAULT: $HOME/Documents/PAPERS)"
-    echo "  --max_num=MAX_NUM             Maxium number of PDF files to find (DEFAULT: -1)"
-    echo "  --viewer=VIEWER               Specify PDF viewer to use (DEFAULT: zathura)"
-    echo "  --kill, -k                    Kill search process"
-    echo "  --help, -h                    Show this help message"
+    echo "  --keywords=KEYWORD1,KEYWORD2, -w [REQUIRED] Keywords to search (separated by comma)"
+    echo "  --dir=DIR                        Directory to search for PDF files"
+    echo "                                   (DEFAULT: $HOME/Documents/PAPERS)"
+    echo "  --max_num=MAX_NUM, -n            Maxium number of PDF files to find (DEFAULT: -1)"
+    echo "  --viewer=VIEWER                  Specify PDF viewer to use (DEFAULT: zathura)"
+    echo "  --all_at_once, -a                Show all matched files at once (DEFAULT: false)"
+    echo "  --kill, -k                       Kill searching process"
+    echo "  --help, -h                       Show this help message"
 }
 
 search_and_open () {
@@ -36,14 +38,20 @@ search_and_open () {
     input_dir=$2
     max_num=$3
     PDF_viewer=$4
+    show_all_at_once=$5
 
     # Split keywords separated by comma (,)
     IFS=',' read -r -a keywords <<< "$keywords"
 
-    # Loop through pdf files
-    count=0
-    for file in ${input_dir}/*.pdf; do
+    # Loop through pdf files (including files contain space or other special characters)
+    count = 0
+    find ${input_dir} -iname '*.pdf' -print0 | while IFS= read -r -d '' file; do
         echo [INFO] Scanning ${file} ...
+
+        # Ignore invalid file
+        if [[ ! -f $file ]]; then
+            continue
+        fi
 
         # Convert pdf to text
         context=$(pdftotext -l 1  -nopgbrk -q -- "${file}" -)
@@ -64,7 +72,11 @@ search_and_open () {
 
             # Open file with sioyek
             i3-msg layout stacking
-            $PDF_viewer ${file}
+            if ${show_all_at_once}; then
+                $PDF_viewer ${file} &
+            else
+                $PDF_viewer ${file}
+            fi
 
             # Update count
             count=$(expr ${count} + 1)
@@ -90,16 +102,20 @@ main () {
                 INPUT_DIR="${1#*=}"
                 shift
                 ;;
-            --keywords=*)
+            --keywords=*|-w=*)
                 KEYWORDS="${1#*=}"
                 shift
                 ;;
-            --max_num=*)
+            --max_num=*|-n=*)
                 MAX_NUM="${1#*=}"
                 shift
                 ;;
             --viewer=*)
                 PDF_VIEWER="${1#*=}"
+                shift
+                ;;
+            --all_at_once|-a)
+                SHOW_ALL_AT_ONCE=true
                 shift
                 ;;
             --kill|-k)
@@ -120,15 +136,29 @@ main () {
     done
 
     # Early stop
-    [[ -z ${KEYWORDS} ]] && exit
+    if [[ -z ${KEYWORDS} ]]; then
+        echo '[ERROR] No keyword is provided ... Quitting ...'
+        echo
+        show_help_message
+        exit
+    fi
 
     # Assign default value
     : ${INPUT_DIR:=$HOME/Documents/PAPERS}
     : ${MAX_NUM:=-1}
     : ${PDF_VIEWER:=zathura}
+    : ${SHOW_ALL_AT_ONCE:=false}
 
+    # Check if pdftotext is installed
+    if [[ ! $(command -v pdftotext) ]]; then
+        echo '[ERROR] Command pdftotext is not found ... Quitting ...'
+        echo '[INFO] You should install poppler-utils to provide pdftotext function'
+        echo '[INFO] In Ubuntu, try apt install poppler-utils'
+        echo '[INFO] In Fedora, try dnf install poppler-utils'
+        return
+    fi
     # Start searching
-    search_and_open ${KEYWORDS} ${INPUT_DIR} ${MAX_NUM} ${PDF_VIEWER}
+    search_and_open ${KEYWORDS} ${INPUT_DIR} ${MAX_NUM} ${PDF_VIEWER} ${SHOW_ALL_AT_ONCE}
 }
 
 # Main

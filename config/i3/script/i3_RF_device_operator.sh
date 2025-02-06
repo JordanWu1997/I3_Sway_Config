@@ -16,6 +16,8 @@ show_help_message () {
     echo "  [disable_RF_device]: disable selected RF device"
     echo "  [connect_bluetooth_device]: connect to bluetooth device"
     echo "  [disconnect_bluetooth_device]: disconnect from bluetooth device"
+    echo "  [enable_bluetooth_discoverability]: enable bluetooth discoverability"
+    echo "  [disable_bluetooth_discoverability]: disable bluetooth discoverability"
 }
 
 # Operation
@@ -59,6 +61,14 @@ RF_device_operation () {
                 notify-send -u low -a "Bluetooth" "Disconnecting from ${BT_NAME}" --icon=${ICON}
                 bluetoothctl disconnect ${BT_ADDR}
             fi
+            ;;
+        'enable_bluetooth_discoverability')
+            notify-send -u low -a "Bluetooth" "Discoverable ON" --icon=${ICON}
+            bluetoothctl discoverable on
+            ;;
+        'disable_bluetooth_discoverability')
+            notify-send -u low -a "Bluetooth" "Discoverable OFF" --icon=${ICON}
+            bluetoothctl discoverable off
             ;;
         *)
             show_wrong_usage_message

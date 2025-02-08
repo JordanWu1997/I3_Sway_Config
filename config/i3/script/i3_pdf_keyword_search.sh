@@ -22,8 +22,8 @@ show_help_message () {
     echo "  pdf_keyword_search.sh [options]"
     echo ""
     echo "OPTIONS"
-    echo "  --keywords=KEYWORD1,KEYWORD2, -w [REQUIRED] Keywords to search (separated by comma)"
-    echo "  --dir=DIR                        Directory to search for PDF files"
+    echo "  --keywords=KEYWORD1,KEYWORD2, -w Keywords to search (separated by comma)"
+    echo "  --dir=DIR, -d                    Directory to search for PDF files"
     echo "                                   (DEFAULT: $HOME/Documents/PAPERS)"
     echo "  --max_num=MAX_NUM, -n            Maxium number of PDF files to find (DEFAULT: -1)"
     echo "  --viewer=VIEWER                  Specify PDF viewer to use (DEFAULT: zathura)"
@@ -98,7 +98,7 @@ main () {
     while [[ $# -gt 0 ]]; do
 
         case "$1" in
-            --dir=*)
+            --dir=*|-d=*)
                 INPUT_DIR="${1#*=}"
                 shift
                 ;;
@@ -135,19 +135,24 @@ main () {
 
     done
 
-    # Early stop
-    if [[ -z ${KEYWORDS} ]]; then
-        echo '[ERROR] No keyword is provided ... Quitting ...'
-        echo
-        show_help_message
-        exit
-    fi
-
     # Assign default value
     : ${INPUT_DIR:=$HOME/Documents/PAPERS}
     : ${MAX_NUM:=-1}
-    : ${PDF_VIEWER:=zathura}
+    : ${PDF_VIEWER:=sioyek}
     : ${SHOW_ALL_AT_ONCE:=false}
+
+    # Switch to interactively mode if there are no provided keywords
+    if [[ -z ${KEYWORDS} ]]; then
+        echo '[INFO] No keyword is provided ... Switch to interactive mode'
+        KEYWORDS=$(rofi -dmenu -p Keyword | tr ' ' ',')
+    fi
+
+    # Early Stop
+    if [[ -z ${KEYWORDS} ]]; then
+        echo '[ERROR] No keyword is provided ... Quitting'
+        show_help_message
+        exit
+    fi
 
     # Check if pdftotext is installed
     if [[ ! $(command -v pdftotext) ]]; then
@@ -157,6 +162,7 @@ main () {
         echo '[INFO] In Fedora, try dnf install poppler-utils'
         return
     fi
+
     # Start searching
     search_and_open ${KEYWORDS} ${INPUT_DIR} ${MAX_NUM} ${PDF_VIEWER} ${SHOW_ALL_AT_ONCE}
 }

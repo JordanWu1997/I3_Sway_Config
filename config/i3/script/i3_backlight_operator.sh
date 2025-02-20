@@ -27,7 +27,7 @@ show_help_message () {
 show_xbacklight () {
     # Try xbacklight first, and then brightnessctl
     command -v xbacklight && printf -v BACKLIGHT "%0.0f" "$(xbacklight)"
-    command -v brightnessctl && printf -v BACKLIGHT "%0.0f" "$(brightnessctl | grep 'Current brightness' | tr '()%' '\n\n ' | awk 'NR==2')"
+    command -v brightnessctl && printf -v BACKLIGHT "%0.0f" "$(brightnessctl | grep 'Current brightness' | tr '()%' '\n\n ' | awk 'NR==2 {print $1}')"
     # Send notification
     ICON="$HOME/.config/i3/share/64x64/lightbulb_icon.png"
     NOTIFY_SEND_VERSION=$(notify-send -v | tr ' ' '\n' | grep '\.' | cut -d. -f 2)

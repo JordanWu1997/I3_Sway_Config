@@ -20,6 +20,8 @@ show_help_message () {
     echo "  [swap_capslock_with_ctrl]"
     echo "  [restore_capslock]"
     echo "  [customize_tex_shinobi]"
+    echo "  [enable_tex_shinobi_trackpoint]"
+    echo "  [disable_tex_shinobi_trackpoint]"
     echo "  [restore_tex_shinobi]"
     echo "  [swap_backslash_with_backspace]"
     echo "  [restore_backslash_and_backspace]"
@@ -98,14 +100,26 @@ keyboard_operation () {
             ;;
         # For TEX Shinobi
         'customize_tex_shinobi')
-            DEVICE='USB-HID Keyboard Mouse'
+            #DEVICE='USB-HID Keyboard Mouse'
+            DEVICE='TEX-BLE-KB-1 Mouse'
             xinput set-prop "${DEVICE}" 315 0
             xinput set-prop "${DEVICE}" 329 0 1 0
             xinput set-prop "${DEVICE}" 326 0.45
             notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
+        'enable_tex_shinobi_trackpoint')
+            #DEVICE='USB-HID Keyboard Mouse'
+            DEVICE='TEX-BLE-KB-1 Mouse'
+            xinput disable "${DEVICE}"
+            ;;
+        'disable_tex_shinobi_trackpoint')
+            #DEVICE='USB-HID Keyboard Mouse'
+            DEVICE='TEX-BLE-KB-1 Mouse'
+            xinput disable "${DEVICE}"
+            ;;
         'restore_tex_shinobi')
-            DEVICE='USB-HID Keyboard Mouse'
+            #DEVICE='USB-HID Keyboard Mouse'
+            DEVICE='TEX-BLE-KB-1 Mouse'
             xinput set-prop "${DEVICE}" 315 0
             xinput set-prop "${DEVICE}" 329 1 0 0
             xinput set-prop "${DEVICE}" 326 0.0
@@ -130,12 +144,12 @@ keyboard_operation () {
             ## Swap BackSlash with BackSpace
             #xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
             #notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
-            # Customize TEX Shinobi Trackpoint
-            DEVICE='USB-HID Keyboard Mouse'
-            xinput set-prop "${DEVICE}" 315 0
-            xinput set-prop "${DEVICE}" 329 0 1 0
-            xinput set-prop "${DEVICE}" 326 0.45
-            notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
+            ## Customize TEX Shinobi Trackpoint
+            #DEVICE='USB-HID Keyboard Mouse'
+            #xinput set-prop "${DEVICE}" 315 0
+            #xinput set-prop "${DEVICE}" 329 0 1 0
+            #xinput set-prop "${DEVICE}" 326 0.45
+            #notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
         *)
             show_wrong_usage_message

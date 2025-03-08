@@ -34,34 +34,34 @@ set $monitor4 VIRTUAL2
 
 # Set font
 #set $default_font DroidSansMono Nerd Font Bold
-set $default_font JetBrainsMono Nerd Font
+set $default_font  Operator-caska
 
 # Set terminal
 # For i3-sensible-terminal, if you want to use specific terminal emulator,
 # $TERMINAL variable must be set in .profile
-set $terminal i3-sensible-terminal
+set $terminal kitty
 
 # Set i3bar fontsize (RECOMMENDED: 12)
-set $default_i3bar_fontsize 12
+set $default_i3bar_fontsize 14
 
 # Set i3bar height (RECOMMENDED: 25)
-set $default_i3bar_height 25
+set $default_i3bar_height 30
 
 # Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
-set $default_i3bar_mode dock
+set $default_i3bar_mode hide
 
 # Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
 set $default_i3bar_position top
 
 # Set titlebar fontsize (RECOMMENDED: 12)
-set $default_titlebar_fontsize 12
+set $default_titlebar_fontsize 15
 
 # Set window titlebar style (set normal/pixel to show/hide titlebar)
 set $default_titlebar_style pixel
 set $default_floating_titlebar_style pixel
 
 # Set border width (set pixel number of border width)
-set $default_border_width 3
+set $default_border_width 4
 
 # Set gap width (ONLY for i3-gaps, but i3-gaps has been merged to i3 in i3 v4.22)
 set $default_inner_gap 0

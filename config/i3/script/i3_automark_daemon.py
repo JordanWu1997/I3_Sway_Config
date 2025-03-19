@@ -48,6 +48,16 @@ EVENTS = [
 
 
 def recv(sock, length):
+    """
+    Receive a specified number of bytes from the socket.
+
+    Args:
+    - sock: The socket object to receive data from.
+    - length: The number of bytes to receive.
+
+    Returns:
+    - A byte string containing the received data.
+    """
     buf = b''
     while length:
         data = sock.recv(length)
@@ -59,10 +69,20 @@ def recv(sock, length):
 
 
 def send_msg(sock, command, payload=''):
+    """
+    Send a message over the socket with the given command and optional payload.
+
+    Args:
+        sock (socket.socket): The socket to send the message over.
+        command (str): The command to be sent. Supported commands are 'run_command'.
+        payload (str, optional): The payload to be sent along with the command. Defaults to an empty string.
+
+    Returns:
+        dict: The response from the server if the command is successful, otherwise raises an exception.
+    """
     payload = payload.encode('utf-8')
     msg = struct.pack('II', len(payload), COMMANDS.index(command))
     sock.sendall(b'i3-ipc' + msg + payload)
-
     while True:
         type, response = read_msg(sock)
         if type == command:
@@ -75,6 +95,15 @@ def send_msg(sock, command, payload=''):
 
 
 def read_msg(sock):
+    """
+    Reads a message from the socket and parses it.
+
+    Args:
+        sock (socket.socket): The socket object to read from.
+
+    Returns:
+        tuple: A tuple containing the parsed command and its corresponding JSON data.
+    """
     reply = recv(sock, 14)
     if not reply:
         raise SocketClosedException
@@ -87,6 +116,20 @@ def read_msg(sock):
 
 
 def delete_all_marks(sock, marks):
+    """
+    Deletes all specified marks from the server.
+
+    Args:
+    - sock: The socket object to communicate with the server.
+    - marks: A list of mark names to be deleted.
+
+    Returns:
+    None
+
+    This function sends a 'get_marks' command to the server to retrieve the current set of marks,
+    then iterates over the provided list of marks. If a mark is found in the existing marks, it sends
+    a 'run_command' command with the 'unmark' action to remove that mark from the server.
+    """
     existing_marks = send_msg(sock, 'get_marks')
     for mark in marks:
         if mark in existing_marks:
@@ -94,7 +137,21 @@ def delete_all_marks(sock, marks):
 
 
 def add_all_marks(sock, marks, sort_by='WS_ID'):
+    """
+    Adds all specified marks to the visible workspaces.
 
+    Args:
+    - sock: The socket object for communication with the workspace manager.
+    - marks: A list of marks to be added.
+    - sort_by (str): The sorting order for the workspaces. Can be one of the following:
+        - 'x_then_y': Sort by workspace ID in ascending order and then by workspace name.
+        - 'y_then_x': Sort by workspace name in ascending order and then by workspace ID.
+        - 'WS_name': Sort by workspace name in alphabetical order.
+        - 'WS_ID': Sort by workspace ID in descending order.
+
+    Returns:
+    None
+    """
     # Sort workspace in x-dir (left to right) and  y-dir (top to bottom)
     if sort_by == 'x_then_y':
         workspaces = sorted(send_msg(sock, 'get_workspaces'),
@@ -133,6 +190,16 @@ def add_all_marks(sock, marks, sort_by='WS_ID'):
 
 
 def get_windows(node, workspace):
+    """
+    Recursively retrieves window IDs from a given tree structure.
+
+    Args:
+    - node: A dictionary representing the current node in the tree.
+    - workspace: A string representing the target workspace name.
+
+    Yields:
+    - Window IDs of nodes that match the specified workspace.
+    """
     if node['window']:
         yield node['id']
     elif node['type'] == 'dockarea':

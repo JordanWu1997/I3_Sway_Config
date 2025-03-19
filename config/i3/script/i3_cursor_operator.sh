@@ -105,10 +105,26 @@ cursor_operation () {
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse yes/" ${WINDOW_CONFIG}
             sed -i "${COL_WARP} s/.*/mouse_warping output/" ${WINDOW_CONFIG}
             for CONFIG in "${BINDKEY_CONFIG}" "${CUSTOM_CONFIG}" "${MODE_CONFIG}"; do
+                # Change focus
                 sed -i "s/Mod4+h focus left$/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+j focus down$/Mod4+j focus down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+k focus up$/Mod4+k focus up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+l focus right$/Mod4+l focus right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                # Move window
+                sed -i "s/Mod4+Shift+h move left 50px$/Mod4+Shift+h move left 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j move down 50px$/Mod4+Shift+j move down 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k move up 50px$/Mod4+Shift+k move up 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l move right 50px$/Mod4+Shift+l move right 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                # Move window
+                sed -i "s/Mod4+Shift+h move left$/Mod4+Shift+h move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j move down$/Mod4+Shift+j move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k move up$/Mod4+Shift+k move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l move right$/Mod4+Shift+l move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                # Move window
+                sed -i "s/Mod4+Ctrl+Shift+h move left$/Mod4+Ctrl+Shift+h move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+j move down$/Mod4+Ctrl+Shift+j move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+k move up$/Mod4+Ctrl+Shift+k move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+l move right$/Mod4+Ctrl+Shift+l move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
             done
             i3-msg reload
             ;;
@@ -116,10 +132,26 @@ cursor_operation () {
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse no/" ${WINDOW_CONFIG}
             sed -i "${COL_WARP} s/.*/mouse_warping none/" ${WINDOW_CONFIG}
             for CONFIG in "${BINDKEY_CONFIG}" "${CUSTOM_CONFIG}" "${MODE_CONFIG}"; do
+                # Change focus
                 sed -i "s/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+h focus left/" ${CONFIG}
                 sed -i "s/Mod4+j focus down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+j focus down/" ${CONFIG}
                 sed -i "s/Mod4+k focus up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+k focus up/" ${CONFIG}
                 sed -i "s/Mod4+l focus right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+l focus right/" ${CONFIG}
+                # Move window
+                sed -i "s/Mod4+Shift+h focus move left 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+h move left/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j focus move down 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+j move down/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k focus move up 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+k move up/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l focus move right 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+l move right/" ${CONFIG}
+                # Move window
+                sed -i "s/Mod4+Shift+h focus move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+h move left/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j focus move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+j move down/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k focus move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+k move up/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l focus move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+l move right/" ${CONFIG}
+                # Move window
+                sed -i "s/Mod4+Ctrl+Shift+h focus move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+h move left/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+j focus move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+j move down/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+k focus move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+k move up/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+l focus move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+l move right/" ${CONFIG}
             done
             i3-msg reload
             ;;

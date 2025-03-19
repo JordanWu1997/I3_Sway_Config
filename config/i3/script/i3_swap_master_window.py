@@ -7,6 +7,15 @@ from i3ipc import Connection
 
 
 def find_biggest_window(container):
+    """
+    This function searches through the leaves of a given container to find the window with the largest area.
+
+    Parameters:
+    container (i3ipc.Container): The container object to search within.
+
+    Returns:
+    i3ipc.Con: The window object representing the window with the largest area if found, otherwise None.
+    """
     max_leaf = None
     max_area = 0
     for leaf in container.leaves():

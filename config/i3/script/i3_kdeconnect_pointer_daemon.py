@@ -8,15 +8,13 @@ from i3ipc import Connection
 
 def find_kdeconnectd_window(container):
     """
+    This function searches through the leaves of a given container to find the window with the class "kdeconnect.daemon".
 
-    Parameters
-    ----------
-    container :
+    Parameters:
+    container (i3ipc.Container): The container object to search within.
 
-
-    Returns
-    -------
-
+    Returns:
+    i3ipc.Con: The window object representing the KDE Connect daemon if found, otherwise None.
     """
     kdeconnectd_leaf = None
     for leaf in container.leaves():
@@ -28,22 +26,20 @@ def find_kdeconnectd_window(container):
 
 def make_window_float_and_maximized(i3, window, width, height):
     """
+    This function takes an I3 session object `i3`, a window ID `window`, and dimensions `width` and `height`.
+    It sets the specified window to floating mode, disables fullscreen, removes borders, resizes it to the given
+    dimensions, and centers it on the screen.
 
-    Parameters
-    ----------
-    i3 :
+    Parameters:
+    i3 (i3ipc.Connection): The I3 session object used to interact with the i3 window manager.
+    window (i3ipc.Con): The window ID of the window to be modified.
+    width (int): The new width for the window in pixels.
+    height (int): The new height for the window in pixels.
 
-    window :
-
-    width :
-
-    height :
-
-
-    Returns
-    -------
-
+    Returns:
+    None
     """
+
     i3.command(f"[con_id={window.id}] fullscreen disable")
     i3.command(f"[con_id={window.id}] floating enable")
     i3.command(f"[con_id={window.id}] border pixel 0")

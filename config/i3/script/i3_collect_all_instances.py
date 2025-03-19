@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
 
-import i3ipc
 import os
 import sys
 
+import i3ipc
 
-def move_all_instances_to_focused_workspace(target_instance,
-                                            dest_workspace=None,
-                                            verbose=True):
 
-    # Get windows in i3
+def move_all_instances_to_focused_workspace(target_instance: str,
+                                            dest_workspace: str = None,
+                                            verbose: bool = True):
+    """
+    Move all instances of a given window to the focused workspace.
+
+    Parameters:
+    - target_instance (str): The instance name of the window to be moved.
+    - dest_workspace (str, optional): The destination workspace. If not provided, uses the focused workspace.
+    - verbose (bool, optional): Whether to display a notification after moving the windows.
+
+    Returns:
+    None
+    """
     i3 = i3ipc.Connection()
     windows = i3.get_tree().leaves()
 

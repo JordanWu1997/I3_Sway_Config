@@ -111,10 +111,10 @@ cursor_operation () {
                 sed -i "s/Mod4+k focus up$/Mod4+k focus up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+l focus right$/Mod4+l focus right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 # Move window
-                sed -i "s/Mod4+Shift+h move left 50px$/Mod4+Shift+h move left 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
-                sed -i "s/Mod4+Shift+j move down 50px$/Mod4+Shift+j move down 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
-                sed -i "s/Mod4+Shift+k move up 50px$/Mod4+Shift+k move up 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
-                sed -i "s/Mod4+Shift+l move right 50px$/Mod4+Shift+l move right 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+h move left 50 px$/Mod4+Shift+h move left 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j move down 50 px$/Mod4+Shift+j move down 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k move up 50 px$/Mod4+Shift+k move up 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l move right 50 px$/Mod4+Shift+l move right 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 # Move window
                 sed -i "s/Mod4+Shift+h move left$/Mod4+Shift+h move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+Shift+j move down$/Mod4+Shift+j move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
@@ -125,6 +125,11 @@ cursor_operation () {
                 sed -i "s/Mod4+Ctrl+Shift+j move down$/Mod4+Ctrl+Shift+j move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+Ctrl+Shift+k move up$/Mod4+Ctrl+Shift+k move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
                 sed -i "s/Mod4+Ctrl+Shift+l move right$/Mod4+Ctrl+Shift+l move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                # Resize window
+                sed -i "s/Ctrl+Mod1+h resize shrink width 50 px or 5 ppt$/Ctrl+Mod1+h resize shrink width 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Ctrl+Mod1+j resize grow height 50 px or 5 ppt$/Ctrl+Mod1+j resize grow height 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Ctrl+Mod1+k resize shrink height 50 px or 5 ppt$/Ctrl+Mod1+k resize shrink height 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
+                sed -i "s/Ctrl+Mod1+l resize grow width 50 px or 5 ppt$/Ctrl+Mod1+l resize grow width 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
             done
             i3-msg reload
             ;;
@@ -138,21 +143,26 @@ cursor_operation () {
                 sed -i "s/Mod4+k focus up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+k focus up/" ${CONFIG}
                 sed -i "s/Mod4+l focus right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+l focus right/" ${CONFIG}
                 # Move window
-                sed -i "s/Mod4+Shift+h focus move left 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+h move left/" ${CONFIG}
-                sed -i "s/Mod4+Shift+j focus move down 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+j move down/" ${CONFIG}
-                sed -i "s/Mod4+Shift+k focus move up 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+k move up/" ${CONFIG}
-                sed -i "s/Mod4+Shift+l focus move right 50px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+l move right/" ${CONFIG}
+                sed -i "s/Mod4+Shift+h move left 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+h move left 50 px/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j move down 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+j move down 50 px/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k move up 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+k move up 50 px/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l move right 50 px, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+l move right 50 px/" ${CONFIG}
                 # Move window
-                sed -i "s/Mod4+Shift+h focus move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+h move left/" ${CONFIG}
-                sed -i "s/Mod4+Shift+j focus move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+j move down/" ${CONFIG}
-                sed -i "s/Mod4+Shift+k focus move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+k move up/" ${CONFIG}
-                sed -i "s/Mod4+Shift+l focus move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+l move right/" ${CONFIG}
+                sed -i "s/Mod4+Shift+h move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+h move left/" ${CONFIG}
+                sed -i "s/Mod4+Shift+j move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+j move down/" ${CONFIG}
+                sed -i "s/Mod4+Shift+k move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+k move up/" ${CONFIG}
+                sed -i "s/Mod4+Shift+l move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Shift+l move right/" ${CONFIG}
                 # Move window
-                sed -i "s/Mod4+Ctrl+Shift+h focus move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+h move left/" ${CONFIG}
-                sed -i "s/Mod4+Ctrl+Shift+j focus move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+j move down/" ${CONFIG}
-                sed -i "s/Mod4+Ctrl+Shift+k focus move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+k move up/" ${CONFIG}
-                sed -i "s/Mod4+Ctrl+Shift+l focus move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+l move right/" ${CONFIG}
-            done
+                sed -i "s/Mod4+Ctrl+Shift+h move left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+h move left/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+j move down, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+j move down/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+k move up, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+k move up/" ${CONFIG}
+                sed -i "s/Mod4+Ctrl+Shift+l move right, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+Ctrl+Shift+l move right/" ${CONFIG}
+                # Resize window
+                sed -i "s/Ctrl+Mod1+h resize shrink width 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+h resize shrink width 50 px or 5 ppt/" ${CONFIG}
+                sed -i "s/Ctrl+Mod1+j resize grow height 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+j resize grow height 50 px or 5 ppt/" ${CONFIG}
+                sed -i "s/Ctrl+Mod1+k resize shrink height 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+k resize shrink height 50 px or 5 ppt/" ${CONFIG}
+                sed -i "s/Ctrl+Mod1+l resize grow width 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+l resize grow width 50 px or 5 ppt/" ${CONFIG}
+           done
             i3-msg reload
             ;;
         "move_cursor_inside_window")

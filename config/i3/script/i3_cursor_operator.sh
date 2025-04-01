@@ -28,6 +28,8 @@ show_help_message () {
     echo "  [set_no_unclutter_as_default]: disable unclutter as default"
     echo "  [enable_focus_follows_mouse]: set i3wm focus_follows_mouse to yes"
     echo "  [disable_focus_follows_mouse]: set i3wm focus_follows_mouse to no"
+    echo "  [enable_mouse_follows_focus]: move cursor after focus changes"
+    echo "  [disable_mouse_follows_focus]: do not move cursor after focus changes"
     echo "  [move_cursor_inside_window]: move cursor to inside focus window"
 }
 
@@ -104,6 +106,14 @@ cursor_operation () {
         "enable_focus_follows_mouse")
             sed -i "${COL_FOCUS} s/.*/focus_follows_mouse yes/" ${WINDOW_CONFIG}
             sed -i "${COL_WARP} s/.*/mouse_warping output/" ${WINDOW_CONFIG}
+            i3-msg reload
+            ;;
+        "disable_focus_follows_mouse")
+            sed -i "${COL_FOCUS} s/.*/focus_follows_mouse no/" ${WINDOW_CONFIG}
+            sed -i "${COL_WARP} s/.*/mouse_warping none/" ${WINDOW_CONFIG}
+            i3-msg reload
+            ;;
+        "enable_mouse_follows_focus")
             for CONFIG in "${BINDKEY_CONFIG}" "${CUSTOM_CONFIG}" "${MODE_CONFIG}"; do
                 # Change focus
                 sed -i "s/Mod4+h focus left$/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window/" ${CONFIG}
@@ -133,9 +143,7 @@ cursor_operation () {
             done
             i3-msg reload
             ;;
-        "disable_focus_follows_mouse")
-            sed -i "${COL_FOCUS} s/.*/focus_follows_mouse no/" ${WINDOW_CONFIG}
-            sed -i "${COL_WARP} s/.*/mouse_warping none/" ${WINDOW_CONFIG}
+        "disable_mouse_follows_focus")
             for CONFIG in "${BINDKEY_CONFIG}" "${CUSTOM_CONFIG}" "${MODE_CONFIG}"; do
                 # Change focus
                 sed -i "s/Mod4+h focus left, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Mod4+h focus left/" ${CONFIG}
@@ -162,7 +170,7 @@ cursor_operation () {
                 sed -i "s/Ctrl+Mod1+j resize grow height 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+j resize grow height 50 px or 5 ppt/" ${CONFIG}
                 sed -i "s/Ctrl+Mod1+k resize shrink height 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+k resize shrink height 50 px or 5 ppt/" ${CONFIG}
                 sed -i "s/Ctrl+Mod1+l resize grow width 50 px or 5 ppt, exec \$I3_SCRIPT\/i3_cursor_operator.sh move_cursor_inside_window$/Ctrl+Mod1+l resize grow width 50 px or 5 ppt/" ${CONFIG}
-           done
+            done
             i3-msg reload
             ;;
         "move_cursor_inside_window")

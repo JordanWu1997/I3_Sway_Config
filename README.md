@@ -241,8 +241,8 @@ Note: the term "window" used in this configuration actually refers to "container
     - Enable Vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
 - __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__
     - Mouse emulator using the keyboard, e.g. move, left/right click, cursor auto-hide
-        - __Cursor Mode (`[c]`)__
-            - Cursor auto-hiding (unclutter)
+        - __Cursor Mode (`[p]`)__
+            - Cursor auto-hiding (unclutter), focus_follows_cursor, cursor_follows_focus
         - __Warpd Normal Mode (`[Alt]`+`[m]`)__
             - Additional keyboard layer to emulate mouse action
 

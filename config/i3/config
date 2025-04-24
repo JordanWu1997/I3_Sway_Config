@@ -181,3 +181,10 @@ include ./config.d/i3_bar.config
 # Following commands/programs will run after I3 starts
 
 include ./config.d/i3_startup.config
+
+# ======================================================================================
+# All About I3 Compatiblity Setup for iOS Keyboard (Mod4 -> Mod5)
+# ======================================================================================
+# Compatiblity setup for iOS keyboards
+
+include ./config.d/i3_iOS_compatibility.config

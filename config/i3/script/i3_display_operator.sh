@@ -103,21 +103,20 @@ eDP1_shrink () {
 
 auto_adjust () {
     if [ "${HDMI1_STATUS}" == 'connected' ]; then
-        # Rent: 520mm x 290mm
-        # IOA 24': 520mm x 290mm
+        # Rent: 520mm x 290mm, IOA 24': 520mm x 290mm
         if [ "${HDMI1_WIDTH}" == "520mm" ] && [ "${HDMI1_HEIGHT}" == "290mm" ]; then
             #notify-send -u low "Set Display Automatically" "IOA 24' connected" --icon="${ICON}"
             notify-send -u low "Set Display Automatically" "Rent 24' connected" --icon="${ICON}"
             # Adjust eDP1 & HDMI1
             HDMI1_extend; eDP1_shrink
-            # Locate eDP1 & HDMI1
+            # Set-1: Locate eDP1 (1440x810) & HDMI1 (1920x1200)
             xrandr \
-                --output "${HDMI1}" --mode 1920x1080 --pos 0x0 --rotate normal --primary \
-                --output "${eDP1}" --off
-            # Locate eDP1 & HDMI1
+                --output "${HDMI1}" --mode 1920x1080 --pos 1440x0 --rotate normal --primary \
+                --output "${eDP1}" --mode 1440x810_60.00 --pos 0x135 --rotate normal
+            # Set-2: Locate eDP1 (1440x810) & HDMI1 (1920x1080)
             #xrandr \
-                #--output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
-                #--output "${eDP1}" --mode 1440x810_60.00 --pos 0x195 --rotate normal \
+                #--output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
+                #--output "${eDP1}" --mode 1440x810_60.00 --pos 0x195 --rotate normal
         # ACER 27': 600mm x 340mm
         elif [ "${HDMI1_WIDTH}" == "600mm" ] && [ "${HDMI1_HEIGHT}" == "340mm" ]; then
             notify-send -u low "Set Display Automatically" "ACER 27' connected" --icon="${ICON}"
@@ -136,13 +135,6 @@ auto_adjust () {
             xrandr \
                 --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x390 --rotate normal
-        ## Rent: 520mm x 290mm
-        #elif [ "${HDMI1_WIDTH}" == "520mm" ] && [ "${HDMI1_HEIGHT}" == "290mm" ]; then
-        #    notify-send -u low "Set Display Automatically" "Rent 24' connected" --icon="${ICON}"
-        #    # HDMI1 (shrink)
-        #    xrandr \
-        #        --output "${HDMI1}" --mode 1920x1080 --pos 0x0 --rotate normal --primary \
-        #        --output "${eDP1}" --off
         # Other HDMI:
         else
             notify-send -u low "Set Display Automatically" "External HDMI1 connected" --icon="${ICON}"

@@ -104,7 +104,7 @@ keyboard_operation () {
             DEVICE='TEX-BLE-KB-1 Mouse'
             xinput set-prop "${DEVICE}" 315 0
             xinput set-prop "${DEVICE}" 329 0 1 0
-            xinput set-prop "${DEVICE}" 326 0.45
+            xinput set-prop "${DEVICE}" 326 0.80
             notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
         'enable_tex_shinobi_trackpoint')
@@ -144,12 +144,13 @@ keyboard_operation () {
             ## Swap BackSlash with BackSpace
             #xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
             #notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
-            ## Customize TEX Shinobi Trackpoint
+            # Customize TEX Shinobi Trackpoint
             #DEVICE='USB-HID Keyboard Mouse'
-            #xinput set-prop "${DEVICE}" 315 0
-            #xinput set-prop "${DEVICE}" 329 0 1 0
-            #xinput set-prop "${DEVICE}" 326 0.45
-            #notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
+            DEVICE='TEX-BLE-KB-1 Mouse'
+            xinput set-prop "${DEVICE}" 315 0
+            xinput set-prop "${DEVICE}" 329 0 1 0
+            xinput set-prop "${DEVICE}" 326 0.80
+            notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
             ;;
         *)
             show_wrong_usage_message

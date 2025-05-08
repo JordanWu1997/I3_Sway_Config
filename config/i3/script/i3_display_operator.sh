@@ -110,13 +110,21 @@ auto_adjust () {
             # Adjust eDP1 & HDMI1
             HDMI1_extend; eDP1_shrink
             # Set-1: Locate eDP1 (1440x810) & HDMI1 (1920x1200)
-            xrandr \
-                --output "${HDMI1}" --mode 1920x1080 --pos 1440x0 --rotate normal --primary \
-                --output "${eDP1}" --mode 1440x810_60.00 --pos 0x135 --rotate normal
+            #xrandr \
+                #--output "${HDMI1}" --mode 1920x1080 --pos 1440x0 --rotate normal --primary \
+                #--output "${eDP1}" --mode 1440x810_60.00 --pos 0x135 --rotate normal
             # Set-2: Locate eDP1 (1440x810) & HDMI1 (1920x1080)
             #xrandr \
                 #--output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
                 #--output "${eDP1}" --mode 1440x810_60.00 --pos 0x195 --rotate normal
+            # Set-3: Locate eDP1 (auto) & HDMI1 (1920x1080)
+            xrandr \
+                --output "${HDMI1}" --mode 1920x1080 --primary \
+                --output "${eDP1}" --auto --left-of ${HDMI1}
+            # Set-4: Disable eDP1 & enable HDMI1 (1920x1080)
+            #xrandr \
+               #--output "${HDMI1}" --mode 1920x1080 --rotate normal --primary \
+               #--output "${eDP1}" --off
         # ACER 27': 600mm x 340mm
         elif [ "${HDMI1_WIDTH}" == "600mm" ] && [ "${HDMI1_HEIGHT}" == "340mm" ]; then
             notify-send -u low "Set Display Automatically" "ACER 27' connected" --icon="${ICON}"

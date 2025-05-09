@@ -446,6 +446,6 @@ window_operation () {
 }
 
 # Main
-flash_window
+pgrep flashfocus && flash_window
 window_operation $@
-flash_window
+pgrep flashfocus && flash_window

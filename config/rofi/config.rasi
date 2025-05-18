@@ -9,7 +9,7 @@ configuration {
     combi-modi: "window,drun";
 
     /*Font*/
-    font: " Operator-caska 18";
+    font: "Operator-caska 18";
 
     /*Show icons*/
     show-icons: true;

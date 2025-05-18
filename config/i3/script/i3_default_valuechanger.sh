@@ -242,7 +242,7 @@ case $CHANGE_ITEM in
         $I3_SCRIPT/i3_dunst_operator.sh reload
         ;;
     "all_font")
-        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | rofi -dmenu -i -p 'i3 Default Font')
+        FONT=$(fc-list | cut -d':' -f2 | cut -d',' -f1 | sort -u | cut -c 2- | rofi -dmenu -i -p 'i3 Default Font')
         NEW_DEFAULT_VALUE=$FONT
         if [[ -n $FONT ]]; then
             # I3

@@ -32,11 +32,10 @@ set $monitor2 eDP1
 set $monitor3 VIRTUAL1
 set $monitor4 VIRTUAL2
 
-# Set font
-#set $default_font DroidSansMono Nerd Font Bold
-set $default_font  Operator-caska
+# Set font (RECOMMENDED: DroidSansMono Nerd Font Bold)
+set $default_font Operator-caska
 
-# Set terminal
+# Set terminal (RECOMMENDED: kitty)
 # For i3-sensible-terminal, if you want to use specific terminal emulator,
 # $TERMINAL variable must be set in .profile
 set $terminal kitty

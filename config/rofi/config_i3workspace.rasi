@@ -3,7 +3,7 @@
 configuration {
 
     /*Font*/
-    font: " Operator-caska 18";
+    font: "Operator-caska 18";
 
     /*Show icons*/
     show-icons: false;

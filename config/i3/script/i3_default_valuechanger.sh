@@ -5,6 +5,7 @@ CHANGE_ITEM=$1
 
 # Configuration files
 I3_CONFIG_FILE="$HOME/.config/i3/config"
+I3_STARTUP_CONFIG_FILE="$HOME/.config/i3/config.d/i3_startup.config"
 KITTY_CONFIG_FILE="$HOME/.config/kitty/kitty_common.conf"
 PICOM_DIR="$HOME/.config/picom"
 FLASHFOCUS_DIR="$HOME/.config/flashfocus"
@@ -171,6 +172,16 @@ case $CHANGE_ITEM in
         ln -s "$FLASHFOCUS_DIR/flashfocus_$NEW_DEFAULT_VALUE.yml" "$FLASHFOCUS_DIR/flashfocus.yml"
         killall flashfocus
         i3-msg exec flashfocus
+        ;;
+    "flashfocus_startup")
+        echo $NEW_DEFAULT_VALUE
+        if [[ $NEW_DEFAULT_VALUE == "enable" ]]; then
+            sed -i 's/^#exec_always --no-startup-id flashfocus/exec_always --no-startup-id flashfocus/' "$I3_STARTUP_CONFIG_FILE"
+        elif [[ $NEW_DEFAULT_VALUE == "disable" ]]; then
+            sed -i 's/^exec_always --no-startup-id flashfocus/#&/' "$I3_STARTUP_CONFIG_FILE"
+        else
+            echo Unknown option for flashfocus_startup
+        fi
         ;;
     "conky_style")
         rm "$CONKY_DIR/conky_config_bindkey"

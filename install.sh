@@ -276,7 +276,7 @@ desc_xwindow_tool_packages () {
     echo "-- Display manager: xrandr, arandr"
     echo "-- Window controller: wmctrl"
     echo "-- Screen: xbacklight, redshift, i3lock, xss-lock, xcolor"
-    echo "-- Mouse: imwheel, libinput, unclutter-xfixes"
+    echo "-- Mouse: imwheel, libinput, unclutter-xfixes, warpd"
     echo "-- Keyboard: xdotool, xset, numlockx, screenkey"
     echo "-- System monitor: conky"
     echo "-- Touchpad: libinput-gestures"
@@ -305,6 +305,11 @@ install_xwindow_tool_packages () {
     sudo ./libinput-gestures-setup install
     # libinput-gestures requires user to be in the group input
     sudo gpasswd -a "$USER" input
+    # Mouse emulator: warpd
+    cd "$HOME/Desktop"
+    git clone https://github.com/rvaiya/warpd.git
+    cd warpd
+    make && sudo make install
 }
 
 # Audio tools

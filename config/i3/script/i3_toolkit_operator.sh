@@ -57,6 +57,16 @@ toolkit_operation () {
             xset s 600 600 dpms 600 600 600
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
             ;;
+        'disable_screensaver')
+            xset s off
+            xset -dpms
+            xset s noblank
+            ;;
+        'restore_screensaver')
+            xset s off
+            xset -dpms
+            xset s noblank
+            ;;
         'connection_up')
             ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
             SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -i -config ${ROFI_CONFIG} -p "[UP] Connection" | cut -c -30 | rev | cut -d' ' -f2- | rev)

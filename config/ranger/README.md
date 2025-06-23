@@ -84,8 +84,8 @@ sudo dnf install calibre
 
     ```sh
     # drag-and-drop function
-    git clone https://github.com/mwh/dragon.git ~/Desktop
-    cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin
+    git clone https://github.com/mwh/dragon.git ~/Desktop/dragon
+    cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin/
     ```
 
 ### archive function (extract/compress files)

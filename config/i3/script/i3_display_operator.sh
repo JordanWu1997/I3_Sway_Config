@@ -150,8 +150,12 @@ auto_adjust () {
         fi
     # Laptop display only
     else
-        notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected" --icon="${ICON}"
-        xrandr --output "${eDP1}" --mode 1920x1080 --primary --output "${HDMI1}" --off
+        #notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected" --icon="${ICON}"
+        #xrandr --output "${eDP1}" --mode 1920x1080 --primary --output "${HDMI1}" --off
+        notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
+        xrandr --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --primary \
+            --output "DP-4" --mode 1920x1200 --pos 0x1920 --rotate normal \
+            --output "HDMI-0" --mode 1920x1080 --pos 1920x0 --rotate right
     fi
 }
 

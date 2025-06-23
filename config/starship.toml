@@ -8,7 +8,6 @@
 
 format = """
 $username\
-$sudo\
 $hostname\
 $shlvl\
 $kubernetes\
@@ -85,7 +84,7 @@ disabled = false
 [hostname]
 format = "at [${hostname}](${style}) "
 ssh_only = false
-trim_at = "-"
+#trim_at = "-"
 style = "bold bright-green"
 disabled = false
 

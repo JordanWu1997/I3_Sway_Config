@@ -8,6 +8,7 @@
 
 format = """
 $username\
+$sudo\
 $hostname\
 $shlvl\
 $kubernetes\
@@ -95,7 +96,7 @@ disabled = false
 
 [sudo]
 format = "as [$symbol]($style)"
-disabled = false
+disabled = true
 
 [time]
 time_format = "%T"

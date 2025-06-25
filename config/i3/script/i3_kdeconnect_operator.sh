@@ -17,11 +17,17 @@ show_help_message () {
     echo "  [reload_pointer]: reload pointer daemon"
     echo "  [pointer_invert_on]: invert pointer color"
     echo "  [pointer_invert_off]: restore pointer color"
+    echo "  [reload_kdeconnect]: reload kdeconnect daemon"
 }
 
 kdeconnect_operation () {
     ICON="$HOME/.config/i3/share/64x64/cursor.png"
     case $1 in
+        "reload_kdeconnect")
+            notify-send -u "low" "i3 kdeconnect" "Reload Kdeconnect daemon" --icon=${ICON}
+            killall kdeconnectd
+            kdeconnect-cli --refresh
+            ;;
         "enable_pointer")
             notify-send -u "low" "i3 kdeconnect" "Pointer daemon is enabled" --icon=${ICON}
             python3 $I3_SCRIPT/i3_kdeconnect_pointer_daemon.py

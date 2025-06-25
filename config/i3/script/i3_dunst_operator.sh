@@ -66,23 +66,32 @@ load_offset_and_text_alignment () {
     DEFAULT_INNER_GAP=$(awk '$0~/default_inner_gap/ {print $3}' $I3_CONFIG | awk 'NR==1')
     DEFAULT_OUTER_GAP=$(awk '$0~/default_outer_gap/ {print $3}' $I3_CONFIG | awk 'NR==1')
     DEFAULT_DUNST_OFFSET=$(expr ${DEFAULT_INNER_GAP} + ${DEFAULT_OUTER_GAP} + 15)
-    DUNST_POS=$(awk '$0~/origin/' $DUNST_CONFIG | cut -d= -f 2 | cut -c 2-)
-    DUNST_POS_Y=$(echo $DUNST_POS | cut -d- -f1)
-    DUNST_POS_X=$(echo $DUNST_POS | cut -d- -f2)
-    # Dunst text alignment
-    case ${DUNST_POS} in
-        *-left)
-            DUNST_ALIGN='left'
-            ;;
-        *-center)
-            DUNST_ALIGN='center'
-            ;;
-        *-right)
-            DUNST_ALIGN='right'
-            ;;
-        *)
-            DUNST_ALIGN='left'
-    esac
+
+    # Text alignment according to dunst position
+    DUNST_POS=$(awk '$0~/ origin/' $DUNST_CONFIG | cut -d= -f 2 | cut -c 2-)
+    if [[ -n ${DUNST_POS} ]]; then
+        DUNST_POS_Y=$(echo $DUNST_POS | cut -d- -f1)
+        DUNST_POS_X=$(echo $DUNST_POS | cut -d- -f2)
+        # Dunst text alignment
+        case ${DUNST_POS} in
+            *-left)
+                DUNST_ALIGN='left'
+                ;;
+            *-center)
+                DUNST_ALIGN='center'
+                ;;
+            *-right)
+                DUNST_ALIGN='right'
+                ;;
+            *)
+                DUNST_ALIGN='left'
+        esac
+    else
+        DUNST_ALIGN='left'
+    fi
+    COL_DUNST_ALIGN=$(awk '$0~/ alignment = / {print NR}' $DUNST_CONFIG | awk 'NR==1')
+    sed -i "$COL_DUNST_ALIGN s/.*/    alignment = ${DUNST_ALIGN}/" $DUNST_CONFIG
+
     # Dunst offset
     case ${DEFAULT_BAR_MODE}/${DEFAULT_BAR_POS}/${DUNST_POS} in
         dock/top/top-*|dock/bottom/bottom-*)
@@ -93,11 +102,17 @@ load_offset_and_text_alignment () {
             DUNST_OFFSET_Y=${DEFAULT_DUNST_OFFSET}
             DUNST_OFFSET_X=${DEFAULT_DUNST_OFFSET}
     esac
-    # Assign value
-    COL_DUNST_OFFSET=$(awk '$0~/ offset = / {print NR}' $DUNST_CONFIG | awk 'NR==1')
-    COL_DUNST_ALIGN=$(awk '$0~/ alignment = / {print NR}' $DUNST_CONFIG | awk 'NR==1')
-    sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DUNST_OFFSET_X}x${DUNST_OFFSET_Y}/" $DUNST_CONFIG
-    sed -i "$COL_DUNST_ALIGN s/.*/    alignment = ${DUNST_ALIGN}/" $DUNST_CONFIG
+    # Check dunst version
+    DUNST_VERSION=$(dunst --version | cut -d' ' -f8 | cut -d. -f1-2)
+    # Assign offset (for dunst version >= 1.7)
+    if printf "1.7\n$DUNST_VERSION" | sort -V -C; then
+        COL_DUNST_OFFSET=$(awk '$0~/ offset = / {print NR}' $DUNST_CONFIG | awk 'NR==1')
+        sed -i "$COL_DUNST_OFFSET s/.*/    offset = ${DUNST_OFFSET_X}x${DUNST_OFFSET_Y}/" $DUNST_CONFIG
+    else
+        COL_DUNST_OFFSET=$(awk '$0~/ geometry = / {print NR}' $DUNST_CONFIG | awk 'NR==1')
+        DUNST_POS=$(awk '$0~/geometry/' .config/dunst/dunstrc | cut -d= -f2 | cut -d\" -f2 | cut -d- -f1)
+        sed -i "$COL_DUNST_OFFSET s/.*/    geometry = \"${DUNST_POS}-${DUNST_OFFSET_X}-${DUNST_OFFSET_Y}\"/" $DUNST_CONFIG
+    fi
 }
 
 reload_dunst () {

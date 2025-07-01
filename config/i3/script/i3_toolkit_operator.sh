@@ -25,6 +25,12 @@ show_help_message () {
     echo "  [toggle_oneko]: toggle oneko on/off"
     echo "  [reload_parcellite]: reload parcellite (clipboard manager)"
     echo "  [show_brave_browser]: show brave=browser windows"
+    echo "  [kill_process]: kill selected PID (use kill -9 command)"
+}
+
+# Function to convert lstart to formatted time
+format_start_time() {
+    date -d "$1 $2 $3 $4" +"%m-%d %H:%M:%S"
 }
 
 toolkit_operation () {
@@ -96,6 +102,26 @@ toolkit_operation () {
         'show_brave_browser')
             WINDOW_ID=$(wmctrl -l | grep ' - Brave$' | rofi -dmenu -p 'Brave-browser' | cut -d' ' -f1)
             [[ -n ${WINDOW_ID} ]] && i3-msg "[id="${WINDOW_ID}"] focus" && $I3_SCRIPT/i3_cursor_operator.sh move_cursor_inside_window
+            ;;
+        'kill_process')
+            # Only show processes for the current user
+            ps -u "$USER" -o pid,lstart,cmd --sort=pid --no-headers | \
+                while read -r PID DAY MONTH DATE TIME YEAR CMD; do
+                    START=$(format_start_time "$DAY" "$MONTH" "$DATE" "$TIME" "$YEAR")
+                    printf "%5s  %s  %s\n" "$PID" "$START" "$CMD"
+                done | rofi -dmenu -i -p "Select your process to kill [${USER}]" \
+                    -config "$HOME/.config/rofi/config_singlecol.rasi" | {
+                read -r PID _
+                # Early stop
+                [ -z "$PID" ] && exit 0
+                # Confirmation
+                CONFIRM=$(echo -e "No\nYes" | rofi -dmenu -p "Kill PID $PID?")
+                if [[ "$CONFIRM" == "Yes" ]]; then
+                    kill -9 "$PID" && \
+                        notify-send "Toolkit Mode" "Killed PID $PID" --icon ${ICON} || \
+                        notify-send "Toolkit Mode" "Failed to kill PID $PID" --icon ${ICON}
+                fi
+            }
             ;;
         *)
             show_wrong_usage_message

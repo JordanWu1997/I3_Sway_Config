@@ -14,14 +14,15 @@ show_help_message () {
     echo "  i3_toolkit_operator.sh [operations]"
     echo ""
     echo "OPERATIONS"
-    echo "  [enable_caffeine]: disable X screensaver"
-    echo "  [disable_caffeine]: enable X screensaver"
+    echo "  [enable_caffeine/disable_screensaver]: disable X screensaver"
+    echo "  [disable_caffeine/enable_screensaver]: enable X screensaver"
     echo "  [kill_window]: click window on screen to kill (X window)"
     echo "  [pickup_color]: pick up color on screen (X window)"
     echo "  [get_screenshot_text]: screenshot, apply OCR to it and copy context to clipboard"
     echo "  [collect_all_instances]: collect all window instances"
-    echo "  [connection_up]: set connection up"
-    echo "  [connection_down]: set connection down"
+    echo "  [connection_up/connection_down]: set connection up/down"
+    echo "  [enable_wifi/disable_wifi]: enable/disable wifi"
+    echo "  [enable_networking/disable_networking]: enable/disable networking"
     echo "  [toggle_oneko]: toggle oneko on/off"
     echo "  [reload_parcellite]: reload parcellite (clipboard manager)"
     echo "  [show_brave_browser]: show brave=browser windows"
@@ -55,23 +56,13 @@ toolkit_operation () {
             INSTANCE=$(wmctrl -l -x | rofi -dmenu -p 'Collect all' | cut -d' ' -f4 | cut -d. -f1)
             [[ -n "${INSTANCE}" ]] && $I3_SCRIPT/i3_collect_all_instances.py ${INSTANCE}
             ;;
-        'enable_caffeine')
-            xset s 0 0 dpms 0 0 0
+        'enable_caffeine'|'disable_screensaver')
+            xset s off; xset -dpms; xset s noblank
             notify-send -u low "Toolkit Mode" "Caffeine On (Disable X Screensaver)" --icon="${ICON}"
             ;;
-        'disable_caffeine')
-            xset s 600 600 dpms 600 600 600
+        'disable_caffeine'|'enable_screensaver')
+            xset s 600 600 dpms 600 600 600; xset s blank
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
-            ;;
-        'disable_screensaver')
-            xset s off
-            xset -dpms
-            xset s noblank
-            ;;
-        'restore_screensaver')
-            xset s off
-            xset -dpms
-            xset s noblank
             ;;
         'connection_up')
             ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
@@ -82,6 +73,18 @@ toolkit_operation () {
             ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
             SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -i -config ${ROFI_CONFIG} -p "[DOWN] Connection" | cut -c -30 | rev | cut -d' ' -f2- | rev)
             [[ -n ${SELECTED_NETWORK} ]] && nmcli connection down "$(echo ${SELECTED_NETWORK} | awk 'NR==1')" # Here uses awk to remove trailing white spaces
+            ;;
+        'enable_networking')
+            nmcli networking on
+            ;;
+        'disable_networking')
+            nmcli networking off
+            ;;
+        'enable_wifi')
+            nmcli radio wifi on
+            ;;
+        'disable_wifi')
+            nmcli radio wifi off
             ;;
         'toggle_oneko')
             if $(killall oneko); then

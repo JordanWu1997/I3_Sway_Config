@@ -8,7 +8,8 @@
 
 ICON="$HOME/.config/i3/share/64x64/language.png"
 CURRENT_ENGINE=$(ibus engine)
-ENGINES=("xkb:us::eng" "chewing" "libpinyin")
+#ENGINES=("xkb:us::eng" "chewing" "libpinyin")
+ENGINES=("xkb:us::eng" "chewing")
 
 # Check if an engine is installed
 is_engine_installed () {

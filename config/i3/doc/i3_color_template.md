@@ -10,17 +10,13 @@ Table of Contents
       * [Monochrome vs Non-monochrome](#monochrome-vs-non-monochrome)
       * [I3BAR](#i3bar)
          * [Default theme with minor modified](#default-theme-with-minor-modified)
-         * [Monochrome color style (red -&gt; blue, low -&gt; high)](#monochrome-color-style-r
-ed---blue-low---high)
-         * [Non-monochrome color style (red - blue, high -&gt; low)](#non-monochrome-color-sty
-le-red---blue-high---low)
+         * [Monochrome color style (red -&gt; blue, low -&gt; high)](#monochrome-color-style-r ed---blue-low---high)
+         * [Non-monochrome color style (red - blue, high -&gt; low)](#non-monochrome-color-sty le-red---blue-high---low)
       * [I3CONTAINTER](#i3containter)
          * [Gruvbox theme](#gruvbox-theme)
          * [Default theme with minor change](#default-theme-with-minor-change)
-         * [Monochrome color style (red -&gt; blue, low -&gt; high)](#monochrome-color-style-r
-ed---blue-low---high-1)
-         * [Non-monochrome color style (red - blue, high -&gt; low)](#non-monochrome-color-sty
-le-red---blue-high---low-1)
+         * [Monochrome color style (red -&gt; blue, low -&gt; high)](#monochrome-color-style-r ed---blue-low---high-1)
+         * [Non-monochrome color style (red - blue, high -&gt; low)](#non-monochrome-color-sty le-red---blue-high---low-1)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 

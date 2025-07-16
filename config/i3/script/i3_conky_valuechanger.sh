@@ -1,56 +1,61 @@
 #!/usr/bin/env bash
 
+# NOTE for awk
+# /*color/ works for gawk but not mawk, therefore we use /.*color/ here
+# -- In ubuntu system, default awk is mawk (less tolerative for regex)
+# -- In fedora system, default awk is gawk (more tolerative for regex)
+
 # Third argument [color0~color15/opac0~opac100]
 # Read item color (content) from wal Xresources based on input
 value_picker () {
     case $1 in
         color0)
-            OUTPUT_VALUE="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color1)
-            OUTPUT_VALUE="$(awk '$1~/*color1:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color1:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color2)
-            OUTPUT_VALUE="$(awk '$1~/*color2:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color2:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color3)
-            OUTPUT_VALUE="$(awk '$1~/*color3:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color3:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color4)
-            OUTPUT_VALUE="$(awk '$1~/*color4:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color4:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color5)
-            OUTPUT_VALUE="$(awk '$1~/*color5:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color5:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color6)
-            OUTPUT_VALUE="$(awk '$1~/*color6:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color6:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color7)
-            OUTPUT_VALUE="$(awk '$1~/*color7:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color7:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color8)
-            OUTPUT_VALUE="$(awk '$1~/*color8:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color8:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color9)
-            OUTPUT_VALUE="$(awk '$1~/*color9:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color9:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color10)
-            OUTPUT_VALUE="$(awk '$1~/*color10:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color10:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color11)
-            OUTPUT_VALUE="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color12)
-            OUTPUT_VALUE="$(awk '$1~/*color12:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color12:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color13)
-            OUTPUT_VALUE="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color14)
-            OUTPUT_VALUE="$(awk '$1~/*color14:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color14:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         color15)
-            OUTPUT_VALUE="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+            OUTPUT_VALUE="$(awk '$1~/.*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
             ;;
         opac0)
             OUTPUT_VALUE=0
@@ -75,11 +80,11 @@ value_picker () {
 
 change_conky_value () {
     # Assign default item / title color
-    DEFAULT_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_TEXT_COLOR="$(awk '$1~/*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_ITEM_COLOR="$(awk '$1~/*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_TITLE_COLOR="$(awk '$1~/*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
-    DEFAULT_BG_COLOR="$(awk '$1~/*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources)"
+    DEFAULT_COLOR="$(awk '$1~/.*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
+    DEFAULT_TEXT_COLOR="$(awk '$1~/.*color15:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
+    DEFAULT_ITEM_COLOR="$(awk '$1~/.*color11:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
+    DEFAULT_TITLE_COLOR="$(awk '$1~/.*color13:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
+    DEFAULT_BG_COLOR="$(awk '$1~/.*color0:/ {print substr($2,2,7)}' $HOME/.cache/wal/colors.Xresources | awk NR==1)"
     DEFAULT_BG_OPAC=$(awk '$0~/default_conky_opacity/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_POS_SYSTEM=$(awk '$0~/default_conky_system_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
     DEFAULT_POS_BINDKEY=$(awk '$0~/default_conky_bindkey_alignment/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')

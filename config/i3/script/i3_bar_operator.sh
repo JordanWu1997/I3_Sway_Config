@@ -38,6 +38,7 @@ show_help_message () {
     echo "  [bar_hidden_state_show]: set hidden state to show"
     echo "  [bar_hidden_state_hide]: set hidden state to hide"
     echo "  [bar_reload]: reload bar"
+    echo "  [bar_refresh_with_crontab]: script to reload i3bar with crontab"
 }
 
 # Bar operation
@@ -85,6 +86,20 @@ bar_operation () {
             i3-msg exec 'i3bar -b bar_status && sleep 0.5'
             i3-msg exec 'i3bar -b bar_mode'
             notify-send -u low "Bar Mode" "Reload i3bar" --icon="$HOME/.config/i3/share/64x64/reload.png"
+            ;;
+        "bar_refresh_with_crontab")
+            # In `crontab -e`, add following line to refresh bar every hour
+            # 0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
+            # ENV varaible must be set since i3-msg communicates with i3wm via i3 IPC socket (associated with user's X session)
+            export DISPLAY=:0
+            export XAUTHORITY=$HOME/.Xauthority
+            # Point to run time directory for user-specific data e.g., socket
+            export XDG_RUNTIME_DIR=/run/user/$(id -u)
+            # i3-msg
+            i3-msg exec 'killall i3bar && sleep 0.5'
+            i3-msg exec 'i3bar -b bar_status && sleep 0.5'
+            i3-msg exec 'i3bar -b bar_mode'
+            notify-send -u low "Bar Mode" "Refresh i3bar w/ crontab" --icon="$HOME/.config/i3/share/64x64/reload.png"
             ;;
         *)
             show_wrong_usage_message

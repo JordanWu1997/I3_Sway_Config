@@ -132,9 +132,6 @@ keyboard_operation () {
             ;;
         # Default behavior
         'default')
-            # Speed up Repeat Key Rate
-            xset r rate 220 50
-            notify-send -u low "Keyboard Mode" "Speed up repeat key rate" --icon=${ICON}
             # Map Capslock to Ctrl
             setxkbmap -option "ctrl:nocaps"
             notify-send -u low "Keyboard Mode" "Map Caplock to Ctrl" --icon=${ICON}
@@ -144,6 +141,9 @@ keyboard_operation () {
             ## Swap BackSlash with BackSpace
             #xmodmap -e 'keycode 22 = backslash bar'; xmodmap -e 'keycode 51 = BackSpace'
             #notify-send -u low "Keyboard Mode" "Swap Backslash with Baskspace" --icon=${ICON}
+            # Speed up Repeat Key Rate
+            xset r rate 220 50
+            notify-send -u low "Keyboard Mode" "Speed up repeat key rate" --icon=${ICON}
             # Customize TEX Shinobi Trackpoint
             #DEVICE='USB-HID Keyboard Mouse' #DEVICE='TEX-BLE-KB-1 Mouse'
             DEVICE=$(xinput | grep -o 'TEX-BLE-KB-[0-9]\+ Mouse')

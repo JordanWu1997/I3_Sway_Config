@@ -93,13 +93,17 @@ bar_operation () {
             # ENV varaible must be set since i3-msg communicates with i3wm via i3 IPC socket (associated with user's X session)
             export DISPLAY=:0
             export XAUTHORITY=$HOME/.Xauthority
-            # Point to run time directory for user-specific data e.g., socket
-            export XDG_RUNTIME_DIR=/run/user/$(id -u)
             # i3-msg
             i3-msg exec 'killall i3bar && sleep 0.5'
             i3-msg exec 'i3bar -b bar_status && sleep 0.5'
             i3-msg exec 'i3bar -b bar_mode'
-            notify-send -u low "Bar Mode" "Refresh i3bar w/ crontab" --icon="$HOME/.config/i3/share/64x64/reload.png"
+            # Verbose
+            if [[ $2 == 'verbose' ]]; then
+                # Point to run time directory for user-specific data e.g., socket
+                export XDG_RUNTIME_DIR=/run/user/$(id -u)
+                notify-send -u low "Bar Mode" "Refresh i3bar w/ crontab" \
+                    --icon="$HOME/.config/i3/share/64x64/reload.png"
+            fi
             ;;
         *)
             show_wrong_usage_message

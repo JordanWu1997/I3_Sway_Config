@@ -114,4 +114,4 @@ bar_operation () {
 }
 
 # Main
-bar_operation $1
+bar_operation "$@"

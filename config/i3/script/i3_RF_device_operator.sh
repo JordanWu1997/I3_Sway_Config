@@ -16,6 +16,7 @@ show_help_message () {
     echo "  [disable_RF_device]: disable selected RF device"
     echo "  [connect_bluetooth_device]: connect to bluetooth device"
     echo "  [disconnect_bluetooth_device]: disconnect from bluetooth device"
+    echo "  [reconnect_bluetooth_device]: reconnect to bluetooth device"
     echo "  [enable_bluetooth_discoverability]: enable bluetooth discoverability"
     echo "  [disable_bluetooth_discoverability]: disable bluetooth discoverability"
 }
@@ -60,6 +61,18 @@ RF_device_operation () {
             if [[ -n ${BT_ADDR} ]]; then
                 notify-send -u low -a "Bluetooth" "Disconnecting from ${BT_NAME}" --icon=${ICON}
                 bluetoothctl disconnect ${BT_ADDR}
+            fi
+            ;;
+        'reconnect_bluetooth_device')
+            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Reconnect to Bluetooth Device")
+            BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
+            BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
+            if [[ -n ${BT_ADDR} ]]; then
+                notify-send -u low -a "Bluetooth" "Disconnecting to ${BT_NAME} (try to reconnect after 3 secs)" --icon=${ICON}
+                bluetoothctl disconnect ${BT_ADDR}
+                sleep 3
+                notify-send -u low -a "Bluetooth" "Reconnecting to ${BT_NAME}" --icon=${ICON}
+                bluetoothctl connect ${BT_ADDR}
             fi
             ;;
         'enable_bluetooth_discoverability')

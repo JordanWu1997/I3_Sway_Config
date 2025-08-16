@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
 #
 # Promotes the focused window by swapping it with the largest window.
 # Source code: https://aduros.com/blog/hacking-i3-window-promoting/

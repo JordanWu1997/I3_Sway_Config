@@ -250,7 +250,20 @@ resize_to_input_and_move_floating_to_input () {
         #    INPUT_HEIGHT=$(echo ${INPUTS} | cut -d',' -f2)
         #fi
 
-        INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
+        # Use pre-defined window geometry for both horizontal display and vertical display
+        ROFI_CONFIG="$HOME/.config/rofi/config_i3window_vertical.rasi"
+        WINDOW_GEOMETRY_TXT="$HOME/.config/i3/share/i3_window_geometry_vertical.txt"
+        PROMPT="Set Vertical WD TL_X,TL_Y,W,H to"
+        if (( ${WIDTH} > ${HEIGHT} )); then
+            WINDOW_GEOMETRY_TXT="$HOME/.config/i3/share/i3_window_geometry_horizontal.txt"
+            ROFI_CONFIG="$HOME/.config/rofi/config_i3window_horizontal.rasi"
+            PROMPT="Set Horizontal WD TL_X,TL_Y,W,H to"
+        fi
+        if [[ -f ${WINDOW_GEOMETRY_TXT} ]]; then
+            INPUTS=$(rofi -dmenu -input ${WINDOW_GEOMETRY_TXT} -config ${ROFI_CONFIG} -p "${PROMPT}")
+        else
+            INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to")
+        fi
         INPUT_X=$(echo ${INPUTS} | cut -d',' -f1)
         INPUT_Y=$(echo ${INPUTS} | cut -d',' -f2)
         INPUT_WIDTH=$(echo ${INPUTS} | cut -d',' -f3)

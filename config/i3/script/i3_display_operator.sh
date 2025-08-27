@@ -2,6 +2,7 @@
 
 # Get HDMI1 Parameter
 # NOTE: xrandr HDMI1 display information is added when HDMI1 is plugged
+eDP1_STATUS=$(xrandr | awk '$1~/eDP-?1/ {print $2}')
 HDMI1_STATUS=$(xrandr | awk '$1~/HDMI-?1/ {print $2}')
 HDMI1_STATUS_LEN=$(xrandr | awk '$1~/HDMI-?1/ {print NF}')
 HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
@@ -102,7 +103,8 @@ eDP1_shrink () {
 }
 
 auto_adjust () {
-    if [ "${HDMI1_STATUS}" == 'connected' ]; then
+    # Case 1: Laptop + HDMI Display
+    if [ "${eDP1_STATUS}" == 'connected' ] && [ "${HDMI1_STATUS}" == 'connected' ]; then
         # Rent: 520mm x 290mm, IOA 24': 520mm x 290mm
         if [ "${HDMI1_WIDTH}" == "520mm" ] && [ "${HDMI1_HEIGHT}" == "290mm" ]; then
             #notify-send -u low "Set Display Automatically" "IOA 24' connected" --icon="${ICON}"
@@ -148,10 +150,16 @@ auto_adjust () {
             notify-send -u low "Set Display Automatically" "External HDMI1 connected" --icon="${ICON}"
             xrandr --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
         fi
-    # Laptop display only
-    else
-        #notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected" --icon="${ICON}"
-        #xrandr --output "${eDP1}" --mode 1920x1080 --primary --output "${HDMI1}" --off
+    fi
+
+    # Case 2: Laptop only
+    if [ "${eDP1_STATUS}" == 'connected' ]; then
+        notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected" --icon="${ICON}"
+        xrandr --output "${eDP1}" --mode 1920x1080 --primary --output "${HDMI1}" --off
+    fi
+
+    # Case 3: No Laptop (PC at home 1 HDMI display + 2 DP displays)
+    if [ ! "${eDP1_status}" == 'connected' ]; then
         notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
         xrandr \
             --output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9:0.9:0.9 --primary \

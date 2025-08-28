@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 
-# Get HDMI1 Parameter
-# NOTE: xrandr HDMI1 display information is added when HDMI1 is plugged
+# ICON
+ICON="$HOME/.config/i3/share/64x64/monitor.png"
+
+# Get eDP1 paramter (for embedded device: e.g., laptop)
 eDP1_STATUS=$(xrandr | awk '$1~/eDP-?1/ {print $2}')
+
+# Get HDMI1 parameter
+# NOTE: xrandr HDMI1 display information is added when HDMI1 is plugged
 HDMI1_STATUS=$(xrandr | awk '$1~/HDMI-?1/ {print $2}')
 HDMI1_STATUS_LEN=$(xrandr | awk '$1~/HDMI-?1/ {print NF}')
 HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
 HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
 HDMI1_HEIGHT=$(xrandr | awk -v var="$HDMI1_HEIGHT_ID" '$1~/HDMI-?1/ {print $var}')
 HDMI1_WIDTH=$(xrandr | awk -v var="$HDMI1_WIDTH_ID" '$1~/HDMI-?1/ {print $var}')
-ICON="$HOME/.config/i3/share/64x64/monitor.png"
 
 # eDP-1, eDP1; HDMI-1, HDMI1
 if xrandr | grep eDP1 -q; then

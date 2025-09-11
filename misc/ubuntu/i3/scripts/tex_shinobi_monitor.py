@@ -21,7 +21,7 @@ import dbus
 import dbus.mainloop.glib
 from gi.repository import GLib
 
-DEVICE_MAC = "EB:5E:7E:62:62:AB"
+DEVICE_MAC = "D9:5A:24:D8:B5:77"
 RUN_SCRIPT = "/home/jordan/.config/i3/script/i3_keyboard_operator.sh"
 SCRIPT_OPS = ["default"]
 

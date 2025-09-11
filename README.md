@@ -547,7 +547,7 @@ Note: the term "window" used in this configuration actually refers to "container
   - `4`: [Htop (system monitor)](https://htop.dev/)
   - `5`: [Nmtui (network manager)](https://developer.gnome.org/NetworkManager/stable/nmtui.html)
   - `6`: [Cava (audio visualizer)](https://github.com/karlstav/cava)
-  - `7`: [Spt (spotify-tui)](https://github.com/Rigellute/spotify-tui)
+  - `7`: [Nvtop (nvidia gpu monitor)](https://github.com/Syllo/nvtop)
   - `8`: [Zathura (document viewer)](https://github.com/pwmt/zathura)
   - `9`: [Blueman (bluetooth manager)](https://github.com/blueman-project/blueman)
   - `0`: [Nautilus (GUI file manager)](https://wiki.gnome.org/action/show/Apps/Files?action=show&redirect=Apps%2FNautilus)

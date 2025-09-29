@@ -85,6 +85,13 @@ reload_misc () {
     "$I3_SCRIPT/i3_picom_operator.sh" default
 }
 
+HDMI0_shrink () {
+    # Create new mode
+    xrandr --newmode "1440x810_60.00"  95.04  1440 1512 1664 1888  810 811 814 839  -HSync +Vsync
+    # Add new mode to HDMI1
+    xrandr --addmode "HDMI-0" "1440x810_60"
+}
+
 HDMI1_shrink () {
     # Create new mode
     xrandr --newmode "1912x960_60.00"  152.20  1912 2024 2232 2552  960 961 964 994  -HSync +Vsync

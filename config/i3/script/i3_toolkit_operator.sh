@@ -42,7 +42,10 @@ toolkit_operation () {
             ;;
         'pickup_color')
             notify-send -t 1500 -u low "Toolkit Mode" "Select Color on Screen" --icon="${ICON}"
-            COLOR=$(xcolor --format 'HEX' -S 3)
+            # Pickup color (requires xcolor, and xclip or xsel)
+            #COLOR=$(xcolor --format 'HEX' -S 3)
+            # Pickup color (requires gpick and xclip or xsel)
+            COLOR=$(gpick --single --no-start --output)
             echo "${COLOR}" | xsel -i
             notify-send -u low "Toolkit Mode" "Pickup Color: ${COLOR}" --icon="${ICON}"
             ;;

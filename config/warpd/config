@@ -9,7 +9,8 @@ exit: C-[ esc C-c Return A-m C-w
 # Screen
 screen: q p quotedbl
 #screen_chars: uiopjkl;m,./
-screen_chars: 1234567890qwertyuiop
+#screen_chars: 1234567890qwertyuiop
+screen_chars: uiojklm,.
 
 # Normal
 left: h Left

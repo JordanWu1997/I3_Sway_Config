@@ -48,10 +48,11 @@ i3lock_operator () {
             i3lock -n -t -f -i ${CURRENT_PNG}
             ;;
         "current_desktop")
-            DESKTOP_IMAGE="$HOME/.config/i3/share/i3lock_screen.png"
-            flameshot full --path ${DESKTOP_IMAGE} &> /dev/null
+            DESKTOP_IMAGE="/tmp/i3lock_screen.png"
+            #flameshot full --path ${DESKTOP_IMAGE} &> /dev/null
+            gnome-screenshot --file=${DESKTOP_IMAGE} &> /dev/null
             convert ${DESKTOP_IMAGE} -blur "0x10" ${DESKTOP_IMAGE}
-            i3lock -i ${DESKTOP_IMAGE}
+            i3lock -n -t -f -i ${DESKTOP_IMAGE} && rm ${DESKTOP_IMAGE}
             ;;
         *)
             show_wrong_usage_message

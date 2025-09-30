@@ -61,7 +61,7 @@ reload_Xresources  () {
 }
 
 reload_xsslock () {
-    "$I3_SCRIPT/i3_xsslock_operator.sh" current
+    "$I3_SCRIPT/i3_xsslock_operator.sh" current_desktop
     notify-send -u low "Reload Mode" "Reload xsslock (session lock)" --icon="${ICON}"
 }
 

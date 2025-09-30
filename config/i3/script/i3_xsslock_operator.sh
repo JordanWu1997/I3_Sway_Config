@@ -13,8 +13,8 @@ show_help_message () {
     echo ""
     echo "OPERATIONS"
     echo "  [default]: start xsslock with default wallpaper"
-    echo "  [current_default]: start xsslock with current default wallpaper"
-    echo "  [current]: start xsslock with current wallpaper"
+    echo "  [current_default_wallpaper]: start xsslock with current default wallpaper"
+    echo "  [current_wallpaper]: start xsslock with current wallpaper"
 }
 
 xsslock_operation () {
@@ -22,11 +22,11 @@ xsslock_operation () {
         "default")
             i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_default"
             ;;
-        "current_default")
-            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_default"
+        "current_default_wallpaper")
+            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_default_wallpaper"
             ;;
-        "current")
-            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current"
+        "current_wallpaper")
+            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_wallpaper"
             ;;
         *)
             show_wrong_usage_message

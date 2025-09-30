@@ -18,8 +18,9 @@ show_help_message () {
     echo ""
     echo "OPERATIONS"
     echo "  [default]: start i3lock with default wallpaper"
-    echo "  [current_default]: start i3lock with current default wallpaper"
-    echo "  [current]: start i3lock iwth current wallpaper"
+    echo "  [current_default_wallpaper]: start i3lock with current default wallpaper"
+    echo "  [current_wallpaper]: start i3lock with current wallpaper"
+    echo "  [current_desktop]: start i3lock with current desktop screenshot"
 }
 
 i3lock_operator () {
@@ -27,14 +28,14 @@ i3lock_operator () {
         "default")
             i3lock -n -t -f -i ${DEFAULT}
             ;;
-        "current_default")
+        "current_default_wallpaper")
             # If there is no current default, copy default from an existing default wallpaper
             [ ! -f ${CURRENT_DEFAULT} ] && cp ${DEFAULT} ${CURRENT_DEFAULT}
             # If current default file extension does not end with png, convert it to a png file
             [ ! -f ${CURRENT_DEFAULT}.png ] && mogrify -resize ${IMAGESIZE} -format png ${CURRENT_DEFAULT}
             i3lock -n -t -f -i ${CURRENT_DEFAULT}
             ;;
-        "current")
+        "current_wallpaper")
             if ( file ${CURRENT} | grep -q PNG ); then
                 CURRENT_PNG=${CURRENT}
             elif [[ -f ${CURRENT}.png ]]; then
@@ -45,6 +46,12 @@ i3lock_operator () {
                 CURRENT_PNG="$(dirname ${CURRENT})/$(basename ${CURRENT} | cut -d'.' -f1).png"
             fi
             i3lock -n -t -f -i ${CURRENT_PNG}
+            ;;
+        "current_desktop")
+            DESKTOP_IMAGE="$HOME/.config/i3/share/i3lock_screen.png"
+            flameshot full --path ${DESKTOP_IMAGE} &> /dev/null
+            convert ${DESKTOP_IMAGE} -blur "0x10" ${DESKTOP_IMAGE}
+            i3lock -i ${DESKTOP_IMAGE}
             ;;
         *)
             show_wrong_usage_message

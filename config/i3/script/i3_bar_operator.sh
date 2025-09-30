@@ -91,7 +91,8 @@ bar_operation () {
             # In `crontab -e`, add following line to refresh bar every hour
             # 0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
             # ENV varaible must be set since i3-msg communicates with i3wm via i3 IPC socket (associated with user's X session)
-            export DISPLAY=:0
+            #export DISPLAY=:0
+            export DISPLAY=:1
             export XAUTHORITY=$HOME/.Xauthority
             # i3-msg
             i3-msg exec 'killall i3bar && sleep 0.5'

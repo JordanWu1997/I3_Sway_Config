@@ -22,7 +22,9 @@ import dbus.mainloop.glib
 from gi.repository import GLib
 
 DEVICE_MAC = "D9:5A:24:D8:B5:77"
+DISPLAY = ":1"
 # DEVICE_MAC = "CF:06:C8:15:7D:E1"
+# DISPLAY = ":0"
 RUN_SCRIPT = "/home/jordan/.config/i3/script/i3_keyboard_operator.sh"
 SCRIPT_OPS = ["default"]
 
@@ -34,9 +36,8 @@ def properties_changed(interface, changed, invalidated, path):
         if changed["Connected"]:
             if DEVICE_MAC.replace(":", "_") in path:
                 print(f"Device {DEVICE_MAC} connected. Running script.")
-
                 env = os.environ.copy()
-                env["DISPLAY"] = ":0"
+                env["DISPLAY"] = DISPLAY
                 env["XAUTHORITY"] = "/home/jordan/.Xauthority"
                 # Need time for device connection to be stablized
                 time.sleep(0.5)

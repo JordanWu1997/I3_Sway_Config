@@ -3,6 +3,12 @@
 COL_WAL=$(expr $(awk '$0~/Startup-Wal/{print NR}' ~/.config/i3/config) + 1)
 ICON="$HOME/.config/i3/share/64x64/paint_palette.png"
 
+# Parse input arguments
+OPERATION=$1
+shift
+WAL_OPTIONS=$@
+WAL_OPTIONS_ESCAPE=$(echo $WAL_OPTIONS | sed 's/\-/\\\-/g')
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -22,20 +28,20 @@ show_help_message () {
 }
 
 wal_operation () {
-    case $1 in
+    case $OPERATION in
         "enable_16_color_wal")
             # Enable 16 color
-            awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg" | xargs -I {} wal -i {}
+            awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg" | xargs -I {} wal -i {} ${WAL_OPTIONS}
             # Set default pywal
-            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
-            notify-send -u low "Theme Mode" "Auto-theme with pywal (16-color)" --icon=${ICON}
+            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal ${WAL_OPTIONS_ESCAPE} \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
+            notify-send -u low "Theme Mode" "Auto-theme with pywal (16-color) ${WAL_OPTIONS}" --icon=${ICON}
             ;;
         "enable_9_color_wal")
             # Enable 9 color
-            awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg" | xargs -I {} wal -i {} --nine
+            awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg" | xargs -I {} wal -i {} --nine ${WAL_OPTIONS}
             # Set default pywal
-            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal \-\-nine \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
-            notify-send -u low "Theme Mode" "Auto-theme with pywal (9-color)" --icon=${ICON}
+            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal \-\-nine ${WAL_OPTIONS_ESCAPE} \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
+            notify-send -u low "Theme Mode" "Auto-theme with pywal (9-color) ${WAL_OPTIONS}" --icon=${ICON}
             ;;
         "disable_wal")
             # Remove pywal result
@@ -61,4 +67,4 @@ wal_operation () {
 }
 
 # Main
-wal_operation $1
+wal_operation $OPERATION

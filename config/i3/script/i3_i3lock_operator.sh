@@ -4,6 +4,7 @@ DEFAULT="$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 CURRENT_DEFAULT="$HOME/.config/i3/share/default_wallpaper"
 CURRENT=$(head -n 2 "$HOME/.fehbg" | tail -n 1 | cut -d"'" -f2)
 IMAGESIZE="1920x1080"
+BLUR="0x10"
 
 # Wrong message
 show_wrong_usage_message () {
@@ -51,7 +52,7 @@ i3lock_operator () {
             DESKTOP_IMAGE="/tmp/i3lock_screen.png"
             #flameshot full --path ${DESKTOP_IMAGE} &> /dev/null
             gnome-screenshot --file=${DESKTOP_IMAGE} &> /dev/null
-            convert ${DESKTOP_IMAGE} -blur "0x10" ${DESKTOP_IMAGE}
+            convert ${DESKTOP_IMAGE} -blur ${BLUR} ${DESKTOP_IMAGE}
             i3lock -n -t -f -i ${DESKTOP_IMAGE} && rm ${DESKTOP_IMAGE}
             ;;
         *)

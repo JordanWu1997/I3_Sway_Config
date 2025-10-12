@@ -180,7 +180,7 @@ auto_adjust () {
             #--output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
         # For better wallpaper display
         xrandr \
-            --output "DP-1" --mode 1920x1080 --pos 0x0 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
+            --output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
             --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1360 --rotate normal --brightness 1.0:1.0:1.0 \
             --output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
         return

@@ -31,7 +31,8 @@ scroll_down: ,
 grid: '
 grid_exit: C-[ esc C-c Return ' A-m C-w
 grid_nr: 3
-grid_nc: 5
+#grid_nc: 5
+grid_nc: 4
 grid_left: h
 grid_down: j
 grid_up: k
@@ -40,7 +41,8 @@ grid_cut_left: H
 grid_cut_down: J
 grid_cut_up: K
 grid_cut_right: L
-grid_keys: q w e r t a s d f g z x c v b
+#grid_keys: q w e r t a s d f g z x c v b
+grid_keys: q w e r a s d f z x m v
 grid_color: FFFFFF
 grid_border_color: 000000
 grid_size: 3

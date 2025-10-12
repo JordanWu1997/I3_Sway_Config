@@ -68,9 +68,9 @@ RF_device_operation () {
             BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
             BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
             if [[ -n ${BT_ADDR} ]]; then
-                notify-send -u low -a "Bluetooth" "Disconnecting to ${BT_NAME} (try to reconnect after 3 secs)" --icon=${ICON}
+                notify-send -u low -a "Bluetooth" "Disconnecting to ${BT_NAME} (try to reconnect after 1 sec)" --icon=${ICON}
                 bluetoothctl disconnect ${BT_ADDR}
-                sleep 1.5
+                sleep 1.0
                 notify-send -u low -a "Bluetooth" "Reconnecting to ${BT_NAME}" --icon=${ICON}
                 bluetoothctl connect ${BT_ADDR}
             fi

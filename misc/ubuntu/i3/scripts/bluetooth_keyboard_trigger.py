@@ -66,7 +66,7 @@ def get_keyboard_address(keyboard_keyword='HHKB'):
         return None
 
 
-def properties_changed(interface, changed, invalidated_props, path):
+def properties_changed(interface, changed, invalidated_props, path=None):
     if interface != "org.bluez.Device1":
         return
     if "Connected" in changed:

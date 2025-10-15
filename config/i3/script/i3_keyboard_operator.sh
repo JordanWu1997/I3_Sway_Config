@@ -145,12 +145,13 @@ keyboard_operation () {
             xset r rate 220 50
             notify-send -u low "Keyboard Mode" "Speed up repeat key rate" --icon=${ICON}
             # Customize TEX Shinobi Trackpoint
-            #DEVICE='USB-HID Keyboard Mouse' #DEVICE='TEX-BLE-KB-1 Mouse'
-            DEVICE=$(xinput | grep -o 'TEX-BLE-KB-[0-9]\+ Mouse')
-            xinput set-prop "${DEVICE}" 315 0
-            xinput set-prop "${DEVICE}" 329 0 1 0
-            xinput set-prop "${DEVICE}" 326 0.80
-            notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
+            TEX_DEVICE=$(xinput | grep -o 'TEX-BLE-KB-[0-9]\+ Mouse')
+            if [[ -n ${TEX_DEVICE} ]]; then
+                xinput set-prop "${TEX_DEVICE}" 315 0
+                xinput set-prop "${TEX_DEVICE}" 329 0 1 0
+                xinput set-prop "${TEX_DEVICE}" 326 0.80
+                notify-send -u low "Keyboard Mode" "Customize TEX Shinobi (Trackpoint)" --icon=${ICON}
+            fi
             ;;
         *)
             show_wrong_usage_message

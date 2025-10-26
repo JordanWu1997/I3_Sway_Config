@@ -158,7 +158,7 @@ auto_adjust () {
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x390 --rotate normal
         # Other HDMI:
         else
-            notify-send -u low "Set Display Automatically" "External HDMI1 connected" --icon="${ICON}"
+            notify-send -u low "Set Display Automatically" "External ${HDMI1} connected" --icon="${ICON}"
             xrandr --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
         fi
         return
@@ -166,8 +166,13 @@ auto_adjust () {
 
     # Case 2: Laptop only
     if [ "${eDP1_STATUS}" == 'connected' ]; then
-        notify-send -u low "Set Display Automatically" "No HDMI1 connected, eDP1 connected" --icon="${ICON}"
-        xrandr --output "${eDP1}" --mode 1920x1080 --primary --output "${HDMI1}" --off
+        notify-send -u low "Set Display Automatically" "${eDP1} connected. Disable all other displays" --icon="${ICON}"
+        DISPLAYS=$(xrandr | grep -v eDP | grep -e DP -e HDMI | cut -d' ' -f1)
+        for DISPLAY in ${DISPLAYS[@]}; do
+            xrandr --output ${DISPLAY} --off
+            sleep 0.1
+        done
+        xrandr --output "${eDP1}" --mode 1920x1080 --primary
         return
     fi
 

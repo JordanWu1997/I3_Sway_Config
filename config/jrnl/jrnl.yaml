@@ -1,0 +1,19 @@
+colors:
+  body: none
+  date: none
+  tags: none
+  title: none
+default_hour: 9
+default_minute: 0
+editor: /usr/bin/nvim
+encrypt: false
+highlight: true
+indent_character: '|'
+journals:
+  default:
+    journal: $HOME/Documents/JRNL/journal.txt
+linewrap: false
+tagsymbols: '#@'
+template: false
+timeformat: '%Y-%m-%d %H:%M:%S'
+version: v4.2.1

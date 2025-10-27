@@ -168,8 +168,8 @@ auto_adjust () {
     if [ "${eDP1_STATUS}" == 'connected' ]; then
         notify-send -u low "Set Display Automatically" "${eDP1} connected. Disable all other displays" --icon="${ICON}"
         DISPLAYS=$(xrandr | grep -v eDP | grep -e DP -e HDMI | cut -d' ' -f1)
-        for DISPLAY in ${DISPLAYS[@]}; do
-            xrandr --output ${DISPLAY} --off
+        for display in ${DISPLAYS[@]}; do
+            xrandr --output ${display} --off
             sleep 0.1
         done
         xrandr --output "${eDP1}" --mode 1920x1080 --primary

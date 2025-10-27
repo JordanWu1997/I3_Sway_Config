@@ -31,6 +31,7 @@ show_help_message () {
     echo "  [move_container]: move current window and focus to selected workspace"
     echo "  [move_container_not_focus]: move current window but not focus to selected workspace"
     echo "  [move_container_with_input]: move current window and focus to input workspace"
+    echo "  [move_workspace_and_focus]: move workspace and focus to output display"
     echo "  [swap]: swap current workspace with selected workspace"
     echo "  [kill]: kill selected workspace"
     echo "  [save]: save layout in selected workspace"
@@ -117,6 +118,14 @@ workspace_operation () {
                 i3-msg move container to workspace ${WS}
                 i3-msg workspace back_and_forth
             fi
+            ;;
+        "move_workspace_and_focus")
+            # Load current workspace
+            CURRENT_WS_NUM=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
+                tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+            CURRENT_WS_NAME="${WS_ARRAY[$(( ${CURRENT_WS_NUM} - 1))]}"; sleep 0.05
+            i3-msg move workspace to output $2; sleep 0.1
+            i3-msg workspace ${CURRENT_WS_NAME}
             ;;
         "swap")
             i3-msg bar hidden_state show bar_mode

@@ -31,6 +31,7 @@ show_help_message () {
     echo "  [move_container]: move current window and focus to selected workspace"
     echo "  [move_container_not_focus]: move current window but not focus to selected workspace"
     echo "  [move_container_with_input]: move current window and focus to input workspace"
+    echo "  [move_container_to_output]: move current window and focus to input output"
     echo "  [move_workspace_and_focus]: move workspace and focus to output display"
     echo "  [swap]: swap current workspace with selected workspace"
     echo "  [kill]: kill selected workspace"
@@ -107,7 +108,7 @@ workspace_operation () {
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
                 i3-msg move container to workspace ${WS}
-                i3-msg workspace back_and_forth
+                i3-msg workspace ${WS}
             fi
             ;;
         "move_container_with_input")
@@ -116,8 +117,12 @@ workspace_operation () {
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
                 i3-msg move container to workspace ${WS}
-                i3-msg workspace back_and_forth
+                i3-msg workspace ${WS}
             fi
+            ;;
+        "move_container_to_output")
+            i3-msg move container to output $2; sleep 0.1
+            i3-msg focus output $2
             ;;
         "move_workspace_and_focus")
             # Load current workspace

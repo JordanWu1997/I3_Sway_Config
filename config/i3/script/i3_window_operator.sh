@@ -151,6 +151,7 @@ move_floating_to_input () {
     else
         # Add border offset
         INPUT_X=$(expr ${WINDOW_X} - ${BORDER_WIDTH})
+        INPUT_X=$(expr ${INPUT_X} - ${BORDER_WIDTH})
     fi
 
     # INPUT_Y
@@ -169,6 +170,7 @@ move_floating_to_input () {
     else
         # Add border offset
         INPUT_Y=$(expr ${WINDOW_Y} - ${BORDER_WIDTH})
+        INPUT_Y=$(expr ${INPUT_Y} - ${BORDER_WIDTH})
     fi
 
     # Move window location to X, Y (Note: x, y here mean x, y of top-left corner of titlebar)
@@ -320,6 +322,7 @@ resize_to_input_and_move_floating_to_input () {
         fi
         # Add workspace offset
         INPUT_X=$(expr ${INPUT_X} + ${X})
+        #INPUT_X=$(printf "%.0f" $(echo "scale=3; ${INPUT_X} - ${BORDER_WIDTH}" | bc -l))
     fi
 
     # INPUT_Y
@@ -335,6 +338,7 @@ resize_to_input_and_move_floating_to_input () {
         fi
         # Add workspace offset
         INPUT_Y=$(expr ${INPUT_Y} + ${Y})
+        #INPUT_Y=$(printf "%.0f" $(echo "scale=3; ${INPUT_Y} - ${BORDER_WIDTH}" | bc -l))
     fi
 
     # Move window location to X, Y (Note: x, y here mean x, y of top-left corner of titlebar)

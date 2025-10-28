@@ -22,6 +22,7 @@ show_help_message () {
     echo "OPERATIONS"
     echo "  [enable]: enable automark"
     echo "  [disable]: disable automark"
+    echo "  [reload]: reload automark"
     echo "  [cycle_focus_inc]: change focus to next increasingly-automarked window"
     echo "  [cycle_focus_dec]: change focus to next decreasingly-automarked window"
     echo "  [cycle_swap_inc]: swap window with next increasingly-automarked window"

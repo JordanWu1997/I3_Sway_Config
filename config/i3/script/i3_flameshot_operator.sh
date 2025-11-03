@@ -35,11 +35,21 @@ select_region () {
             Y=$((Y + HALFWIDTH))
             HEIGHT=$((HEIGHT - FULLHEIGHT))
             X=$((X + HALFHEIGHT))
+            # MINUS border width
+            CURRENT_WD_BORDER_WIDTH=$(i3-msg -t get_tree | jq '.. | select(.focused? == true) | .current_border_width')
+            Y=$((Y - CURRENT_WD_BORDER_WIDTH))
+            X=$((X - CURRENT_WD_BORDER_WIDTH))
+            # Region
             REGION="${WIDTH}x${HEIGHT}+${X}+${Y}"
             ;;
         "select_window")
             # Let the user select a window and get its geometry
             eval $(xdotool selectwindow getwindowgeometry --shell)
+            # MINUS border width
+            CURRENT_WD_BORDER_WIDTH=$(i3-msg -t get_tree | jq '.. | select(.focused? == true) | .current_border_width')
+            Y=$((Y - CURRENT_WD_BORDER_WIDTH))
+            X=$((X - CURRENT_WD_BORDER_WIDTH))
+            # Region
             REGION="${WIDTH}x${HEIGHT}+${X}+${Y}"
             ;;
         "current_screen")

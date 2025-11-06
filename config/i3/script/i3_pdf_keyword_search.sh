@@ -43,6 +43,10 @@ search_and_open () {
     # Split keywords separated by comma (,)
     IFS=',' read -r -a keywords <<< "$keywords"
 
+    # Set the PDF viewer name for the kill command logic
+    # This might need adjustment if the process name differs from $PDF_VIEWER
+    local viewer_pname=$(basename "$PDF_viewer")
+
     # Loop through pdf files (including files contain space or other special characters)
     count = 0
     find ${input_dir} -iname '*.pdf' -print0 | while IFS= read -r -d '' file; do
@@ -68,18 +72,59 @@ search_and_open () {
         # If all keywords are matched
         if ${all_matched}; then
             echo [INFO] ${keywords[@]} are all found in ${file} ...
-            echo [INFO] Opening ${SEARCH_TEXT} ...
-
-            # Open file with sioyek
-            i3-msg layout stacking
-            if ${show_all_at_once}; then
-                $PDF_viewer ${file} &
-            else
-                $PDF_viewer ${file}
-            fi
 
             # Update count
             count=$(expr ${count} + 1)
+
+            # Switch layout for titlebar
+            i3-msg layout stacking
+
+            # Skip the interactive prompt if showing all at once
+            if ${show_all_at_once}; then
+                echo "[INFO] Opening ${SEARCH_TEXT} ..."
+                echo "[INFO] Showing all at once, skipping interactive prompt."
+                $PDF_viewer ${file} &
+                continue
+            fi
+
+            # Open file. Using '&' for background opening for all_at_once or if
+            echo [INFO] "Opening ${SEARCH_TEXT} ..."
+            $PDF_viewer "${file}" &
+            local pdf_pid=$! # Capture the PID of the viewer process
+
+            # The --action flag takes an 'id,label'. The command outputs the chosen 'id'.
+            local choice
+            choice=$(dunstify \
+                --action="keep,Keep Open" \
+                --action="close,Close File" \
+                --action="end,End Search" \
+                --icon="info" \
+                --timeout=0 \
+                "PDF Found (${count}/${max_num})" \
+                "Keywords: ${keywords[@]} found in $(basename "${file}")"
+            )
+
+            # Actions
+            case "$choice" in
+                "keep")
+                    echo "[INFO] Keeping file open and continuing search."
+                    ;;
+                "close")
+                    echo "[INFO] Closing file and continuing search."
+                    # Kill the specific viewer process for this file
+                    kill -TERM $pdf_pid 2>/dev/null
+                    ;;
+                "end")
+                    echo "[INFO] Ending search process."
+                    # Kill the specific viewer process for this file and break
+                    kill -TERM $pdf_pid 2>/dev/null
+                    break # Break out of the while loop
+                    ;;
+                *)
+                    # Default case if the notification times out or is closed without action
+                    echo "[INFO] Notification closed without action. Continuing search."
+                    ;;
+            esac
 
             # Break if count reaches maximum
             if [[ ${max_num} -ge 1 ]] && [[ ${count} -ge ${max_num} ]]; then

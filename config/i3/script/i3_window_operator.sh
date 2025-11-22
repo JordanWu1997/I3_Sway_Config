@@ -370,7 +370,7 @@ window_operation () {
             BORDER_WIDTH=$(awk '$0~/default_border_width/ {print $3}' ${I3_CONFIG})
             # Open an empty window to occupy the space to keep the tiling layout in tact
             CURRENT_FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep ${CURRENT_WINDOW_ID} -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
-            if [[ ! ${CURRENT_FLOATING_STATUS} == '"user_on"' ]]; then
+            if [[ ! ${CURRENT_FLOATING_STATUS} == '"user_on"' ]] && [[ $2 == "with_placeholder" ]]; then
                 i3-msg open
             fi
             # Floating

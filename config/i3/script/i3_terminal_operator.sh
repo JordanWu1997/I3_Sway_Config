@@ -18,6 +18,7 @@ show_help_message () {
     echo "  [set_default_terminal]: set up default terminal to use in i3 environment"
     echo "  [attach_to_tmux_session]: create new terminal and attach to tmux session"
     echo "  [attach_to_selected_tmux_session]: create new terminal terminal and attach to selected tmux session"
+    echo "  [close_terminal_and_capture_tmux_cmd]: close terminal and copy tmux cmd if there is one"
 }
 
 attach_to_tmux_session () {
@@ -26,10 +27,14 @@ attach_to_tmux_session () {
     fi
     TERMINAL=$(grep -m 1 -w '^set $terminal' ${I3_CONFIG} 2> /dev/null | cut -d' ' -f 3-)
     TERMINAL=${TERMINAL:-kitty}
+    TERMINAL_OPTIONS=""
+    if [[ $2 == 'floating' ]]; then
+        TERMINAL_OPTIONS="${TERMINAL_OPTIONS} --class floating_terminal"
+    fi
     if $(tmux list-sessions | grep -q -w $1); then
-        i3-msg exec "${TERMINAL} --class floating_terminal -- tmux attach -t $1"
+        i3-msg exec "${TERMINAL} ${TERMINAL_OPTIONS} -- tmux attach -t $1"
     else
-        i3-msg exec "${TERMINAL} --class floating_terminal -- $1"
+        i3-msg exec "${TERMINAL} ${TERMINAL_OPTIONS} -- $1"
     fi
 }
 
@@ -57,16 +62,39 @@ terminal_operation () {
             notify-send -u low "i3 Terminal Operator" "Default terminal is set to $NEW_TERMINAL" --icon="${ICON}"
             ;;
         "attach_to_tmux_session")
-            attach_to_tmux_session $2
+            attach_to_tmux_session $2 $3
             ;;
         "attach_to_selected_tmux_session")
+            PROMPT="Attatch to TMUX session"
+            if [[ $2 == 'tiling' ]]; then
+                PROMPT="${PROMPT} [TILING]"
+            else
+                PROMPT="${PROMPT} [FLOATING]"
+            fi
             SESSION=$(tmux list-sessions | \
                 rofi -dmenu -config "$HOME/.config/rofi/config_singlecol.rasi" \
-                -p "TMUX session" -i -auto-select | awk -F: '{print $1}')
+                -p "${PROMPT}" -i -auto-select | awk -F: '{print $1}')
             if [[ -z "${SESSION}" ]]; then
                 return
             fi
-            attach_to_tmux_session ${SESSION}
+            attach_to_tmux_session ${SESSION} $2
+            ;;
+        "close_terminal_and_capture_tmux_cmd")
+            # Get window ID and name
+            FOCUS_XPROP_WD_ID=$(xprop -root | grep -E '_NET_ACTIVE_WINDOW\b' | awk '{print $NF}' | awk 'NR==1')
+            FOCUS_WD_NAME=$(xprop -id ${FOCUS_XPROP_WD_ID} | grep 'WM_NAME(STRING)')
+            FOCUS_WD_ID=$(xdotool getwindowfocus)
+            # Kill previously focused terminal with tmux session
+            i3-msg "[id=${FOCUS_WD_ID}] kill"
+            # If tmux session is on the focused terminal
+            TMUX_SESSION_NAME=$(echo ${FOCUS_WD_NAME} | cut -d= -f2 |  cut -d\" -f2 | cut -d' ' -f2 | cut -d\| -f2)
+            tmux list-sessions -F '#S' | grep -q -x -E "$TMUX_SESSION_NAME"
+            # Get attached TMUX session name
+            if [ $? -eq 0 ]; then
+                echo "tmux a -t ${TMUX_SESSION_NAME}" | xclip -i
+            else
+                echo ${FOCUS_WD_NAME} | cut -d= -f2 |  cut -d\" -f2 | xclip -i
+            fi
             ;;
         *)
             show_wrong_usage_message

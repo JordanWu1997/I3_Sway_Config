@@ -4,7 +4,7 @@ DEFAULT="$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 CURRENT_DEFAULT="$HOME/.config/i3/share/default_wallpaper"
 CURRENT=$(head -n 2 "$HOME/.fehbg" | tail -n 1 | cut -d"'" -f2)
 IMAGESIZE="1920x1080"
-BLUR="0x10"
+BLUR="0x12"
 
 # Wrong message
 show_wrong_usage_message () {

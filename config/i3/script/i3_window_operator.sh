@@ -111,10 +111,10 @@ move_floating_to_input () {
     # Get current window floating status
     FLOATING_STATUS=$(i3-msg -t get_tree | tr \} '\n' | grep ${FOCUS_WINDOW_ID} -A13 | tr \, '\n' | grep '"floating":' | grep 'user_' | cut -d: -f2)
 
-    # If window is not floating -> return
-    if [[ ! ${FLOATING_STATUS} == '"user_on"' ]]; then
-        return
-    fi
+    ## If window is not floating -> return
+    #if [[ ! ${FLOATING_STATUS} == '"user_on"' ]]; then
+    #    return
+    #fi
 
     # Get default window border width
     I3_CONFIG="$HOME/.config/i3/config"

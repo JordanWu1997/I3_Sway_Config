@@ -7,13 +7,13 @@ BATTERY_DIR="/sys/class/power_supply/BAT0"
 
 # --- Error Handling & Setup ---
 if [ ! -d "$BATTERY_DIR" ]; then
-    notify-send "Battery Status Error" "Device directory $BATTERY_DIR not found. Check BAT0 or BAT1." -u critical
+    notify-send -u critical "Battery Status Error" "Device directory $BATTERY_DIR not found. Check BAT0 or BAT1."
     exit 1
 fi
 
 STATUS=$(cat "$BATTERY_DIR/status" 2>/dev/null)
 if [ "$STATUS" == "Unknown" ] || [ -z "$STATUS" ]; then
-    notify-send "Battery Status Error" "Could not read battery status or battery not present." -u critical
+    notify-send -u critical "Battery Status Error" "Could not read battery status or battery not present."
     exit 1
 fi
 

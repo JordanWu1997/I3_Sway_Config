@@ -152,5 +152,10 @@ automark_operation () {
     esac
 }
 
+# Auto reload daemon if it is not running
+if [[ ! $1 == 'disable' ]] && [[ ! $1 == 'reload' ]]; then
+    ps -aux | grep "python3 $I3_SCRIPT/i3_automark_daemon.py" | grep -q -v 'grep' || python3 $I3_SCRIPT/i3_automark_daemon.py
+fi
+
 # Main
 automark_operation $1

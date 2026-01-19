@@ -26,6 +26,12 @@ source ~/.bash_aliases
 # Fish-only Alias Init
 # ============================================================================
 
+# User-defined alias
+#alias cp='advcp -i -v -g'
+#alias mv='advmv -i -v'
+alias vimwiki='nvim -c :VimwikiIndex'
+alias man='/home/jordan/Desktop/Vim_Tmux_Config/bin/viman.sh'
+
 alias if_fish_login_shell='status --is-login; and echo yes; or echo no'
 alias if_fish_interactive_shell='status --is-interactive; and echo yes; or echo no'
 alias zkill="kill (ps aux | fzf | awk '{print $2}')"
@@ -104,19 +110,22 @@ end
 
 # User-defined Keybindings
 function fish_user_key_bindings
-    fzf_key_bindings
+    fzf_key_bindings # Requires fzf installed [apt install fzf]
     bind ! bind_bang
     bind '$' bind_dollar
 end
 
 # ============================================================================
-# Startup Command
+# Command to run in interactive sessions can go here
 # ============================================================================
 
-# Starship
-command -v starship | starship init fish | source
-
-# Update TMUX port automatically
-if set -q TMUX
-    tmux_update_display
+if status is-interactive
+    # Panes
+    panes
+    # Starship
+    starship init fish | source
+    # Update TMUX port automatically
+    if set -q TMUX
+        tmux_update_display
+    end
 end

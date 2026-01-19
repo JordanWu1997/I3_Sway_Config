@@ -116,7 +116,7 @@ USER_CONFIG_LIST=( \
     bumblebee-status cava conky dunst feh flashfocus glow htop \
     i3 kitty Kvantum ncspot neofetch parcellite picom ranger rofi \
     spotify-tui vis zathura mpv sioyek \
-    libinput-gestures.conf starship.toml \
+    libinput-gestures.conf warpd starship.toml \
 )
 
 section2_greetings () {
@@ -278,15 +278,15 @@ install_xwindow_tool_packages () {
     sudo apt install -y xdotool numlockx screenkey
     sudo apt install -y x11-xserver-utils
     # System monitor: conky
-    sudo apt install -y conky
+    sudo apt install -y conky-all
     ## Touchpad: libinput-gestures
-    #sudo apt install wmctrl xdotool
-    #cd "$HOME/Desktop"
-    #git clone https://github.com/bulletmark/libinput-gestures.git
-    #cd libinput-gestures
-    #sudo ./libinput-gestures-setup install
-    ## libinput-gestures requires user to be in the group input
-    #sudo gpasswd -a "$USER" input
+    sudo apt install -y wmctrl xdotool
+    cd "$HOME/Desktop"
+    git clone https://github.com/bulletmark/libinput-gestures.git
+    cd libinput-gestures
+    sudo ./libinput-gestures-setup install
+    # libinput-gestures requires user to be in the group input
+    sudo gpasswd -a "$USER" input
     # Mouse emulator: warpd
     cd "$HOME/Desktop"
     git clone https://github.com/rvaiya/warpd.git
@@ -342,10 +342,10 @@ install_i3_packages () {
     sudo apt update
     sudo apt install -y i3
     # i3 tools
-    /usr/bin/python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect --user
+    /usr/bin/python -m pip install autotiling flashfocus i3-workspace-swap i3-resurrect --user --break-system-packages
     sudo apt install -y dunst rofi ruby-notify
     # Bumblebee-status [https://github.com/tobi-wan-kenobi/bumblebee-status]
-    /usr/bin/python -m pip install bumblebee-status==2.0.5 i3ipc utils --user
+    /usr/bin/python -m pip install bumblebee-status==2.0.5 i3ipc utils --user --break-system-packages
     sudo apt install -y python3-netifaces lm-sensors pulseaudio-utils python3-psutil
 }
 
@@ -380,7 +380,7 @@ install_customization_packages () {
     cd "$HOME/Desktop"
     git clone https://github.com/sonjiku/pywal.git
     cd pywal
-    /usr/bin/python -m pip install . --user
+    /usr/bin/python -m pip install . --user --break-system-packages
 }
 
 # Editor tools
@@ -417,7 +417,7 @@ desc_python_tool_packages () {
     echo "-- jedi: python autocompletion"
 }
 install_python_tool_packages () {
-    /usr/bin/python -m pip install pynvim ipdb jedi --user
+    /usr/bin/python -m pip install pynvim ipdb jedi --user --break-system-packages
 }
 
 # Misc tools
@@ -454,7 +454,7 @@ install_misc_tool_packages () {
     # File previewer
     sudo apt install -y exiftool mediainfo
     # Compressed file previewer
-    sudo apt install -y atool unrar p7zip-plugins
+    sudo apt install -y atool unrar p7zip-full
     # HTML previewer, image preview engine
     sudo apt install -y w3m w3m-img
     # Image previewer
@@ -471,12 +471,7 @@ install_misc_tool_packages () {
     sudo apt install -y fontforge
     # Ueberzug
     sudo apt install -y libxres-dev
-    cd "$HOME/Desktop"
-    git clone https://github.com/ueber-devel/ueberzug.git
-    cd ueberzug
-    git checkout 18.2.3
-    pip install wheel
-    /usr/bin/python setup.py install --user
+    /usr/bin/python -m pip install ueberzug --user --break-system-packages
     # Modeline Devicons
     cd "$HOME/Desktop"
     git clone \
@@ -640,7 +635,7 @@ fi
 # Set default conky
 if [ ! -f "$HOME/.config/conky/conky_config_bindkey" ] \
     && [ -f "$HOME/.config/conky/conky_config_system" ]; then
-    i3_default_valuechanger.sh conky_style minimal
+    i3_default_valuechanger.sh conky_style full
 fi
 
 # Post-installation

@@ -1,10 +1,10 @@
-!# ~/.Xresources
+# ~/.Xresources
 
-!# Bigger cursorsize
+# Bigger cursorsize
 Xcursor.size: 48
 
-!# DPI (Dots Per Inch)
+# DPI (Dots Per Inch)
 Xft.dpi: 96
 
-!# Pywal color scheme ($HOME variable is not available in include)
+# Pywal color scheme ($HOME variable is not available in include)
 #include "/home/jordankhwu/.cache/wal/colors.Xresources"

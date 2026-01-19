@@ -461,7 +461,7 @@ install_misc_tool_packages () {
     # Video previewer
     sudo apt install -y ffmpegthumbnailer
     # PDF previewer
-    sudo apt install -y popper-utils
+    sudo apt install -y poppler-utils
     # EPUB previewer
     sudo apt install -y calibre
     # Text, Word, Excel previewer

@@ -172,7 +172,7 @@ auto_adjust () {
             xrandr --output ${display} --off
             sleep 0.1
         done
-        xrandr --output "${eDP1}" --mode 1920x1080 --primary
+        xrandr --output "${eDP1}" --auto --primary
         return
     fi
 

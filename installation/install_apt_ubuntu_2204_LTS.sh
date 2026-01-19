@@ -288,6 +288,7 @@ install_xwindow_tool_packages () {
     ## libinput-gestures requires user to be in the group input
     #sudo gpasswd -a "$USER" input
     # Mouse emulator: warpd
+    cd "$HOME/Desktop"
     git clone https://github.com/rvaiya/warpd.git
     cd warpd
     sudo apt-get install -y libxi-dev libxinerama-dev \
@@ -481,6 +482,7 @@ install_misc_tool_packages () {
     git clone \
         https://github.com/alexanderjeurissen/ranger_devicons.git \
         "$HOME/.config/ranger/plugins/ranger_devicons"
+    cd "$HOME/Desktop"
     git clone \
         https://github.com/cdump/ranger-devicons2 \
         "$HOME/.config/ranger/plugins/devicons2"

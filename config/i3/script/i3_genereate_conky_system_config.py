@@ -175,9 +175,12 @@ ${color2}${top_mem name 5} ${alignr}${color1}${top_mem cpu 5}	${alignr}${top_mem
         graphics += "\n${color2}GPU ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits}%"
         graphics += "\n${color2}Mem ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits} MiB / ${execi 5 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits} MiB"
         graphics += "\n${color2}Temp ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits}°C"
-        graphics += "\n${color2}Clock ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=clocks.gr --format=csv,noheader,nounits} MHz"
+        graphics += "\n${color2}Clock ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=clocks.gr --format=csv,noheader,nounits} MHz / ${execi 5 nvidia-smi --query-gpu=clocks.max.gr --format=csv,noheader,nounits} MHz"
     else:
-        graphics += "\n${alignc}${color1}${exec lspci | grep -i VGA | cut -d ':' -f3}${font}"
+        # Fallback for Intel/Integrated Graphics using /sys/class/drm/
+        # graphics += "\n${alignc}${color1}${exec lspci | grep -i VGA | cut -d ':' -f3}${font}"
+        graphics += "\n${alignc}${color1}${exec lspci | grep -i VGA | cut -d '(' -f1}${font}"
+        graphics += "\n${color2}Clock ${alignr}${color1}${exec cat /sys/class/drm/card1/gt_cur_freq_mhz} / ${exec cat /sys/class/drm/card1/gt_max_freq_mhz} MHz"
 
     # 2. DYNAMIC DISK SECTION
     disk_header = "\n${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Disk]${font}${voffset 5}"

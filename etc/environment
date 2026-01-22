@@ -1,0 +1,4 @@
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+QT_QPA_PLATFORMTHEME=qt5ct
+ADW_DISABLE_PORTAL=1
+ADW_DEBUG_COLOR_SCHEME=prefer-dark

@@ -1,32 +1,33 @@
 # I3WM Customization Note
 
-Table of Contents
-=================
+# Table of Contents
 
-* [I3WM Customization Note](#i3wm-customization-note)
-* [Context](#context)
-   * [Environments Setup](#environments-setup)
-      * [Install i3-gaps in Fedora 33](#install-i3-gaps-in-fedora-33)
-      * [Add I3 working environment](#add-i3-working-environment)
-      * [Swap workspace](#swap-workspace)
-      * [Save workspace layout](#save-workspace-layout)
-      * [Automatic rename workspace with icons [conflict with save workspace]](#automatic-rename-workspace-with-icons-conflict-with-save-workspace)
-   * [GUI Theme Configuration](#gui-theme-configuration)
-      * [Theme configuration](#theme-configuration)
-      * [Check whether program using GTK or QT](#check-whether-program-using-gtk-or-qt)
-      * [Example: program and it corresponding tookit](#example-program-and-it-corresponding-tookit)
-      * [My current color theme setup for arc-dark-theme](#my-current-color-theme-setup-for-arc-dark-theme)
-   * [Keyboard and Trackpad Setup](#keyboard-and-trackpad-setup)
-      * [Trackpad](#trackpad)
-      * [Keyboard](#keyboard)
-      * [Reference](#reference)
+- [I3WM Customization Note](#i3wm-customization-note)
+- [Context](#context)
+  - [Environments Setup](#environments-setup)
+    - [Install i3-gaps in Fedora 33](#install-i3-gaps-in-fedora-33)
+    - [Add I3 working environment](#add-i3-working-environment)
+    - [Swap workspace](#swap-workspace)
+    - [Save workspace layout](#save-workspace-layout)
+    - [Automatic rename workspace with icons [conflict with save workspace]](#automatic-rename-workspace-with-icons-conflict-with-save-workspace)
+  - [GUI Theme Configuration](#gui-theme-configuration)
+    - [Theme configuration](#theme-configuration)
+    - [Check whether program using GTK or QT](#check-whether-program-using-gtk-or-qt)
+    - [Example: program and it corresponding tookit](#example-program-and-it-corresponding-tookit)
+    - [My current color theme setup for arc-dark-theme](#my-current-color-theme-setup-for-arc-dark-theme)
+  - [Keyboard and Trackpad Setup](#keyboard-and-trackpad-setup)
+    - [Trackpad](#trackpad)
+    - [Keyboard](#keyboard)
+    - [Reference](#reference)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # Context
 
 ## Environments Setup
+
 This modified configuration file is highly refered to link below
+
 - https://i3wm.org/docs/userguide.html
 - https://github.com/levinit/i3wm-config
 - https://www.itread01.com/p/142448.html
@@ -36,77 +37,89 @@ This modified configuration file is highly refered to link below
 - https://github.com/Airblader/i3 (i3-gap)
 
 ### Install i3-gaps in Fedora 33
+
 - Installation:
 
-    ```bash
-    sudo dnf copr enable fuhrmann/i3-gaps
-    sudo dnf install i3-gaps
-    ```
+  ```bash
+  sudo dnf copr enable fuhrmann/i3-gaps
+  sudo dnf install i3-gaps
+  ```
 
 ### Add I3 working environment
+
 - Below commands must be added to shell dotfile (e.g. .bashrc .zshrc and etc.)
 
-    ```bash
-    # export I3_SCRIPT="$HOME/.config/i3/script"
-    # export PATH="$I3_SCRIPT:$PATH"
-    ```
+  ```bash
+  # export I3_SCRIPT="$HOME/.config/i3/script"
+  # export PATH="$I3_SCRIPT:$PATH"
+  ```
 
 ### Swap workspace
+
 - i3-workspace-swap (https://pypi.org/project/i3-workspace-swap/)
 - Installation: `pip install i3-workspace-swap`
 
 ### Save workspace layout
+
 - i3-resurrect (https://pypi.org/project/i3-resurrect/)
 - Installation: `pip install i3-resurrect`
 
 ### Automatic rename workspace with icons [conflict with i3-resurrect]
+
 - i3-workspace-names-daemon (https://github.com/cboddy/i3-workspace-names-daemon)
 - Awesome font and icons (https://origin.fontawesome.com/icons?d=gallery)
 
 ## GUI Theme Configuration
+
 This session modifies software GUI theme configuration
 
 ### Theme configuration
+
 Detailed theme and font Setup
+
 - https://askubuntu.com/questions/598943/how-to-de-uglify-i3-wm
 - https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications
-    - for gtk:
-        - for gtk2.x: `sudo dnf install gtk-chtheme`
-        - for gtk3.x: `sudo dnf install lxappearance`
-    - for qt/kde:
-        - for qt4: `sudo dnf install qt-config`
-        - for qt5: `sudo dnf install qt5ct qt5-qtstyleplugins`
-        - for qt/kde: `sudo dnf install kvantum`
+  - for gtk:
+    - for gtk2.x: `sudo dnf install gtk-chtheme`
+    - for gtk3.x: `sudo dnf install lxappearance`
+  - for qt/kde:
+    - for qt4: `sudo dnf install qt-config`
+    - for qt5: `sudo dnf install qt5ct qt5-qtstyleplugins`
+    - for qt/kde: `sudo dnf install kvantum`
 
 ### Check whether program using GTK or QT
+
 - https://askubuntu.com/questions/840256/detect-if-an-application-uses-gtk-or-qt
--  In command line,
-    - `ldd $(which PROGRAM) | grep 'gtk'` -> using GTK
-    - `ldd $(which PROGRAM) | grep 'qt'`  -> using QT
+- In command line,
+  - `ldd $(which PROGRAM) | grep 'gtk'` -> using GTK
+  - `ldd $(which PROGRAM) | grep 'qt'` -> using QT
 
 ### Example: program and it corresponding tookit
+
 - gtk
-    - brave-browser, nautilus, parcellite, and etc.
+  - brave-browser, nautilus, parcellite, and etc.
 - qt/kde
-    - mendeleydestop, okular, kde connect and etc.
+  - mendeleydestop, okular, kde connect and etc.
 
 ### My current color theme setup for arc-dark-theme
+
 - Theme
-    - lxappearance: Arc-Dark-solid
-    - gtk-chtheme: Arc-Dark-solid
-    - kvantum: KvArcDark
-        - qt5 Settings: kvantum-dark
-        - qt4 Config: Desktop Settings (Default)
+  - lxappearance: Arc-Dark-solid
+  - gtk-chtheme: Arc-Dark-solid
+  - kvantum: KvArcDark
+    - qt5 Settings: kvantum-dark
+    - qt4 Config: Desktop Settings (Default)
 - Icon
-    - Light: Papirus
-    - Dark: Papirus-Dark
+  - Light: Papirus
+  - Dark: Papirus-Dark
 - Font
-    - SAN regular 11
-    - SAN serif regular 11
+  - SAN regular 11
+  - SAN serif regular 11
 - Flatpak applications
-    - https://itsfoss.com/flatpak-app-apply-theme/
+  - https://itsfoss.com/flatpak-app-apply-theme/
 
 ## Keyboard and Trackpad Setup
+
 This session modifies keyboard keymap and operation for laptop trackpad
 
 ### Trackpad
@@ -157,6 +170,7 @@ This session modifies keyboard keymap and operation for laptop trackpad
 ```
 
 ### Reference
+
 - https://askubuntu.com/questions/1122513/how-to-add-natural-inverted-mouse-scrolling-in-i3-window-manager
 - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 - https://www.reddit.com/r/i3wm/comments/cqefj3/mapping_symbols/

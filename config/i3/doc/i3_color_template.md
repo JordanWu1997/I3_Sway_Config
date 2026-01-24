@@ -1,28 +1,29 @@
 # I3WM Color Template
+
 - Online color palette https://thomashunter.name/i3-configurator/
 
-Table of Contents
-=================
+# Table of Contents
 
-* [I3WM Color Template](#i3wm-color-template)
-   * [Table of Contents](#table-of-contents)
-   * [Context](#context)
-      * [Monochrome vs Non-monochrome](#monochrome-vs-non-monochrome)
-      * [I3BAR](#i3bar)
-         * [Default theme with minor modified](#default-theme-with-minor-modified)
-         * [Monochrome color style (red -&gt; blue, low -&gt; high)](#monochrome-color-style-r ed---blue-low---high)
-         * [Non-monochrome color style (red - blue, high -&gt; low)](#non-monochrome-color-sty le-red---blue-high---low)
-      * [I3CONTAINTER](#i3containter)
-         * [Gruvbox theme](#gruvbox-theme)
-         * [Default theme with minor change](#default-theme-with-minor-change)
-         * [Monochrome color style (red -&gt; blue, low -&gt; high)](#monochrome-color-style-r ed---blue-low---high-1)
-         * [Non-monochrome color style (red - blue, high -&gt; low)](#non-monochrome-color-sty le-red---blue-high---low-1)
+- [I3WM Color Template](#i3wm-color-template)
+  - [Table of Contents](#table-of-contents)
+  - [Context](#context)
+    - [Monochrome vs Non-monochrome](#monochrome-vs-non-monochrome)
+    - [I3BAR](#i3bar)
+      - [Default theme with minor modified](#default-theme-with-minor-modified)
+      - [Monochrome color style (red -> blue, low -> high)](#monochrome-color-style-r ed---blue-low---high)
+      - [Non-monochrome color style (red - blue, high -> low)](#non-monochrome-color-sty le-red---blue-high---low)
+    - [I3CONTAINTER](#i3containter)
+      - [Gruvbox theme](#gruvbox-theme)
+      - [Default theme with minor change](#default-theme-with-minor-change)
+      - [Monochrome color style (red -> blue, low -> high)](#monochrome-color-style-r ed---blue-low---high-1)
+      - [Non-monochrome color style (red - blue, high -> low)](#non-monochrome-color-sty le-red---blue-high---low-1)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # Context
 
 ## Monochrome vs Non-monochrome
+
 When wallpaper/color style is monochrome, new remapped color would not change much, but
 it will be remap from warm color to cold color as colorfulness increases. For example,
 for a orange color tone wallpaper, new red will be grayish orange as new blue will be

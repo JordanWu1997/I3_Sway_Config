@@ -410,6 +410,7 @@ window_operation () {
             elif [[ ${CURRENT_STICKY_STATUS} == "false" ]]; then
                 i3-msg "sticky enable"; i3-msg 'title_format "[STICKY] %title [STICKY]"'
                 i3-msg border normal ${DEFAULT_WIDTH}
+                i3_cursor_operator.sh move_cursor_inside_window top_titlebar
             else
                 i3-msg "sticky toggle"
                 notify-send -u low "i3 Window Manager" "Cannot get focused window sticky status\nWindow stickiness is just toggled" --icon=${ICON}

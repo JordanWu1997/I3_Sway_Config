@@ -79,6 +79,11 @@ move_cursor_inside_window () {
             TX=`expr $CENTER_X + $BLOCK_W`
             TY=`expr $CENTER_Y + $BLOCK_H`
             ;;
+        "top_titlebar")
+            TX=$CENTER_X
+            TY=`expr $CENTER_Y - $HEIGHT / 2`
+            TY=`expr $TY - 10`
+            ;;
         *)
             return
     esac

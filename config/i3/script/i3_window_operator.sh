@@ -403,10 +403,10 @@ window_operation () {
                 else
                     i3-msg border ${DEFAULT_STYLE} ${DEFAULT_WIDTH}
                 fi
-                # Send notification if there is no titlebar
-                if [[ ${DEFAULT_FLOATING_STYLE} == "pixel" ]]; then
-                     notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky" --icon=${ICON}
-                fi
+                ## Send notification if there is no titlebar
+                #if [[ ${DEFAULT_FLOATING_STYLE} == "pixel" ]]; then
+                #     notify-send -u low "i3 Window Manager" "Focused window is NO LONGER sticky" --icon=${ICON}
+                #fi
             elif [[ ${CURRENT_STICKY_STATUS} == "false" ]]; then
                 i3-msg "sticky enable"; i3-msg 'title_format "[STICKY] %title [STICKY]"'
                 i3-msg border normal ${DEFAULT_WIDTH}

@@ -30,7 +30,13 @@ if [ -z "$POWER_NOW_UW" ] || [ "$POWER_NOW_UW" -eq 0 ]; then
 else
     # Convert microwatts to Watts (divide by 1,000,000)
     POWER_WATTS=$(echo "scale=1; $POWER_NOW_UW / 1000000" | bc 2>/dev/null)
-    NOTIFICATION_BODY+="Consumption: ${POWER_WATTS}W\n"
+    if [ "$STATUS" == "Discharging" ]; then
+        NOTIFICATION_BODY+="Discharge Power: ${POWER_WATTS}W\n"
+    elif [ "$STATUS" == "Charging" ]; then
+        NOTIFICATION_BODY+="Charge Power: ${POWER_WATTS}W\n"
+    else
+        NOTIFICATION_BODY+="N/A: ${POWER_WATTS}W\n"
+    fi
 fi
 
 # --- 2. Calculate Time Remaining/To Full ---

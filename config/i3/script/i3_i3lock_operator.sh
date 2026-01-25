@@ -63,6 +63,25 @@ i3lock_operator () {
     esac
 }
 
+i3_lock_suspender () {
+    # Get screentshot of Current desktop
+    DESKTOP_IMAGE="/tmp/i3lock_screen.png"
+    gnome-screenshot --file=${DESKTOP_IMAGE} &> /dev/null
+    convert ${DESKTOP_IMAGE} -blur ${BLUR} ${DESKTOP_IMAGE}
+    # Lock with fork
+    i3lock -t -f -i ${DESKTOP_IMAGE}
+    # Suspend
+    systemctl suspend
+    # Clean screenshot cache
+    rm ${DESKTOP_IMAGE}
+}
+
+# Manual suspender
+if [[ $1 == 'mannual_suspend' ]]; then
+    i3_lock_suspender
+    exit 0
+fi
+
 # Main
 if [[ $(dunstctl is-paused) == 'false' ]]; then
     #pkill -u "${USER}" -USR1 dunst

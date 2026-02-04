@@ -12,6 +12,8 @@ For more SwayWM details and i3WM migration progress, please check `./config/sway
 
 - [I3_Sway_Config](#i3_sway_config)
 - [Context](#context)
+  - [Repository Structure](#repository-structure)
+  - [Sway/Wayland Support Status](#swaywayland-support-status)
   - [Section 1 - Demo Current Customization](#section-1---demo-current-customization)
     - [Features in My Configuration](#features-in-my-configuration)
     - [My Workflow Demo](#my-workflow-demo)
@@ -48,6 +50,32 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 <details open>
 <summary>Click to expand/shrink</summary>
 
+## Repository Structure
+
+<details open>
+
+- `config/`: Contains all configuration files (i3, sway, kitty, rofi, etc.) and scripts.
+- `installation/`: Contains installation scripts for different Linux distributions.
+- `demo/`: Screenshots and demo assets.
+- `dotfile/`: Shell configuration snippets (to be added to `.bashrc`, `.zshrc`, etc.).
+- `etc/`: System-wide configuration files (if any).
+- `misc/`: Miscellaneous files.
+
+</details>
+
+## Sway/Wayland Support Status
+
+<details>
+
+> [!WARNING]
+> **SwayWM configuration is EXPERIMENTAL.**
+
+This repository primarily focuses on a robust **i3WM (X11)** setup. While a Sway (Wayland) configuration exists in `config/sway/`, it is a **work in progress**.
+- Many scripts and tools used in the i3 setup (e.g., `polybar`, `picom`, `xrandr`) do not work in Wayland.
+- See `config/sway/README.md` for a detailed migration status and list of missing alternatives.
+
+</details>
+
 ## Section 1 - Demo Current Customization
 
 <details open>
@@ -67,7 +95,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Customized Rofi__: easy-to-use selector/launcher. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Customized Conky__: system monitor and keybinding hinter. (Check [Section 2](#section-2---details-of-i3-environment))
-- [x] __Configuration Installer Script__: script to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
+- [x] __Configuration Installer Script__: scripts to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
 - [x] __Fully Documented Keybinding and i3-userguide-like Cheat sheet__: (Check [Section 6](#section-6---keybinding-sheet-for-i3))
@@ -115,7 +143,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor window arrangement
+- [xrandr](https://www.x.org/wiki/Projects/XRandR/): multi-monitor arrangement
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
@@ -174,7 +202,21 @@ Note: the term "window" used in this configuration actually refers to "container
 <details open>
 <summary>Click to expand/shrink</summary>
 
-- Run the installer in this git repository `./install.sh`
+- **Supported OS / Pre-requisites**
+    - **Ubuntu 22.04 LTS / 24.04 LTS** (via `apt`)
+    - **Fedora** (via `dnf`)
+    - **Other distros**: You may need to adapt the installation scripts manually.
+    - **Dependencies**: The scripts will attempt to install all necessary dependencies (i3, rofi, kitty, etc.). Sudoprivileges are required.
+
+- **CRITICAL**: You **MUST** clone this repository to `$HOME/Desktop/I3_Sway_Config` for the installation scripts to work correctly.
+    ```bash
+    cd ~/Desktop
+    git clone https://github.com/JordanWu1997/I3_Sway_Config.git
+    ```
+- Run the installer script specific to your distribution in `./installation/` directory
+    - `install_apt_ubuntu_2404_LTS.sh`: for Ubuntu 24.04 LTS
+    - `install_apt_ubuntu_2204_LTS.sh`: for Ubuntu 22.04 LTS
+    - `install_dnf.sh`: for Fedora (dnf package manager)
 - Includes
   - __1. Add Environment Variables__
     - Add `I3_SCRIPT` to `$PATH` to dotfile

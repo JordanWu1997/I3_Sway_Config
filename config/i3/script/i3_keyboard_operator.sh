@@ -91,10 +91,17 @@ keyboard_operation () {
             notify-send -u low "Keyboard Mode" "Map Shift+Escape to Tilde (Shift+Grave)" --icon=${ICON}
             ;;
         'swap_escape_keybinding_with_grave_keybinding')
+            # i3 workspace
             CONFIG="$HOME/.config/i3/config.d/i3_workspace.config"
             sed -i "s/\+grave/\+tmp/g" ${CONFIG}
             sed -i "s/\+Escape/\+grave/g" ${CONFIG}
             sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
+            # libinput-gestures for trackpad
+            CONFIG="$HOME/.config/libinput-gestures.conf"
+            sed -i "s/\+grave/\+tmp/g" ${CONFIG}
+            sed -i "s/\+Escape/\+grave/g" ${CONFIG}
+            sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
+            # Reload
             notify-send -u low "Keyboard Mode" "Swap Esc-related keybindings w/ Grave-related keybindings" --icon=${ICON}
             i3-msg reload
             ;;

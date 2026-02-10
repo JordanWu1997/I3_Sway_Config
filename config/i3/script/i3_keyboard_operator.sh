@@ -96,14 +96,15 @@ keyboard_operation () {
             sed -i "s/\+grave/\+tmp/g" ${CONFIG}
             sed -i "s/\+Escape/\+grave/g" ${CONFIG}
             sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
+            i3-msg reload
             # libinput-gestures for trackpad
             CONFIG="$HOME/.config/libinput-gestures.conf"
             sed -i "s/\+grave/\+tmp/g" ${CONFIG}
             sed -i "s/\+Escape/\+grave/g" ${CONFIG}
             sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
+            i3-msg exec libinput-gestures-setup restart
             # Reload
             notify-send -u low "Keyboard Mode" "Swap Esc-related keybindings w/ Grave-related keybindings" --icon=${ICON}
-            i3-msg reload
             ;;
         # For TEX Shinobi
         'customize_tex_shinobi')

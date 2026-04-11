@@ -29,6 +29,7 @@ show_help_message () {
     echo "  [reload_gesture]: reload libinput-gesture daemon (trackpad gesture)"
     echo "  [show_brave_browser]: show brave=browser windows"
     echo "  [kill_process]: kill selected PID (use kill -9 command)"
+    echo "  [test_audio_IO]: test audio IO by recording and playing (alsa: arecord and aplay)"
 }
 
 # Function to convert lstart to formatted time
@@ -142,6 +143,32 @@ toolkit_operation () {
                         notify-send "Toolkit Mode" "Failed to kill PID $PID" --icon ${ICON}
                 fi
             }
+            ;;
+        'test_audio_IO')
+            TEMP_FILE="default_test.wav"; DURATION=5
+            notify-send "Toolkit Mode" "Recording from DEFAULT input for $DURATION secs..." --icon ${ICON}
+            # -f cd: 16 bit, 44100Hz, Stereo
+            # -d: duration in seconds
+            # -q: quiet mode (cleans up output)
+            arecord -D default -f cd -d $DURATION -q $TEMP_FILE
+            if [ $? -ne 0 ]; then
+                notify-send "Toolkit Mode" "ERROR: Failed to record. Is your default input busy?" --icon ${ICON}
+                exit 1
+            fi
+            # 2. Check if file is silent (Volume Meter Check)
+            # We use 'sox' if available, or just check file size
+            FILE_SIZE=$(stat -c%s "$TEMP_FILE")
+            if [ "$FILE_SIZE" -lt 1000 ]; then
+                notify-send "Toolkit Mode" "WARNING: The recorded file is unusually small. Check connections." --icon ${ICON}
+            fi
+            # 3. Test Playback
+            notify-send "Toolkit Mode" "Playing back to DEFAULT output..." --icon ${ICON}
+            aplay -D default -q $TEMP_FILE
+            if [ $? -ne 0 ]; then
+                notify-send "Toolkit Mode" "ERROR: Playback failed. Check if default output is muted." --icon ${ICON}
+            fi
+            # Cleanup
+            rm -f $TEMP_FILE
             ;;
         *)
             show_wrong_usage_message

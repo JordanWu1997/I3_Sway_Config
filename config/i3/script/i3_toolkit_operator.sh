@@ -30,6 +30,7 @@ show_help_message () {
     echo "  [show_brave_browser]: show brave=browser windows"
     echo "  [kill_process]: kill selected PID (use kill -9 command)"
     echo "  [test_audio_IO]: test audio IO by recording and playing (alsa: arecord and aplay)"
+    echo "  [translate_clip]: translate item in current clipboard (trans: tranlate; xclip or xsel: clipboard)"
 }
 
 # Function to convert lstart to formatted time
@@ -169,6 +170,26 @@ toolkit_operation () {
             fi
             # Cleanup
             rm -f $TEMP_FILE
+            ;;
+        'translate_clip')
+            # Using xclip -selection clipboard to get the standard "Copy" buffer
+            TEXT=$(xclip -o -selection clipboard)
+            if [ -z "$TEXT" ]; then
+                notify-send "Translation Error" "Clipboard is empty."
+                exit 1
+            fi
+            # -id returns the language code (e.g., en, zh-CN, zh-TW)
+            # -no-ansi -b ensures we get a clean string without formatting codes
+            LANG_ID=$(trans -id -no-ansi -b "$TEXT")
+            # If the detected language starts with 'zh' (Chinese), translate to English.
+            # Otherwise, default to Traditional Chinese (zh-TW).
+            TARGET="zh-TW"
+            if [[ "$LANG_ID" == "zh"* ]]; then
+                TARGET="en"
+            fi
+            # -b (brief) mode provides only the translated text
+            RESULT=$(trans -b :$TARGET "$TEXT")
+            notify-send "Toolkit Mode" "Translation ($TARGET)\n$RESULT" --icon ${ICON}
             ;;
         *)
             show_wrong_usage_message

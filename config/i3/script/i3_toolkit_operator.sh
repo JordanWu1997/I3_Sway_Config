@@ -178,18 +178,15 @@ toolkit_operation () {
                 notify-send "Translation Error" "Clipboard is empty."
                 exit 1
             fi
-            # -id returns the language code (e.g., en, zh-CN, zh-TW)
-            # -no-ansi -b ensures we get a clean string without formatting codes
-            LANG_ID=$(trans -id -no-ansi -b "$TEXT")
+            # trans -id returns the language code (e.g., en, zh-CN, zh-TW)
+            LANG_ID=$(trans -id -no-ansi "${TEXT}" | grep Code | awk '{print $2}' | tr -d '\r')
             # If the detected language starts with 'zh' (Chinese), translate to English.
             # Otherwise, default to Traditional Chinese (zh-TW).
-            TARGET="zh-TW"
-            if [[ "$LANG_ID" == "zh"* ]]; then
-                TARGET="en"
-            fi
+            [[ ${LANG_ID} == zh* ]] && TARGET="en" || TARGET="zh-TW"
             # -b (brief) mode provides only the translated text
-            RESULT=$(trans -b :$TARGET "$TEXT")
-            notify-send "Toolkit Mode" "Translation ($TARGET)\n$RESULT" --icon ${ICON}
+            RESULT=$(trans -b ":${TARGET}" "${TEXT}")
+            notify-send "Toolkit Mode" "Translation (${LANG_ID} -> ${TARGET})\n${RESULT}" --icon ${ICON}
+            echo "${RESULT}" | xclip -in -selection clipboard
             ;;
         *)
             show_wrong_usage_message

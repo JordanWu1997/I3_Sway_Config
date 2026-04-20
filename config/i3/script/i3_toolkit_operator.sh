@@ -180,9 +180,8 @@ toolkit_operation () {
             fi
             # trans -id returns the language code (e.g., en, zh-CN, zh-TW)
             LANG_ID=$(trans -id -no-ansi "${TEXT}" | grep Code | awk '{print $2}' | tr -d '\r')
-            # If the detected language starts with 'zh' (Chinese), translate to English.
-            # Otherwise, default to Traditional Chinese (zh-TW).
-            [[ ${LANG_ID} == zh* ]] && TARGET="en" || TARGET="zh-TW"
+            # Translate input to English by defualt, unless the input is English then translate to Traditional Chinese (zh-TW)
+            [[ ${LANG_ID} == en* ]] && TARGET="zh-TW" || TARGET="en"
             # -b (brief) mode provides only the translated text
             RESULT=$(trans -b ":${TARGET}" "${TEXT}")
             notify-send "Toolkit Mode" "Translation (${LANG_ID} -> ${TARGET})\n${RESULT}" --icon ${ICON}

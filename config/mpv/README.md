@@ -141,6 +141,10 @@ Modified from https://github.com/Tsubajashi/mpv-settings.
 | :-------------: | :--------------: | :---------: | :--: |
 | `[Shift]`+`[d]` | Audio visualizer |             |      |
 
+#### Known Issue
+
+- `visualizer` script messes up audio file playing, disabled for now
+
 ### [SmartCopyPaste](https://github.com/Eisa01/mpv-scripts#smartcopypaste-ii-script)
 
 - Keybindings

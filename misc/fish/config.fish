@@ -77,6 +77,16 @@ function tmux_update_display
     echo "UPDATE_TMUX_DISPLAY: $LAST_DISPLAY (OLD) -> $DISPLAY (NEW)"
 end
 
+# Update XAUTHORITY (Critical for X11 authentication)
+function tmux_update_xauth
+    set -l new_xauth (tmux show-env | sed -n 's/^XAUTHORITY=//p')
+    if test -n "$new_xauth"
+        set -l old_xauth $XAUTHORITY
+        set -gx XAUTHORITY $new_xauth
+        echo "UPDATE TMUX_XAUTHORITY: $old_xauth -> $XAUTHORITY"
+    end
+end
+
 # BASH !!
 function bind_bang
     switch (commandline -t)[-1]
@@ -96,6 +106,22 @@ function bind_dollar
         case "*"
             commandline -i '$'
     end
+end
+
+# Disown job and copy PID to clipboard
+function disown_job
+    # Default to find job %1
+    if not set -q argv[1]
+        set NUM 1
+    else
+        set NUM $argv[1]
+    end
+    # Get the background process PID
+    set JOB_PID (jobs | awk -v VAR=$NUM 'NR==VAR {print $2}')
+    # Copy to clipboard
+    echo $JOB_PID | xsel -i
+    # Disown the process
+    disown %$argv[1]
 end
 
 # ============================================================================
@@ -127,5 +153,6 @@ if status is-interactive
     # Update TMUX port automatically
     if set -q TMUX
         tmux_update_display
+        tmux_update_xauth
     end
 end

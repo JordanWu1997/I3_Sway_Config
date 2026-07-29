@@ -53,8 +53,9 @@ def get_physical_networks():
         if os.path.exists(os.path.join(net_path, iface, 'device')):
             if os.path.exists(operstate_path):
                 with open(operstate_path, 'r') as f:
-                    if f.read().strip() == 'up':
-                        interfaces.append(iface)
+                    #if f.read().strip() == 'up':
+                    #    interfaces.append(iface)
+                    interfaces.append(iface)
     return interfaces
 
 
@@ -194,35 +195,44 @@ ${color2}${top_mem name 5} ${alignr}${color1}${top_mem cpu 5}	${alignr}${top_mem
 
     # 3. DYNAMIC NETWORK SECTION
     net_header = "\n${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Network]${font}${voffset 5}${color1}"
-    ext_ip = "\n${color2}External IP ${alignr}${color1}${execi 3600 curl -s ipinfo.io/ip}"
+    ext_ip = "\n${color2}External IP ${alignr}${color1}${execi 600 curl -s ipinfo.io/ip}"
     gw_ip = "\n${color2}Gateway IP ${alignr}${color1}${gw_ip}"
 
     net_details = []
     for iface in get_physical_networks():
         # Labeling logic
         label = "Wifi" if iface.startswith('w') else "Ethe"
+        operstate_path = f"/sys/class/net/{iface}/operstate"
+
         # Conky built-in addr handles internal IPv4 [cite: 14, 27]
         net_details.append(
-            f"${{color2}}Internal IP ({label}) ${{alignr}}${{color1}}${{addr {iface}}}"
-        )
+            f"${{if_existing {operstate_path} up}}"
+            f"${{color2}}Internal IP ({label}) ${{alignr}}${{color1}}${{addr {iface}}}\n"
+            f"${{endif}}")
 
-    net_speed_table = "\n${voffset -5}${color2}${hr 1}\n${color2}Network ${alignr}${color1}Speed			${alignr} Usage\n${voffset -5}${color2}${hr 1}"
+    net_speed_table = "${voffset -5}${color2}${hr 1}\n${color2}Network ${alignr}${color1}Speed			${alignr} Usage\n${voffset -5}${color2}${hr 1}"
+    if not net_details:
+        net_speed_table = f"\n{net_speed_table}"
 
     net_speeds = []
     for iface in get_physical_networks():
         label = "Wifi" if iface.startswith('w') else "Ethe"
+        operstate_path = f"/sys/class/net/{iface}/operstate"
+
         net_speeds.append(
-            f"${{color2}}{label}-Dw ${{alignr}}${{color1}}${{downspeed {iface}}}/s   ${{alignr}}${{totaldown {iface}}}"
-        )
+            f"${{if_existing {operstate_path} up}}"
+            f"${{color2}}{label}-Dw ${{alignr}}${{color1}}${{downspeed {iface}}}/s   ${{alignr}}${{totaldown {iface}}}\n"
+            f"${{endif}}")
         net_speeds.append(
-            f"${{color2}}{label}-Up ${{alignr}}${{color1}}${{upspeed {iface}}}/s   ${{alignr}}${{totalup {iface}}}"
-        )
+            f"${{if_existing {operstate_path} up}}"
+            f"${{color2}}{label}-Up ${{alignr}}${{color1}}${{upspeed {iface}}}/s   ${{alignr}}${{totalup {iface}}}\n"
+            f"${{endif}}")
 
     # COMBINE ALL
     full_text = (header + graphics + disk_header + disk_usage + disk_io +
                  "\n" + "\n".join(disk_lines) + net_header + ext_ip + gw_ip +
-                 "\n" + "\n".join(net_details) + net_speed_table + "\n" +
-                 "\n".join(net_speeds) + "\n${voffset 0}" + "\n]]")
+                 "\n" + "".join(net_details) + net_speed_table + "\n" +
+                 "".join(net_speeds) + "${voffset 0}" + "\n]]")
 
     print(full_text)
 

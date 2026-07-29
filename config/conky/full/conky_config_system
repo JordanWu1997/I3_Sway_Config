@@ -106,11 +106,11 @@ ${color2}${top_mem name 3} ${alignr}${color1}${top_mem cpu 3}	${alignr}${top_mem
 ${color2}${top_mem name 4} ${alignr}${color1}${top_mem cpu 4}	${alignr}${top_mem mem 4}
 ${color2}${top_mem name 5} ${alignr}${color1}${top_mem cpu 5}	${alignr}${top_mem mem 5}
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Graphics]${font}${voffset 5}
-${alignc}${color1}${exec lspci | grep VGA | awk -F 'VGA compatible controller: ' '{print $2}' | cut -d '(' -f 1} ${font}
+${alignc}${color1}${exec lspci | grep -i VGA | awk -F 'controller: ' '{print $2}' | cut -d '(' -f 1}${font}
 ${color2}GPU ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits}%
 ${color2}Mem ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits} MiB / ${execi 5 nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits} MiB
 ${color2}Temp ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits}°C
-${color2}Clock ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=clocks.gr --format=csv,noheader,nounits} MHz
+${color2}Clock ${alignr}${color1}${execi 5 nvidia-smi --query-gpu=clocks.gr --format=csv,noheader,nounits} MHz / ${execi 5 nvidia-smi --query-gpu=clocks.max.gr --format=csv,noheader,nounits} MHz
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Disk]${font}${voffset 5}
 ${color2}Disk Usage ${alignr}${color1}${fs_used /home} / ${fs_size /home}
 ${voffset -5}${color2}${hr 1}
@@ -119,35 +119,18 @@ ${voffset -5}${color2}${hr 1}
 ${color2}nvme0n1 ${alignr}${color1}R ${diskio_read /dev/nvme0n1}/s W ${diskio_write /dev/nvme0n1}/s
 ${color2}nvme1n1 ${alignr}${color1}R ${diskio_read /dev/nvme1n1}/s W ${diskio_write /dev/nvme1n1}/s
 ${color2}sda ${alignr}${color1}R ${diskio_read /dev/sda}/s W ${diskio_write /dev/sda}/s
+${color2}sdb ${alignr}${color1}R ${diskio_read /dev/sdb}/s W ${diskio_write /dev/sdb}/s
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Network]${font}${voffset 5}${color1}
-${color2}External IP ${alignr}${color1}${execi 3 curl ipinfo.io/ip 2> /dev/null}
-${color2}Gateway IP ${alignr}${color1}${gw_ip}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u3u2u3/operstate up}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u2u2/operstate unknown}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/enp0s20f0u5/operstate unknown}
-${color2}Internal IP (ethe) ${alignr}${color1}${exec ip a | grep inet | grep enp | grep -vw lo | grep -v inet6 | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}${if_existing /sys/class/net/wlx54077d85adb4/operstate up}
-${color2}Internal IP (wifi) ${alignr}${color1}${exec ip a | grep inet | grep wlx | grep -vw lo | cut -d \/ -f1 | sed 's/[^0-9\.]*//g' | awk 'NR==1'}${endif}
-${voffset -5}${color2}${hr 1}
+${color2}External IP ${alignr}${color1}${execi 600 curl -s ipinfo.io/ip}
+${color2}Gateway IP ${alignr}${color1}${gw_ip}
+${if_existing /sys/class/net/wlx54077d85adb4/operstate up}${color2}Internal IP (Wifi) ${alignr}${color1}${addr wlx54077d85adb4}
+${endif}${if_existing /sys/class/net/enp42s0/operstate up}${color2}Internal IP (Ethe) ${alignr}${color1}${addr enp42s0}
+${endif}${voffset -5}${color2}${hr 1}
 ${color2}Network ${alignr}${color1}Speed			${alignr} Usage
-${voffset -5}${color2}${hr 1}${if_existing /sys/class/net/enp0s20f0u3u2u3/operstate up}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u3u2u3}/s   ${alignr}${totaldown enp0s20f0u3u2u3}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u3u2u3}/s   ${alignr}${totalup enp0s20f0u3u2u3}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u3/operstate up}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u2u2u3}/s   ${alignr}${totaldown enp0s20f0u2u2u3}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u2u2u3}/s   ${alignr}${totalup enp0s20f0u2u2u3}${endif}${if_existing /sys/class/net/enp0s20f0u2u2u4/operstate up}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u2u2u4}/s   ${alignr}${totaldown enp0s20f0u2u2u4}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u2u2u4}/s   ${alignr}${totalup enp0s20f0u2u2u4}${endif}${if_existing /sys/class/net/enp0s31f6/operstate up}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s31f6}/s   ${alignr}${totaldown enp0s31f6}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s31f6}/s   ${alignr}${totalup enp0s31f6}${endif}${if_existing /sys/class/net/enp0s20f0u1/operstate unknown}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u1}/s   ${alignr}${totaldown enp0s20f0u1}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u1}/s   ${alignr}${totalup enp0s20f0u1}${endif}${if_existing /sys/class/net/enp0s20f0u5/operstate unknown}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u5}/s   ${alignr}${totaldown enp0s20f0u5}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u5}/s   ${alignr}${totalup enp0s20f0u5}${endif}${if_existing /sys/class/net/enp0s20f0u2u2/operstate unknown}
-${color2}Ethe-Dw ${alignr}${color1}${downspeed enp0s20f0u2u2}/s   ${alignr}${totaldown enp0s20f0u2u2}
-${color2}Ethe-Up ${alignr}${color1}${upspeed enp0s20f0u2u2}/s   ${alignr}${totalup enp0s20f0u2u2}${endif}${if_existing /sys/class/net/wlx54077d85adb4/operstate up}
-${color2}Wifi-Dw ${alignr}${color1}${downspeed wlx54077d85adb4}/s   ${alignr}${totaldown wlx54077d85adb4}
-${color2}Wifi-Up ${alignr}${color1}${upspeed wlx54077d85adb4}/s   ${alignr}${totalup wlx54077d85adb4}${endif}
-${voffset 0}
+${voffset -5}${color2}${hr 1}
+${if_existing /sys/class/net/wlx54077d85adb4/operstate up}${color2}Wifi-Dw ${alignr}${color1}${downspeed wlx54077d85adb4}/s   ${alignr}${totaldown wlx54077d85adb4}
+${endif}${if_existing /sys/class/net/wlx54077d85adb4/operstate up}${color2}Wifi-Up ${alignr}${color1}${upspeed wlx54077d85adb4}/s   ${alignr}${totalup wlx54077d85adb4}
+${endif}${if_existing /sys/class/net/enp42s0/operstate up}${color2}Ethe-Dw ${alignr}${color1}${downspeed enp42s0}/s   ${alignr}${totaldown enp42s0}
+${endif}${if_existing /sys/class/net/enp42s0/operstate up}${color2}Ethe-Up ${alignr}${color1}${upspeed enp42s0}/s   ${alignr}${totalup enp42s0}
+${endif}${voffset 0}
 ]]

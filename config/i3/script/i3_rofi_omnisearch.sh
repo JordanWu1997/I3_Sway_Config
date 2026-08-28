@@ -28,43 +28,83 @@ NOTE_DIR="$HOME/Documents"
 HISTORY="$HOME/.config/BraveSoftware/Brave-Browser/Default/History"
 BOOKMARK="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
 
+# Helper function to abbreviate file paths (e.g., ~/Desktop/test -> ~/D/test)
+shorten_paths() {
+    awk -v home="$HOME" '{
+        orig = $0;
+        sub(home, "~", $0);
+        n = split($0, parts, "/");
+        s = parts[1];
+        for(i=2; i<n; i++) {
+            if(parts[i] != "") s = s "/" substr(parts[i], 1, 1);
+        }
+        if(n>1) s = s "/" parts[n];
+        print s " │ " orig;
+    }'
+}
+
 # Main
 case "$MODE" in
     *Files*)
+        # Ask for directory
+        TARGET_DIR=$(rofi -dmenu -p "Search in Dir (empty for ~)" ${ROFI_OPTION[@]})
+        [[ $? -ne 0 ]] && exit 0  # Exit if user presses Esc
+
+        # Default to ~ if empty, and expand ~ to actual $HOME path
+        TARGET_DIR=${TARGET_DIR:-~}
+        TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
+
         #fdfind --type f --hidden | rofi -dmenu -p "Files" -i | xargs -r xdg-open
-        fdfind --type f |
-            rofi -dmenu -p "Files" -i "${ROFI_OPTION[@]}" |
+        fdfind --type f "" "$TARGET_DIR" |
+            shorten_paths |
+            rofi -dmenu -p "Files" -i ${ROFI_OPTION[@]} |
+            awk -F ' │ ' '{print $NF}' |
             xargs -r xdg-open
         ;;
     *Grep*)
         # interactive ripgrep via rofi
         QUERY=$(rofi -dmenu -p "Grep for" ${ROFI_OPTION[@]})
-        [ -n "$QUERY" ] || exit 0
-        rg --no-heading -l \
-            --glob '!node_modules/**' \
-            --glob '!*.cache/**' \
-            --glob '!**/.git/**' \
-            -- "${QUERY}" "${HOME}" |
-        rofi -dmenu -p "Open" "${ROFI_OPTION[@]}" |
-        xargs -r -I{} ${TERMINAL} -e nvim "{}"
+        if [[ -n "$QUERY" ]]; then
+            # Ask for directory after getting the query
+            TARGET_DIR=$(rofi -dmenu -p "Search in Dir (empty for ~)" ${ROFI_OPTION[@]})
+            [[ $? -ne 0 ]] && exit 0  # Exit if user presses Esc
+
+            # Default to ~ if empty, and expand ~ to actual $HOME path
+            TARGET_DIR=${TARGET_DIR:-~}
+            TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
+
+            rg --no-heading -l "$QUERY" "$TARGET_DIR" |
+                shorten_paths |
+                rofi -dmenu -p "Open" -i ${ROFI_OPTION[@]} |
+                awk -F ' │ ' '{print $NF}' |
+                xargs -r nvim
+        fi
         ;;
     *History*)
         # Copy to bypass database lock when Brave is running
         cp "${HISTORY}" /tmp/brave_history.sqlite
-        # SQLite query on browser history
-        sqlite3 -separator '  ' /tmp/brave_history.sqlite \
-            "SELECT title
-             FROM urls
-             ORDER BY last_visit_time DESC
-             LIMIT 500" | uniq |
-        rofi -dmenu -p "History" -i "${ROFI_OPTION[@]}" |
-        awk '{print $NF}' |
-        xargs -r xdg-open
+        # 1. Fetch top 1000 recent items.
+        # 2. Use awk '!seen[$2]++' to filter out duplicate titles while preserving chronological order.
+        HISTORY_DATA=$(sqlite3 -separator $'\t' /tmp/brave_history.sqlite \
+            "SELECT url, COALESCE(REPLACE(REPLACE(title, char(10), ' '), char(13), ' '), url) FROM urls ORDER BY last_visit_time DESC LIMIT 1000" \
+            | awk -F'\t' '!seen[$2]++')
+        # Send ONLY column 2 (Title) to Rofi, get back the chosen Index number
+        INDEX=$(echo "$HISTORY_DATA" | cut -f2 | rofi -dmenu -p "History" -i ${ROFI_OPTION[@]} -format i)
+        if [[ -n "$INDEX" ]]; then
+            # Extract URL (column 1) from the chosen row index
+            SELECTED_URL=$(echo "$HISTORY_DATA" | awk -F'\t' -v row="$((INDEX + 1))" 'NR == row {print $1}')
+            xdg-open "$SELECTED_URL"
+        fi
         ;;
     *Bookmarks*)
-        # Parse Brave JSON for Title and URL, separate with a clean pipe symbol
-        jq -r '.. | objects | select(.url != null) | "\(.name // "Untitled")"' "$BOOKMARK" | uniq \
-            | rofi -dmenu -p "Bookmarks" -i ${ROFI_OPTION[@]} | awk -F ' │ ' '{print $NF}' | xargs -r xdg-open
+        # Parse JSON, then remove duplicate bookmark titles globally using awk
+        BMARK_DATA=$(jq -r '.. | objects | select(.url != null) | "\(.url)\t\(.name // "Untitled" | gsub("\n"; " "))"' "$BOOKMARK" \
+            | awk -F'\t' '!seen[$2]++')
+        INDEX=$(echo "$BMARK_DATA" | cut -f2 | rofi -dmenu -p "Bookmarks" -i ${ROFI_OPTION[@]} -format i)
+        if [[ -n "$INDEX" ]]; then
+            SELECTED_URL=$(echo "$BMARK_DATA" | awk -F'\t' -v row="$((INDEX + 1))" 'NR == row {print $1}')
+            xdg-open "$SELECTED_URL"
+        fi
         ;;
     *Clipboard*)
         python3 - <<'PY'
@@ -206,7 +246,7 @@ result = subprocess.run(
         "-dmenu",
         "-i",
         "-config",
-        "~/.config/rofi/config_singlecol.rasi",
+        "~/.config/rofi/config_omnisearch.rasi",
         "-p",
         "Clipboard",
         "-format",
@@ -299,7 +339,7 @@ PY
             grep '^bindsym' |
             grep -v '^\s*#' |
             sed 's/bindsym / /' |
-            rofi -config "$HOME/.config/rofi/config_singlecol.rasi" -dmenu -i -p 'i3 Keybinds' |
+            rofi -dmenu -i -p 'i3 Keybinds' ${ROFI_OPTION[@]} |
             sed 's/^\s*//' |
             cut -d' ' -f 2- )
         ;;

@@ -13,7 +13,7 @@
 
 # Rofi options
 ROFI_OPTION=(
-    -config "$HOME/.config/rofi/config_singlecol.rasi"
+    -config "$HOME/.config/rofi/config_omnisearch.rasi"
 )
 
 # Terminal
@@ -38,7 +38,7 @@ case "$MODE" in
         ;;
     *Grep*)
         # interactive ripgrep via rofi
-        QUERY=$(rofi -dmenu -p "Grep for")
+        QUERY=$(rofi -dmenu -p "Grep for" ${ROFI_OPTION[@]})
         [ -n "$QUERY" ] || exit 0
         rg --no-heading -l \
             --glob '!node_modules/**' \
@@ -53,18 +53,18 @@ case "$MODE" in
         cp "${HISTORY}" /tmp/brave_history.sqlite
         # SQLite query on browser history
         sqlite3 -separator '  ' /tmp/brave_history.sqlite \
-            "SELECT title, url
+            "SELECT title
              FROM urls
              ORDER BY last_visit_time DESC
-             LIMIT 500" |
+             LIMIT 500" | uniq |
         rofi -dmenu -p "History" -i "${ROFI_OPTION[@]}" |
         awk '{print $NF}' |
         xargs -r xdg-open
         ;;
     *Bookmarks*)
-        jq -r '.. | .url? // empty' "${BOOKMARK}" |
-            rofi -dmenu -p "Bookmarks" -i "${ROFI_OPTION[@]}" |
-            xargs -r xdg-open
+        # Parse Brave JSON for Title and URL, separate with a clean pipe symbol
+        jq -r '.. | objects | select(.url != null) | "\(.name // "Untitled")"' "$BOOKMARK" | uniq \
+            | rofi -dmenu -p "Bookmarks" -i ${ROFI_OPTION[@]} | awk -F ' │ ' '{print $NF}' | xargs -r xdg-open
         ;;
     *Clipboard*)
         python3 - <<'PY'

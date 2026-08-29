@@ -19,6 +19,7 @@ show_help_message () {
     echo "  [kill_window]: click window on screen to kill (X window)"
     echo "  [pickup_color]: pick up color on screen (X window)"
     echo "  [get_screenshot_text]: screenshot, apply OCR to it and copy context to clipboard"
+    echo "  [get_screenshot_qr]: screenshot, decode QR Code on it and copy context to clipboard"
     echo "  [collect_all_instances]: collect all window instances"
     echo "  [connection_up/connection_down]: set connection up/down"
     echo "  [enable_wifi/disable_wifi]: enable/disable wifi"
@@ -58,6 +59,16 @@ toolkit_operation () {
             CONTEXT=$(flameshot gui --raw | tesseract -l eng+chi_tra stdin stdout)
             echo "${CONTEXT}" | xclip -in -selection clipboard
             notify-send -u low "Toolkit Mode" "${CONTEXT}" --icon="${ICON}"
+            ;;
+        'get_screenshot_qr')
+            CONTEXT=$(flameshot gui --raw | convert - -bordercolor white -border 20x20 PNG:- | zbarimg --quiet --raw - 2>/dev/null)
+
+            if [ -n "${CONTEXT}" ]; then
+                echo -n "${CONTEXT}" | xclip -in -selection clipboard
+                notify-send -u low "Toolkit Mode" "Decoded: ${CONTEXT}" --icon="${ICON}"
+            else
+                notify-send -u low "Toolkit Mode" "No QR or barcode detected." --icon="${ICON}"
+            fi
             ;;
         'collect_all_instances')
             INSTANCE=$(wmctrl -l -x | rofi -dmenu -p 'Collect all' | cut -d' ' -f4 | cut -d. -f1)

@@ -1,111 +1,641 @@
 #!/usr/bin/env bash
 # vim: set fileencoding=utf-8
 
+set -o pipefail
+
 ###########################################################
 # Author      : Kuan-Hsien Wu
 # Contact     : jordankhwu@gmail.com
-# Datetime    : 2026-08-27 21:26:49
-# Description :
+# Description : Rofi omnisearch / command palette
 ###########################################################
 
-# Requirement
-# -- sudo apt install fdfind ripgrep sqlite3
+# Requirements:
+#   rofi fd/fdfind ripgrep sqlite3 jq wmctrl xclip git neovim
+#
+# Optional:
+#   notify-send xdg-open parcellite i3-msg
 
-# Rofi options
+# Installation:
+#   apt install fdfind ripgrep sqlite jq wmctrl xclip git neovim
+#   apt install notify-send parcellite
+
+# ============================================================
+# Configuration
+# ============================================================
+
 ROFI_OPTION=(
     -config "$HOME/.config/rofi/config_omnisearch.rasi"
 )
-
-# Terminal
 TERMINAL="${TERMINAL:-kitty}"
-
-# Mode
-MODE=$(echo -e "🔍 Grep\n📁 Files\n📝 Notes\n🌐 History\n🔖 Bookmarks\n📋 Clipboard\n🪟 Windows\n🏷️ Marks\n🖥️ SSH\n⌨️ Keybindings\n💀 Kill" \
-    | rofi -dmenu -p "Search" -auto-select -i "${ROFI_OPTION[@]}")
-
-# Directory
-NOTE_DIR="$HOME/Documents"
+DOCUMENT_DIR="$HOME/Documents"
 HISTORY="$HOME/.config/BraveSoftware/Brave-Browser/Default/History"
 BOOKMARK="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/rofi-omnisearch"
+LAST_DIR_FILE="$CACHE_DIR/last_dir"
 
-# Helper function to abbreviate file paths (e.g., ~/Desktop/test -> ~/D/test)
+mkdir -p "$CACHE_DIR"
+
+# ============================================================
+# Generic helpers
+# ============================================================
+
+rofi_menu() {
+    local prompt="$1"
+    shift
+
+    rofi -dmenu \
+        -p "$prompt" \
+        -i \
+        "${ROFI_OPTION[@]}" \
+        "$@"
+}
+
+notify() {
+    command -v notify-send >/dev/null 2>&1 &&
+        notify-send "Rofi Omnisearch" "$1"
+}
+
+copy_text() {
+    local text="$1"
+
+    if command -v xclip >/dev/null 2>&1; then
+        printf '%s' "$text" | xclip -selection clipboard
+        printf '%s' "$text" | xclip -selection primary
+        notify "Copied to clipboard"
+    else
+        notify "xclip is not installed"
+    fi
+}
+
+copy_lines() {
+    local lines="$1"
+
+    [[ -n "$lines" ]] || return 0
+    copy_text "$lines"
+}
+
+# Convert a list of selected lines into a Bash array.
+read_selected_lines() {
+    local data="$1"
+    local -n output="$2"
+
+    output=()
+
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && output+=("$line")
+    done <<< "$data"
+}
+
+# ============================================================
+# Universal action system
+# ============================================================
+
+action_menu() {
+    local type="$1"
+
+    case "$type" in
+        file)
+            printf '%s\n' \
+                "Open" \
+                "Edit in Neovim" \
+                "Open in terminal" \
+                "Open containing directory" \
+                "Copy path"
+            ;;
+        grep)
+            printf '%s\n' \
+                "Open at match" \
+                "Open file" \
+                "Open containing directory" \
+                "Copy file:line" \
+                "Copy file path"
+            ;;
+        git)
+            printf '%s\n' \
+                "Edit in Neovim" \
+                "Show Git diff" \
+                "Open containing directory" \
+                "Copy path"
+            ;;
+        url)
+            printf '%s\n' \
+                "Open" \
+                "Copy URL"
+            ;;
+        ssh)
+            printf '%s\n' \
+                "Connect" \
+                "Copy host"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+select_action() {
+    local type="$1"
+    local action
+
+    action=$(action_menu "$type" | rofi_menu "Action")
+    [[ -n "$action" ]] || return 1
+
+    printf '%s\n' "$action"
+}
+
+run_file_action() {
+    local action="$1"
+    shift
+    local files=("$@")
+
+    (( ${#files[@]} > 0 )) || return 0
+
+    case "$action" in
+        "Open")
+            xdg-open "${files[@]}"
+            ;;
+        "Edit in Neovim")
+            "$TERMINAL" -e nvim "${files[@]}"
+            ;;
+        "Open in terminal")
+            local file
+            for file in "${files[@]}"; do
+                "$TERMINAL" --directory "$(dirname "$file")" &
+            done
+            ;;
+        "Open containing directory")
+            local dir
+            for dir in "${files[@]}"; do
+                xdg-open "$(dirname "$dir")"
+            done
+            ;;
+        "Copy path")
+            printf '%s\n' "${files[@]}" | copy_lines "$(cat)"
+            ;;
+    esac
+}
+
+run_grep_action() {
+    local action="$1"
+    shift
+    local files=()
+    local lines=()
+    local locations=()
+    local item file line
+
+    for item in "$@"; do
+        IFS=$'\t' read -r file line <<< "$item"
+        [[ -n "$file" ]] || continue
+        files+=("$file")
+        lines+=("$line")
+        locations+=("$file:$line")
+    done
+
+    (( ${#files[@]} > 0 )) || return 0
+
+    case "$action" in
+        "Open at match")
+            local nvim_args=()
+            local i
+            for i in "${!files[@]}"; do
+                nvim_args+=("+${lines[$i]}" "${files[$i]}")
+            done
+            "$TERMINAL" -e nvim "${nvim_args[@]}"
+            ;;
+        "Open file")
+            "$TERMINAL" -e nvim "${files[@]}"
+            ;;
+        "Open containing directory")
+            local dir
+            for dir in "${files[@]}"; do
+                xdg-open "$(dirname "$dir")"
+            done
+            ;;
+        "Copy file:line")
+            printf '%s\n' "${locations[@]}" | copy_lines "$(cat)"
+            ;;
+        "Copy file path")
+            printf '%s\n' "${files[@]}" | copy_lines "$(cat)"
+            ;;
+    esac
+}
+
+run_git_action() {
+    local action="$1"
+    local root="$2"
+    shift 2
+    local files=("$@")
+
+    (( ${#files[@]} > 0 )) || return 0
+
+    case "$action" in
+        "Edit in Neovim")
+            "$TERMINAL" -e nvim "${files[@]}"
+            ;;
+        "Show Git diff")
+            "$TERMINAL" -e bash -lc \
+                'git -C "$1" diff -- "${@:2}"; printf "\nPress Enter to close..."; read -r' \
+                bash "$root" "${files[@]}"
+            ;;
+        "Open containing directory")
+            local file
+            for file in "${files[@]}"; do
+                xdg-open "$(dirname "$file")"
+            done
+            ;;
+        "Copy path")
+            printf '%s\n' "${files[@]}" | copy_lines "$(cat)"
+            ;;
+    esac
+}
+
+run_url_action() {
+    local action="$1"
+    shift
+    local urls=("$@")
+
+    (( ${#urls[@]} > 0 )) || return 0
+
+    case "$action" in
+        "Open")
+            local url
+            for url in "${urls[@]}"; do
+                xdg-open "$url"
+            done
+            ;;
+        "Copy URL")
+            printf '%s\n' "${urls[@]}" | copy_lines "$(cat)"
+            ;;
+    esac
+}
+
+run_ssh_action() {
+    local action="$1"
+    shift
+    local hosts=("$@")
+
+    (( ${#hosts[@]} > 0 )) || return 0
+
+    case "$action" in
+        "Connect")
+            local host
+            for host in "${hosts[@]}"; do
+                "$TERMINAL" -e ssh "$host" &
+            done
+            ;;
+        "Copy host")
+            printf '%s\n' "${hosts[@]}" | copy_lines "$(cat)"
+            ;;
+    esac
+}
+
+# ============================================================
+# Directory helpers
+# ============================================================
+
+select_directory() {
+    local choice
+    local last_dir=""
+
+    [[ -f "$LAST_DIR_FILE" ]] &&
+        last_dir=$(<"$LAST_DIR_FILE")
+
+    choice=$(
+        {
+            [[ -n "$last_dir" && -d "$last_dir" ]] &&
+                printf '🕒 Last used │ %s\n' "$last_dir"
+
+            printf '🏠 Home │ %s\n' "$HOME"
+
+            [[ -d "$HOME/Documents" ]] &&
+                printf '📝 Documents │ %s\n' "$HOME/Documents"
+
+            [[ -d "$HOME/Downloads" ]] &&
+                printf '⬇️ Downloads │ %s\n' "$HOME/Downloads"
+
+            [[ -d "$HOME/Projects" ]] &&
+                printf '💻 Projects │ %s\n' "$HOME/Projects"
+
+            printf '⌨️ Custom path\n'
+        } |
+        rofi_menu "Search directory"
+    )
+
+    [[ -n "$choice" ]] || return 1
+
+    if [[ "$choice" == "⌨️ Custom path" ]]; then
+        choice=$(rofi_menu "Custom directory (empty for ~)") || return 1
+        choice=${choice:-~}
+        choice="${choice/#\~/$HOME}"
+    else
+        choice="${choice##* │ }"
+    fi
+
+    [[ -d "$choice" ]] || {
+        notify "Directory does not exist: $choice"
+        return 1
+    }
+
+    printf '%s' "$choice" > "$LAST_DIR_FILE"
+    printf '%s\n' "$choice"
+}
+
+# ============================================================
+# Display helpers
+# ============================================================
+
 shorten_paths() {
     awk -v home="$HOME" '{
-        orig = $0;
-        sub(home, "~", $0);
-        n = split($0, parts, "/");
-        s = parts[1];
-        for(i=2; i<n; i++) {
-            if(parts[i] != "") s = s "/" substr(parts[i], 1, 1);
-        }
-        if(n>1) s = s "/" parts[n];
-        print s " │ " orig;
+        orig = $0
+        display = $0
+        sub(home, "~", display)
+
+        n = split(display, parts, "/")
+        short = parts[1]
+
+        for (i = 2; i < n; i++)
+            if (parts[i] != "")
+                short = short "/" substr(parts[i], 1, 1)
+
+        if (n > 1)
+            short = short "/" parts[n]
+
+        print short " │ " orig
     }'
 }
 
-# Main
+build_grep_rows() {
+    awk -F '\t' -v home="$HOME" '
+    {
+        file = $1
+        line = $2
+        content = $3
+
+        display = file
+        sub(home, "~", display)
+
+        n = split(display, parts, "/")
+        short = parts[1]
+
+        for (i = 2; i < n; i++)
+            if (parts[i] != "")
+                short = short "/" substr(parts[i], 1, 1)
+
+        if (n > 1)
+            short = short "/" parts[n]
+
+        print short ":" line ": " content
+    }'
+}
+
+# ============================================================
+# Main mode selector
+# ============================================================
+
+MODE=$(
+    printf '%s\n' \
+        "🔍 Grep" \
+        "📁 Files" \
+        "📝 Documents" \
+        "🕒 Recent" \
+        "📦 Git Modified" \
+        "🌐 History" \
+        "🔖 Bookmarks" \
+        "📋 Clipboard" \
+        "🪟 Windows" \
+        "🏷️ Marks" \
+        "🖥️ SSH" \
+        "⌨️ Keybindings" \
+        "💀 Kill" |
+    rofi_menu "Search" -auto-select
+)
+
+[[ -n "$MODE" ]] || exit 0
+
+# ============================================================
+# Modes
+# ============================================================
+
 case "$MODE" in
+
     *Files*)
-        # Ask for directory
-        TARGET_DIR=$(rofi -dmenu -p "Search in Dir (empty for ~)" ${ROFI_OPTION[@]})
-        [[ $? -ne 0 ]] && exit 0  # Exit if user presses Esc
+        TARGET_DIR=$(select_directory) || exit 0
 
-        # Default to ~ if empty, and expand ~ to actual $HOME path
-        TARGET_DIR=${TARGET_DIR:-~}
-        TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
-
-        #fdfind --type f --hidden | rofi -dmenu -p "Files" -i | xargs -r xdg-open
-        fdfind --type f "" "$TARGET_DIR" |
+        SELECTED=$(
+            fdfind --type f "" "$TARGET_DIR" |
             shorten_paths |
-            rofi -dmenu -p "Files" -i ${ROFI_OPTION[@]} |
-            awk -F ' │ ' '{print $NF}' |
-            xargs -r xdg-open
+            rofi_menu "Files" -multi-select
+        )
+
+        [[ -n "$SELECTED" ]] || exit 0
+
+        ACTION=$(select_action file) || exit 0
+
+        FILES=()
+        while IFS= read -r row; do
+            FILE="${row##* │ }"
+            [[ -n "$FILE" ]] && FILES+=("$FILE")
+        done <<< "$SELECTED"
+
+        run_file_action "$ACTION" "${FILES[@]}"
         ;;
+
     *Grep*)
-        # interactive ripgrep via rofi
-        QUERY=$(rofi -dmenu -p "Grep for" ${ROFI_OPTION[@]})
-        if [[ -n "$QUERY" ]]; then
-            # Ask for directory after getting the query
-            TARGET_DIR=$(rofi -dmenu -p "Search in Dir (empty for ~)" ${ROFI_OPTION[@]})
-            [[ $? -ne 0 ]] && exit 0  # Exit if user presses Esc
+        QUERY=$(rofi_menu "Grep for")
+        [[ -n "$QUERY" ]] || exit 0
 
-            # Default to ~ if empty, and expand ~ to actual $HOME path
-            TARGET_DIR=${TARGET_DIR:-~}
-            TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
+        TARGET_DIR=$(select_directory) || exit 0
 
-            rg --no-heading -l "$QUERY" "$TARGET_DIR" |
-                shorten_paths |
-                rofi -dmenu -p "Open" -i ${ROFI_OPTION[@]} |
-                awk -F ' │ ' '{print $NF}' |
-                xargs -r nvim
-        fi
+        GREP_RESULTS=$(mktemp)
+        trap 'rm -f "$GREP_RESULTS"' EXIT
+
+        rg \
+            --line-number \
+            --no-heading \
+            --color=never \
+            --field-match-separator $'\t' \
+            "$QUERY" \
+            "$TARGET_DIR" > "$GREP_RESULTS"
+
+        [[ -s "$GREP_RESULTS" ]] || {
+            notify "No matches found"
+            exit 0
+        }
+
+        SELECTED_INDEXES=$(
+            build_grep_rows < "$GREP_RESULTS" |
+            rofi_menu "Grep" -multi-select -format i
+        )
+
+        [[ -n "$SELECTED_INDEXES" ]] || exit 0
+
+        ACTION=$(select_action grep) || exit 0
+
+        GREP_ITEMS=()
+
+        while IFS= read -r INDEX; do
+            [[ "$INDEX" =~ ^[0-9]+$ ]] || continue
+
+            MATCH=$(sed -n "$((INDEX + 1))p" "$GREP_RESULTS")
+            IFS=$'\t' read -r FILE LINE CONTENT <<< "$MATCH"
+
+            [[ -n "$FILE" && -n "$LINE" ]] &&
+                GREP_ITEMS+=("$FILE"$'\t'"$LINE")
+        done <<< "$SELECTED_INDEXES"
+
+        run_grep_action "$ACTION" "${GREP_ITEMS[@]}"
         ;;
+
+    *Documents*)
+        SELECTED=$(
+            fdfind --type f --extension md . "$DOCUMENT_DIR" |
+            shorten_paths |
+            rofi_menu "Documents" -multi-select
+        )
+
+        [[ -n "$SELECTED" ]] || exit 0
+
+        ACTION=$(select_action file) || exit 0
+
+        FILES=()
+        while IFS= read -r row; do
+            FILE="${row##* │ }"
+            [[ -n "$FILE" ]] && FILES+=("$FILE")
+        done <<< "$SELECTED"
+
+        run_file_action "$ACTION" "${FILES[@]}"
+        ;;
+
+    *Recent*)
+        SELECTED=$(
+            nvim --headless \
+                +'lua for _, f in ipairs(vim.v.oldfiles) do if vim.fn.filereadable(f) == 1 then print(f) end end' \
+                +qa 2>/dev/null |
+            awk 'NF && !seen[$0]++' |
+            shorten_paths |
+            rofi_menu "Recent files" -multi-select
+        )
+
+        [[ -n "$SELECTED" ]] || exit 0
+
+        ACTION=$(select_action file) || exit 0
+
+        FILES=()
+        while IFS= read -r row; do
+            FILE="${row##* │ }"
+            [[ -n "$FILE" ]] && FILES+=("$FILE")
+        done <<< "$SELECTED"
+
+        run_file_action "$ACTION" "${FILES[@]}"
+        ;;
+
+    *Git\ Modified*)
+        TARGET_DIR=$(select_directory) || exit 0
+
+        git -C "$TARGET_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+            notify "Not a Git repository"
+            exit 0
+        }
+
+        GIT_ROOT=$(git -C "$TARGET_DIR" rev-parse --show-toplevel)
+
+        SELECTED=$(
+            git -C "$GIT_ROOT" status --short |
+            awk '{print substr($0, 4)}' |
+            rofi_menu "Git modified files" -multi-select
+        )
+
+        [[ -n "$SELECTED" ]] || exit 0
+
+        ACTION=$(select_action git) || exit 0
+
+        FILES=()
+        while IFS= read -r file; do
+            [[ -n "$file" ]] && FILES+=("$GIT_ROOT/$file")
+        done <<< "$SELECTED"
+
+        run_git_action "$ACTION" "$GIT_ROOT" "${FILES[@]}"
+        ;;
+
     *History*)
-        # Copy to bypass database lock when Brave is running
-        cp "${HISTORY}" /tmp/brave_history.sqlite
-        # 1. Fetch top 1000 recent items.
-        # 2. Use awk '!seen[$2]++' to filter out duplicate titles while preserving chronological order.
-        HISTORY_DATA=$(sqlite3 -separator $'\t' /tmp/brave_history.sqlite \
-            "SELECT url, COALESCE(REPLACE(REPLACE(title, char(10), ' '), char(13), ' '), url) FROM urls ORDER BY last_visit_time DESC LIMIT 1000" \
-            | awk -F'\t' '!seen[$2]++')
-        # Send ONLY column 2 (Title) to Rofi, get back the chosen Index number
-        INDEX=$(echo "$HISTORY_DATA" | cut -f2 | rofi -dmenu -p "History" -i ${ROFI_OPTION[@]} -format i)
-        if [[ -n "$INDEX" ]]; then
-            # Extract URL (column 1) from the chosen row index
-            SELECTED_URL=$(echo "$HISTORY_DATA" | awk -F'\t' -v row="$((INDEX + 1))" 'NR == row {print $1}')
-            xdg-open "$SELECTED_URL"
-        fi
+        [[ -f "$HISTORY" ]] || {
+            notify "Brave history database not found"
+            exit 0
+        }
+
+        HISTORY_COPY=$(mktemp)
+        trap 'rm -f "$HISTORY_COPY"' EXIT
+        cp "$HISTORY" "$HISTORY_COPY"
+
+        HISTORY_DATA=$(
+            sqlite3 -separator $'\t' "$HISTORY_COPY" \
+                "SELECT url, COALESCE(REPLACE(REPLACE(title, char(10), ' '), char(13), ' '), url)
+                 FROM urls
+                 ORDER BY last_visit_time DESC
+                 LIMIT 1000" |
+            awk -F'\t' '!seen[$2]++'
+        )
+
+        [[ -n "$HISTORY_DATA" ]] || exit 0
+
+        SELECTED_INDEXES=$(
+            printf '%s\n' "$HISTORY_DATA" |
+            cut -f2 |
+            rofi_menu "History" -multi-select -format i
+        )
+
+        [[ -n "$SELECTED_INDEXES" ]] || exit 0
+
+        ACTION=$(select_action url) || exit 0
+
+        URLS=()
+        while IFS= read -r INDEX; do
+            [[ "$INDEX" =~ ^[0-9]+$ ]] || continue
+            URL=$(printf '%s\n' "$HISTORY_DATA" |
+                awk -F'\t' -v row="$((INDEX + 1))" 'NR == row {print $1}')
+            [[ -n "$URL" ]] && URLS+=("$URL")
+        done <<< "$SELECTED_INDEXES"
+
+        run_url_action "$ACTION" "${URLS[@]}"
         ;;
+
     *Bookmarks*)
-        # Parse JSON, then remove duplicate bookmark titles globally using awk
-        BMARK_DATA=$(jq -r '.. | objects | select(.url != null) | "\(.url)\t\(.name // "Untitled" | gsub("\n"; " "))"' "$BOOKMARK" \
-            | awk -F'\t' '!seen[$2]++')
-        INDEX=$(echo "$BMARK_DATA" | cut -f2 | rofi -dmenu -p "Bookmarks" -i ${ROFI_OPTION[@]} -format i)
-        if [[ -n "$INDEX" ]]; then
-            SELECTED_URL=$(echo "$BMARK_DATA" | awk -F'\t' -v row="$((INDEX + 1))" 'NR == row {print $1}')
-            xdg-open "$SELECTED_URL"
-        fi
+        [[ -f "$BOOKMARK" ]] || {
+            notify "Brave bookmarks file not found"
+            exit 0
+        }
+
+        BMARK_DATA=$(
+            jq -r '
+                .. | objects | select(.url != null) |
+                "\(.url)\t\((.name // "Untitled") | gsub("\n"; " "))"
+            ' "$BOOKMARK" |
+            awk -F'\t' '!seen[$2]++'
+        )
+
+        [[ -n "$BMARK_DATA" ]] || exit 0
+
+        SELECTED_INDEXES=$(
+            printf '%s\n' "$BMARK_DATA" |
+            cut -f2 |
+            rofi_menu "Bookmarks" -multi-select -format i
+        )
+
+        [[ -n "$SELECTED_INDEXES" ]] || exit 0
+
+        ACTION=$(select_action url) || exit 0
+
+        URLS=()
+        while IFS= read -r INDEX; do
+            [[ "$INDEX" =~ ^[0-9]+$ ]] || continue
+            URL=$(printf '%s\n' "$BMARK_DATA" |
+                awk -F'\t' -v row="$((INDEX + 1))" 'NR == row {print $1}')
+            [[ -n "$URL" ]] && URLS+=("$URL")
+        done <<< "$SELECTED_INDEXES"
+
+        run_url_action "$ACTION" "${URLS[@]}"
         ;;
+
     *Clipboard*)
         python3 - <<'PY'
 import os
@@ -113,26 +643,15 @@ import struct
 import subprocess
 import sys
 
-history_file = os.path.expanduser(
-    "~/.local/share/parcellite/history"
-)
-
-SIGNATURE = b"1.0ParcelliteHistoryFile"
-HEADER_SIZE = 32
-RECORD_HEADER_SIZE = 28
-
+history_file = os.path.expanduser("~/.local/share/parcellite/history")
+signature = b"1.0ParcelliteHistoryFile"
+header_size = 32
+record_header_size = 28
 
 def notify(message):
-    subprocess.run(
-        ["notify-send", "Parcellite", message],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-
-
-# ------------------------------------------------------------
-# Read Parcellite history
-# ------------------------------------------------------------
+    subprocess.run(["notify-send", "Parcellite", message],
+                   stdout=subprocess.DEVNULL,
+                   stderr=subprocess.DEVNULL)
 
 try:
     with open(history_file, "rb") as f:
@@ -141,82 +660,42 @@ except FileNotFoundError:
     notify("Parcellite history file not found")
     sys.exit(1)
 
-
-if not data.startswith(SIGNATURE):
+if not data.startswith(signature):
     notify("Unknown Parcellite history format")
     sys.exit(1)
 
-
 entries = []
-offset = HEADER_SIZE
+offset = header_size
 
-
-while offset + RECORD_HEADER_SIZE <= len(data):
-
-    # Total size of this record.
+while offset + record_header_size <= len(data):
     record_size = struct.unpack_from("<I", data, offset)[0]
 
-    # Basic sanity check.
-    if record_size < RECORD_HEADER_SIZE:
+    if record_size < record_header_size:
         break
 
     record_end = offset + record_size
-
     if record_end > len(data):
         break
 
-
-    # --------------------------------------------------------
-    # The actual clipboard text occupies the rest of the record.
-    #
-    # DO NOT use offset + 4 as the text length.
-    # That field is metadata, not the payload length.
-    # --------------------------------------------------------
-
-    text_offset = offset + RECORD_HEADER_SIZE
-    raw_text = data[text_offset:record_end]
-
-
-    # Remove only NUL bytes used as possible terminators.
-    #
-    # Do not use strip() or rstrip() without arguments because
-    # trailing spaces and newlines may be legitimate clipboard data.
-    raw_text = raw_text.rstrip(b"\x00")
-
+    raw_text = data[offset + record_header_size:record_end].rstrip(b"\x00")
 
     try:
         text = raw_text.decode("utf-8")
     except UnicodeDecodeError:
-        text = raw_text.decode(
-            "utf-8",
-            errors="replace"
-        )
-
+        text = raw_text.decode("utf-8", errors="replace")
 
     if text:
         entries.append(text)
 
-
-    # Move to the next record.
     offset = record_end
-
 
 if not entries:
     notify("No clipboard history found")
     sys.exit(0)
 
-
-# ------------------------------------------------------------
-# Build Rofi menu
-#
-# Rofi requires one physical line per entry.
-# Keep the original text separately in `entries`.
-# ------------------------------------------------------------
-
 display_entries = []
 
 for i, text in enumerate(entries):
-
     display = (
         text
         .replace("\r\n", "\n")
@@ -224,21 +703,10 @@ for i, text in enumerate(entries):
         .replace("\n", " ↵ ")
     )
 
-    # Optional preview length limit.
-    max_length = 400
+    if len(display) > 400:
+        display = display[:400] + " …"
 
-    if len(display) > max_length:
-        display = display[:max_length] + " …"
-
-    # Prefix with an ID used to recover the original entry.
-    display_entries.append(
-        f"{i}\t{display}"
-    )
-
-
-# ------------------------------------------------------------
-# Show Rofi
-# ------------------------------------------------------------
+    display_entries.append(f"{i}\t{display}")
 
 result = subprocess.run(
     [
@@ -246,7 +714,7 @@ result = subprocess.run(
         "-dmenu",
         "-i",
         "-config",
-        "~/.config/rofi/config_omnisearch.rasi",
+        os.path.expanduser("~/.config/rofi/config_omnisearch.rasi"),
         "-p",
         "Clipboard",
         "-format",
@@ -257,60 +725,33 @@ result = subprocess.run(
     stdout=subprocess.PIPE,
 )
 
-
 selected = result.stdout.rstrip("\n")
-
 if not selected:
     sys.exit(0)
 
-
 try:
-    index = int(
-        selected.split("\t", 1)[0]
-    )
+    index = int(selected.split("\t", 1)[0])
 except (ValueError, IndexError):
     sys.exit(0)
 
-
 clipboard_text = entries[index]
-
-
-# ------------------------------------------------------------
-# Put the EXACT original content back into the clipboard.
-# ------------------------------------------------------------
-
 clipboard_bytes = clipboard_text.encode("utf-8")
 
-subprocess.run(
-    [
-        "xclip",
-        "-selection",
-        "clipboard",
-    ],
-    input=clipboard_bytes,
-)
-
-subprocess.run(
-    [
-        "xclip",
-        "-selection",
-        "primary",
-    ],
-    input=clipboard_bytes,
-)
+for selection in ("clipboard", "primary"):
+    subprocess.run(
+        ["xclip", "-selection", selection],
+        input=clipboard_bytes,
+    )
 PY
         ;;
-    *Notes*)
-        fdfind --type f --extension md . "$NOTE_DIR" |
-            rofi -dmenu -p "Notes" -i "${ROFI_OPTION[@]}" |
-            xargs -r -I{} ${TERMINAL} -e nvim "{}"
-        ;;
+
     *Windows*)
         wmctrl -l |
-            rofi -dmenu -p "Windows" -i "${ROFI_OPTION[@]}" -auto-select |
+            rofi_menu "Windows" -auto-select |
             awk '{print $1}' |
             xargs -r -I{} wmctrl -i -a {}
         ;;
+
     *Marks*)
         i3-msg -t get_tree |
             jq -r '
@@ -323,39 +764,71 @@ PY
                   ]
                 | @tsv
             ' |
-            rofi -dmenu \
-                -i \
-                -auto-select \
-                -p "Jump to mark" \
-                "${ROFI_OPTION[@]}" \
-                -format 's' |
+            rofi_menu "Jump to mark" -auto-select -format s |
             cut -f1 |
             xargs -r -I{} i3-msg '[con_mark="{}"] focus'
         ;;
+
     *Keybindings*)
         # i3 keybindings hinter
         # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
-        i3 $(cat ~/.config/i3/config.d/* |
+        i3 $(
+            cat ~/.config/i3/config.d/* |
             grep '^bindsym' |
             grep -v '^\s*#' |
             sed 's/bindsym / /' |
-            rofi -dmenu -i -p 'i3 Keybinds' ${ROFI_OPTION[@]} |
+            rofi_menu "i3 Keybinds" |
             sed 's/^\s*//' |
-            cut -d' ' -f 2- )
+            cut -d' ' -f2-
+        )
         ;;
+
     *SSH*)
-        # Search SSH config and launch in terminal
-        grep -E '^Host ' ~/.ssh/config 2>/dev/null |
+        SELECTED=$(
+            grep -E '^Host ' ~/.ssh/config 2>/dev/null |
             awk '{print $2}' |
-            rofi -dmenu -auto-select -p "SSH to" -i "${ROFI_OPTION[@]}" |
-            xargs -r -I{} kitty -e ssh {}
+            grep -v '[*?!]' |
+            rofi_menu "SSH to" -multi-select
+        )
+
+        [[ -n "$SELECTED" ]] || exit 0
+
+        ACTION=$(select_action ssh) || exit 0
+
+        HOSTS=()
+        while IFS= read -r host; do
+            [[ -n "$host" ]] && HOSTS+=("$host")
+        done <<< "$SELECTED"
+
+        run_ssh_action "$ACTION" "${HOSTS[@]}"
         ;;
+
     *Kill*)
-        # Changed 'comm' to 'cmd' for the full path.
-        # Added 'ww' to force unlimited width and '--no-headers' to remove the PID/CMD title line.
-        ps axww --no-headers -o pid,cmd |
-            rofi -dmenu -p "Kill Process" -i "${ROFI_OPTION[@]}" |
-            awk '{print $1}' |
-            xargs -r kill -TERM
+        SELECTED_PIDS=$(
+            ps axww --no-headers -o pid,cmd |
+            rofi_menu "Kill process" -multi-select |
+            awk '{print $1}'
+        )
+
+        [[ -n "$SELECTED_PIDS" ]] || exit 0
+
+        COUNT=$(printf '%s\n' "$SELECTED_PIDS" | grep -c .)
+
+        SIGNAL=$(
+            printf '%s\n' \
+                "SIGTERM" \
+                "Cancel" \
+                "SIGKILL" |
+            rofi_menu "Kill $COUNT process(es)" -auto-select
+        )
+
+        case "$SIGNAL" in
+            SIGTERM)
+                printf '%s\n' "$SELECTED_PIDS" | xargs -r kill -TERM
+                ;;
+            SIGKILL)
+                printf '%s\n' "$SELECTED_PIDS" | xargs -r kill -KILL
+                ;;
+        esac
         ;;
 esac

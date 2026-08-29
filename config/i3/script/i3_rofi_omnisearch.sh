@@ -10,13 +10,13 @@ set -o pipefail
 ###########################################################
 
 # Requirements:
-#   rofi fd/fdfind ripgrep sqlite3 jq wmctrl xclip git neovim
+#   rofi fd/fdfind ripgrep pdfgrep sqlite3 jq wmctrl xclip git neovim
 #
 # Optional:
 #   notify-send xdg-open parcellite i3-msg
 
 # Installation:
-#   apt install fdfind ripgrep sqlite jq wmctrl xclip git neovim
+#   apt install fdfind ripgrep pdfgrep sqlite jq wmctrl xclip git neovim
 #   apt install notify-send parcellite
 
 # ============================================================
@@ -397,6 +397,7 @@ MODE=$(
         "🔍 Grep" \
         "📁 Files" \
         "📝 Documents" \
+        "📕 PDF Content" \
         "🕒 Recent" \
         "📦 Git Modified" \
         "🌐 History" \
@@ -504,6 +505,306 @@ case "$MODE" in
         done <<< "$SELECTED"
 
         run_file_action "$ACTION" "${FILES[@]}"
+        ;;
+
+    *PDF\ Content*)
+        DEBUG_LOG="$CACHE_DIR/pdfgrep-debug.log"
+
+        log_pdf_debug() {
+            printf '[%(%F %T)T] %s\n' -1 "$*" >> "$DEBUG_LOG"
+        }
+
+        : > "$DEBUG_LOG"
+        log_pdf_debug "===== PDF search started ====="
+
+        command -v pdfgrep >/dev/null 2>&1 || {
+            notify "pdfgrep is not installed"
+            log_pdf_debug "ERROR: pdfgrep not found"
+            exit 0
+        }
+
+        QUERY=$(rofi_menu "Search PDF content")
+        [[ -n "$QUERY" ]] || exit 0
+
+        # Split the query into whitespace-separated keywords.
+        read -r -a KEYWORDS <<< "$QUERY"
+
+        (( ${#KEYWORDS[@]} > 0 )) || exit 0
+
+        TARGET_DIR=$(select_directory) || exit 0
+
+        log_pdf_debug "Query: $QUERY"
+        log_pdf_debug "Keywords: ${KEYWORDS[*]}"
+        log_pdf_debug "Directory: $TARGET_DIR"
+
+        PDF_COUNT=$(
+            fdfind \
+                --type f \
+                --extension pdf \
+                . "$TARGET_DIR" \
+                2>> "$DEBUG_LOG" |
+            wc -l
+        )
+
+        log_pdf_debug "PDF files found: $PDF_COUNT"
+
+        if (( PDF_COUNT == 0 )); then
+            notify "No PDF files found"
+            exit 0
+        fi
+
+        notify "Found $PDF_COUNT PDF file(s), searching..."
+
+        # Temporary directory for keyword result sets.
+        PDF_SEARCH_DIR=$(mktemp -d)
+
+        trap '
+            rm -rf "$PDF_SEARCH_DIR"
+            rm -f "$PDF_RESULTS"
+        ' EXIT
+
+        # --------------------------------------------------------
+        # Search every keyword independently.
+        #
+        # Each file contains a sorted list of PDF paths matching
+        # that individual keyword.
+        # --------------------------------------------------------
+
+        for INDEX in "${!KEYWORDS[@]}"; do
+            KEYWORD="${KEYWORDS[$INDEX]}"
+
+            log_pdf_debug "Searching keyword: [$KEYWORD]"
+
+            pdfgrep \
+                --recursive \
+                --ignore-case \
+                --page-number \
+                --with-filename \
+                -- "$KEYWORD" "$TARGET_DIR" \
+                2>> "$DEBUG_LOG" |
+                sed -E 's/^(.*):[0-9]+:.*/\1/' |
+                sort -u \
+                > "$PDF_SEARCH_DIR/$INDEX.files"
+
+            KEYWORD_COUNT=$(wc -l < "$PDF_SEARCH_DIR/$INDEX.files")
+
+            log_pdf_debug \
+                "Keyword [$KEYWORD] matched $KEYWORD_COUNT PDF file(s)"
+
+            # If any keyword has no matching PDFs, no PDF can
+            # possibly match all keywords.
+            if (( KEYWORD_COUNT == 0 )); then
+                notify "No PDFs match keyword: $KEYWORD"
+                log_pdf_debug \
+                    "No matches for keyword [$KEYWORD]"
+                exit 0
+            fi
+        done
+
+        # --------------------------------------------------------
+        # Intersect all keyword file lists.
+        #
+        # Result: PDFs containing EVERY keyword somewhere in the
+        # document, not necessarily on the same page.
+        # --------------------------------------------------------
+
+        cp \
+            "$PDF_SEARCH_DIR/0.files" \
+            "$PDF_SEARCH_DIR/common.files"
+
+        for INDEX in "${!KEYWORDS[@]}"; do
+            (( INDEX == 0 )) && continue
+
+            comm -12 \
+                "$PDF_SEARCH_DIR/common.files" \
+                "$PDF_SEARCH_DIR/$INDEX.files" \
+                > "$PDF_SEARCH_DIR/common.next"
+
+            mv \
+                "$PDF_SEARCH_DIR/common.next" \
+                "$PDF_SEARCH_DIR/common.files"
+        done
+
+        MATCHING_PDF_COUNT=$(
+            wc -l < "$PDF_SEARCH_DIR/common.files"
+        )
+
+        log_pdf_debug \
+            "PDFs containing all keywords: $MATCHING_PDF_COUNT"
+
+        if (( MATCHING_PDF_COUNT == 0 )); then
+            notify "No PDF contains all ${#KEYWORDS[@]} keywords"
+            exit 0
+        fi
+
+        notify \
+            "$MATCHING_PDF_COUNT PDF(s) match all keyword(s)"
+
+        # --------------------------------------------------------
+        # Generate the actual result lines.
+        #
+        # Search every matching PDF again for every keyword so Rofi
+        # can display the matching text and page number.
+        # --------------------------------------------------------
+
+        PDF_RESULTS=$(mktemp)
+
+        : > "$PDF_RESULTS"
+
+        while IFS= read -r PDF_FILE; do
+            [[ -n "$PDF_FILE" ]] || continue
+
+            for KEYWORD in "${KEYWORDS[@]}"; do
+                pdfgrep \
+                    --ignore-case \
+                    --page-number \
+                    --with-filename \
+                    -- "$KEYWORD" "$PDF_FILE" \
+                    2>> "$DEBUG_LOG"
+            done
+
+        done < "$PDF_SEARCH_DIR/common.files" |
+            sort -u > "$PDF_RESULTS"
+
+        MATCH_COUNT=$(wc -l < "$PDF_RESULTS")
+
+        log_pdf_debug \
+            "Matching result lines: $MATCH_COUNT"
+
+        if (( MATCH_COUNT == 0 )); then
+            notify "Matching PDFs found, but no result lines generated"
+            log_pdf_debug "ERROR: PDF_RESULTS is empty"
+            exit 0
+        fi
+
+        # --------------------------------------------------------
+        # Convert full paths into shortened display paths.
+        #
+        # Expected pdfgrep format:
+        #
+        # /full/path/file.pdf:PAGE:matching text
+        # --------------------------------------------------------
+
+        PDF_DISPLAY=$(
+            awk -v home="$HOME" '
+            {
+                line = $0
+
+                # Split from the end:
+                #
+                # FILE:PAGE:CONTENT
+                #
+                # First remove CONTENT, then extract PAGE.
+                content = line
+                sub(/^.*:[0-9]+:/, "", content)
+
+                prefix = line
+                sub(/:[^:]*$/, "", prefix)
+
+                page = prefix
+                sub(/^.*:/, "", page)
+
+                file = prefix
+                sub(/:[0-9]+$/, "", file)
+
+                # Skip malformed lines.
+                if (file == "" || page == "")
+                    next
+
+                # Shorten the path for display.
+                display = file
+                sub(home, "~", display)
+
+                n = split(display, path_parts, "/")
+                short = path_parts[1]
+
+                for (i = 2; i < n; i++) {
+                    if (path_parts[i] != "")
+                        short = short "/" substr(path_parts[i], 1, 1)
+                }
+
+                if (n > 1)
+                    short = short "/" path_parts[n]
+
+                print short ":p" page ": " content
+            }
+            ' "$PDF_RESULTS"
+        )
+
+        DISPLAY_COUNT=$(
+            printf '%s\n' "$PDF_DISPLAY" |
+            grep -c .
+        )
+
+        log_pdf_debug \
+            "Display entries generated: $DISPLAY_COUNT"
+
+        if (( DISPLAY_COUNT == 0 )); then
+            notify "PDF matches found, but display parsing failed"
+            exit 0
+        fi
+
+        # --------------------------------------------------------
+        # Show results.
+        #
+        # Use indexes so the shortened display never needs to be
+        # parsed back into the original PDF path.
+        # --------------------------------------------------------
+
+        SELECTED_INDEXES=$(
+            printf '%s\n' "$PDF_DISPLAY" |
+            rofi_menu "PDF Content ($MATCHING_PDF_COUNT PDFs)" \
+                -multi-select \
+                -format i
+        )
+
+        [[ -n "$SELECTED_INDEXES" ]] || exit 0
+
+        ACTION=$(select_action pdf) || exit 0
+
+        PDF_ITEMS=()
+
+        while IFS= read -r INDEX; do
+            [[ "$INDEX" =~ ^[0-9]+$ ]] || continue
+
+            MATCH=$(
+                sed -n "$((INDEX + 1))p" "$PDF_RESULTS"
+            )
+
+            # Parse:
+            #
+            # FILE:PAGE:CONTENT
+            #
+            # Greedily match the file path so ':' characters before
+            # the final :PAGE:CONTENT section are handled.
+            if [[ "$MATCH" =~ ^(.*):([0-9]+):(.*)$ ]]; then
+                FILE="${BASH_REMATCH[1]}"
+                PAGE="${BASH_REMATCH[2]}"
+
+                [[ -n "$FILE" && -n "$PAGE" ]] &&
+                    PDF_ITEMS+=(
+                        "$FILE"$'\t'"$PAGE"
+                    )
+            else
+                log_pdf_debug \
+                    "Failed to parse selected result: $MATCH"
+            fi
+
+        done <<< "$SELECTED_INDEXES"
+
+        if (( ${#PDF_ITEMS[@]} == 0 )); then
+            notify "Failed to parse selected PDF results"
+            exit 0
+        fi
+
+        log_pdf_debug \
+            "Executing action [$ACTION] on ${#PDF_ITEMS[@]} result(s)"
+
+        run_pdf_action \
+            "$ACTION" \
+            "${PDF_ITEMS[@]}"
+
+        log_pdf_debug "===== PDF search finished ====="
         ;;
 
     *Recent*)

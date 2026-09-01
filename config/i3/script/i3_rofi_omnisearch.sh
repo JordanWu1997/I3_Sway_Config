@@ -67,7 +67,7 @@ rofi_menu() {
 
 notify() {
     command -v notify-send >/dev/null 2>&1 &&
-        notify-send -t 1500 "Rofi Omnisearch" "$1"
+        notify-send -t 1000 "Rofi Omnisearch" "$1"
 }
 
 global_cancel() {
@@ -600,7 +600,7 @@ MODE=$(
     rofi_menu "Search" -auto-select
 )
 
-[[ -n "$MODE" ]] || exit 0
+[[ -n "$MODE" ]] || { notify "Omnisearch closed"; exit 0; }
 
 # ============================================================
 # Modes
@@ -619,7 +619,7 @@ case "$MODE" in
             EXPR=$(echo "" | rofi_menu "Calculate (Enter to evaluate)" -filter "$EXPR")
 
             # Exit if user presses Escape or submits an empty string
-            [[ $? -ne 0 || -z "$EXPR" ]] && break
+            [[ $? -ne 0 || -z "$EXPR" ]] && { notify "Calculator closed"; break; }
 
             # Safely evaluate using Python's math module
             RESULT=$(python3 -c "
@@ -639,7 +639,7 @@ except Exception as e:
             ACTION=$(printf "📋 Copy to clipboard\n🔙 Edit expression" | rofi_menu "= $RESULT")
 
             # Exit if user presses Escape on the result screen
-            [[ $? -ne 0 ]] && break
+            [[ $? -ne 0 ]] && { notify "Calculator closed"; break; }
 
             if [[ "$ACTION" == *Copy* ]]; then
                 copy_lines "$RESULT"
@@ -675,7 +675,7 @@ except Exception as e:
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$RECENT_DISPLAY" | rofi_menu "Recent files" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -703,7 +703,9 @@ except Exception as e:
         ;;
 
     *Files*)
-        TARGET_DIR=$(select_directory) || exit 0
+        TARGET_DIR=$(select_directory) || { notify "Exited $MODE"; exit 0; }
+
+        notify "🔍 Starting file search in $TARGET_DIR..."
 
         RESULTS_FILE=$(mktemp)
         trap 'rm -f "$RESULTS_FILE"' EXIT
@@ -730,7 +732,7 @@ except Exception as e:
                 SELECTED=$(head -n 5000 "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}")
             fi
 
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             # Safely halt the background search as soon as the user selects a file
             kill "$SEARCH_PID" 2>/dev/null
@@ -762,9 +764,11 @@ except Exception as e:
 
     *Grep*)
         QUERY=$(rofi_menu "Grep for")
-        [[ -n "$QUERY" ]] || exit 0
+        [[ -n "$QUERY" ]] || { notify "Exited $MODE"; exit 0; }
 
         TARGET_DIR=$(select_directory) || exit 0
+
+        notify "🔍 Grepping for '$QUERY' in $TARGET_DIR..."
 
         GREP_RAW=$(mktemp)
         GREP_DISPLAY=$(mktemp)
@@ -804,7 +808,7 @@ except Exception as e:
                 SELECTED=$(head -n 5000 "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}")
             fi
 
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             # Safely halt the background search as soon as the user selects a file
             kill "$SEARCH_PID" 2>/dev/null
@@ -866,7 +870,7 @@ except Exception as e:
                 SELECTED=$(head -n 5000 "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}")
             fi
 
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
             kill "$SEARCH_PID" 2>/dev/null
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
@@ -1160,7 +1164,7 @@ except Exception as e:
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$PDF_DISPLAY" | head -n 5000 | rofi_menu "PDF Content ($MATCHING_PDF_COUNT PDFs)" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1236,7 +1240,7 @@ except Exception as e:
             awk -F'\t' '!seen[$2]++'
         )
 
-        [[ -n "$HISTORY_DATA" ]] || exit 0
+        [[ -n "$HISTORY_DATA" ]] || { notify "🚫 No history data found."; exit 0; }
 
         LAST_SELECTION=""
         LAST_FILTER=""
@@ -1248,7 +1252,7 @@ except Exception as e:
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$HISTORY_DATA" | cut -f2 | rofi_menu "History" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1289,7 +1293,7 @@ except Exception as e:
             awk -F'\t' '!seen[$2]++'
         )
 
-        [[ -n "$BMARK_DATA" ]] || exit 0
+        [[ -n "$BMARK_DATA" ]] || { notify "🚫 No bookmarks found."; exit 0; }
 
         LAST_SELECTION=""
         LAST_FILTER=""
@@ -1301,7 +1305,7 @@ except Exception as e:
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$BMARK_DATA" | cut -f2 | rofi_menu "Bookmarks" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || break
+            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1497,7 +1501,7 @@ PY
             rofi_menu "SSH to" -multi-select
         )
 
-        [[ -n "$SELECTED" ]] || exit 0
+        [[ -n "$SELECTED" ]] || { notify "🚫 No SSH hosts found or selection cancelled."; exit 0; }
 
         ACTION=$(select_action ssh) || exit 0
 
@@ -1516,7 +1520,7 @@ PY
             awk '{print $1}'
         )
 
-        [[ -n "$SELECTED_PIDS" ]] || exit 0
+        [[ -n "$SELECTED_PIDS" ]] || { notify "🚫 No processes selected."; exit 0; }
 
         COUNT=$(printf '%s\n' "$SELECTED_PIDS" | grep -c .)
 

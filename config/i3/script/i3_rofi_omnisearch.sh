@@ -10,7 +10,7 @@ set -o pipefail
 ###########################################################
 
 # Requirements:
-#   rofi fd/fdfind ripgrep pdfgrep sqlite3 jq wmctrl xclip git neovim poppler-utils
+#   rofi(>=1.7.0) fd/fdfind ripgrep pdfgrep sqlite3 jq wmctrl xclip git neovim poppler-utils
 #
 # Optional:
 #   notify-send xdg-open parcellite i3-msg
@@ -137,11 +137,6 @@ read_selected_lines() {
     while IFS= read -r line; do
         [[ -n "$line" ]] && output+=("$line")
     done <<< "$data"
-}
-
-# Escapes Regex characters for Rofi's -select argument
-escape_rofi_select() {
-    printf '%s' "$1" | sed 's/[][\\*+?^$(){}|]/\\&/g'
 }
 
 record_recent_files() {
@@ -387,7 +382,7 @@ run_pdf_action() {
 
     (( ${#pdfs[@]} > 0 )) || return 0
 
-    record_recent_files "${files[@]}"
+    record_recent_files "${pdfs[@]}"
 
     case "$action" in
         "Preview file (Rofi)")
@@ -491,21 +486,17 @@ select_directory() {
 
             [[ -d "$HOME/Projects" ]] &&
                 printf '💻 Projects │ %s\n' "$HOME/Projects"
-
-            printf '⌨️ Custom path\n'
         } |
-        rofi_menu "Search directory"
+        rofi_menu "Search directory or enter path"
     )
 
-    [[ -n "$choice" ]] || return 1
-
-    if [[ "$choice" == "⌨️ Custom path" ]]; then
-        choice=$(rofi_menu "Custom directory (empty for ~)") || return 1
-        choice=${choice:-~}
-        choice="${choice/#\~/$HOME}"
-    else
+    # Extract path if selected from formatted list, otherwise treat input directly as path
+    if [[ "$choice" == *" │ "* ]]; then
         choice="${choice##* │ }"
     fi
+
+    # Expand tilde (handles both manual typing and empty default)
+    choice="${choice/#\~/$HOME}"
 
     [[ -d "$choice" ]] || {
         notify "Directory does not exist: $choice"
@@ -671,8 +662,8 @@ except Exception as e:
         while true; do
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
 
-            # Escape regex characters
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+            # Pass the raw unescaped string so modern Rofi can match it literally
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$RECENT_DISPLAY" | rofi_menu "Recent files" "${ROFI_ARGS[@]}")
@@ -723,7 +714,7 @@ except Exception as e:
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
 
             # Escape regex characters before passing to -select
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             # Stream dynamically if search is still running, otherwise read cache
@@ -749,6 +740,8 @@ except Exception as e:
             fi
 
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+
             ACTION=$(select_action file) || continue
 
             FILES=()
@@ -800,7 +793,7 @@ except Exception as e:
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
 
             # Escape regex characters before passing to -select to prevent Rofi crashes
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
@@ -824,6 +817,8 @@ except Exception as e:
             fi
 
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+
             ACTION=$(select_action grep) || continue
 
             GREP_ITEMS=()
@@ -862,7 +857,7 @@ except Exception as e:
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
 
             # Escape regex characters
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
@@ -884,6 +879,8 @@ except Exception as e:
             fi
 
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+
             ACTION=$(select_action file) || continue
 
             FILES=()
@@ -1067,7 +1064,9 @@ except Exception as e:
         LAST_FILTER=""
         while true; do
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+
+            # Escape regex characters
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(head -n 5000 "$PDF_DISPLAY" | rofi_menu "PDF Results" -mesg "Query: <b>$QUERY</b> in <i>$TARGET_DIR</i>" "${ROFI_ARGS[@]}")
@@ -1083,6 +1082,8 @@ except Exception as e:
             fi
 
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+
             ACTION=$(select_action pdf) || continue
 
             if [[ "$ACTION" == "Preview match" ]]; then
@@ -1102,7 +1103,6 @@ except Exception as e:
 
                             # Instantly extract ONLY the matching page, then grep with 5 lines of context
                             CONTEXT=$(pdftotext -f "$P_PAGE" -l "$P_PAGE" "$P_FILE" - 2>/dev/null | grep -i -E -C 5 "$GREP_REGEX")
-
                             [[ -z "$CONTEXT" ]] && CONTEXT="Could not extract text context from this page."
 
                             # Pop up a wider Rofi text window to read the context
@@ -1165,8 +1165,7 @@ except Exception as e:
         while true; do
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
 
-            # Escape regex characters
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$HISTORY_DATA" | cut -f2 | rofi_menu "History" "${ROFI_ARGS[@]}")
@@ -1182,6 +1181,8 @@ except Exception as e:
             fi
 
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+
             ACTION=$(select_action url) || continue
 
             URLS=()
@@ -1219,7 +1220,7 @@ except Exception as e:
             ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
 
             # Escape regex characters
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$(escape_rofi_select "$LAST_SELECTION")")
+            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             SELECTED=$(printf '%s\n' "$BMARK_DATA" | cut -f2 | rofi_menu "Bookmarks" "${ROFI_ARGS[@]}")
@@ -1235,6 +1236,8 @@ except Exception as e:
             fi
 
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+
             ACTION=$(select_action url) || continue
 
             URLS=()
@@ -1305,9 +1308,8 @@ while offset + record_header_size <= len(data):
             break
 
     if extracted_text:
-        # --- THE FIX ---
         # Detect the 8-byte C memory alignment duplication and slice it off.
-        # We grab the chunk starting at index 8 and check if the string starts with it.
+        # Grab the chunk starting at index 8 and check if the string starts with it.
         if len(extracted_text) > 8:
             chunk_to_match = extracted_text[8:16]
             if extracted_text.startswith(chunk_to_match):

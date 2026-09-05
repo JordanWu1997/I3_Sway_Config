@@ -39,14 +39,15 @@ show_help_message () {
     echo "  [eDP1]"
     echo "      [eDP1_default]: activate HDMI1 in default mode"
     echo "      [eDP1_auto]: activate eDP1"
-    echo "      [eDP1_shrink1]: activate eDP1 in shrink mode (1440x810_60)"
-    echo "      [eDP1_shrink2]: activate eDP1 in shrink mode (1368x768)"
+    echo "      [eDP1_1440x810_60]: activate eDP1 in shrink mode (1440x810_60)"
+    echo "      [eDP1_1368x768_60]: activate eDP1 in shrink mode (1368x768_60)"
     echo "      [eDP1_primary]: set eDP1 as primary display"
     echo "      [eDP1_off]: deactivate eDP1"
     echo "  [HDMI1]"
     echo "      [HDMI1_auto]: activate HDMI1"
     echo "      [HDMI1_default]: activate HDMI1 in default mode"
-    echo "      [HDMI1_extend]: activate HDMI1 in extended mode"
+    echo "      [HDMI1_1912x960_60]: activate HDMI1 in shrink mode (1912x960_60)"
+    echo "      [HDMI1_1920x1200_50]: activate HDMI1 in extended mode (1920x1080_50)"
     echo "      [HDMI1_primary]: set HDMI1 as primary display"
     echo "      [HDMI1_off]: deactivate HDMI1"
     echo "  [Combination]"
@@ -85,28 +86,32 @@ reload_misc () {
     "$I3_SCRIPT/i3_picom_operator.sh" default
 }
 
-HDMI0_shrink () {
+HDMI0_1920x1080_scale_from_1536x864 () {
+    xrandr --output HDMI-0 --mode 1920x1080 --scale-from 1536x864
+}
+
+HDMI0_1440x810_60 () {
     # Create new mode
     xrandr --newmode "1440x810_60.00"  95.04  1440 1512 1664 1888  810 811 814 839  -HSync +Vsync
     # Add new mode to HDMI1
-    xrandr --addmode "HDMI-0" "1440x810_60"
+    xrandr --addmode "HDMI-0" "1440x810_60.00"
 }
 
-HDMI1_shrink () {
+HDMI1_1912x960_60 () {
     # Create new mode
     xrandr --newmode "1912x960_60.00"  152.20  1912 2024 2232 2552  960 961 964 994  -HSync +Vsync
     # Add new mode to HDMI1
     xrandr --addmode "${HDMI1}" "1912x960_60.00"
 }
 
-HDMI1_extend () {
+HDMI1_1920x1200_50 () {
     # Create new mode
     xrandr --newmode "1920x1200_50.00"  158.08  1920 2032 2240 2560  1200 1201 1204 1235  -HSync +Vsync
     # Add new mode to HDMI1
     xrandr --addmode "${HDMI1}" "1920x1200_50.00"
 }
 
-eDP1_shrink () {
+eDP1_1440x810_60 () {
     # Create new mode
     xrandr --newmode "1440x810_60.00"  95.04  1440 1512 1664 1888  810 811 814 839  -HSync +Vsync
     # Add new mode to eDP1
@@ -121,7 +126,7 @@ auto_adjust () {
             #notify-send -u low "Set Display Automatically" "IOA 24' connected" --icon="${ICON}"
             notify-send -u low "Set Display Automatically" "Rent 24' connected" --icon="${ICON}"
             # Adjust eDP1 & HDMI1
-            HDMI1_extend; eDP1_shrink
+            HDMI1_1920x1200_50; eDP1_1440x810_60
             # Set-1: Locate eDP1 (1440x810) & HDMI1 (1920x1200)
             #xrandr \
                 #--output "${HDMI1}" --mode 1920x1080 --pos 1440x0 --rotate normal --primary \
@@ -142,7 +147,7 @@ auto_adjust () {
         elif [ "${HDMI1_WIDTH}" == "600mm" ] && [ "${HDMI1_HEIGHT}" == "340mm" ]; then
             notify-send -u low "Set Display Automatically" "ACER 27' connected" --icon="${ICON}"
             # Adjust eDP1
-            eDP1_shrink
+            eDP1_1440x810_60
             # Locate eDP1 & HDMI1
             xrandr \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x270 --rotate normal \
@@ -151,7 +156,7 @@ auto_adjust () {
         elif [ "${HDMI1_WIDTH}" == "0mm" ] && [ "${HDMI1_HEIGHT}" == "0mm" ]; then
             notify-send -u low "Set Display Automatically" "Rent unknown connected" --icon="${ICON}"
             # Adjust eDP1 & HDMI1
-            HDMI1_extend; eDP1_shrink
+            HDMI1_1920x1200_50; eDP1_1440x810_60
             # Locate eDP1 & HDMI1 (extented)
             xrandr \
                 --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
@@ -178,16 +183,19 @@ auto_adjust () {
 
     # Case 3: No Laptop (PC at home 1 HDMI display + 2 DP displays)
     if [ "${eDP1_status}" != 'connected' ]; then
-        notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
+        #notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
         #xrandr \
             #--output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
             #--output "DP-4" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1360 --rotate normal --brightness 1.0:1.0:1.0 \
             #--output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
-        # For better wallpaper display
+
+        notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-2 (normal), HDMI-0 (right)" --icon="${ICON}"
+        # Render HDMI0 in 1536x864 and display in 1920x1080 mode
+        HDMI0_1920x1080_scale_from_1536x864
         xrandr \
-            --output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
-            --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1360 --rotate normal --brightness 1.0:1.0:1.0 \
-            --output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
+            --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
+            --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1920 --rotate normal --brightness 1.0:1.0:1.0 \
+            --output "HDMI-0" --mode 1920x1080 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
         return
     fi
 }
@@ -316,9 +324,9 @@ display_operation () {
             notify-send -u low "Set Display" "Deactivate HDMI1 (off)" --icon="${ICON}"
             xrandr --output "${HDMI1}" --off
             ;;
-        "HDMI1_extend")
+        "HDMI1_1920x1200_50")
             notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200_50.00)" --icon="${ICON}"
-            HDMI1_extend
+            HDMI1_1920x1200_50
             xrandr --output "${HDMI1}" --mode "1920x1200_50.00"
             ;;
         "HDMI1_default")
@@ -338,12 +346,12 @@ display_operation () {
             notify-send -u low "Set Display" "Deactivate eDP1 (off)" --icon="${ICON}"
             xrandr --output "${eDP1}" --off
             ;;
-        "eDP1_shrink1")
+        "eDP1_1440x810_60")
             notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)" --icon="${ICON}"
-            eDP1_shrink
+            eDP1_1440x810_60
             xrandr --output "${eDP1}" --mode "1440x810_60.00"
             ;;
-        "eDP1_shrink2")
+        "eDP1_1368x768")
             notify-send -u low "Set Display" "Activate eDP1 shrink mode (1368x768)" --icon="${ICON}"
             xrandr --output "${eDP1}" --mode "1368x768"
             ;;

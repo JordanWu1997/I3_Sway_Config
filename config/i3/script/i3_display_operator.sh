@@ -86,10 +86,6 @@ reload_misc () {
     "$I3_SCRIPT/i3_picom_operator.sh" default
 }
 
-HDMI0_1920x1080_scale_from_1536x864 () {
-    xrandr --output HDMI-0 --mode 1920x1080 --scale-from 1536x864
-}
-
 HDMI0_1440x810_60 () {
     # Create new mode
     xrandr --newmode "1440x810_60.00"  95.04  1440 1512 1664 1888  810 811 814 839  -HSync +Vsync
@@ -191,11 +187,10 @@ auto_adjust () {
 
         notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-2 (normal), HDMI-0 (right)" --icon="${ICON}"
         # Render HDMI0 in 1536x864 and display in 1920x1080 mode
-        HDMI0_1920x1080_scale_from_1536x864
         xrandr \
             --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
             --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1920 --rotate normal --brightness 1.0:1.0:1.0 \
-            --output "HDMI-0" --mode 1920x1080 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
+            --output "HDMI-0" --mode 1920x1080 --scale-from 1536x864 --pos 1920x0 --rotate right --brightness 0.9:0.9:0.9
         return
     fi
 }

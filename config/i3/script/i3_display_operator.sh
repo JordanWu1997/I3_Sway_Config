@@ -295,6 +295,36 @@ select_display_orientation () {
     fi
 }
 
+select_input_to_output () {
+    # Select INPUT device
+    # Filter for pointer devices to avoid mapping keyboards
+    INPUT_LINES=$(xinput list | grep 'pointer' | grep 'id=')
+    SELECTED_INPUT_LINE=$(echo "${INPUT_LINES}" | rofi -dmenu -i -p '[MAPPING] Select INPUT device')
+    if [[ -z "${SELECTED_INPUT_LINE}" ]]; then
+        # Early stop
+        echo "[ERROR] NO INPUT is selected. Exiting ..."
+        return
+    fi
+    # Extract ID from the selected line
+    INPUT_ID=$(echo "${SELECTED_INPUT_LINE}" | sed -n 's/.*id=\([0-9]*\).*/\1/p')
+    if [[ -z "${INPUT_ID}" ]]; then
+        echo "[ERROR] Could not parse INPUT ID. Exiting ..."
+        return
+    fi
+    # Select OUTPUT display
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
+    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[MAPPING] Select OUTPUT display')
+    if [[ -z "${SELECTED_DISPLAY}" ]]; then
+        # Early stop
+        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+        return
+    fi
+    # Execute mapping
+    xinput map-to-output "${INPUT_ID}" "${SELECTED_DISPLAY}"
+    notify-send -u low "Input Mapped" "Mapped Input ID ${INPUT_ID} to ${SELECTED_DISPLAY}" --icon="${ICON}"
+}
+
+
 display_operation () {
     case $1 in
         # Combination of HDMI1, eDP1
@@ -373,6 +403,9 @@ display_operation () {
             ;;
         "select_display_scale")
             select_display_scale
+            ;;
+        "select_input_to_output")
+            select_input_to_output
             ;;
         "show_display_layout")
             notify-send -u low "Display Mode" "$(xrandr --listmonitors)" --icon="${ICON}"

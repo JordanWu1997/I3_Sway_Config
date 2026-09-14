@@ -719,9 +719,9 @@ except Exception as e:
 
             # Stream dynamically if search is still running, otherwise read cache
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | head -n 5000 | rofi_menu "Files" "${ROFI_ARGS[@]}")
+                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}")
             else
-                SELECTED=$(head -n 5000 "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}")
+                SELECTED=$(cat "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}")
             fi
 
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
@@ -797,9 +797,9 @@ except Exception as e:
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$GREP_DISPLAY" | head -n 5000 | rofi_menu "Grep" "${ROFI_ARGS[@]}")
+                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}")
             else
-                SELECTED=$(head -n 5000 "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}")
+                SELECTED=$(cat "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}")
             fi
 
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
@@ -861,9 +861,9 @@ except Exception as e:
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | head -n 5000 | rofi_menu "Documents" "${ROFI_ARGS[@]}")
+                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}")
             else
-                SELECTED=$(head -n 5000 "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}")
+                SELECTED=$(cat "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}")
             fi
 
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
@@ -1069,7 +1069,7 @@ except Exception as e:
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
-            SELECTED=$(head -n 5000 "$PDF_DISPLAY" | rofi_menu "PDF Results" -mesg "Query: <b>$QUERY</b> in <i>$TARGET_DIR</i>" "${ROFI_ARGS[@]}")
+            SELECTED=$(cat "$PDF_DISPLAY" | rofi_menu "PDF Results" -mesg "Query: <b>$QUERY</b> in <i>$TARGET_DIR</i>" "${ROFI_ARGS[@]}")
             [[ -n "$SELECTED" ]] || { notify "Exited PDF View"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then

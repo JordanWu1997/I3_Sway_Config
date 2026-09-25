@@ -574,6 +574,7 @@ MODE=$(
     printf '%s\n' \
         "🚀 Apps" \
         "🧮 Calculator" \
+        "🌐 Translate" \
         "🔍 Grep" \
         "📁 Files" \
         "📝 Documents" \
@@ -638,6 +639,144 @@ except Exception as e:
                 break
             fi
             # If Edit is chosen, the loop natively continues and $EXPR is pre-filled via -filter
+        done
+        ;;
+
+    *Translate*)
+        # translate-shell is required for actual translation.
+        if ! command -v trans >/dev/null 2>&1; then
+            notify "Please install 'translate-shell' (trans)."
+            exit 0
+        fi
+
+        QUERY=""
+        TL=""
+        LANG_TARGET=""
+        while true; do
+
+            # 1. Get input text
+            QUERY=$(
+                printf '%s\n' "" |
+                    rofi_menu "Translate (Enter text)" \
+                        -filter "$QUERY"
+            )
+            RofiStatus=$?
+
+            if [[ $RofiStatus -ne 0 ]]; then
+                notify "Translation closed"
+                break
+            fi
+
+            if [[ -z "$QUERY" ]]; then
+                notify "No text entered"
+                continue
+            fi
+
+            # 2. Select target language
+            LANG_TARGET=$(
+                printf '%s\n' \
+                    '🇹🇼 To Chinese' \
+                    '🇺🇸 To English' |
+                    rofi_menu "Target Language"
+            )
+            RofiStatus=$?
+
+            if [[ $RofiStatus -ne 0 ]]; then
+                # Return to text input instead of closing everything.
+                continue
+            fi
+
+            [[ -n "$LANG_TARGET" ]] || continue
+            case "$LANG_TARGET" in
+                *Chinese*)
+                    TL="zh"
+                    ;;
+                *English*)
+                    TL="en"
+                    ;;
+                *)
+                    notify "Unsupported target language"
+                    continue
+                    ;;
+            esac
+
+            # 3. Translate
+            notify "Translating..."
+            RESULT=$(
+                trans \
+                    -b \
+                    -t "$TL" \
+                    -- "$QUERY" \
+                    2>/dev/null
+            )
+            TransStatus=$?
+
+            # translate-shell may return an empty result on failure.
+            if [[ $TransStatus -ne 0 || -z "$RESULT" ]]; then
+                RESULT="Error: Could not fetch translation."
+
+                # Show the error and let the user decide what to do.
+                ACTION=$(
+                    printf '%s\n' \
+                        '🔙 Edit text' \
+                        '❌ Close' |
+                        rofi_menu "Translation Error" \
+                            -mesg "$(printf \
+                                'Input:\n%s\n\n%s' \
+                                "$QUERY" \
+                                "$RESULT"
+                            )"
+                )
+                RofiStatus=$?
+                if [[ $RofiStatus -ne 0 ||
+                      "$ACTION" == *"Close"* ]]; then
+                    notify "Translation closed"
+                    break
+                fi
+                # Edit text
+                continue
+            fi
+
+            # 4. Display translation result
+            ACTION=$(
+                printf '%s\n' \
+                    '📋 Copy to clipboard' \
+                    '🔙 Edit text' \
+                    '🌐 Translate again' |
+                    rofi_menu "Translation Result" \
+                        -mesg "$(printf \
+                            'Input:\n%s\n\nTranslation:\n%s' \
+                            "$QUERY" \
+                            "$RESULT"
+                        )"
+            )
+            RofiStatus=$?
+
+            # 5. Handle result window close / Escape
+            if [[ $RofiStatus -ne 0 ]]; then
+                notify "Translation closed"
+                break
+            fi
+
+            # 6. Copy result
+            if [[ "$ACTION" == *"Copy"* ]]; then
+                copy_lines "$RESULT"
+                notify "Translation copied"
+                break
+            fi
+
+            # 7. Edit text
+            if [[ "$ACTION" == *"Edit"* ]]; then
+                continue
+            fi
+
+            # 8. Translate again
+            if [[ "$ACTION" == *"Translate again"* ]]; then
+                LANG_TARGET=""
+                TL=""
+                continue
+            fi
+
         done
         ;;
 

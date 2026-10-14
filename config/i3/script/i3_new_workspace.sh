@@ -133,12 +133,12 @@ workspace_action () {
     case $1 in
         # Move to new workspace
         "move_focus")
-            i3-msg workspace ${WS_NAME}
+            i3-msg "workspace \"$WS_NAME\""
             ;;
         # Move container to new workspace
         "move_container")
-            i3-msg move container to workspace ${WS_NAME}
-            i3-msg workspace ${WS_NAME}
+            i3-msg "move container to workspace \"$WS_NAME\""
+            i3-msg "workspace \"$WS_NAME\""
             ;;
         *)
             show_wrong_usage_message

@@ -7,7 +7,7 @@ ROFI_SELECTOR_CONFIG="$HOME/.config/rofi/config_i3workspace.rasi"
 WS_NAME_LIST="$HOME/.config/i3/share/i3_workspace_name_list.txt"
 
 # Set workspace list to workspace array
-readarray WS_ARRAY < ${WS_NAME_LIST}
+readarray -t WS_ARRAY < "$WS_NAME_LIST"
 
 # Maximal number of workspaces
 MAX_NUM_WS=${#WS_ARRAY[@]}
@@ -65,7 +65,8 @@ workspace_operation () {
     case $1 in
         # For current workspace
         "rename_current")
-            i3-msg rename workspace to $(rofi -dmenu -line 0 -p "New Workspace Name")
+            WS=$(rofi -dmenu -line 0 -p "New Workspace Name")
+            [[ -n $WS ]] && i3-msg "rename workspace to \"$WS\""
             ;;
         "kill_current")
             i3-resurrect save
@@ -83,7 +84,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Go to WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg workspace ${WS}
+                i3-msg "workspace \"$WS\""
             fi
             ;;
         "goto_with_input")
@@ -91,7 +92,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Go to WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg workspace ${WS}
+                i3-msg "workspace \"$WS\""
             fi
             ;;
         "move_container_not_focus")
@@ -99,7 +100,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD to WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg move container to workspace ${WS}
+                i3-msg "move container to workspace \"$WS\""
             fi
             ;;
         "move_container")
@@ -107,8 +108,8 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD and focus to")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg move container to workspace ${WS}
-                i3-msg workspace ${WS}
+                i3-msg "move container to workspace \"$WS\""
+                i3-msg "workspace \"$WS\""
             fi
             ;;
         "move_container_with_input")
@@ -116,8 +117,8 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Move WD and focus to")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg move container to workspace ${WS}
-                i3-msg workspace ${WS}
+                i3-msg "move container to workspace \"$WS\""
+                i3-msg "workspace \"$WS\""
             fi
             ;;
         "move_container_to_output")
@@ -126,18 +127,17 @@ workspace_operation () {
             ;;
         "move_workspace_and_focus")
             # Load current workspace
-            CURRENT_WS_NUM=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
-                tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
-            CURRENT_WS_NAME="${WS_ARRAY[$(( ${CURRENT_WS_NUM} - 1))]}"; sleep 0.05
+            CURRENT_WS_NAME=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused) | .name')
+            sleep 0.05
             i3-msg move workspace to output $2; sleep 0.1
-            i3-msg workspace ${CURRENT_WS_NAME}
+            i3-msg "workspace \"$CURRENT_WS_NAME\""
             ;;
         "swap")
             i3-msg bar hidden_state show bar_mode
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Swap with WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-workspace-swap -d ${WS}
+                i3-workspace-swap -d "$WS"
             fi
             ;;
         "kill")
@@ -145,7 +145,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Kill WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg workspace ${WS}
+                i3-msg "workspace \"$WS\""
                 i3-resurrect save
                 i3-msg [workspace='__focused__'] kill
                 i3-msg workspace back_and_forth
@@ -156,7 +156,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Save WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-resurrect save -w ${WS}
+                i3-resurrect save -w "$WS"
             fi
             ;;
         "restore")
@@ -165,7 +165,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Restore WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-resurrect restore -w ${WS}
+                i3-resurrect restore -w "$WS"
             fi
             ;;
         "swap_with_input")
@@ -173,13 +173,13 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Swap with WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-workspace-swap -d ${WS}
+                i3-workspace-swap -d "$WS"
             fi
             ;;
         "swap_with_index")
             if (( $2 <= ${MAX_NUM_WS} )); then
                 INDEX=$(( $2 - 1 ))
-                i3-workspace-swap -d ${WS_ARRAY[${INDEX}]}
+                i3-workspace-swap -d "${WS_ARRAY[${INDEX}]}"
             else
                 echo
                 echo Input index $2 is out of range.
@@ -190,32 +190,30 @@ workspace_operation () {
             ;;
         "swap_next")
             # Load current workspace
-            CURRENT_WS_NUM=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
-                tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+            CURRENT_WS_NUM=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused) | .num')
             workspace_next_WS_NUM $CURRENT_WS_NUM
             NEXT_WS_NAME="${WS_ARRAY[$(( ${NEXT_WS_NUM} - 1 ))]}"
-            i3-workspace-swap -d ${NEXT_WS_NAME}
+            i3-workspace-swap -d "$NEXT_WS_NAME"
             ;;
         "swap_prev")
             # Load current workspace
-            CURRENT_WS_NUM=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
-                tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+            CURRENT_WS_NUM=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused) | .num')
             workspace_prev_WS_NUM $CURRENT_WS_NUM
             PREV_WS_NAME="${WS_ARRAY[$((${PREV_WS_NUM} - 1))]}"
-            i3-workspace-swap -d ${PREV_WS_NAME}
+            i3-workspace-swap -d "$PREV_WS_NAME"
             ;;
         # For all workspaces
         "save_all")
             # Loop all defined workspaces
             counter=0
-            for WS in ${WS_ARRAY[@]}; do
-                i3-resurrect save -w ${WS}
+            for WS in "${WS_ARRAY[@]}"; do
+                i3-resurrect save -w "$WS"
             done
             ;;
         "restore_all")
             # Loop all defined workspaces
-            for WS in ${WS_ARRAY[@]}; do
-                i3-resurrect restore -w ${WS}
+            for WS in "${WS_ARRAY[@]}"; do
+                i3-resurrect restore -w "$WS"
             done
             ;;
         *)
@@ -227,4 +225,4 @@ workspace_operation () {
 }
 
 # Main
-workspace_operation $1 $2
+workspace_operation "$1" "$2"

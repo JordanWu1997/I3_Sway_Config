@@ -203,7 +203,7 @@ select_display_mode () {
     if [[ -z "${SELECTED_DISPLAY}" ]]; then
         # Early stop
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
-        return
+        return 1
     fi
     # Select DISPLAY mode
     SELECTED_DISPLAY_ID=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | awk -v SELECTED_DISPLAY="${SELECTED_DISPLAY}" '$1 == SELECTED_DISPLAY {print NR}')
@@ -217,10 +217,14 @@ select_display_mode () {
     if [[ -z "${DISPLAY_MODES}" ]]; then
         # Early stop
         echo "[ERROR] NO Available DISPLAY Mode for ${SELECTED_DISPLAY}. Exiting ..."
-        return
+        return 1
     fi
     # Add "off" option
     SELECTED_DISPLAY_MODE=$(echo "${DISPLAY_MODES[*]} off" | tr ' ' '\n' | rofi -dmenu -i -p "Select ${SELECTED_DISPLAY} mode")
+    if [[ -z "${SELECTED_DISPLAY_MODE}" ]]; then
+        echo "[INFO] No display mode selected. Exiting ..."
+        return 1
+    fi
     if [[ ${SELECTED_DISPLAY_MODE} == 'off' ]]; then
         xrandr --output "${SELECTED_DISPLAY}" --off
     else
@@ -424,16 +428,16 @@ main () {
     # Automatically setup display
     case $1 in
         "auto")
-            auto_adjust
+            auto_adjust || return $?
             ;;
         "auto_in_office")
-            setup_monitors.sh auto_in_office
+            setup_monitors.sh auto_in_office || return $?
             ;;
         "auto_at_home")
-            setup_monitors.sh auto_at_home
+            setup_monitors.sh auto_at_home || return $?
             ;;
         *)
-            display_operation "$1"
+            display_operation "$1" || return $?
     esac
 
     # Reload conky

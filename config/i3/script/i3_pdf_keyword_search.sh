@@ -49,8 +49,8 @@ search_and_open () {
 
     # Loop through pdf files (including files contain space or other special characters)
     count=0
-    find ${input_dir} -iname '*.pdf' -print0 | while IFS= read -r -d '' file; do
-        echo [INFO] Scanning ${file} ...
+    find "$input_dir" -iname '*.pdf' -print0 | while IFS= read -r -d '' file; do
+        echo "[INFO] Scanning ${file} ..."
 
         # Ignore invalid file
         if [[ ! -f $file ]]; then
@@ -58,12 +58,12 @@ search_and_open () {
         fi
 
         # Convert pdf to text
-        context=$(pdftotext -l 1  -nopgbrk -q -- "${file}" -)
+        context=$(pdftotext -nopgbrk -q -- "${file}" -)
 
         # Match keyword
         local all_matched=true
         for keyword in "${keywords[@]}"; do
-            if  ! $(echo ${context} | grep -i -q "${keyword}"); then
+            if ! grep -Fiq -- "$keyword" <<< "$context"; then
                 all_matched=false
                 break
             fi
@@ -83,13 +83,17 @@ search_and_open () {
             if ${show_all_at_once}; then
                 echo "[INFO] Opening ${SEARCH_TEXT} ..."
                 echo "[INFO] Showing all at once, skipping interactive prompt."
-                $PDF_viewer ${file} &
+                "$PDF_viewer" "$file" &
+                if [[ ${max_num} -ge 1 ]] && [[ ${count} -ge ${max_num} ]]; then
+                    echo "[INFO] ${count} results are found ..."
+                    break
+                fi
                 continue
             fi
 
             # Open file. Using '&' for background opening for all_at_once or if
             echo [INFO] "Opening ${SEARCH_TEXT} ..."
-            $PDF_viewer "${file}" &
+            "$PDF_viewer" "$file" &
             local pdf_pid=$! # Capture the PID of the viewer process
 
             # The --action flag takes an 'id,label'. The command outputs the chosen 'id'.
@@ -209,8 +213,8 @@ main () {
     fi
 
     # Start searching
-    search_and_open ${KEYWORDS} ${INPUT_DIR} ${MAX_NUM} ${PDF_VIEWER} ${SHOW_ALL_AT_ONCE}
+    search_and_open "$KEYWORDS" "$INPUT_DIR" "$MAX_NUM" "$PDF_VIEWER" "$SHOW_ALL_AT_ONCE"
 }
 
 # Main
-main $@
+main "$@"

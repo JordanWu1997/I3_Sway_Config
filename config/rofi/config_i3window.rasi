@@ -75,7 +75,7 @@ configuration {
     padding: 1em;
 
     /*Border width*/
-    border: 0;
+    border: 5;
 
     /*Border color*/
     border-color: @selected-active-background;

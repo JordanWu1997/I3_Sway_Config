@@ -68,8 +68,12 @@ configuration {
     /*Fullscreen*/
     fullscreen: false;
 
-    /*Width (no effect when fullscreen is enable, preset in wal)*/
-    width: 25%;
+    /* Center the chooser over the focused window. */
+    location: center;
+    anchor: center;
+
+    /* Base grid width; the mark script narrows it on smaller outputs. */
+    width: 640px;
 
     /*Border width*/
     border: 5;

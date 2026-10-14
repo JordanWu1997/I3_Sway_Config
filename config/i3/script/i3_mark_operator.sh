@@ -4,6 +4,19 @@
 ROFI_SELECTOR_CONFIG="$HOME/.config/rofi/config_i3mark.rasi"
 # Mark input list for rofi
 ROFI_AUTOMARK_INPUT_TEXT="$HOME/.config/rofi/i3_automark_list.txt"
+
+mark_rofi () {
+    local output_width menu_width=640
+
+    # Size against the focused output, while -2 keeps the menu over its window.
+    output_width=$(i3-msg -t get_workspaces 2>/dev/null |
+        jq -r '.[] | select(.focused) | .rect.width' 2>/dev/null)
+    if [[ $output_width =~ ^[0-9]+$ ]] && (( output_width > 48 && output_width - 48 < menu_width )); then
+        menu_width=$((output_width - 48))
+    fi
+
+    rofi -monitor -2 "$@" -theme-str "window { width: ${menu_width}px; }"
+}
 # Automark marks
 #ALL_AUTOMARK_LIST=(\
     #1 2 3 4 5 6 7 8 9 0 \
@@ -53,14 +66,14 @@ mark_operation () {
             i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
                 command grep -B1 -A1 '[[]' | tr -d \\n\[ | sed 's/--/\n/g' | \
                 command grep -v 'null' | awk -F '  ' '{print $2, $1}' | \
-                rofi -dmenu -sort -select -p 'Show [Mark]'
+                mark_rofi -dmenu -sort -select -p 'Show [Mark]'
             ;;
         # Mark current window
         "mark")
             if [ $2 == "i3" ]; then
                 i3-input -F "mark --add %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                mark_mark=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Mark')
+                mark_mark=$(mark_rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -p 'Mark')
                 if [[ -z ${mark_mark} ]]; then
                     return
                 fi
@@ -74,7 +87,7 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "unmark %s" -l 1 -P "Mark: "
             elif [ $2 == "rofi" ]; then
-                mark_mark=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} -p 'Unmark')
+                mark_mark=$(mark_rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -p 'Unmark')
                 if [[ ! -z ${mark_mark} ]]; then
                     i3-msg unmark ${mark_mark}
                 fi
@@ -103,8 +116,8 @@ mark_operation () {
             if [ $2 == "i3" ]; then
                 i3-input -F "[con_mark=%s] focus" -l 1 -P "Goto Window [Mark]: "
             elif [ $2 == "rofi" ]; then
-                mark_mark=$(rofi -dmenu -config ${ROFI_SELECTOR_CONFIG} \
-                    -select -input ${ROFI_AUTOMARK_INPUT_TEXT} \
+                mark_mark=$(mark_rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" \
+                    -select -input "${ROFI_AUTOMARK_INPUT_TEXT}" \
                     -p 'Goto Window [Mark]')
                 if [[ -z ${mark_mark} ]]; then
                     return
@@ -117,7 +130,7 @@ mark_operation () {
             mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
                 command grep -x '^\[$' -A1 -B1 | command grep -vx '^\[$' | tr -d '\n' | \
                 sed 's/\"\,/\"/g' | sed 's/--/\n/g' | awk -F '  ' '{print $2,$1}' | \
-                rofi -dmenu -sort -auto-select -p 'Goto Window [Mark]')"
+                mark_rofi -dmenu -sort -auto-select -p 'Goto Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
             if [[ -z ${mark_mark} ]]; then
                 return
@@ -134,7 +147,7 @@ mark_operation () {
                     i3-input -F "swap container with mark %s" -l 1 -P "Swap with Window [Mark]: "
                 fi
             elif [ $2 == "rofi" ]; then
-                mark_title="$(rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -select \
+                mark_title="$(mark_rofi -dmenu -config "${ROFI_SELECTOR_CONFIG}" -select \
                     -input "${ROFI_AUTOMARK_INPUT_TEXT}" -p 'Swap with Window [Mark]')"
                 mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
                 if [[ -z ${mark_mark} ]]; then
@@ -152,7 +165,7 @@ mark_operation () {
             mark_title="$(i3-msg -t get_tree | jq '.. | objects | .name,.marks' | \
                 command grep -x '^\[$' -A1 -B1 | command grep -vx '^\[$' | tr -d '\n' | \
                 sed 's/\"\,/\"/g' | sed 's/--/\n/g' | awk -F '  ' '{print $2,$1}' | \
-                rofi -dmenu -sort -auto-select -p 'Swap with Window [Mark]')"
+                mark_rofi -dmenu -sort -auto-select -p 'Swap with Window [Mark]')"
             mark_mark=$(echo $mark_title | awk '{print $1}' | cut -d',' -f1)
             if [[ -z ${mark_mark} ]]; then
                 return

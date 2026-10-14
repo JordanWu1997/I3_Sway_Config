@@ -4,9 +4,9 @@ WINDOW_ROFI_CONFIG="$HOME/.config/rofi/config_i3window.rasi"
 
 window_rofi () {
     if [[ -f $WINDOW_ROFI_CONFIG ]]; then
-        rofi -config "$WINDOW_ROFI_CONFIG" "$@"
+        rofi -config "$WINDOW_ROFI_CONFIG" -monitor -2 "$@"
     else
-        rofi "$@"
+        rofi -monitor -2 "$@"
     fi
 }
 

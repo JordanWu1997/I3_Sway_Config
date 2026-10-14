@@ -1,4 +1,4 @@
-/*~/.config/rofi/config_i3mark.rasi*/
+/* Shared fullscreen layout for i3 window placement and sizing. */
 
 configuration {
 
@@ -48,7 +48,7 @@ configuration {
 
 #listview {
 
-    /*Number of lines (no effect when fullscreen is enable)*/
+    /* Keep the same grid in landscape, portrait, and tiled modes. */
     lines: 6;
 
     /*Number of columns*/
@@ -66,16 +66,23 @@ configuration {
 #window {
 
     /*Fullscreen*/
-    fullscreen: false;
+    fullscreen: true;
 
-    /*Width (no effect when fullscreen is enable, preset in wal)*/
-    width: 93%;
+    /* Keep the input, help text, and choices together near screen center. */
+    padding: 28% 16%;
 
     /*Border width*/
-    border: 5;
+    border: 0;
 
     /*Border color*/
     border-color: @selected-active-background;
+
+}
+
+#entry {
+
+    /* Keep typed dimensions in the same visual column as the choices. */
+    horizontal-align: 0.50;
 
 }
 

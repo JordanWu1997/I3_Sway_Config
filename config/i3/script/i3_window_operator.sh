@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+WINDOW_ROFI_CONFIG="$HOME/.config/rofi/config_i3window.rasi"
+
+window_rofi () {
+    if [[ -f $WINDOW_ROFI_CONFIG ]]; then
+        rofi -config "$WINDOW_ROFI_CONFIG" "$@"
+    else
+        rofi "$@"
+    fi
+}
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -23,7 +33,9 @@ show_help_message () {
     echo "      (1) resize tiling or floating window to input width and height"
     echo "      (2) move floating window to input X and Y"
     echo "  [resize_to_input_and_move_floating_to_input_in_one]:"
-    echo "       function the same as previous option but you only need to input once"
+    echo "       choose a floating placement or tiled size, or enter custom geometry"
+    echo "       floating: X,Y,W,H; tiled: W,H (blank fields keep their current values)"
+    echo "       tiled choices follow the available split directions"
     echo "  [resize_and_move_floating]: CLI API that reads command line arguments as inputs (1 0 X Y W H)"
     echo "  [float_all]: make all windows in current workspace floating"
     echo "  [tile_all]: make all windows in current workspace tiled"
@@ -64,7 +76,7 @@ resize_to_input () {
 
     # INPUT_WIDTH
     if [[ ${FLOATING_STATUS} == '"user_on"' ]] || [[ $(echo "(${WIDTH} - ${WINDOW_WIDTH}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
-        INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to")
+        INPUT_WIDTH=$(window_rofi -dmenu -p "Set WD width to")
         if [[ -n ${INPUT_WIDTH} ]]; then
             INPUT_WIDTH=$(_floating_coordinate_to_absolute "${INPUT_WIDTH}" 0 "${WIDTH}") || return 1
         fi
@@ -73,7 +85,7 @@ resize_to_input () {
 
     # INPUT_HEIGHT
     if [[ ${FLOATING_STATUS} == '"user_on"' ]] || [[ $(echo "(${HEIGHT} - ${WINDOW_HEIGHT}) >= ${THRESHOLD}" | bc -l) == "1" ]]; then
-        INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to")
+        INPUT_HEIGHT=$(window_rofi -dmenu -p "Set WD height to")
         if [[ -n ${INPUT_HEIGHT} ]]; then
             INPUT_HEIGHT=$(_floating_coordinate_to_absolute "${INPUT_HEIGHT}" 0 "${HEIGHT}") || return 1
         fi
@@ -123,8 +135,8 @@ move_floating_to_input () {
     )
 
     # Empty input keeps the current coordinate exactly unchanged.
-    INPUT_X=$(rofi -dmenu -p "Set WD Top-Left X to") || return 0
-    INPUT_Y=$(rofi -dmenu -p "Set WD Top-Left Y to") || return 0
+    INPUT_X=$(window_rofi -dmenu -p "Set WD Top-Left X to") || return 0
+    INPUT_Y=$(window_rofi -dmenu -p "Set WD Top-Left Y to") || return 0
     TARGET_X=${WIN_X}
     TARGET_Y=${WIN_Y}
 
@@ -174,14 +186,332 @@ _floating_coordinate_to_absolute () {
     printf '%d\n' "$((offset + value))"
 }
 
+# Give familiar names to the bundled layouts. User-added presets still work.
+_window_geometry_preset_label () {
+    case $1 in
+        '0,0,1/2,1'|'0,0,2/4,1') echo 'Left half' ;;
+        '1/2,0,1/2,1'|'2/4,0,2/4,1') echo 'Right half' ;;
+        '1/4,0,1/2,1'|'1/4,0,2/4,1') echo 'Centered half' ;;
+        '0,0,1/3,1') echo 'Left third' ;;
+        '1/3,0,1/3,1') echo 'Middle third' ;;
+        '2/3,0,1/3,1') echo 'Right third' ;;
+        '0,0,2/3,1') echo 'Left two thirds' ;;
+        '1/3,0,2/3,1') echo 'Right two thirds' ;;
+        '1/6,0,2/3,1') echo 'Centered two thirds' ;;
+        '0,0,1/4,1') echo 'Left quarter' ;;
+        '1/4,0,1/4,1') echo 'Second quarter' ;;
+        '2/4,0,1/4,1') echo 'Third quarter' ;;
+        '3/4,0,1/4,1') echo 'Right quarter' ;;
+        '0,0,3/4,1') echo 'Left three quarters' ;;
+        '1/4,0,3/4,1') echo 'Right three quarters' ;;
+        '1/8,0,3/4,1') echo 'Centered three quarters' ;;
+        '0,0,1,1/2'|'0,0,1,2/4') echo 'Top half' ;;
+        '0,1/2,1,1/2'|'0,2/4,1,2/4') echo 'Bottom half' ;;
+        '0,1/4,1,1/2'|'0,1/4,1,2/4') echo 'Centered half' ;;
+        '0,0,1,1/3') echo 'Top third' ;;
+        '0,1/3,1,1/3') echo 'Middle third' ;;
+        '0,2/3,1,1/3') echo 'Bottom third' ;;
+        '0,0,1,2/3') echo 'Top two thirds' ;;
+        '0,1/3,1,2/3') echo 'Bottom two thirds' ;;
+        '0,1/6,1,2/3') echo 'Centered two thirds' ;;
+        '0,0,1,1/4') echo 'Top quarter' ;;
+        '0,1/4,1,1/4') echo 'Second quarter' ;;
+        '0,2/4,1,1/4') echo 'Third quarter' ;;
+        '0,3/4,1,1/4') echo 'Bottom quarter' ;;
+        '0,0,1,3/4') echo 'Top three quarters' ;;
+        '0,1/4,1,3/4') echo 'Bottom three quarters' ;;
+        *)
+            local x y w h
+            IFS=, read -r x y w h <<< "$1"
+            printf 'Position %s,%s; size %s x %s\n' "$x" "$y" "$w" "$h"
+            ;;
+    esac
+}
+
+# Guide custom input one dimension at a time. Empty input preserves it.
+_window_geometry_ask () {
+    local label=$1 current=$2 extent=$3 positive=$4 value pixels
+    while true; do
+        value=$(window_rofi -dmenu -p "$label" -mesg "Current: $current px. Enter pixels, a fraction (1/2), or a percentage (50%). Leave empty to keep it.") || return 1
+        value=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$value")
+        if [[ -z $value ]]; then printf '\n'; return 0; fi
+        pixels=$(_floating_coordinate_to_absolute "$value" 0 "$extent" 2>/dev/null) || {
+            window_rofi -e "Invalid $label: $value"
+            continue
+        }
+        if (( positive && pixels < 1 )); then
+            window_rofi -e "$label must be greater than zero."
+            continue
+        fi
+        printf '%s\n' "$value"
+        return 0
+    done
+}
+
+# A tiled resize can redistribute space only at a split with another tiled
+# window. Check every ancestor so nested horizontal and vertical splits work.
+_window_tiled_resize_axes () {
+    local tree=$1 focus_window_id=$2
+    jq -r --argjson wid "$focus_window_id" '
+        ([.. | objects
+            | select(.type? == "workspace"
+                and any(.nodes[]? | .. | objects; .window? == $wid))] | first) as $workspace
+        | if $workspace == null then error("Focused tiled window has no workspace") else
+            ([$workspace.nodes[]? | .. | objects | select(.window? != null)] | length) as $count
+            | ([$workspace | paths(objects | select(.window? == $wid))] | first) as $path
+            | reduce range(0; ($path | length)) as $depth
+                ({width: 0, height: 0};
+                    ($workspace | getpath($path[:$depth])) as $ancestor
+                    | if ($ancestor | type) != "object" then .
+                      else
+                        ([$ancestor.nodes[]? | select(any(.. | objects; .window? != null))] | length) as $occupied
+                        | if $occupied > 1 and $ancestor.layout == "splith" then .width = 1
+                          elif $occupied > 1 and $ancestor.layout == "splitv" then .height = 1
+                          else . end
+                      end)
+            | [$count, .width, .height] | @tsv
+          end
+    ' <<< "$tree"
+}
+
+# Floating windows can be placed; tiled windows can only be resized here.
+resize_to_input_and_move_floating_to_input_in_one () {
+    local focus_window_id tree floating_rect window_rect workspace_rect
+    local ws_x ws_y ws_width ws_height win_x win_y win_width win_height
+    local is_floating=0 preset_file choice spec prompt message label
+    local input_x input_y input_width input_height value converted menu_screen=quick
+    local index seen duplicate found
+    local tiled_axes tiled_count can_resize_width=0 can_resize_height=0
+    local -a rofi_args menu_items menu_specs
+
+    focus_window_id=$(xdotool getwindowfocus) || return 1
+    tree=$(i3-msg -t get_tree) || return 1
+    floating_rect=$(jq -c --argjson wid "$focus_window_id" '
+        first(.. | objects
+            | select(.type? == "floating_con" and any(.. | objects; .window? == $wid))
+            | .rect) // empty
+    ' <<< "$tree")
+    window_rect=$(jq -c --argjson wid "$focus_window_id" '
+        first(.. | objects | select(.window? == $wid) | .rect) // empty
+    ' <<< "$tree")
+    [[ -n $window_rect ]] || { echo 'Focused window is not managed by i3.' >&2; return 1; }
+
+    workspace_rect=$(i3-msg -t get_workspaces | jq -c '.[] | select(.focused) | .rect')
+    [[ -n $workspace_rect ]] || { echo 'Cannot get focused workspace geometry.' >&2; return 1; }
+    read -r ws_x ws_y ws_width ws_height < <(
+        jq -r '[.x,.y,.width,.height] | @tsv' <<< "$workspace_rect"
+    )
+
+    if [[ -n $floating_rect ]]; then
+        is_floating=1
+        read -r win_x win_y win_width win_height < <(
+            jq -r '[.x,.y,.width,.height] | @tsv' <<< "$floating_rect"
+        )
+        preset_file="$HOME/.config/i3/share/i3_window_geometry_vertical.txt"
+        if (( ws_width > ws_height )); then
+            preset_file="$HOME/.config/i3/share/i3_window_geometry_horizontal.txt"
+        fi
+        prompt='Place floating window'
+        message="Current position $((win_x-ws_x)),$((win_y-ws_y)) and size ${win_width}x${win_height} px. Choose a layout; type X,Y,W,H for direct entry."
+    else
+        tiled_axes=$(_window_tiled_resize_axes "$tree" "$focus_window_id") || return 1
+        read -r tiled_count can_resize_width can_resize_height <<< "$tiled_axes"
+        if (( tiled_count <= 1 )); then
+            notify-send -u low 'Resize tiled window' 'Only one tiled window is present.'
+            return 0
+        fi
+        if (( ! can_resize_width && ! can_resize_height )); then
+            notify-send -u low 'Resize tiled window' 'No horizontal or vertical split can be resized here.'
+            return 0
+        fi
+        read -r win_x win_y win_width win_height < <(
+            jq -r '[.x,.y,.width,.height] | @tsv' <<< "$window_rect"
+        )
+        prompt='Resize tiled window'
+        if (( can_resize_width && can_resize_height )); then
+            message="Current size ${win_width}x${win_height} px. Choose a size or type W,H. Tiling keeps the window position."
+        elif (( can_resize_width )); then
+            message="Current width ${win_width} px. Only width can change here; choose a size or type a width."
+        else
+            message="Current height ${win_height} px. Only height can change here; choose a size or type a height."
+        fi
+    fi
+
+    while true; do
+        menu_items=(); menu_specs=()
+        if (( is_floating )); then
+            if [[ $menu_screen == quick ]]; then
+                if (( ws_width > ws_height )); then
+                    menu_items=('Left half' 'Right half' 'Centered half' 'Left third' 'Middle third' 'Right third' 'Fill workspace')
+                    menu_specs=('0,0,1/2,1' '1/2,0,1/2,1' '1/4,0,1/2,1' '0,0,1/3,1' '1/3,0,1/3,1' '2/3,0,1/3,1' '0,0,1,1')
+                else
+                    menu_items=('Top half' 'Bottom half' 'Centered half' 'Top third' 'Middle third' 'Bottom third' 'Fill workspace')
+                    menu_specs=('0,0,1,1/2' '0,1/2,1,1/2' '0,1/4,1,1/2' '0,0,1,1/3' '0,1/3,1,1/3' '0,2/3,1,1/3' '0,0,1,1')
+                fi
+                menu_items+=('More placements...')
+                menu_specs+=('')
+            else
+                menu_items=('Back to quick layouts')
+                menu_specs=('')
+                if [[ -f $preset_file ]]; then
+                    while IFS= read -r spec; do
+                        [[ -z $spec || $spec == \#* ]] && continue
+                        label=$(_window_geometry_preset_label "$spec")
+                        duplicate=0
+                        for seen in "${menu_items[@]}"; do
+                            [[ $seen == "$label" ]] && { duplicate=1; break; }
+                        done
+                        (( duplicate )) && continue
+                        menu_items+=("$label")
+                        menu_specs+=("$spec")
+                    done < "$preset_file"
+                fi
+            fi
+            menu_items+=('Move to a custom position...' 'Set a custom size...' 'Set custom position and size...')
+            menu_specs+=('' '' '')
+        else
+            if (( can_resize_width )); then
+                menu_items+=('Half workspace width' 'One-third workspace width' 'Two-thirds workspace width' 'Quarter workspace width' 'Three-quarters workspace width')
+                menu_specs+=(',,1/2,' ',,1/3,' ',,2/3,' ',,1/4,' ',,3/4,')
+            fi
+            if (( can_resize_height )); then
+                menu_items+=('Half workspace height' 'One-third workspace height' 'Two-thirds workspace height' 'Quarter workspace height' 'Three-quarters workspace height')
+                menu_specs+=(',,,1/2' ',,,1/3' ',,,2/3' ',,,1/4' ',,,3/4')
+            fi
+            if (( can_resize_width && can_resize_height )); then
+                menu_items+=('Half width and height' 'Two-thirds width and height' 'Set a custom size...')
+                menu_specs+=(',,1/2,1/2' ',,2/3,2/3' '')
+            elif (( can_resize_width )); then
+                menu_items+=('Set a custom width...')
+                menu_specs+=('')
+            else
+                menu_items+=('Set a custom height...')
+                menu_specs+=('')
+            fi
+        fi
+
+        rofi_args=(-dmenu -i -p "$prompt" -mesg "$message")
+        choice=$(printf '%s\n' "${menu_items[@]}" | window_rofi "${rofi_args[@]}") || return 0
+        [[ -n $choice ]] || return 0
+        if [[ $choice == 'More placements...' ]]; then menu_screen=more; continue; fi
+        if [[ $choice == 'Back to quick layouts' ]]; then menu_screen=quick; continue; fi
+
+        # Rofi returns the visible label. Direct typed geometry remains available.
+        spec=$choice
+        found=0
+        for index in "${!menu_items[@]}"; do
+            if [[ $choice == "${menu_items[$index]}" ]]; then
+                spec=${menu_specs[$index]}
+                found=1
+                break
+            fi
+        done
+        break
+    done
+
+    if (( found )) && [[ -z $spec ]]; then
+        case $choice in
+            'Move to a custom position...')
+                input_x=$(_window_geometry_ask 'Left edge from workspace' "$((win_x-ws_x))" "$ws_width" 0) || return 0
+                input_y=$(_window_geometry_ask 'Top edge from workspace' "$((win_y-ws_y))" "$ws_height" 0) || return 0
+                spec="$input_x,$input_y,,"
+                ;;
+            'Set a custom size...')
+                input_width=$(_window_geometry_ask 'Width' "$win_width" "$ws_width" 1) || return 0
+                input_height=$(_window_geometry_ask 'Height' "$win_height" "$ws_height" 1) || return 0
+                spec=",,$input_width,$input_height"
+                ;;
+            'Set a custom width...')
+                input_width=$(_window_geometry_ask 'Width' "$win_width" "$ws_width" 1) || return 0
+                spec=",,$input_width,"
+                ;;
+            'Set a custom height...')
+                input_height=$(_window_geometry_ask 'Height' "$win_height" "$ws_height" 1) || return 0
+                spec=",,,$input_height"
+                ;;
+            'Set custom position and size...')
+                input_x=$(_window_geometry_ask 'Left edge from workspace' "$((win_x-ws_x))" "$ws_width" 0) || return 0
+                input_y=$(_window_geometry_ask 'Top edge from workspace' "$((win_y-ws_y))" "$ws_height" 0) || return 0
+                input_width=$(_window_geometry_ask 'Width' "$win_width" "$ws_width" 1) || return 0
+                input_height=$(_window_geometry_ask 'Height' "$win_height" "$ws_height" 1) || return 0
+                spec="$input_x,$input_y,$input_width,$input_height"
+                ;;
+        esac
+    fi
+
+    if (( ! is_floating )); then
+        if [[ $spec != *,* ]]; then
+            if (( can_resize_width && ! can_resize_height )); then
+                spec=",,$spec,"
+            elif (( can_resize_height && ! can_resize_width )); then
+                spec=",,,$spec"
+            fi
+        elif [[ $spec =~ ^([^,]*),([^,]*)$ ]]; then
+            spec=",,$spec"
+        fi
+    fi
+    if [[ ! $spec =~ ^([^,]*),([^,]*),([^,]*),([^,]*)$ ]]; then
+        window_rofi -e 'Enter X,Y,W,H for floating windows or W,H for tiled windows.'
+        return 1
+    fi
+    input_x=${BASH_REMATCH[1]}; input_y=${BASH_REMATCH[2]}
+    input_width=${BASH_REMATCH[3]}; input_height=${BASH_REMATCH[4]}
+    input_x=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$input_x")
+    input_y=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$input_y")
+    input_width=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$input_width")
+    input_height=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$input_height")
+    if (( ! is_floating )) && [[ -n $input_x || -n $input_y ]]; then
+        window_rofi -e 'Tiled windows have no absolute position. Enter W,H only.'
+        return 1
+    fi
+    if (( ! is_floating )); then
+        if (( ! can_resize_width )) && [[ -n $input_width ]]; then
+            window_rofi -e 'Width cannot change without a horizontal split.'
+            return 1
+        fi
+        if (( ! can_resize_height )) && [[ -n $input_height ]]; then
+            window_rofi -e 'Height cannot change without a vertical split.'
+            return 1
+        fi
+    fi
+
+    # Validate all four fields before changing either size or position.
+    for value in "$input_x" "$input_width"; do
+        [[ -z $value ]] && continue
+        if ! _floating_coordinate_to_absolute "$value" 0 "$ws_width" >/dev/null 2>&1; then
+            window_rofi -e "Invalid coordinate or size: $value"
+            return 1
+        fi
+    done
+    for value in "$input_y" "$input_height"; do
+        [[ -z $value ]] && continue
+        if ! _floating_coordinate_to_absolute "$value" 0 "$ws_height" >/dev/null 2>&1; then
+            window_rofi -e "Invalid coordinate or size: $value"
+            return 1
+        fi
+    done
+    if [[ -n $input_width ]]; then
+        converted=$(_floating_coordinate_to_absolute "$input_width" 0 "$ws_width")
+        if (( converted < 1 )); then window_rofi -e 'Width must be positive.'; return 1; fi
+    fi
+    if [[ -n $input_height ]]; then
+        converted=$(_floating_coordinate_to_absolute "$input_height" 0 "$ws_height")
+        if (( converted < 1 )); then window_rofi -e 'Height must be positive.'; return 1; fi
+    fi
+
+    I3_WINDOW_TARGET_ID=$focus_window_id I3_WINDOW_WORKSPACE_RECT=$workspace_rect \
+        resize_to_input_and_move_floating_to_input 1 0 \
+        "$input_x" "$input_y" "$input_width" "$input_height"
+}
+
 resize_to_input_and_move_floating_to_input () {
     local FOCUS_WINDOW_ID FLOATING_RECT WORKSPACE_RECT WINDOW_GEOMETRY
     local X Y WIDTH HEIGHT WINDOW_WIDTH WINDOW_HEIGHT WINDOW_X WINDOW_Y
     local ONE_INPUT_FOR_ALL THRESHOLD INPUTS INPUT_X INPUT_Y INPUT_WIDTH INPUT_HEIGHT
-    local ROFI_CONFIG WINDOW_GEOMETRY_TXT PROMPT TARGET_X TARGET_Y
+    local WINDOW_GEOMETRY_TXT PROMPT TARGET_X TARGET_Y
     local HAS_CLI_INPUTS=0 IS_FLOATING=0
 
-    FOCUS_WINDOW_ID=$(xdotool getwindowfocus) || return 1
+    FOCUS_WINDOW_ID=${I3_WINDOW_TARGET_ID:-$(xdotool getwindowfocus)} || return 1
 
     # Read the actual i3 floating container (including decorations).
     FLOATING_RECT=$(i3-msg -t get_tree | jq -c --argjson wid "${FOCUS_WINDOW_ID}" '
@@ -191,7 +521,7 @@ resize_to_input_and_move_floating_to_input () {
     ')
     [[ -n ${FLOATING_RECT} ]] && IS_FLOATING=1
 
-    WORKSPACE_RECT=$(i3-msg -t get_workspaces | jq -c '.[] | select(.focused) | .rect')
+    WORKSPACE_RECT=${I3_WINDOW_WORKSPACE_RECT:-$(i3-msg -t get_workspaces | jq -c '.[] | select(.focused) | .rect')}
     [[ -n ${WORKSPACE_RECT} ]] || { echo "Cannot get focused workspace geometry." >&2; return 1; }
     read -r X Y WIDTH HEIGHT < <(jq -r '[.x,.y,.width,.height] | @tsv' <<< "${WORKSPACE_RECT}")
 
@@ -214,18 +544,16 @@ resize_to_input_and_move_floating_to_input () {
         HAS_CLI_INPUTS=1
         INPUT_X=$3; INPUT_Y=$4; INPUT_WIDTH=$5; INPUT_HEIGHT=$6
     elif [[ ${ONE_INPUT_FOR_ALL} == 1 ]]; then
-        ROFI_CONFIG="$HOME/.config/rofi/config_i3window_vertical.rasi"
         WINDOW_GEOMETRY_TXT="$HOME/.config/i3/share/i3_window_geometry_vertical.txt"
         PROMPT="Set Vertical WD TL_X,TL_Y,W,H to"
         if (( WIDTH > HEIGHT )); then
             WINDOW_GEOMETRY_TXT="$HOME/.config/i3/share/i3_window_geometry_horizontal.txt"
-            ROFI_CONFIG="$HOME/.config/rofi/config_i3window_horizontal.rasi"
             PROMPT="Set Horizontal WD TL_X,TL_Y,W,H to"
         fi
         if [[ -f ${WINDOW_GEOMETRY_TXT} ]]; then
-            INPUTS=$(rofi -dmenu -input "${WINDOW_GEOMETRY_TXT}" -config "${ROFI_CONFIG}" -p "${PROMPT}") || return 0
+            INPUTS=$(window_rofi -dmenu -input "${WINDOW_GEOMETRY_TXT}" -p "${PROMPT}") || return 0
         else
-            INPUTS=$(rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to") || return 0
+            INPUTS=$(window_rofi -dmenu -p "Set WD TL_X,TL_Y,W,H to") || return 0
         fi
         [[ -n ${INPUTS} ]] || return 0
         IFS=, read -r INPUT_X INPUT_Y INPUT_WIDTH INPUT_HEIGHT <<< "${INPUTS}"
@@ -234,7 +562,7 @@ resize_to_input_and_move_floating_to_input () {
     # Resize using the same size conventions as the original script.
     if (( IS_FLOATING )) || (( WIDTH - WINDOW_WIDTH >= THRESHOLD )); then
         if (( ! HAS_CLI_INPUTS )) && [[ ${ONE_INPUT_FOR_ALL} != 1 ]]; then
-            INPUT_WIDTH=$(rofi -dmenu -p "Set WD width to") || return 0
+            INPUT_WIDTH=$(window_rofi -dmenu -p "Set WD width to") || return 0
         fi
         if [[ -n ${INPUT_WIDTH} ]]; then
             INPUT_WIDTH=$(_floating_coordinate_to_absolute "${INPUT_WIDTH}" 0 "${WIDTH}") || return 1
@@ -243,7 +571,7 @@ resize_to_input_and_move_floating_to_input () {
     fi
     if (( IS_FLOATING )) || (( HEIGHT - WINDOW_HEIGHT >= THRESHOLD )); then
         if (( ! HAS_CLI_INPUTS )) && [[ ${ONE_INPUT_FOR_ALL} != 1 ]]; then
-            INPUT_HEIGHT=$(rofi -dmenu -p "Set WD height to") || return 0
+            INPUT_HEIGHT=$(window_rofi -dmenu -p "Set WD height to") || return 0
         fi
         if [[ -n ${INPUT_HEIGHT} ]]; then
             INPUT_HEIGHT=$(_floating_coordinate_to_absolute "${INPUT_HEIGHT}" 0 "${HEIGHT}") || return 1
@@ -258,8 +586,8 @@ resize_to_input_and_move_floating_to_input () {
     fi
 
     if (( ! HAS_CLI_INPUTS )) && [[ ${ONE_INPUT_FOR_ALL} != 1 ]]; then
-        INPUT_X=$(rofi -dmenu -p "Set WD Top-Left X to") || return 0
-        INPUT_Y=$(rofi -dmenu -p "Set WD Top-Left Y to") || return 0
+        INPUT_X=$(window_rofi -dmenu -p "Set WD Top-Left X to") || return 0
+        INPUT_Y=$(window_rofi -dmenu -p "Set WD Top-Left Y to") || return 0
     fi
 
     # Re-read after resizing: keep the actual container position for blank inputs.
@@ -420,7 +748,7 @@ window_operation () {
             resize_to_input_and_move_floating_to_input 0 0
             ;;
         "resize_to_input_and_move_floating_to_input_in_one")
-            resize_to_input_and_move_floating_to_input 1 0
+            resize_to_input_and_move_floating_to_input_in_one
             ;;
         "resize_and_move_floating")
             resize_to_input_and_move_floating_to_input $2 $3 $4 $5 $6 $7
@@ -450,6 +778,8 @@ window_operation () {
 }
 
 # Main
-pgrep flashfocus && flash_window
-window_operation $@
-pgrep flashfocus && flash_window
+if pgrep flashfocus >/dev/null; then flash_window; fi
+window_operation "$@"
+status=$?
+if pgrep flashfocus >/dev/null; then flash_window; fi
+exit "$status"

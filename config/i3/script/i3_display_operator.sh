@@ -197,8 +197,8 @@ auto_adjust () {
 
 select_display_mode () {
     # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/connected/ {print $1}'))
-    DISPLAY_NLS=($(xrandr | awk '$0~/connected/ {print NR}'))
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
+    DISPLAY_NLS=($(xrandr | awk '$0~/ connected/ {print NR}'))
     SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[MODE] Select DISPLAY')
     if [[ -z "${SELECTED_DISPLAY}" ]]; then
         # Early stop
@@ -230,7 +230,7 @@ select_display_mode () {
 
 select_display_position () {
     # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/connected/ {print $1}'))
+    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
     SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[POSITION] Select DISPLAY')
     if [[ -z "${SELECTED_DISPLAY}" ]]; then
         # Early stop
@@ -376,7 +376,7 @@ display_operation () {
             eDP1_1440x810_60
             xrandr --output "${eDP1}" --mode "1440x810_60.00"
             ;;
-        "eDP1_1368x768")
+        "eDP1_1368x768_60")
             notify-send -u low "Set Display" "Activate eDP1 shrink mode (1368x768)" --icon="${ICON}"
             xrandr --output "${eDP1}" --mode "1368x768"
             ;;

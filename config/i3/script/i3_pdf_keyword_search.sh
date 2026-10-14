@@ -48,7 +48,7 @@ search_and_open () {
     local viewer_pname=$(basename "$PDF_viewer")
 
     # Loop through pdf files (including files contain space or other special characters)
-    count = 0
+    count=0
     find ${input_dir} -iname '*.pdf' -print0 | while IFS= read -r -d '' file; do
         echo [INFO] Scanning ${file} ...
 

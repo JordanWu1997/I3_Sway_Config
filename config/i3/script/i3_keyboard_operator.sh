@@ -118,7 +118,7 @@ keyboard_operation () {
         'enable_tex_shinobi_trackpoint')
             #DEVICE='USB-HID Keyboard Mouse' #DEVICE='TEX-BLE-KB-1 Mouse'
             DEVICE=$(xinput | grep -o 'TEX-BLE-KB-[0-9]\+ Mouse')
-            xinput disable "${DEVICE}"
+            xinput enable "${DEVICE}"
             ;;
         'disable_tex_shinobi_trackpoint')
             #DEVICE='USB-HID Keyboard Mouse' #DEVICE='TEX-BLE-KB-1 Mouse'

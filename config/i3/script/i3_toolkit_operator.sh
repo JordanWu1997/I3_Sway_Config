@@ -27,7 +27,7 @@ show_help_message () {
     echo "  [toggle_oneko]: toggle oneko on/off"
     echo "  [reload_parcellite]: reload parcellite (clipboard manager)"
     echo "  [reload_ibus_daemon]: reload ibus daemon (input method manager)"
-    echo "  [reload_gesture]: reload libinput-gesture daemon (trackpad gesture)"
+    echo "  [reload_gestures]: reload libinput-gestures daemon (trackpad gesture)"
     echo "  [show_brave_browser]: show brave=browser windows"
     echo "  [kill_process]: kill selected PID (use kill -9 command)"
     echo "  [test_audio_IO]: test audio IO by recording and playing (alsa: arecord and aplay)"
@@ -128,9 +128,9 @@ toolkit_operation () {
             i3-msg exec 'ibus-daemon -r -d -x 2'
             notify-send -u low "Toolkit Mode" "ibus-daemon is reloaded" --icon="${ICON}"
             ;;
-        'reload_gesture')
-            i3-msg exec 'libinput-gesture-setup restart'
-            notify-send -u low "Toolkit Mode" "libinput-gesture is reloaded" --icon="${ICON}"
+        'reload_gestures')
+            i3-msg exec 'libinput-gestures-setup restart'
+            notify-send -u low "Toolkit Mode" "libinput-gestures is reloaded" --icon="${ICON}"
             ;;
         'show_brave_browser')
             WINDOW_ID=$(wmctrl -l | grep ' - Brave$' | rofi -dmenu -p 'Brave-browser' | cut -d' ' -f1)

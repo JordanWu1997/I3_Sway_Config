@@ -20,7 +20,7 @@ show_help_message () {
     echo "  [i3bar]: reload i3bari (status bar)"
     echo "  [zathura]: reload zathura (PDF viewer)"
     echo "  [vis]: reload vis (cli-visualizer) "
-    echo "  [Xresource]: reload X resources"
+    echo "  [Xresources]: reload X resources"
     echo "  [xsslock]: restart xsslock (xwindow wrapper for i3lock)"
 }
 
@@ -82,7 +82,7 @@ reload_pipeline () {
             reload_dunst
             ;;
         'i3bar')
-            reload_i3_bar
+            reload_i3bar
             ;;
         'zathura')
             reload_zathura

@@ -20,11 +20,8 @@ show_help_message () {
 
 xsslock_operation () {
     case $1 in
-        "default")
-            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_default"
-            ;;
         "current_default_wallpaper")
-            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_default_wallpaper"
+            i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh default"
             ;;
         "current_wallpaper")
             i3-msg exec "xss-lock -v --transfer-sleep-lock -- i3_i3lock_operator.sh current_wallpaper"

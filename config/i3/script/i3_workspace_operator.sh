@@ -156,7 +156,7 @@ workspace_operation () {
             WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Save WS")
             i3-msg bar hidden_state hide bar_mode
             if [[ ! -z ${WS} ]]; then
-                i3-msg workspace ${WS}
+                i3-resurrect save -w ${WS}
             fi
             ;;
         "restore")

@@ -44,9 +44,10 @@ select_region () {
             ;;
         "select_window")
             # Let the user select a window and get its geometry
-            eval $(xdotool selectwindow getwindowgeometry --shell)
+            SELECTED_WINDOW_ID=$(xdotool selectwindow) || return 1
+            eval "$(xdotool getwindowgeometry --shell "$SELECTED_WINDOW_ID")" || return 1
             # MINUS border width
-            CURRENT_WD_BORDER_WIDTH=$(i3-msg -t get_tree | jq '.. | select(.focused? == true) | .current_border_width')
+            CURRENT_WD_BORDER_WIDTH=$(i3-msg -t get_tree | jq -r --argjson wid "$SELECTED_WINDOW_ID" 'first(.. | objects | select(.window? == $wid) | .current_border_width) // 0')
             Y=$((Y - CURRENT_WD_BORDER_WIDTH))
             X=$((X - CURRENT_WD_BORDER_WIDTH))
             # Region
@@ -80,26 +81,28 @@ main () {
 
     # Pause flashfocus
     FLASHFOCUS_ON=0
-    if $(pgrep flashfocus); then
+    if pgrep -x flashfocus >/dev/null; then
         killall flashfocus
         FLASHFOCUS_ON=1
     fi
 
-    # Resume flashfocus
-    if [[ "${FLASHFOCUS_ON}" == 1 ]]; then
-        i3-msg exec flashfocus
+    # A cancelled window selection must not open a second screenshot prompt.
+    SCREENSHOT_STATUS=0
+    if select_region "$1"; then
+        if [[ -z "${REGION}" ]]; then
+            flameshot gui -p "$HOME/Pictures"
+        elif [[ "${REGION}" == 'full' ]]; then
+            flameshot full -p "$HOME/Pictures"
+        else
+            flameshot gui --region "${REGION}" -p "$HOME/Pictures"
+        fi
+        SCREENSHOT_STATUS=$?
+    else
+        SCREENSHOT_STATUS=1
     fi
 
-    # Select region
-    select_region $1
-
-    # Take screenshot
-    if [[ -z "${REGION}" ]]; then
-        flameshot gui -p "$HOME/Pictures"
-    elif [[ "${REGION}" == 'full' ]]; then
-        flameshot full -p "$HOME/Pictures"
-    else
-        flameshot gui --region "${REGION}" -p $HOME/Pictures
+    if [[ "${FLASHFOCUS_ON}" == 1 ]]; then
+        i3-msg exec flashfocus
     fi
 
     # Restore titlebar/border to defaults
@@ -112,7 +115,9 @@ main () {
                 [tiling_from='user'] border ${DEFAULT_STYLE} ${DEFAULT_WIDTH}"
     fi
 
+    return "$SCREENSHOT_STATUS"
+
 }
 
 # Main
-main $@
+main "$@"

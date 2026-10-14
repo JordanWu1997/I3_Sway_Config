@@ -559,8 +559,10 @@ resize_to_input_and_move_floating_to_input () {
         IFS=, read -r INPUT_X INPUT_Y INPUT_WIDTH INPUT_HEIGHT <<< "${INPUTS}"
     fi
 
-    # Resize using the same size conventions as the original script.
-    if (( IS_FLOATING )) || (( WIDTH - WINDOW_WIDTH >= THRESHOLD )); then
+    # Explicit CLI sizes have already been checked against the available splits.
+    # The threshold only controls which prompts appear in the older interactive flow.
+    if (( IS_FLOATING )) || { (( HAS_CLI_INPUTS )) && [[ -n $INPUT_WIDTH ]]; } ||
+        (( WIDTH - WINDOW_WIDTH >= THRESHOLD )); then
         if (( ! HAS_CLI_INPUTS )) && [[ ${ONE_INPUT_FOR_ALL} != 1 ]]; then
             INPUT_WIDTH=$(window_rofi -dmenu -p "Set WD width to") || return 0
         fi
@@ -569,7 +571,8 @@ resize_to_input_and_move_floating_to_input () {
             i3-msg "[id=${FOCUS_WINDOW_ID}] resize set width ${INPUT_WIDTH} px" >/dev/null
         fi
     fi
-    if (( IS_FLOATING )) || (( HEIGHT - WINDOW_HEIGHT >= THRESHOLD )); then
+    if (( IS_FLOATING )) || { (( HAS_CLI_INPUTS )) && [[ -n $INPUT_HEIGHT ]]; } ||
+        (( HEIGHT - WINDOW_HEIGHT >= THRESHOLD )); then
         if (( ! HAS_CLI_INPUTS )) && [[ ${ONE_INPUT_FOR_ALL} != 1 ]]; then
             INPUT_HEIGHT=$(window_rofi -dmenu -p "Set WD height to") || return 0
         fi

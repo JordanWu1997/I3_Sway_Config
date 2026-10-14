@@ -1541,15 +1541,15 @@ PY
     *Keybindings*)
         # i3 keybindings hinter
         # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
-        i3 $(
-            cat ~/.config/i3/config.d/* |
-            grep '^bindsym' |
-            grep -v '^\s*#' |
-            sed 's/bindsym / /' |
-            rofi_menu "i3 Keybinds" |
-            sed 's/^\s*//' |
-            cut -d' ' -f2-
+        SELECTED_BINDING=$(
+            grep -h '^bindsym ' "$HOME"/.config/i3/config.d/*.config |
+                rofi_menu "i3 Keybinds"
         )
+        if [[ $SELECTED_BINDING == bindsym\ * ]]; then
+            I3_COMMAND=${SELECTED_BINDING#bindsym }
+            I3_COMMAND=${I3_COMMAND#* }
+            i3-msg "$I3_COMMAND"
+        fi
         ;;
 
     *SSH*)

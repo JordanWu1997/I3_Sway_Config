@@ -4,18 +4,16 @@
 WS_NAME_LIST="$HOME/.config/i3/share/i3_workspace_name_list.txt"
 
 # Set workspace list to workspace array
-readarray WS_ARRAY < ${WS_NAME_LIST}
+readarray -t WS_ARRAY < "$WS_NAME_LIST"
 
 # Maximal number of workspaces
 MAX_NUM_WS=${#WS_ARRAY[@]}
 
 # Load current workspace
-CURRENT_WS_NUM=$(i3-msg -t get_workspaces | tr \} '\n' | grep '"focused":true' | \
-    tr , '\n' | grep "name"| cut -d ':' -f 2 | cut -c 2-)
+CURRENT_WS_NUM=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused) | .num')
 
 # Load all workspace
-ALL_WS=$(i3-msg -t get_workspaces | tr \} '\n' | grep "num" \
-    | cut -d ':' -f 3 | cut -d ',' -f 1 | sort -n)
+readarray -t ALL_WS < <(i3-msg -t get_workspaces | jq -r '.[].num')
 
 # Wrong message
 show_wrong_usage_message () {
@@ -55,34 +53,48 @@ workspace_prev_WS_NUM () {
     fi
 }
 
+workspace_is_occupied () {
+    local ws
+    for ws in "${ALL_WS[@]}"; do
+        [[ $ws == "$1" ]] && return 0
+    done
+    return 1
+}
+
 workspace_next_free_only_WS_NUM () {
+    local checked
     NEXT_FREE_WS_NUM=$1
-    while true; do
-        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$NEXT_FREE_WS_NUM"($|[[:space:]]) ]]; then
+    for (( checked=0; checked<MAX_NUM_WS; checked++ )); do
+        if workspace_is_occupied "$NEXT_FREE_WS_NUM"; then
             if (( $NEXT_FREE_WS_NUM == ${MAX_NUM_WS} )); then
                 NEXT_FREE_WS_NUM=1
             else
                 NEXT_FREE_WS_NUM=$(( $NEXT_FREE_WS_NUM + 1 ))
             fi
         else
-            break
+            return 0
         fi
     done
+    echo 'No free configured workspace is available.' >&2
+    return 1
 }
 
 workspace_prev_free_only_WS_NUM () {
+    local checked
     PREV_FREE_WS_NUM=$1
-    while true; do
-        if [[ ${ALL_WS[*]} =~ (^|[[:space:]])"$PREV_FREE_WS_NUM"($|[[:space:]]) ]]; then
+    for (( checked=0; checked<MAX_NUM_WS; checked++ )); do
+        if workspace_is_occupied "$PREV_FREE_WS_NUM"; then
             if (( $PREV_FREE_WS_NUM == 1 )); then
                 PREV_FREE_WS_NUM=${MAX_NUM_WS}
             else
                 PREV_FREE_WS_NUM=$(( $PREV_FREE_WS_NUM - 1 ))
             fi
         else
-            break
+            return 0
         fi
     done
+    echo 'No free configured workspace is available.' >&2
+    return 1
 }
 
 assign_new_workspace () {
@@ -100,12 +112,12 @@ assign_new_workspace () {
             ;;
         # Assign next workspace (free only) as new workspace
         "next_free_only")
-            workspace_next_free_only_WS_NUM ${CURRENT_WS_NUM}
+            workspace_next_free_only_WS_NUM "${CURRENT_WS_NUM}" || return 1
             WS_NAME="${WS_ARRAY[$(( ${NEXT_FREE_WS_NUM} - 1 ))]}"
             ;;
         # Assign previous workspace (free only) as new workspace
         "prev_free_only")
-            workspace_prev_free_only_WS_NUM ${CURRENT_WS_NUM}
+            workspace_prev_free_only_WS_NUM "${CURRENT_WS_NUM}" || return 1
             WS_NAME="${WS_ARRAY[$(( ${PREV_FREE_WS_NUM} - 1 ))]}"
             ;;
         *)
@@ -137,5 +149,5 @@ workspace_action () {
 }
 
 # Main
-assign_new_workspace $2
-workspace_action $1
+assign_new_workspace "$2" || exit 1
+workspace_action "$1"

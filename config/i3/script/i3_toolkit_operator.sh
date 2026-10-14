@@ -84,13 +84,17 @@ toolkit_operation () {
             ;;
         'connection_up')
             ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
-            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -i -config ${ROFI_CONFIG} -p "[UP] Connection" | cut -c -30 | rev | cut -d' ' -f2- | rev)
-            [[ -n ${SELECTED_NETWORK} ]] && nmcli connection up "$(echo ${SELECTED_NETWORK} | awk 'NR==1')" # Here uses awk to remove trailing white spaces
+            SELECTED_NETWORK=$(nmcli -t -f UUID,NAME connection show |
+                awk '{print substr($0, 38) "\t" substr($0, 1, 36)}' |
+                rofi -dmenu -i -config "$ROFI_CONFIG" -p "[UP] Connection")
+            [[ -n $SELECTED_NETWORK ]] && nmcli connection up uuid "${SELECTED_NETWORK##*$'\t'}"
             ;;
         'connection_down')
             ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
-            SELECTED_NETWORK=$(nmcli connection show | awk 'NR>1' | rofi -dmenu -i -config ${ROFI_CONFIG} -p "[DOWN] Connection" | cut -c -30 | rev | cut -d' ' -f2- | rev)
-            [[ -n ${SELECTED_NETWORK} ]] && nmcli connection down "$(echo ${SELECTED_NETWORK} | awk 'NR==1')" # Here uses awk to remove trailing white spaces
+            SELECTED_NETWORK=$(nmcli -t -f UUID,NAME connection show --active |
+                awk '{print substr($0, 38) "\t" substr($0, 1, 36)}' |
+                rofi -dmenu -i -config "$ROFI_CONFIG" -p "[DOWN] Connection")
+            [[ -n $SELECTED_NETWORK ]] && nmcli connection down uuid "${SELECTED_NETWORK##*$'\t'}"
             ;;
         'enable_networking')
             nmcli networking on

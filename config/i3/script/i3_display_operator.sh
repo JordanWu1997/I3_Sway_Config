@@ -142,8 +142,8 @@ auto_adjust () {
         # ACER 27': 600mm x 340mm
         elif [ "${HDMI1_WIDTH}" == "600mm" ] && [ "${HDMI1_HEIGHT}" == "340mm" ]; then
             notify-send -u low "Set Display Automatically" "ACER 27' connected" --icon="${ICON}"
-            # Adjust eDP1
-            eDP1_1440x810_60
+            # Adjust eDP1 & HDMI1
+            HDMI1_1920x1200_50; eDP1_1440x810_60
             # Locate eDP1 & HDMI1
             xrandr \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x270 --rotate normal \
@@ -181,16 +181,16 @@ auto_adjust () {
     if [ "${eDP1_status}" != 'connected' ]; then
         #notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
         #xrandr \
-            #--output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
-            #--output "DP-4" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1360 --rotate normal --brightness 1.0:1.0:1.0 \
-            #--output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8:0.8:0.8
+            #--output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9 --primary \
+            #--output "DP-4" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1360 --rotate normal --brightness 1.0 \
+            #--output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8
 
         notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-2 (normal), HDMI-0 (right)" --icon="${ICON}"
         # Render HDMI0 in 1536x864 and display in 1920x1080 mode
         xrandr \
-            --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --brightness 0.9:0.9:0.9 --primary \
-            --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1920 --rotate normal --brightness 1.0:1.0:1.0 \
-            --output "HDMI-0" --mode 1920x1080 --scale-from 1536x864 --pos 1920x0 --rotate right --brightness 0.9:0.9:0.9
+            --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --brightness 0.9 --primary \
+            --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1920 --rotate normal --brightness 1.0 \
+            --output "HDMI-0" --mode 1920x1080 --scale-from 1536x864 --pos 1920x0 --rotate right --brightness 0.9
         return
     fi
 }

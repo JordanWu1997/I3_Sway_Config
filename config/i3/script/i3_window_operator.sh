@@ -69,6 +69,7 @@ resize_to_input () {
 
     # Get focus window
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus)
+    if _window_notify_if_single_tiled "$FOCUS_WINDOW_ID"; then return 0; fi
 
     # Get default window border width
     I3_CONFIG="$HOME/.config/i3/config"
@@ -127,6 +128,7 @@ move_floating_to_input () {
     local INPUT_X INPUT_Y TARGET_X TARGET_Y
 
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus) || return 1
+    if _window_notify_if_single_tiled "$FOCUS_WINDOW_ID"; then return 0; fi
 
     # Use the i3 floating container's position, not X11 client geometry.
     FLOATING_RECT=$(i3-msg -t get_tree | jq -c --argjson wid "${FOCUS_WINDOW_ID}" '
@@ -290,6 +292,24 @@ _window_tiled_resize_axes () {
             | [$count, .width, .height] | @tsv
           end
     ' <<< "$tree"
+}
+
+# Return success after notifying when a tiled window has no other tile to resize against.
+_window_notify_if_single_tiled () {
+    local focus_window_id=$1 tree=${2:-$(i3-msg -t get_tree)} tiled_axes tiled_count
+
+    if jq -e --argjson wid "$focus_window_id" '
+        any(.. | objects; .type? == "floating_con" and any(.. | objects; .window? == $wid))
+    ' <<< "$tree" >/dev/null 2>&1; then
+        return 1
+    fi
+    tiled_axes=$(_window_tiled_resize_axes "$tree" "$focus_window_id" 2>/dev/null) || return 1
+    read -r tiled_count _ <<< "$tiled_axes"
+    if (( tiled_count <= 1 )); then
+        notify-send -u low 'Resize tiled window' 'Only one tiled window is present.'
+        return 0
+    fi
+    return 1
 }
 
 # Floating windows can be placed; tiled windows can only be resized here.
@@ -523,7 +543,7 @@ resize_to_input_and_move_floating_to_input_in_one () {
 }
 
 resize_to_input_and_move_floating_to_input () {
-    local FOCUS_WINDOW_ID FLOATING_RECT WORKSPACE_RECT WINDOW_GEOMETRY
+    local FOCUS_WINDOW_ID FLOATING_RECT WORKSPACE_RECT WINDOW_GEOMETRY TREE
     local X Y WIDTH HEIGHT WINDOW_WIDTH WINDOW_HEIGHT WINDOW_X WINDOW_Y
     local ONE_INPUT_FOR_ALL THRESHOLD INPUTS INPUT_X INPUT_Y INPUT_WIDTH INPUT_HEIGHT
     local WINDOW_GEOMETRY_TXT PROMPT TARGET_X TARGET_Y
@@ -532,11 +552,13 @@ resize_to_input_and_move_floating_to_input () {
     FOCUS_WINDOW_ID=${I3_WINDOW_TARGET_ID:-$(xdotool getwindowfocus)} || return 1
 
     # Read the actual i3 floating container (including decorations).
-    FLOATING_RECT=$(i3-msg -t get_tree | jq -c --argjson wid "${FOCUS_WINDOW_ID}" '
+    TREE=$(i3-msg -t get_tree) || return 1
+    if _window_notify_if_single_tiled "$FOCUS_WINDOW_ID" "$TREE"; then return 0; fi
+    FLOATING_RECT=$(jq -c --argjson wid "${FOCUS_WINDOW_ID}" '
         first(.. | objects
             | select(.type? == "floating_con" and any(.. | objects; .window? == $wid))
             | .rect) // empty
-    ')
+    ' <<< "$TREE")
     [[ -n ${FLOATING_RECT} ]] && IS_FLOATING=1
 
     WORKSPACE_RECT=${I3_WINDOW_WORKSPACE_RECT:-$(i3-msg -t get_workspaces | jq -c '.[] | select(.focused) | .rect')}
@@ -645,6 +667,7 @@ move_floating_to_corner () {
     esac
 
     FOCUS_WINDOW_ID=$(xdotool getwindowfocus) || return 1
+    if _window_notify_if_single_tiled "$FOCUS_WINDOW_ID"; then return 0; fi
 
     # Look up the wrapper of the focused X11 window in i3's tree.
     # A missing wrapper means the focused window is not floating.

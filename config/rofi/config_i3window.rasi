@@ -1,4 +1,4 @@
-/* Shared fullscreen layout for i3 window placement and sizing. */
+/* Shared centered layout for i3 window placement and sizing. */
 
 configuration {
 
@@ -23,8 +23,8 @@ configuration {
     /*Separator between input and options*/
     separator-style: "dash";
 
-    /*Hide scrollbar*/
-    hide-scrollbar: true;
+    /* Show when the longer preset list has more choices below. */
+    hide-scrollbar: false;
 
     /*Auto-select mode*/
     auto-select: false;
@@ -48,11 +48,14 @@ configuration {
 
 #listview {
 
-    /* Keep the same grid in landscape, portrait, and tiled modes. */
-    lines: 6;
+    /* Keep the palette readable and stable while filtering. */
+    lines: 8;
+    fixed-height: false;
+    dynamic: false;
 
     /*Number of columns*/
-    columns: 4;
+    columns: 1;
+    scrollbar: true;
 
 }
 
@@ -65,11 +68,11 @@ configuration {
 
 #window {
 
-    /*Fullscreen*/
-    fullscreen: true;
-
-    /* Keep the input, help text, and choices together near screen center. */
-    padding: 28% 16%;
+    /* Keep the compact chooser centered without filling the screen. */
+    location: center;
+    anchor: center;
+    width: 760px;
+    padding: 1em;
 
     /*Border width*/
     border: 0;
@@ -81,21 +84,21 @@ configuration {
 
 #entry {
 
-    /* Keep typed dimensions in the same visual column as the choices. */
-    horizontal-align: 0.50;
+    /* Read typed dimensions from left to right like the menu labels. */
+    horizontal-align: 0.0;
 
 }
 
 #scrollbar {
 
-    /*Scrollbar width*/
-    handle-width: 0px;
+    /* Make overflow visible on the long preset page. */
+    handle-width: 4px;
 
 }
 
 #element-text {
 
-    /*Align center*/
-    horizontal-align: 0.50;
+    /* Align every action label to one scanning edge. */
+    horizontal-align: 0.0;
 
 }

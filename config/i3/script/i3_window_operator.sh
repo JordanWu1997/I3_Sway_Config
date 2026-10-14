@@ -3,10 +3,28 @@
 WINDOW_ROFI_CONFIG="$HOME/.config/rofi/config_i3window.rasi"
 
 window_rofi () {
+    local output_width window_width window_height window_size menu_width=760 monitor=-2
+
+    # Keep the menu within the focused output on narrow displays.
+    output_width=$(i3-msg -t get_workspaces 2>/dev/null |
+        jq -r '.[] | select(.focused) | .rect.width' 2>/dev/null)
+    if [[ $output_width =~ ^[0-9]+$ ]] && (( output_width > 48 && output_width - 48 < menu_width )); then
+        menu_width=$((output_width - 48))
+    fi
+
+    # Fall back to the focused display if the window cannot contain the menu.
+    window_size=$(i3-msg -t get_tree 2>/dev/null |
+        jq -r 'first(.. | objects | select(.focused? == true and .rect? != null) | .rect | "\(.width) \(.height)") // empty' 2>/dev/null)
+    read -r window_width window_height <<< "$window_size"
+    if [[ ! $window_width =~ ^[0-9]+$ || ! $window_height =~ ^[0-9]+$ ]] ||
+        (( window_width < menu_width || window_height < 420 )); then
+        monitor=-4
+    fi
+
     if [[ -f $WINDOW_ROFI_CONFIG ]]; then
-        rofi -config "$WINDOW_ROFI_CONFIG" -monitor -2 "$@"
+        rofi -config "$WINDOW_ROFI_CONFIG" -monitor "$monitor" "$@" -theme-str "window { width: ${menu_width}px; }"
     else
-        rofi -monitor -2 "$@"
+        rofi -monitor "$monitor" "$@" -theme-str "window { width: ${menu_width}px; }"
     fi
 }
 

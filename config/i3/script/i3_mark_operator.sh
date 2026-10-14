@@ -6,16 +6,25 @@ ROFI_SELECTOR_CONFIG="$HOME/.config/rofi/config_i3mark.rasi"
 ROFI_AUTOMARK_INPUT_TEXT="$HOME/.config/rofi/i3_automark_list.txt"
 
 mark_rofi () {
-    local output_width menu_width=640
+    local output_width window_width window_height window_size menu_width=640 monitor=-2
 
-    # Size against the focused output, while -2 keeps the menu over its window.
+    # Keep the grid within the focused output on narrow displays.
     output_width=$(i3-msg -t get_workspaces 2>/dev/null |
         jq -r '.[] | select(.focused) | .rect.width' 2>/dev/null)
     if [[ $output_width =~ ^[0-9]+$ ]] && (( output_width > 48 && output_width - 48 < menu_width )); then
         menu_width=$((output_width - 48))
     fi
 
-    rofi -monitor -2 "$@" -theme-str "window { width: ${menu_width}px; }"
+    # Use the focused display when the menu cannot fit over the focused window.
+    window_size=$(i3-msg -t get_tree 2>/dev/null |
+        jq -r 'first(.. | objects | select(.focused? == true and .rect? != null) | .rect | "\(.width) \(.height)") // empty' 2>/dev/null)
+    read -r window_width window_height <<< "$window_size"
+    if [[ ! $window_width =~ ^[0-9]+$ || ! $window_height =~ ^[0-9]+$ ]] ||
+        (( window_width < menu_width || window_height < 240 )); then
+        monitor=-4
+    fi
+
+    rofi -monitor "$monitor" "$@" -theme-str "window { width: ${menu_width}px; }"
 }
 # Automark marks
 #ALL_AUTOMARK_LIST=(\

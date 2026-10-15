@@ -258,13 +258,27 @@ _window_geometry_preset_label () {
 
 # Guide custom input one dimension at a time. Empty input preserves it.
 _window_geometry_ask () {
-    local label=$1 current=$2 extent=$3 positive=$4 value pixels
+    local label=$1 current=$2 extent=$3 positive=$4 value pixels rofi_error rofi_status
+    local keep_choice="Keep current (${current}px)"
     while true; do
-        value=$(window_rofi -dmenu -p "$label" \
-            -mesg "Current: $current px. Enter pixels, a fraction (1/2), or a percentage (50%). Leave empty to keep it." \
-            -theme-str 'mainbox { children: [inputbar, message]; } inputbar { children: [prompt, entry]; } entry { background-color: @background; text-color: @foreground; }' \
-            </dev/null) || return 1
+        rofi_error=$(mktemp) || return 1
+        # A real row keeps the normal Rofi list and input widgets active.
+        # Selecting it preserves the current dimension; typing still works.
+        value=$(printf '%s\n' "$keep_choice" | window_rofi -dmenu -p "$label" \
+            -mesg "Enter pixels, a fraction (1/2), or a percentage (50%)." \
+            2>"$rofi_error")
+        rofi_status=$?
+        if (( rofi_status != 0 )); then
+            if [[ -s $rofi_error ]]; then
+                cat "$rofi_error" >&2
+                notify-send -u critical 'Window size input' 'Rofi could not open the custom size prompt. Check the i3 log.' --icon="$ICON" || true
+            fi
+            rm -f "$rofi_error"
+            return "$rofi_status"
+        fi
+        rm -f "$rofi_error"
         value=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$value")
+        [[ $value == "$keep_choice" ]] && value=
         if [[ -z $value ]]; then printf '\n'; return 0; fi
         pixels=$(_floating_coordinate_to_absolute "$value" 0 "$extent" 2>/dev/null) || {
             window_rofi -e "Invalid $label: $value"

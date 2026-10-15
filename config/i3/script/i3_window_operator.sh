@@ -252,7 +252,10 @@ _window_geometry_preset_label () {
 _window_geometry_ask () {
     local label=$1 current=$2 extent=$3 positive=$4 value pixels
     while true; do
-        value=$(window_rofi -dmenu -p "$label" -mesg "Current: $current px. Enter pixels, a fraction (1/2), or a percentage (50%). Leave empty to keep it.") || return 1
+        value=$(window_rofi -dmenu -p "$label" \
+            -mesg "Current: $current px. Enter pixels, a fraction (1/2), or a percentage (50%). Leave empty to keep it." \
+            -theme-str 'mainbox { children: [inputbar, message]; } inputbar { children: [prompt, entry]; } entry { background-color: @background; text-color: @foreground; }' \
+            </dev/null) || return 1
         value=$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "$value")
         if [[ -z $value ]]; then printf '\n'; return 0; fi
         pixels=$(_floating_coordinate_to_absolute "$value" 0 "$extent" 2>/dev/null) || {
@@ -455,23 +458,23 @@ resize_to_input_and_move_floating_to_input_in_one () {
                 spec="$input_x,$input_y,,"
                 ;;
             'Set a custom size...')
-                input_width=$(_window_geometry_ask 'Width' "$win_width" "$ws_width" 1) || return 0
-                input_height=$(_window_geometry_ask 'Height' "$win_height" "$ws_height" 1) || return 0
+                input_width=$(_window_geometry_ask 'Width: ' "$win_width" "$ws_width" 1) || return 0
+                input_height=$(_window_geometry_ask 'Height: ' "$win_height" "$ws_height" 1) || return 0
                 spec=",,$input_width,$input_height"
                 ;;
             'Set a custom width...')
-                input_width=$(_window_geometry_ask 'Width' "$win_width" "$ws_width" 1) || return 0
+                input_width=$(_window_geometry_ask 'Width: ' "$win_width" "$ws_width" 1) || return 0
                 spec=",,$input_width,"
                 ;;
             'Set a custom height...')
-                input_height=$(_window_geometry_ask 'Height' "$win_height" "$ws_height" 1) || return 0
+                input_height=$(_window_geometry_ask 'Height: ' "$win_height" "$ws_height" 1) || return 0
                 spec=",,,$input_height"
                 ;;
             'Set custom position and size...')
-                input_x=$(_window_geometry_ask 'Left edge from workspace' "$((win_x-ws_x))" "$ws_width" 0) || return 0
-                input_y=$(_window_geometry_ask 'Top edge from workspace' "$((win_y-ws_y))" "$ws_height" 0) || return 0
-                input_width=$(_window_geometry_ask 'Width' "$win_width" "$ws_width" 1) || return 0
-                input_height=$(_window_geometry_ask 'Height' "$win_height" "$ws_height" 1) || return 0
+                input_x=$(_window_geometry_ask 'Left edge from workspace: ' "$((win_x-ws_x))" "$ws_width" 0) || return 0
+                input_y=$(_window_geometry_ask 'Top edge from workspace: ' "$((win_y-ws_y))" "$ws_height" 0) || return 0
+                input_width=$(_window_geometry_ask 'Width: ' "$win_width" "$ws_width" 1) || return 0
+                input_height=$(_window_geometry_ask 'Height: ' "$win_height" "$ws_height" 1) || return 0
                 spec="$input_x,$input_y,$input_width,$input_height"
                 ;;
         esac

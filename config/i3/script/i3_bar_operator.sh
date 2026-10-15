@@ -3,18 +3,55 @@
 # i3bar
 BAR_CONFIG="$HOME/.config/i3/config"
 BAR_ID="bar_status"
-BAR_HEIGHT=$(awk '$0~/default_i3bar_height/ {print $3}' $BAR_CONFIG | awk 'NR==1')
-BAR_MODE=$(awk '$0~/default_i3bar_mode/ {print $3}' $BAR_CONFIG | awk 'NR==1')
-BAR_POS=$(awk '$0~/default_i3bar_position/ {print $3}' $BAR_CONFIG | awk 'NR==1')
+BAR_HEIGHT=$(awk '$2=="$default_i3bar_height" {print $3; exit}' "$BAR_CONFIG")
+CONKY_DEFAULT_YOFFSET=$(awk '$2=="$default_conky_gap_y" {print $3; exit}' "$BAR_CONFIG")
 
-# Conky config
-CONKY_TO_OFFSET="system"
-if [ $BAR_POS == "bottom" ]; then
-    CONKY_TO_OFFSET="bindkey"
-fi
-CONKY_CONFIG="$HOME/.config/conky/conky_config_$CONKY_TO_OFFSET"
-CONKY_YOFFSET=$(awk '$0~/gap_y/ {print $3}' $CONKY_CONFIG | cut -d ',' -f 1)
-CONKY_DEFAULT_YOFFSET=$(awk '$0~/default_conky_gap_y/ {print $3}' $HOME/.config/i3/config | awk 'NR==1')
+bar_state () {
+    i3-msg -t get_bar_config "$BAR_ID" |
+        jq -er 'select((.mode == "dock" or .mode == "hide") and
+            (.position == "top" or .position == "bottom")) |
+            [.mode, .position] | @tsv'
+}
+
+# Conky's gap_y is measured from its aligned edge. Update both Conky roles
+# so moving the bar also clears the offset at its former position.
+sync_conky_offsets () {
+    local mode=$1 position=$2 role alignment gap config
+    local -A alignments=()
+
+    if [[ ! $BAR_HEIGHT =~ ^[0-9]+$ || ! $CONKY_DEFAULT_YOFFSET =~ ^[0-9]+$ ]]; then
+        printf 'Invalid bar height or Conky base gap in %s\n' "$BAR_CONFIG" >&2
+        return 1
+    fi
+
+    for role in system bindkey; do
+        config="$HOME/.config/conky/conky_config_$role"
+        alignment=$(awk -F "'" '$1 ~ /^[[:space:]]*alignment[[:space:]]*=/ {print $2; exit}' "$config") || return 1
+        [[ -n $alignment ]] || { printf 'No Conky alignment in %s\n' "$config" >&2; return 1; }
+        alignments[$role]=$alignment
+    done
+
+    for role in system bindkey; do
+        gap=$CONKY_DEFAULT_YOFFSET
+        if [[ $mode == dock && ${alignments[$role]} == "$position"_* ]]; then
+            gap=$((gap + BAR_HEIGHT))
+        fi
+        "$I3_SCRIPT/i3_conky_valuechanger.sh" "$role" gap_y "$gap" || return 1
+    done
+}
+
+sync_conky_from_bar () {
+    local expected_mode=${1:-} expected_position=${2:-} state mode position
+    state=$(bar_state) || return 1
+    read -r mode position <<< "$state"
+    if [[ -n $expected_mode && $mode != "$expected_mode" ]] ||
+        [[ -n $expected_position && $position != "$expected_position" ]]; then
+        printf 'bar_status has mode=%s position=%s; expected mode=%s position=%s\n' \
+            "$mode" "$position" "$expected_mode" "$expected_position" >&2
+        return 1
+    fi
+    sync_conky_offsets "$mode" "$position"
+}
 
 # Wrong usage message
 show_wrong_usage_message () {
@@ -45,35 +82,36 @@ show_help_message () {
 bar_operation () {
     case $1 in
         "default_mode_hide")
-            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
-            $I3_SCRIPT/i3_default_valuechanger.sh i3bar_mode hide
+            "$I3_SCRIPT/i3_default_valuechanger.sh" i3bar_mode hide &&
+                sync_conky_from_bar hide
             ;;
         "default_mode_dock")
-            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
-            $I3_SCRIPT/i3_default_valuechanger.sh i3bar_mode dock
+            "$I3_SCRIPT/i3_default_valuechanger.sh" i3bar_mode dock &&
+                sync_conky_from_bar dock
             ;;
         "default_pos_top")
-            $I3_SCRIPT/i3_default_valuechanger.sh i3bar_position top
+            "$I3_SCRIPT/i3_default_valuechanger.sh" i3bar_position top &&
+                sync_conky_from_bar '' top
             ;;
         "default_pos_bottom")
-            $I3_SCRIPT/i3_default_valuechanger.sh i3bar_position bottom
+            "$I3_SCRIPT/i3_default_valuechanger.sh" i3bar_position bottom &&
+                sync_conky_from_bar '' bottom
             ;;
         "bar_hide")
-            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
-            i3-msg "bar mode hide $BAR_ID"
+            i3-msg "bar mode hide $BAR_ID" >/dev/null &&
+                sync_conky_from_bar hide
             ;;
         "bar_dock")
-            $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
-            i3-msg "bar mode dock $BAR_ID"
+            i3-msg "bar mode dock $BAR_ID" >/dev/null &&
+                sync_conky_from_bar dock
             ;;
         "bar_toggle")
-            if [ $(expr $CONKY_YOFFSET - $CONKY_DEFAULT_YOFFSET) == 0 ]; then
-                $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $(expr $CONKY_DEFAULT_YOFFSET + $BAR_HEIGHT)
-                i3-msg "bar mode dock $BAR_ID"
-            elif [ $(expr $CONKY_YOFFSET - $CONKY_DEFAULT_YOFFSET) == $BAR_HEIGHT ]; then
-                $I3_SCRIPT/i3_conky_valuechanger.sh $CONKY_TO_OFFSET gap_y $CONKY_DEFAULT_YOFFSET
-                i3-msg "bar mode hide $BAR_ID"
-            fi
+            local state mode position next_mode
+            state=$(bar_state) || return 1
+            read -r mode position <<< "$state"
+            if [[ $mode == dock ]]; then next_mode=hide; else next_mode=dock; fi
+            i3-msg "bar mode $next_mode $BAR_ID" >/dev/null &&
+                sync_conky_from_bar "$next_mode" "$position"
             ;;
         "bar_hidden_state_show")
             i3-msg "bar hidden_state show $BAR_ID"

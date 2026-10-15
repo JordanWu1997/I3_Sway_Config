@@ -46,7 +46,7 @@ scratchpad_operation () {
                 fi
                 i3-msg "[id="${WINDOW_ID}"] focus"
             else
-                notify-send -u "low" "i3 Scratchpad" "There are NO more windows in scratchpad\nLast focus window is sent to scratchpad"
+                notify-send -u "low" "i3 Scratchpad" "There are NO more windows in scratchpad\nLast focus window is sent to scratchpad" --icon="$ICON"
                 i3-msg "floating focus"
                 i3-msg "move scratchpad"
             fi

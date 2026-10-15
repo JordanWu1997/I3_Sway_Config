@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 WINDOW_ROFI_CONFIG="$HOME/.config/rofi/config_i3window.rasi"
+ICON="$HOME/.config/i3/share/64x64/window.png"
 
 window_rofi () {
     local output_width window_width window_height window_size menu_width=760
@@ -316,7 +317,7 @@ _window_notify_if_single_tiled () {
     tiled_axes=$(_window_tiled_resize_axes "$tree" "$focus_window_id" 2>/dev/null) || return 1
     read -r tiled_count _ <<< "$tiled_axes"
     if (( tiled_count <= 1 )); then
-        notify-send -u low 'Resize tiled window' 'Only one tiled window is present.'
+        notify-send -u low 'Resize tiled window' 'Only one tiled window is present.' --icon="$ICON"
         return 0
     fi
     return 1
@@ -366,11 +367,11 @@ resize_to_input_and_move_floating_to_input_in_one () {
         tiled_axes=$(_window_tiled_resize_axes "$tree" "$focus_window_id") || return 1
         read -r tiled_count can_resize_width can_resize_height <<< "$tiled_axes"
         if (( tiled_count <= 1 )); then
-            notify-send -u low 'Resize tiled window' 'Only one tiled window is present.'
+            notify-send -u low 'Resize tiled window' 'Only one tiled window is present.' --icon="$ICON"
             return 0
         fi
         if (( ! can_resize_width && ! can_resize_height )); then
-            notify-send -u low 'Resize tiled window' 'No horizontal or vertical split can be resized here.'
+            notify-send -u low 'Resize tiled window' 'No horizontal or vertical split can be resized here.' --icon="$ICON"
             return 0
         fi
         read -r win_x win_y win_width win_height < <(
@@ -723,7 +724,6 @@ move_floating_to_corner () {
 
 
 window_operation () {
-    ICON="$HOME/.config/i3/share/64x64/window.png"
     case $1 in
         "float_then_fulfill_workspace")
             # Get focus window ID

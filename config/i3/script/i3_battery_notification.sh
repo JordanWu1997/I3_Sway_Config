@@ -4,16 +4,17 @@
 # --- Configuration ---
 # Find your battery device name. It's usually BAT0 or BAT1.
 BATTERY_DIR="/sys/class/power_supply/BAT0"
+ERROR_ICON="$HOME/.config/i3/share/64x64/notification.png"
 
 # --- Error Handling & Setup ---
 if [ ! -d "$BATTERY_DIR" ]; then
-    notify-send -u critical "Battery Status Error" "Device directory $BATTERY_DIR not found. Check BAT0 or BAT1."
+    notify-send -u critical "Battery Status Error" "Device directory $BATTERY_DIR not found. Check BAT0 or BAT1." --icon="$ERROR_ICON"
     exit 1
 fi
 
 STATUS=$(cat "$BATTERY_DIR/status" 2>/dev/null)
 if [ "$STATUS" == "Unknown" ] || [ -z "$STATUS" ]; then
-    notify-send -u critical "Battery Status Error" "Could not read battery status or battery not present."
+    notify-send -u critical "Battery Status Error" "Could not read battery status or battery not present." --icon="$ERROR_ICON"
     exit 1
 fi
 

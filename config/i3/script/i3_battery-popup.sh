@@ -145,18 +145,8 @@ show_nagbar(){
 }
 
 show_notify(){
-    GNOME_ICON="/usr/share/icons/gnome/scalable/status/battery-low-symbolic.svg"
-    XFCE_ICON="/usr/share/icons/elementary-xfce/status/48/battery-low.png"
-    # try to find nice notify icon
-    if [[ -z $NOTIFY_ICON ]]; then
-        if [[ -f $GNOME_ICON ]]; then
-            NOTIFY_ICON="${GNOME_ICON}"
-        elif [[ -f $XFCE_ICON ]]; then
-            NOTIFY_ICON="${XFCE_ICON}"
-        fi
-    fi
-    [[ -n $NOTIFY_ICON ]] && NOTIFY_OPT="-i ${NOTIFY_ICON}"
-    notify-send -u critical "${1}" ${NOTIFY_OPT}
+    local icon="${NOTIFY_ICON:-$HOME/.config/i3/share/64x64/notification.png}"
+    notify-send -u critical -i "$icon" "$1"
 }
 
 play_sound(){

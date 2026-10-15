@@ -67,7 +67,7 @@ rofi_menu() {
 
 notify() {
     command -v notify-send >/dev/null 2>&1 &&
-        notify-send -t 1000 "Rofi Omnisearch" "$1"
+        notify-send -t 1000 "Rofi Omnisearch" "$1" --icon="$HOME/.config/i3/share/64x64/list.png"
 }
 
 global_cancel() {
@@ -1088,7 +1088,7 @@ except Exception as e:
 
             PDF_COUNT=$(fdfind --type f --extension pdf . "$TARGET_DIR" 2>/dev/null | wc -l)
             if (( PDF_COUNT == 0 )); then
-                notify-send "PDF Fetch" "No PDF files found in $TARGET_DIR"
+                notify-send "PDF Fetch" "No PDF files found in $TARGET_DIR" --icon="$HOME/.config/i3/share/64x64/abc.png"
                 rm -f "$TMP_RESULTS" "$TMP_DISPLAY"
                 exit 0
             fi
@@ -1101,7 +1101,7 @@ except Exception as e:
                 # Report progress every 5 files or on completion
                 if (( CURRENT % 5 == 0 || CURRENT == PDF_COUNT )); then
                     PERCENT=$((CURRENT * 100 / PDF_COUNT))
-                    notify-send -t 1500 "PDF Fetch Progress" "Scanned: $CURRENT/$PDF_COUNT files ($PERCENT%)"
+                    notify-send -t 1500 "PDF Fetch Progress" "Scanned: $CURRENT/$PDF_COUNT files ($PERCENT%)" --icon="$HOME/.config/i3/share/64x64/abc.png"
                 fi
 
                 MATCHES_ALL=1
@@ -1151,7 +1151,7 @@ except Exception as e:
             MATCH_COUNT=$(wc -l < "$PDF_RESULTS")
             printf '%s\t%s\t%s\n' "$TARGET_DIR" "$QUERY" "$MATCH_COUNT" > "$PDF_INDEX_META"
 
-            notify-send "PDF Fetch Completed" "Successfully cached '$QUERY' ($MATCH_COUNT matches)."
+            notify-send "PDF Fetch Completed" "Successfully cached '$QUERY' ($MATCH_COUNT matches)." --icon="$HOME/.config/i3/share/64x64/abc.png"
         ) &
 
         # Register PID globally for Global Cancel support
@@ -1403,7 +1403,8 @@ header_size = 32
 record_header_size = 28
 
 def notify(message):
-    subprocess.run(["notify-send", "Rofi Omnisearch", message],
+    subprocess.run(["notify-send", "-i", os.path.expanduser("~/.config/i3/share/64x64/list.png"),
+                    "Rofi Omnisearch", message],
                    stdout=subprocess.DEVNULL,
                    stderr=subprocess.DEVNULL)
 

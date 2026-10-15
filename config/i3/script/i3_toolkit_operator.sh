@@ -190,7 +190,7 @@ toolkit_operation () {
             # Using xclip -selection clipboard to get the standard "Copy" buffer
             TEXT=$(xclip -o -selection clipboard)
             if [ -z "$TEXT" ]; then
-                notify-send "Translation Error" "Clipboard is empty."
+                notify-send "Translation Error" "Clipboard is empty." --icon="$HOME/.config/i3/share/64x64/language.png"
                 exit 1
             fi
             # trans -id returns the language code (e.g., en, zh-CN, zh-TW)

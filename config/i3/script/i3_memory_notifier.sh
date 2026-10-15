@@ -18,7 +18,7 @@ get_memory_usage() {
 # Function to send notification
 send_notification() {
     local usage=$1
-    notify-send "High Memory Usage Alert" "Memory usage is at ${usage}%" -u critical -i dialog-warning
+    notify-send "High Memory Usage Alert" "Memory usage is at ${usage}%" -u critical -i "$HOME/.config/i3/share/64x64/notification.png"
 }
 
 # Main loop

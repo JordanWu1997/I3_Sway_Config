@@ -1,4 +1,4 @@
-/*~/.config/rofi/config_i3mark.rasi*/
+/*~/.config/rofi/config_i3workspace.rasi*/
 
 configuration {
 
@@ -10,6 +10,9 @@ configuration {
 
     /*Icon theme*/
     icon-theme: "Papirus";
+
+    /* Open on the display containing the focused window. */
+    monitor: "-4";
 
     /*Border width*/
     bw: 0;
@@ -68,8 +71,10 @@ configuration {
     /*Fullscreen*/
     fullscreen: false;
 
-    /*Width (no effect when fullscreen is enable, preset in wal)*/
-    width: 25%;
+    /* Center a readable four-column grid within narrow displays. */
+    location: center;
+    anchor: center;
+    width: calc( 640px min (100% - 48px) );
 
     /*Border width*/
     border: 5;

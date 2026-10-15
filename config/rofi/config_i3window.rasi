@@ -52,7 +52,6 @@ configuration {
     lines: 8;
     fixed-height: false;
     dynamic: false;
-    expand: false;
 
     /*Number of columns*/
     columns: 1;
@@ -64,45 +63,15 @@ configuration {
 
     /*Inputbar component*/
     children: [prompt,textbox-prompt-colon,entry];
-    expand: false;
 
-}
-
-#mainbox {
-
-    /* Center the chooser content within the focused-window overlay. */
-    children: [top-spacer, chooser-content, bottom-spacer];
-    margin: 0px 20%;
-
-}
-
-#top-spacer {
-    expand: true;
-}
-
-#bottom-spacer {
-    expand: true;
-}
-
-#chooser-content {
-    orientation: vertical;
-    children: [inputbar, message, listview];
-    spacing: 0.6em;
-    expand: false;
-}
-
-@media (max-width: 900) {
-    #mainbox {
-        margin: 0px 8%;
-    }
 }
 
 #window {
 
-    /* Fill the focused window selected by i3_window_operator.sh. */
-    fullscreen: true;
+    /* Keep the compact chooser centered without filling the screen. */
     location: center;
     anchor: center;
+    width: 760px;
     padding: 1em;
 
     /*Border width*/

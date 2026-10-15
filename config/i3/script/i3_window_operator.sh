@@ -3,7 +3,8 @@
 WINDOW_ROFI_CONFIG="$HOME/.config/rofi/config_i3window.rasi"
 
 window_rofi () {
-    local output_width window_width window_height window_size menu_width=760 monitor=-2
+    local output_width window_width window_height window_size menu_width=760
+    local -a placement_args=(-monitor -2)
 
     # Keep the menu within the focused output on narrow displays.
     output_width=$(i3-msg -t get_workspaces 2>/dev/null |
@@ -13,18 +14,24 @@ window_rofi () {
     fi
 
     # Fall back to the focused display if the window cannot contain the menu.
-    window_size=$(i3-msg -t get_tree 2>/dev/null |
-        jq -r 'first(.. | objects | select(.focused? == true and .rect? != null) | .rect | "\(.width) \(.height)") // empty' 2>/dev/null)
+    if [[ ${rofi_target_id:-} =~ ^[0-9]+$ ]]; then
+        placement_args=(-w "$rofi_target_id")
+        window_size=$(i3-msg -t get_tree 2>/dev/null |
+            jq -r --argjson wid "$rofi_target_id" 'first(.. | objects | select(.window? == $wid and .rect? != null) | .rect | "\(.width) \(.height)") // empty' 2>/dev/null)
+    else
+        window_size=$(i3-msg -t get_tree 2>/dev/null |
+            jq -r 'first(.. | objects | select(.focused? == true and .rect? != null) | .rect | "\(.width) \(.height)") // empty' 2>/dev/null)
+    fi
     read -r window_width window_height <<< "$window_size"
     if [[ ! $window_width =~ ^[0-9]+$ || ! $window_height =~ ^[0-9]+$ ]] ||
         (( window_width < menu_width || window_height < 420 )); then
-        monitor=-4
+        placement_args=(-monitor -4)
     fi
 
     if [[ -f $WINDOW_ROFI_CONFIG ]]; then
-        rofi -config "$WINDOW_ROFI_CONFIG" -monitor "$monitor" "$@" -theme-str "window { width: ${menu_width}px; }"
+        rofi -config "$WINDOW_ROFI_CONFIG" "${placement_args[@]}" "$@" -theme-str "window { width: ${menu_width}px; }"
     else
-        rofi -monitor "$monitor" "$@" -theme-str "window { width: ${menu_width}px; }"
+        rofi "${placement_args[@]}" "$@" -theme-str "window { width: ${menu_width}px; }"
     fi
 }
 
@@ -317,7 +324,7 @@ _window_notify_if_single_tiled () {
 
 # Floating windows can be placed; tiled windows can only be resized here.
 resize_to_input_and_move_floating_to_input_in_one () {
-    local focus_window_id tree floating_rect window_rect workspace_rect
+    local focus_window_id rofi_target_id tree floating_rect window_rect workspace_rect
     local ws_x ws_y ws_width ws_height win_x win_y win_width win_height
     local is_floating=0 preset_file choice spec prompt message label
     local input_x input_y input_width input_height value converted menu_screen=quick
@@ -326,6 +333,7 @@ resize_to_input_and_move_floating_to_input_in_one () {
     local -a rofi_args menu_items menu_specs
 
     focus_window_id=$(xdotool getwindowfocus) || return 1
+    rofi_target_id=$focus_window_id
     tree=$(i3-msg -t get_tree) || return 1
     floating_rect=$(jq -c --argjson wid "$focus_window_id" '
         first(.. | objects

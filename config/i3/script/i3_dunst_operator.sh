@@ -117,10 +117,17 @@ load_offset_and_text_alignment () {
 
 reload_dunst () {
     # Reload dunst
-    pidof dunst && killall dunst
+    if pidof dunst >/dev/null 2>&1; then
+        killall dunst || return 1
+    fi
     dunst > /dev/null 2>&1 &
     sleep 1
-    notify-send -u low "Dunst" "Dunst is up and running" --icon=${ICON}
+    if pidof dunst >/dev/null 2>&1; then
+        notify-send -u low "Dunst" "Dunst is up and running" --icon="$ICON" || true
+    else
+        printf 'Dunst failed to start.\n' >&2
+        return 1
+    fi
 }
 
 enable_dunst_logger () {
@@ -167,9 +174,9 @@ dunst_operation () {
             reload_dunst
             ;;
         "reload_all")
-            load_wal_color
-            load_wal_border_width
-            load_offset_and_text_alignment
+            load_wal_color || return 1
+            load_wal_border_width || return 1
+            load_offset_and_text_alignment || return 1
             reload_dunst
             ;;
         "enable_dunst_logger")

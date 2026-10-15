@@ -2,6 +2,16 @@
 
 ICON="$HOME/.config/i3/share/64x64/reload.png"
 
+report_reload () {
+    local label=$1 status=$2
+    if (( status == 0 )); then
+        notify-send -u low "Reload Mode" "$label" --icon="$ICON" || true
+    else
+        notify-send -u critical "Reload failed" "$label" --icon="$ICON" || true
+    fi
+    return "$status"
+}
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -26,54 +36,73 @@ show_help_message () {
 
 reload_conky () {
     # Conky (system monitor & shortcut table)
-    "$I3_SCRIPT/i3_conky_valuechanger.sh" system all && sleep 1
-    "$I3_SCRIPT/i3_conky_valuechanger.sh" bindkey all && sleep 1
-    notify-send -u low "Reload Mode" "Reload conky (system monitor)" --icon="${ICON}"
+    if "$I3_SCRIPT/i3_conky_valuechanger.sh" system all && sleep 1 &&
+        "$I3_SCRIPT/i3_conky_valuechanger.sh" bindkey all && sleep 1; then
+        report_reload "Conky reloaded" 0
+    else
+        report_reload "Conky" 1
+    fi
 }
 
 reload_i3bar () {
-    "$I3_SCRIPT/i3_bar_operator.sh" bar_reload
-    notify-send -u low "Reload Mode" "Reload i3bar (status bar)" --icon="${ICON}"
+    if ! "$I3_SCRIPT/i3_bar_operator.sh" bar_reload; then
+        report_reload "i3bar" 1
+    fi
 }
 
 reload_dunst () {
     # Dunst (notifier)
-    "$I3_SCRIPT/i3_dunst_operator.sh" reload_all
-    notify-send -u low "Reload Mode" "Reload dunst (notifier)" --icon="${ICON}"
+    if ! "$I3_SCRIPT/i3_dunst_operator.sh" reload_all; then
+        report_reload "Dunst" 1
+    fi
 }
 
 reload_vis () {
     # Vis (visualizer)
-    "$I3_SCRIPT/i3_vis_colorchanger.sh"
-    notify-send -u low "Reload Mode" "Reload vis (cli-equalizer)" --icon="${ICON}"
+    if "$I3_SCRIPT/i3_vis_colorchanger.sh"; then
+        report_reload "Vis reloaded" 0
+    else
+        report_reload "Vis" 1
+    fi
 }
 
 reload_zathura () {
     # Zathura (PDF viewer)
-    zathura-pywal -a 0.7
-    notify-send -u low "Reload Mode" "Reload zathura (PDF viewer)" --icon="${ICON}"
+    if zathura-pywal -a 0.7; then
+        report_reload "Zathura colors reloaded" 0
+    else
+        report_reload "Zathura" 1
+    fi
 }
 
 reload_Xresources  () {
-    xrdb "$HOME/.Xresources"
-    notify-send -u low "Reload Mode" "Reload Xresources (~/.Xresouces)" --icon="${ICON}"
+    if xrdb "$HOME/.Xresources"; then
+        report_reload "Xresources reloaded" 0
+    else
+        report_reload "Xresources" 1
+    fi
 
 }
 
 reload_xsslock () {
-    "$I3_SCRIPT/i3_xsslock_operator.sh" current_desktop
-    notify-send -u low "Reload Mode" "Reload xsslock (session lock)" --icon="${ICON}"
+    if "$I3_SCRIPT/i3_xsslock_operator.sh" current_desktop; then
+        report_reload "xss-lock restart requested" 0
+    else
+        report_reload "xss-lock" 1
+    fi
 }
 
 # Main reload pipline
 reload_pipeline () {
     case $1 in
         'all')
-            reload_dunst
-            reload_conky
-            reload_i3bar
-            reload_zathura
-            reload_vis
+            local failed=0
+            reload_dunst || failed=1
+            reload_conky || failed=1
+            reload_i3bar || failed=1
+            reload_zathura || failed=1
+            reload_vis || failed=1
+            return "$failed"
             ;;
         'conky')
             reload_conky

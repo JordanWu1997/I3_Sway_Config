@@ -28,43 +28,54 @@ show_help_message () {
 }
 
 wal_operation () {
+    local wallpaper
     case $OPERATION in
         "enable_16_color_wal")
             # Enable 16 color
-            awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg" | xargs -I {} wal -i {} ${WAL_OPTIONS}
+            wallpaper=$(awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg") || return 1
+            [[ -f $wallpaper ]] || return 1
+            wal -i "$wallpaper" ${WAL_OPTIONS} || return 1
             # Set default pywal
-            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal ${WAL_OPTIONS_ESCAPE} \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
-            notify-send -u low "Theme Mode" "Auto-theme with pywal (16-color) ${WAL_OPTIONS}" --icon=${ICON}
+            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal ${WAL_OPTIONS_ESCAPE} \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config" || return 1
+            WAL_MESSAGE="Auto-theme with pywal (16-color) ${WAL_OPTIONS}"
             ;;
         "enable_9_color_wal")
             # Enable 9 color
-            awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg" | xargs -I {} wal -i {} --nine ${WAL_OPTIONS}
+            wallpaper=$(awk -F\' 'NR==2 {print $2}' "$HOME/.fehbg") || return 1
+            [[ -f $wallpaper ]] || return 1
+            wal -i "$wallpaper" --nine ${WAL_OPTIONS} || return 1
             # Set default pywal
-            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal \-\-nine ${WAL_OPTIONS_ESCAPE} \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
-            notify-send -u low "Theme Mode" "Auto-theme with pywal (9-color) ${WAL_OPTIONS}" --icon=${ICON}
+            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id wal \-\-nine ${WAL_OPTIONS_ESCAPE} \-i \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config" || return 1
+            WAL_MESSAGE="Auto-theme with pywal (9-color) ${WAL_OPTIONS}"
             ;;
         "disable_wal")
             # Remove pywal result
-            rm -rf "$HOME/.cache/wal"
+            rm -rf "$HOME/.cache/wal" || return 1
             # Set default wallpaper only
-            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id feh \-\-bg\-scale \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
-            notify-send -u low "Theme Mode" "Disable auto-theme (kill pywal and startup pywal)" --icon=${ICON}
+            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id feh \-\-bg\-scale \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config" || return 1
+            WAL_MESSAGE="Auto-theme disabled"
             ;;
         "disable_wal_and_apply_template")
             # Apply templates
-            $I3_SCRIPT/i3_apply_template_theme.sh
+            "$I3_SCRIPT/i3_apply_template_theme.sh" || return 1
             # Set default wallpaper only
-            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id feh \-\-bg\-scale \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config"
-            notify-send -u low "Theme Mode" "Apply template theme and disable startup pywal" --icon=${ICON}
+            sed -i "$COL_WAL s/.*/exec \-\-no\-startup\-id feh \-\-bg\-scale \$HOME\/\.config\/i3\/share\/default_wallpaper/" "$HOME/.config/i3/config" || return 1
+            WAL_MESSAGE="Template theme applied; startup pywal disabled"
             ;;
         *)
             show_wrong_usage_message
             echo
             show_help_message
-            exit
+            return 2
     esac
-    i3-msg reload
+    i3-msg reload >/dev/null || return 1
 }
 
 # Main
-wal_operation $OPERATION
+if wal_operation "$OPERATION"; then
+    notify-send -u low "Theme Mode" "$WAL_MESSAGE" --icon="$ICON" || true
+else
+    status=$?
+    notify-send -u critical "Theme change failed" "$OPERATION" --icon="$ICON" || true
+    exit "$status"
+fi

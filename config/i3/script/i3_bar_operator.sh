@@ -82,10 +82,14 @@ bar_operation () {
             i3-msg "bar hidden_state hide $BAR_ID"
             ;;
         "bar_reload")
-            i3-msg exec 'killall i3bar && sleep 0.5'
-            i3-msg exec 'i3bar -b bar_status && sleep 0.5'
-            i3-msg exec 'i3bar -b bar_mode'
-            notify-send -u low "Bar Mode" "Reload i3bar" --icon="$HOME/.config/i3/share/64x64/reload.png"
+            if i3-msg exec 'killall i3bar && sleep 0.5' &&
+                i3-msg exec 'i3bar -b bar_status && sleep 0.5' &&
+                i3-msg exec 'i3bar -b bar_mode'; then
+                notify-send -u low "Bar Mode" "i3bar restart requested" --icon="$HOME/.config/i3/share/64x64/reload.png" || true
+            else
+                notify-send -u critical "Bar Mode" "Could not request i3bar restart" --icon="$HOME/.config/i3/share/64x64/reload.png" || true
+                return 1
+            fi
             ;;
         "bar_refresh_with_crontab")
             # In `crontab -e`, add following line to refresh bar every hour
@@ -95,15 +99,17 @@ bar_operation () {
             export DISPLAY=:1
             export XAUTHORITY=$HOME/.Xauthority
             # i3-msg
-            i3-msg exec 'killall i3bar && sleep 0.5'
-            i3-msg exec 'i3bar -b bar_status && sleep 0.5'
-            i3-msg exec 'i3bar -b bar_mode'
+            if ! { i3-msg exec 'killall i3bar && sleep 0.5' &&
+                i3-msg exec 'i3bar -b bar_status && sleep 0.5' &&
+                i3-msg exec 'i3bar -b bar_mode'; }; then
+                return 1
+            fi
             # Verbose
             if [[ $2 == 'verbose' ]]; then
                 # Point to run time directory for user-specific data e.g., socket
                 export XDG_RUNTIME_DIR=/run/user/$(id -u)
-                notify-send -u low "Bar Mode" "Refresh i3bar w/ crontab" \
-                    --icon="$HOME/.config/i3/share/64x64/reload.png"
+                notify-send -u low "Bar Mode" "i3bar restart requested by cron" \
+                    --icon="$HOME/.config/i3/share/64x64/reload.png" || true
             fi
             ;;
         *)

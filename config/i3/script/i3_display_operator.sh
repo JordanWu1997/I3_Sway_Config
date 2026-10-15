@@ -3,6 +3,18 @@
 # ICON
 ICON="$HOME/.config/i3/share/64x64/monitor.png"
 
+display_run () {
+    local description=$1 status
+    shift
+    if "$@"; then
+        notify-send -u low "Set Display" "$description" --icon="$ICON" || true
+    else
+        status=$?
+        notify-send -u critical "Display change failed" "$description" --icon="$ICON" || true
+        return "$status"
+    fi
+}
+
 # Get eDP1 paramter (for embedded device: e.g., laptop)
 eDP1_STATUS=$(xrandr | awk '$1~/eDP-?1/ {print $2}')
 
@@ -120,7 +132,6 @@ auto_adjust () {
         # Rent: 520mm x 290mm, IOA 24': 520mm x 290mm
         if [ "${HDMI1_WIDTH}" == "520mm" ] && [ "${HDMI1_HEIGHT}" == "290mm" ]; then
             #notify-send -u low "Set Display Automatically" "IOA 24' connected" --icon="${ICON}"
-            notify-send -u low "Set Display Automatically" "Rent 24' connected" --icon="${ICON}"
             # Adjust eDP1 & HDMI1
             HDMI1_1920x1200_50; eDP1_1440x810_60
             # Set-1: Locate eDP1 (1440x810) & HDMI1 (1920x1200)
@@ -132,7 +143,7 @@ auto_adjust () {
                 #--output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
                 #--output "${eDP1}" --mode 1440x810_60.00 --pos 0x195 --rotate normal
             # Set-3: Locate eDP1 (auto) & HDMI1 (1920x1080)
-            xrandr \
+            display_run "Rent 24' layout applied" xrandr \
                 --output "${HDMI1}" --mode 1920x1080 --primary \
                 --output "${eDP1}" --auto --left-of ${HDMI1}
             # Set-4: Disable eDP1 & enable HDMI1 (1920x1080)
@@ -141,39 +152,38 @@ auto_adjust () {
                #--output "${eDP1}" --off
         # ACER 27': 600mm x 340mm
         elif [ "${HDMI1_WIDTH}" == "600mm" ] && [ "${HDMI1_HEIGHT}" == "340mm" ]; then
-            notify-send -u low "Set Display Automatically" "ACER 27' connected" --icon="${ICON}"
             # Adjust eDP1 & HDMI1
             HDMI1_1920x1200_50; eDP1_1440x810_60
             # Locate eDP1 & HDMI1
-            xrandr \
+            display_run "ACER 27' layout applied" xrandr \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x270 --rotate normal \
                 --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # Rent: 0mm x 0mm (unknown)
         elif [ "${HDMI1_WIDTH}" == "0mm" ] && [ "${HDMI1_HEIGHT}" == "0mm" ]; then
-            notify-send -u low "Set Display Automatically" "Rent unknown connected" --icon="${ICON}"
             # Adjust eDP1 & HDMI1
             HDMI1_1920x1200_50; eDP1_1440x810_60
             # Locate eDP1 & HDMI1 (extented)
-            xrandr \
+            display_run "External display layout applied" xrandr \
                 --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x390 --rotate normal
         # Other HDMI:
         else
-            notify-send -u low "Set Display Automatically" "External ${HDMI1} connected" --icon="${ICON}"
-            xrandr --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
+            display_run "External ${HDMI1} layout applied" xrandr --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
         fi
         return
     fi
 
     # Case 2: Laptop only
     if [ "${eDP1_STATUS}" == 'connected' ]; then
-        notify-send -u low "Set Display Automatically" "${eDP1} connected. Disable all other displays" --icon="${ICON}"
         DISPLAYS=$(xrandr | grep -v eDP | grep -e DP -e HDMI | cut -d' ' -f1)
         for display in ${DISPLAYS[@]}; do
-            xrandr --output ${display} --off
+            xrandr --output "$display" --off || {
+                notify-send -u critical "Display change failed" "Could not disable $display" --icon="$ICON" || true
+                return 1
+            }
             sleep 0.1
         done
-        xrandr --output "${eDP1}" --auto --primary
+        display_run "${eDP1} laptop layout applied" xrandr --output "${eDP1}" --auto --primary
         return
     fi
 
@@ -185,9 +195,8 @@ auto_adjust () {
             #--output "DP-4" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1360 --rotate normal --brightness 1.0 \
             #--output "HDMI-0" --mode 1360x768 --pos 1920x0 --rotate right --brightness 0.8
 
-        notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-2 (normal), HDMI-0 (right)" --icon="${ICON}"
         # Render HDMI0 in 1536x864 and display in 1920x1080 mode
-        xrandr \
+        display_run "Desktop display layout applied" xrandr \
             --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --brightness 0.9 --primary \
             --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1920 --rotate normal --brightness 1.0 \
             --output "HDMI-0" --mode 1920x1080 --scale-from 1536x864 --pos 1920x0 --rotate right --brightness 0.9
@@ -226,9 +235,9 @@ select_display_mode () {
         return 1
     fi
     if [[ ${SELECTED_DISPLAY_MODE} == 'off' ]]; then
-        xrandr --output "${SELECTED_DISPLAY}" --off
+        display_run "${SELECTED_DISPLAY} disabled" xrandr --output "${SELECTED_DISPLAY}" --off
     else
-        xrandr --output "${SELECTED_DISPLAY}" --mode "${SELECTED_DISPLAY_MODE}"
+        display_run "${SELECTED_DISPLAY} set to ${SELECTED_DISPLAY_MODE}" xrandr --output "${SELECTED_DISPLAY}" --mode "${SELECTED_DISPLAY_MODE}"
     fi
 }
 
@@ -252,7 +261,7 @@ select_display_position () {
     INPUT_POS_Y=$(echo "${INPUT_POS}" | cut -d, -f2)
     POS_X=$(printf "%.0f" $(echo "scale=2; ${INPUT_POS_X}" | bc -l))
     POS_Y=$(printf "%.0f" $(echo "scale=2; ${INPUT_POS_Y}" | bc -l))
-    xrandr --output "${SELECTED_DISPLAY}" --pos "${POS_X}x${POS_Y}"
+    display_run "${SELECTED_DISPLAY} moved to ${POS_X}x${POS_Y}" xrandr --output "${SELECTED_DISPLAY}" --pos "${POS_X}x${POS_Y}"
 }
 
 select_display_as_primary () {
@@ -264,7 +273,7 @@ select_display_as_primary () {
         echo "[ERROR] NO DISPLAY is selected. Exiting ..."
         return
     fi
-    xrandr --output "${SELECTED_DISPLAY}" --primary
+    display_run "${SELECTED_DISPLAY} is primary" xrandr --output "${SELECTED_DISPLAY}" --primary
 }
 
 select_display_scale () {
@@ -278,9 +287,13 @@ select_display_scale () {
     fi
     # Select scale
     SELECTED_SCALE=$(rofi -dmenu -p 'Set DISPLAY scale')
-    if [[ ! $(echo "${SELECTED_SCALE}" | bc -l) == "0" ]]; then
-        xrandr --output "${SELECTED_DISPLAY}" --scale "${SELECTED_SCALE}x${SELECTED_SCALE}"
+    [[ -n $SELECTED_SCALE ]] || return 1
+    if [[ ! $SELECTED_SCALE =~ ^([0-9]+([.][0-9]+)?|[.][0-9]+)$ ]] ||
+        ! awk -v value="$SELECTED_SCALE" 'BEGIN {exit !(value > 0)}'; then
+        notify-send -u critical "Display change failed" "Scale must be a positive number" --icon="$ICON" || true
+        return 1
     fi
+    display_run "${SELECTED_DISPLAY} scaled to ${SELECTED_SCALE}" xrandr --output "${SELECTED_DISPLAY}" --scale "${SELECTED_SCALE}x${SELECTED_SCALE}"
 }
 
 select_display_orientation () {
@@ -295,7 +308,7 @@ select_display_orientation () {
     # Select orientation
     SELECTED_ORIENTATION=$(echo 'normal left right inverted' | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY orientation')
     if [[ -n "${SELECTED_ORIENTATION}" ]]; then
-        xrandr --output "${SELECTED_DISPLAY}" --rotate "${SELECTED_ORIENTATION}"
+        display_run "${SELECTED_DISPLAY} rotated ${SELECTED_ORIENTATION}" xrandr --output "${SELECTED_DISPLAY}" --rotate "${SELECTED_ORIENTATION}"
     fi
 }
 
@@ -324,8 +337,7 @@ select_input_to_output () {
         return
     fi
     # Execute mapping
-    xinput map-to-output "${INPUT_ID}" "${SELECTED_DISPLAY}"
-    notify-send -u low "Input Mapped" "Mapped Input ID ${INPUT_ID} to ${SELECTED_DISPLAY}" --icon="${ICON}"
+    display_run "Input ID ${INPUT_ID} mapped to ${SELECTED_DISPLAY}" xinput map-to-output "${INPUT_ID}" "${SELECTED_DISPLAY}"
 }
 
 
@@ -333,64 +345,50 @@ display_operation () {
     case $1 in
         # Combination of HDMI1, eDP1
         "eDP1_HDMI1_joint")
-            notify-send -u low "Set Display" "Activate eDP1-HDMI1 joint mode" --icon="${ICON}"
-            xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
+            display_run "eDP1-HDMI1 joint mode activated" xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
             ;;
         "eDP1_HDMI1_mirror")
-            notify-send -u low "Set Display" "Activate eDP1-HDMI1 mirror mode" --icon="${ICON}"
-            xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --same-as "${eDP1}"
+            display_run "eDP1-HDMI1 mirror mode activated" xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --same-as "${eDP1}"
             ;;
         "HDMI1_eDP1_joint")
-            notify-send -u low "Set Display" "Activate eDP1-HDMI1 joint mode" --icon="${ICON}"
-            xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --left-of "${eDP1}"
+            display_run "HDMI1-eDP1 joint mode activated" xrandr --output "${eDP1}" --auto --output "${HDMI1}" --auto --primary --left-of "${eDP1}"
             ;;
         # HDMI1
         "HDMI1_auto")
-            notify-send -u low "Set Display" "Activate HDMI1 (auto)" --icon="${ICON}"
-            xrandr --output "${HDMI1}" --auto
+            display_run "${HDMI1} activated (auto)" xrandr --output "${HDMI1}" --auto
             ;;
         "HDMI1_off")
-            notify-send -u low "Set Display" "Deactivate HDMI1 (off)" --icon="${ICON}"
-            xrandr --output "${HDMI1}" --off
+            display_run "${HDMI1} disabled" xrandr --output "${HDMI1}" --off
             ;;
         "HDMI1_1920x1200_50")
-            notify-send -u low "Set Display" "Activate HDMI1 extend mode (1920x1200_50.00)" --icon="${ICON}"
             HDMI1_1920x1200_50
-            xrandr --output "${HDMI1}" --mode "1920x1200_50.00"
+            display_run "${HDMI1} set to 1920x1200_50.00" xrandr --output "${HDMI1}" --mode "1920x1200_50.00"
             ;;
         "HDMI1_default")
-            notify-send -u low "Set Display" "Activate HDMI1 default mode (1920x1080)" --icon="${ICON}"
-            xrandr --output "${HDMI1}" --mode "1920x1080"
+            display_run "${HDMI1} set to 1920x1080" xrandr --output "${HDMI1}" --mode "1920x1080"
             ;;
         "HDMI1_primary")
-            notify-send -u low "Set Display" "Set HDMI1 as primary display" --icon="${ICON}"
-            xrandr --output "${HDMI1}" --primary
+            display_run "${HDMI1} is primary" xrandr --output "${HDMI1}" --primary
             ;;
         # eDP1
         "eDP1_auto")
-        notify-send -u low "Set Display" "Activate eDP1 (auto)" --icon="${ICON}"
-            xrandr --output "${eDP1}" --auto
+            display_run "${eDP1} activated (auto)" xrandr --output "${eDP1}" --auto
             ;;
         "eDP1_off")
-            notify-send -u low "Set Display" "Deactivate eDP1 (off)" --icon="${ICON}"
-            xrandr --output "${eDP1}" --off
+            display_run "${eDP1} disabled" xrandr --output "${eDP1}" --off
             ;;
         "eDP1_1440x810_60")
-            notify-send -u low "Set Display" "Activate eDP1 shrink mode (1440x810)" --icon="${ICON}"
             eDP1_1440x810_60
-            xrandr --output "${eDP1}" --mode "1440x810_60.00"
+            display_run "${eDP1} set to 1440x810_60.00" xrandr --output "${eDP1}" --mode "1440x810_60.00"
             ;;
         "eDP1_1368x768_60")
-            notify-send -u low "Set Display" "Activate eDP1 shrink mode (1368x768)" --icon="${ICON}"
-            xrandr --output "${eDP1}" --mode "1368x768"
+            display_run "${eDP1} set to 1368x768" xrandr --output "${eDP1}" --mode "1368x768"
             ;;
         "eDP1_default")
-            notify-send -u low "Set Display" "Activate eDP1 default mode (1920x1080)" --icon="${ICON}"
-            xrandr --output "${eDP1}" --mode "1920x1080"
+            display_run "${eDP1} set to 1920x1080" xrandr --output "${eDP1}" --mode "1920x1080"
             ;;
         "eDP1_primary")
-            notify-send -u low "Set Display" "Set eDP1 as primary display" --icon="${ICON}"
-            xrandr --output "${eDP1}" --primary
+            display_run "${eDP1} is primary" xrandr --output "${eDP1}" --primary
             ;;
         # Interactive selection
         "select_display_position")
@@ -412,7 +410,9 @@ display_operation () {
             select_input_to_output
             ;;
         "show_display_layout")
-            notify-send -u low "Display Mode" "$(xrandr --listmonitors)" --icon="${ICON}"
+            local layout
+            layout=$(xrandr --listmonitors) || return 1
+            notify-send -u low "Display Mode" "$layout" --icon="${ICON}"
             ;;
         *)
             show_wrong_usage_message

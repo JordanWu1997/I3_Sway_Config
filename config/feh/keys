@@ -35,7 +35,7 @@ toggle_filenames
 # Zooming
 zoom_default a
 zoom_fit     plus C-0 s
-zoom_in      equal  C-equal C-j
+zoom_in      equal C-equal C-j
 zoom_out     minus C-minus C-k
 
 # Keep zooming options

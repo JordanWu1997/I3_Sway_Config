@@ -327,17 +327,21 @@ Note: the term "window" used in this configuration actually refers to "container
     - __Terminal Mode (`[t]`)__
       - Gnome-terminal, kitty, alacrity and other terminals
 - __Toolkit Mode (`[Ctrl]` + `[Alt]` + `[t]`)__
-  - Tool script, e.g. pick up color, take screenshot and do OCR
-    - __Caffeine Mode (`[c]`)__
+  - Tool script mode e.g., capture screen, keyboard, caffeine, kdeconnect, etc.
+    - __Capture Mode__ (`[c]`)
+      - Capture color/text/qrcode on screen
+    - __Screenshot Mode (`[s]`)__
+      - Screenshot tool w/ flameshot
+    - __Recording Mode (`[r]`)__
+      - Screen recording tool e.g. peek, screenkey etc.
+    - __Caffeine Mode (`[Shift]` + `[c]`)__
       - Enable/Disable caffeine (disable/enable X screen saver)
     - __Keyboard Mode (`[k]`)__
       - Map keys for non-HHKB, HHKB, TEX Shinobi keyboards, tune repeat key speed
     - __KDE Connect Mode (`[Shift]` + `[k]`)__
       - KDE Connect pointer daemon
-    - __Flameshot Mode (`[f]`)__
-      - Flameshot screenshot tool
-    - __Recording Mode (`[r]`)__
-      - Screen recording tool e.g. peek, screenkey etc.
+    - __Miscellaneous Toolkit Mode (`[t]`)__
+      - Collection of tools
 - __Display Mode (`[Winkey]` + `[Shift]` + `[x]`)__
   - Modify display configuration, e.g. position, mode, primary, rotation etc.
     - __Preset Mode__ (`[p]`)

@@ -58,7 +58,7 @@ backlight_operation () {
             # Set backlight
             xrandr \
                 --output "${FOCUS_OUTPUT}" \
-                --brightness "${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}"
+                --brightness "${INPUT_LEVEL}"
             ;;
         "set_all_connected_displays_backlight_with_rofi")
             # Get backlight input level from user input via rofi
@@ -76,7 +76,7 @@ backlight_operation () {
                 # Set backlight
                 xrandr \
                     --output "${FOCUS_OUTPUT}" \
-                    --brightness "${INPUT_LEVEL}:${INPUT_LEVEL}:${INPUT_LEVEL}"
+                    --brightness "${INPUT_LEVEL}"
             done
             ;;
         "set_xbacklight_with_rofi")

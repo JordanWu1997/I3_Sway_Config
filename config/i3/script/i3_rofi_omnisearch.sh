@@ -65,6 +65,88 @@ rofi_menu() {
         "$@"
 }
 
+# A short, searchable guide. Keep these labels in sync with the i3 config.
+# The complete list below is generated from the config files at runtime.
+shortcut_guide_items() {
+    printf '%s\n' \
+        'Launch  |  Applications                         Super+D' \
+        'Launch  |  Commands                             Super+Shift+D' \
+        'Launch  |  Omnisearch                          Super+Backslash' \
+        'Launch  |  Terminal                            Super+Enter' \
+        'Windows |  Focus left/down/up/right            Super+H/J/K/L' \
+        'Windows |  Move left/down/up/right             Super+Shift+H/J/K/L' \
+        'Windows |  Resize or position                 Super+Slash' \
+        'Windows |  Toggle floating                    Super+Shift+Space' \
+        'Windows |  Toggle fullscreen                  Super+F' \
+        'Windows |  Close focused window               Super+Shift+Q' \
+        'Windows |  Hide in scratchpad                 Super+Z' \
+        'Windows |  Show scratchpad                    Super+G' \
+        'Windows |  Mark focused window                Super+M' \
+        'Windows |  Go to marked window                Super+Apostrophe' \
+        'Workspace | Go to workspace 1-10             Super+1-0' \
+        'Workspace | Move window to workspace 1-10    Super+Shift+1-0' \
+        'Workspace | Next / previous workspace        Super+Tab / Super+Shift+Tab' \
+        'Modes   |  System controls                    Ctrl+Alt+S' \
+        'Modes   |  Display controls                   Super+Shift+X' \
+        'Modes   |  Window layout                      Super+Shift+W' \
+        'Modes   |  Workspace tools                    Super+Shift+P' \
+        'Modes   |  Customization                      Super+Shift+C' \
+        'Capture |  Screenshot selection              Print Screen' \
+        'Capture |  Active window screenshot          Super+Print Screen' \
+        'Media   |  Volume up/down                     Volume keys' \
+        'Media   |  Play/pause                         Play/Pause key'
+}
+
+show_all_keybindings() {
+    local selected binding command
+    # Include bindings inside modes, but only global bindings may be run
+    # directly from this menu.
+    selected=$(awk '
+        /^[[:space:]]*mode[[:space:]]/ && /\{[[:space:]]*$/ {
+            mode=$0
+            sub(/^[[:space:]]*mode[[:space:]]*/, "", mode)
+            sub(/[[:space:]]*\{[[:space:]]*$/, "", mode)
+            next
+        }
+        /^[[:space:]]*}[[:space:]]*$/ { mode=""; next }
+        /^[[:space:]]*bindsym[[:space:]]/ {
+            binding=$0
+            sub(/^[[:space:]]*/, "", binding)
+            if (mode == "") print "[Global] " binding
+            else print "[Mode " mode "] " binding
+        }
+    ' "$HOME"/.config/i3/config.d/*.config |
+        rofi_menu "All keybindings" -no-custom \
+            -mesg 'Global rows run on Enter; mode rows are for reference.' )
+    [[ $selected == '[Global] bindsym '* ]] || return 0
+
+    binding=${selected#'[Global] bindsym '}
+    while [[ $binding == --* ]]; do
+        binding=${binding#* }
+    done
+    command=${binding#* }
+    # A selected global binding retains the old menu's run-on-selection behavior.
+    i3-msg "$command"
+}
+
+show_keybinding_menu() {
+    local choice
+    while true; do
+        choice=$(printf '%s\n' 'Shortcut guide' 'All keybindings' |
+            rofi_menu "Keybindings" -no-custom) || return 0
+        case $choice in
+            'Shortcut guide')
+                shortcut_guide_items |
+                    rofi_menu "Shortcut guide" -no-custom \
+                        -mesg 'Search actions or keys. This guide is read-only.' >/dev/null
+                ;;
+            'All keybindings')
+                show_all_keybindings
+                ;;
+        esac
+    done
+}
+
 notify() {
     command -v notify-send >/dev/null 2>&1 &&
         notify-send -t 1000 "Rofi Omnisearch" "$1" --icon="$HOME/.config/i3/share/64x64/list.png"
@@ -1540,17 +1622,7 @@ PY
         ;;
 
     *Keybindings*)
-        # i3 keybindings hinter
-        # -- https://www.reddit.com/r/i3wm/comments/e1x9n6/keybindings_menu_not_dmenurofi/
-        SELECTED_BINDING=$(
-            grep -h '^bindsym ' "$HOME"/.config/i3/config.d/*.config |
-                rofi_menu "i3 Keybinds"
-        )
-        if [[ $SELECTED_BINDING == bindsym\ * ]]; then
-            I3_COMMAND=${SELECTED_BINDING#bindsym }
-            I3_COMMAND=${I3_COMMAND#* }
-            i3-msg "$I3_COMMAND"
-        fi
+        show_keybinding_menu
         ;;
 
     *SSH*)

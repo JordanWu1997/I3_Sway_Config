@@ -1,95 +1,83 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Wrong message
-show_wrong_usage_message () {
-    echo "Wrong Usage:"
-    echo "  $0"
+# Advanced radio block diagnostics and recovery. Normal Wi-Fi/Bluetooth
+# controls belong to NetworkManager and BlueZ respectively.
+ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
+ICON="$HOME/.config/i3/share/64x64/wifi-connection.png"
+
+notify() {
+    if command -v notify-send >/dev/null 2>&1; then
+        notify-send -u low -a Radio --icon="$ICON" 'Radio devices' "$1"
+    fi
+    return 0
 }
 
-# Help message
-show_help_message () {
-    echo "Usage:"
-    echo "  i3_RF_device_operator.sh [operations]"
-    echo ""
-    echo "OPERATIONS"
-    echo "  [enable_RF_device]: enable selected RF device"
-    echo "  [disable_RF_device]: disable selected RF device"
-    echo "  [connect_bluetooth_device]: connect to bluetooth device"
-    echo "  [disconnect_bluetooth_device]: disconnect from bluetooth device"
-    echo "  [reconnect_bluetooth_device]: reconnect to bluetooth device"
-    echo "  [enable_bluetooth_discoverability]: enable bluetooth discoverability"
-    echo "  [disable_bluetooth_discoverability]: disable bluetooth discoverability"
+radio_rows() {
+    rfkill --noheadings --output ID,TYPE,SOFT,HARD 2>/dev/null
 }
 
-# Operation
-RF_device_operation () {
-    ICON="$HOME/.config/i3/share/64x64/wifi-connection.png"
-    case $1 in
-        'enable_RF_device')
-            RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -i -p "Enable RF Device")
-            RF_ID=$(echo ${RF_DEVICE} | cut -d: -f1)
-            RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
-            RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
-            if [[ -n ${RF_ID} ]]; then
-                rfkill unblock ${RF_ID}
-                notify-send -u low "${RF_TYPE} Device" "${RF_NAME} is enabled" --icon=${ICON}
-            fi
-            ;;
-        'disable_RF_device')
-            RF_DEVICE=$(rfkill list | grep -v "blocked" | rofi -dmenu -i -p "Disable RF Device")
-            RF_ID=$(echo ${RF_DEVICE} | cut -d: -f1)
-            RF_NAME=$(echo ${RF_DEVICE} | cut -d: -f2)
-            RF_TYPE=$(echo ${RF_DEVICE} | cut -d: -f3)
-            if [[ -n ${RF_ID} ]]; then
-                rfkill block ${RF_ID}
-                notify-send -u low -a "${RF_TYPE} Device" "${RF_NAME} is disabled" --icon=${ICON}
-            fi
-            ;;
-        'connect_bluetooth_device')
-            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Connect to Bluetooth Device")
-            BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
-            BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
-            if [[ -n ${BT_ADDR} ]]; then
-                notify-send -u low -a "Bluetooth" "Connecting to ${BT_NAME}" --icon=${ICON}
-                bluetoothctl connect ${BT_ADDR}
-            fi
-            ;;
-        'disconnect_bluetooth_device')
-            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Disconnect from Bluetooth Device")
-            BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
-            BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
-            if [[ -n ${BT_ADDR} ]]; then
-                notify-send -u low -a "Bluetooth" "Disconnecting from ${BT_NAME}" --icon=${ICON}
-                bluetoothctl disconnect ${BT_ADDR}
-            fi
-            ;;
-        'reconnect_bluetooth_device')
-            BT_DEVICE=$(bluetoothctl devices | rofi -dmenu -i -p "Reconnect to Bluetooth Device")
-            BT_ADDR=$(echo ${BT_DEVICE} | cut -d' ' -f2)
-            BT_NAME=$(echo ${BT_DEVICE} | cut -d' ' -f3-)
-            if [[ -n ${BT_ADDR} ]]; then
-                notify-send -u low -a "Bluetooth" "Disconnecting to ${BT_NAME} (try to reconnect after 1 sec)" --icon=${ICON}
-                bluetoothctl disconnect ${BT_ADDR}
-                sleep 1.0
-                notify-send -u low -a "Bluetooth" "Reconnecting to ${BT_NAME}" --icon=${ICON}
-                bluetoothctl connect ${BT_ADDR}
-            fi
-            ;;
-        'enable_bluetooth_discoverability')
-            notify-send -u low -a "Bluetooth" "Discoverable ON" --icon=${ICON}
-            bluetoothctl discoverable on
-            ;;
-        'disable_bluetooth_discoverability')
-            notify-send -u low -a "Bluetooth" "Discoverable OFF" --icon=${ICON}
-            bluetoothctl discoverable off
-            ;;
-        *)
-            show_wrong_usage_message
-            echo
-            show_help_message
-            exit
-    esac
+show_status() {
+    local rows id type soft hard found=0
+    rows=$(radio_rows) || { printf 'Radio blocks | unavailable\n'; return 0; }
+    while read -r id type soft hard; do
+        [[ $id =~ ^[0-9]+$ ]] || continue
+        printf 'Radio %s #%s | software %s · hardware %s\n' "$type" "$id" "$soft" "$hard"
+        found=1
+    done <<< "$rows"
+    (( found )) || printf 'Radio blocks | no radio devices\n'
+    return 0
 }
 
-# Main
-RF_device_operation $1
+select_radio() {
+    local operation=$1 rows id type soft hard selected
+    local -a choices=() ids=() labels=()
+    rows=$(radio_rows) || { notify 'Could not read radio devices'; return 1; }
+    while read -r id type soft hard; do
+        [[ $id =~ ^[0-9]+$ ]] || continue
+        if [[ $operation == unblock ]]; then
+            [[ $soft == blocked ]] || continue
+        else
+            [[ $soft == unblocked ]] || continue
+        fi
+        choices+=("$type #$id · software $soft · hardware $hard")
+        ids+=("$id")
+        labels+=("$type #$id")
+    done <<< "$rows"
+    if (( ${#choices[@]} == 0 )); then
+        notify "No radio device eligible to $operation (check hardware block status)"
+        return 1
+    fi
+    selected=$(printf '%s\n' "${choices[@]}" |
+        rofi -dmenu -i -no-custom -format i -config "$ROFI_CONFIG" -p "$operation radio block") || return 1
+    [[ $selected =~ ^[0-9]+$ && $selected -lt ${#ids[@]} ]] || return 1
+    printf '%s\t%s\n' "${ids[selected]}" "${labels[selected]}"
+}
+
+change_radio() {
+    local operation=$1 choice id label result state
+    choice=$(select_radio "$operation") || return 0
+    IFS=$'\t' read -r id label <<< "$choice"
+    result=$(rfkill "$operation" "$id" 2>&1) || {
+        notify "Could not $operation $label: $result"
+        return 1
+    }
+    state=$(radio_rows | awk -v id="$id" '$1 == id {print $3; exit}')
+    if [[ $operation == unblock && $state == unblocked ||
+          $operation == block && $state == blocked ]]; then
+        if [[ $operation == unblock ]]; then
+            notify "$label software $state (hardware block, if any, still applies)"
+        else
+            notify "$label software $state"
+        fi
+    else
+        notify "$label state is ${state:-unavailable}"
+        return 1
+    fi
+}
+
+case ${1:-} in
+    status) show_status ;;
+    enable_RF_device) change_radio unblock ;;
+    disable_RF_device) change_radio block ;;
+    *) printf 'Usage: %s {status|enable_RF_device|disable_RF_device}\n' "$0" >&2; exit 2 ;;
+esac

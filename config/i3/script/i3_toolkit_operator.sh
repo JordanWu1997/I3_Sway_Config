@@ -21,9 +21,6 @@ show_help_message () {
     echo "  [get_screenshot_text]: screenshot, apply OCR to it and copy context to clipboard"
     echo "  [get_screenshot_qr]: screenshot, decode QR Code on it and copy context to clipboard"
     echo "  [collect_all_instances]: collect all window instances"
-    echo "  [connection_up/connection_down]: set connection up/down"
-    echo "  [enable_wifi/disable_wifi]: enable/disable wifi"
-    echo "  [enable_networking/disable_networking]: enable/disable networking"
     echo "  [toggle_oneko]: toggle oneko on/off"
     echo "  [reload_parcellite]: reload parcellite (clipboard manager)"
     echo "  [reload_ibus_daemon]: reload ibus daemon (input method manager)"
@@ -81,32 +78,6 @@ toolkit_operation () {
         'disable_caffeine'|'enable_screensaver')
             xset s 600 600 dpms 600 600 600; xset s blank
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
-            ;;
-        'connection_up')
-            ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
-            SELECTED_NETWORK=$(nmcli -t -f UUID,NAME connection show |
-                awk '{print substr($0, 38) "\t" substr($0, 1, 36)}' |
-                rofi -dmenu -i -config "$ROFI_CONFIG" -p "[UP] Connection")
-            [[ -n $SELECTED_NETWORK ]] && nmcli connection up uuid "${SELECTED_NETWORK##*$'\t'}"
-            ;;
-        'connection_down')
-            ROFI_CONFIG="$HOME/.config/rofi/config_singlecol.rasi"
-            SELECTED_NETWORK=$(nmcli -t -f UUID,NAME connection show --active |
-                awk '{print substr($0, 38) "\t" substr($0, 1, 36)}' |
-                rofi -dmenu -i -config "$ROFI_CONFIG" -p "[DOWN] Connection")
-            [[ -n $SELECTED_NETWORK ]] && nmcli connection down uuid "${SELECTED_NETWORK##*$'\t'}"
-            ;;
-        'enable_networking')
-            nmcli networking on
-            ;;
-        'disable_networking')
-            nmcli networking off
-            ;;
-        'enable_wifi')
-            nmcli radio wifi on
-            ;;
-        'disable_wifi')
-            nmcli radio wifi off
             ;;
         'toggle_oneko')
             if $(killall oneko); then

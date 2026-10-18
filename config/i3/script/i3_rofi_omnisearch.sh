@@ -33,22 +33,29 @@ BOOKMARK="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/rofi-omnisearch"
 LAST_DIR_FILE="$CACHE_DIR/last_dir"
 RECENT_FILES_CACHE="$CACHE_DIR/recent_files"
-PID_FILE="$CACHE_DIR/omnisearch.pids"
-
 mkdir -p "$CACHE_DIR"
 
 # ============================================================
 # Global Process Tracking
 # ============================================================
 
-# Clean up stale PIDs from previous runs, keep active ones
-if [[ -f "$PID_FILE" ]]; then
-    ACTIVE_PIDS=$(while IFS= read -r p; do kill -0 "$p" 2>/dev/null && echo "$p"; done < "$PID_FILE")
-    [[ -n "$ACTIVE_PIDS" ]] && echo "$ACTIVE_PIDS" > "$PID_FILE" || > "$PID_FILE"
-fi
+# Track only background search workers. Include the Linux process start tick so
+# a stale record cannot refer to an unrelated process after PID reuse.
+process_start_tick() {
+    local stat
+    local -a fields
+    [[ $1 =~ ^[0-9]+$ && -r /proc/$1/stat ]] || return 1
+    IFS= read -r stat < "/proc/$1/stat" || return 1
+    read -r -a fields <<< "${stat##*) }"
+    [[ ${fields[19]:-} =~ ^[0-9]+$ ]] || return 1
+    printf '%s\n' "${fields[19]}"
+}
 
-# Register current script instance
-echo "$$" >> "$PID_FILE"
+track_search_pid() {
+    local start
+    start=$(process_start_tick "$1") || return 0
+    printf '%s\n' "$start" > "$CACHE_DIR/search-$1.pid"
+}
 
 # ============================================================
 # Generic helpers
@@ -66,7 +73,7 @@ rofi_menu() {
 }
 
 # A short, searchable guide. Keep these labels in sync with the i3 config.
-# The complete list below is generated from the config files at runtime.
+# The separate "All keybindings" view is generated from config files at runtime.
 shortcut_guide_items() {
     printf '%s\n' \
         'Launch    |  Applications                    Super+D' \
@@ -153,32 +160,31 @@ notify() {
 }
 
 global_cancel() {
-    local count=0
+    local count=0 pdf_count=0 marker pid start current
 
     # PDF workers have their own PID identity checks and graceful cleanup.
     if [[ -f "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_search.py" ]]; then
-        python3 "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_search.py" cancel \
-            --cache-dir "$CACHE_DIR/pdf" >/dev/null 2>&1 || true
+        pdf_count=$(python3 "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_search.py" cancel \
+            --cache-dir "$CACHE_DIR/pdf" 2>/dev/null) || pdf_count=0
     fi
 
-    # 2. Kill other running instances of this script and their children (rg, fd, etc.)
-    if [[ -f "$PID_FILE" ]]; then
-        while IFS= read -r pid; do
-            # Ensure we don't kill the current instance ($$)
-            if [[ "$pid" != "$$" && "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
-                pkill -TERM -P "$pid" 2>/dev/null || true
-                kill -9 "$pid" 2>/dev/null || true
-                ((count++))
-            fi
-        done < "$PID_FILE"
+    # Stop tracked fd/rg workers. Stale markers are harmless and removed here.
+    for marker in "$CACHE_DIR"/search-*.pid; do
+        [[ -f "$marker" ]] || continue
+        pid=${marker##*/search-}
+        pid=${pid%.pid}
+        IFS= read -r start < "$marker" || start=
+        current=$(process_start_tick "$pid") || current=
+        if [[ -n "$start" && "$current" == "$start" ]]; then
+            pkill -TERM -P "$pid" 2>/dev/null || true
+            kill -TERM "$pid" 2>/dev/null || true
+            ((count++))
+        fi
+        rm -f -- "$marker"
+    done
 
-        # Clear file and re-register ourselves
-        > "$PID_FILE"
-        echo "$$" >> "$PID_FILE"
-    fi
-
-    if (( count > 0 )); then
-        notify "Cancelled all active background searches."
+    if (( count + pdf_count > 0 )); then
+        notify "Cancelled $count file/text search(es) and $pdf_count PDF search(es)."
     else
         notify "No active searches to cancel."
     fi
@@ -284,7 +290,7 @@ select_action() {
     local type="$1"
     local action
 
-    action=$(action_menu "$type" | rofi_menu "Action")
+    action=$(action_menu "$type" | rofi_menu "Action" -no-custom)
     [[ -n "$action" ]] || return 1
 
     printf '%s\n' "$action"
@@ -322,7 +328,10 @@ run_file_action() {
             done
             ;;
         "Open")
-            xdg-open "${files[@]}"
+            local file
+            for file in "${files[@]}"; do
+                xdg-open "$file"
+            done
             ;;
         "Edit in Neovim")
             "$TERMINAL" -e nvim "${files[@]}"
@@ -478,9 +487,10 @@ select_directory() {
 
             [[ -d "$HOME/Projects" ]] &&
                 printf '💻 Projects │ %s\n' "$HOME/Projects"
+            :
         } |
         rofi_menu "Search directory or enter path"
-    )
+    ) || return 1
 
     # Extract path if selected from formatted list, otherwise treat input directly as path
     if [[ "$choice" == *" │ "* ]]; then
@@ -564,6 +574,17 @@ build_grep_rows() {
 
 source "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_menu.sh"
 
+show_pdf_tools() {
+    local choice
+    choice=$(printf '%s\n' 'Saved searches' 'Open PDF by name' 'Cancel PDF scan' |
+        rofi_menu 'PDF tools' -no-custom) || return 0
+    case "$choice" in
+        'Saved searches') pdf_command --pdf-view ;;
+        'Open PDF by name') pdf_command --pdf-open ;;
+        'Cancel PDF scan') pdf_command --pdf-cancel ;;
+    esac
+}
+
 if (( $# > 0 )); then
     pdf_command "$@"
     exit $?
@@ -571,27 +592,34 @@ fi
 
 MODE=$(
     printf '%s\n' \
-        "🚀 Apps" \
-        "🧮 Calculator" \
-        "🌐 Translate" \
-        "🔍 Grep" \
-        "📁 Files" \
-        "📝 Documents" \
-        "🔍 PDF Search" \
-        "📖 PDF Saved Searches" \
-        "📄 PDF Open" \
-        "🛑 PDF Cancel" \
-        "🕒 Recent Files" \
-        "🌐 History" \
-        "🔖 Bookmarks" \
-        "📋 Clipboard" \
-        "🪟 Windows" \
-        "🏷️ Marks" \
-        "🖥️ SSH" \
-        "⌨️ Keybindings" \
-        "💀 Kill" \
-        "🛑 Cancel" |
-    rofi_menu "Search" -auto-select
+        "📁 Find · Files" \
+        "🔍 Find · Grep" \
+        "📝 Find · Documents" \
+        "🔍 Find · PDF Search" \
+        "🚀 Open · Apps" \
+        "🕒 Open · Recent Files" \
+        "🌐 Open · History" \
+        "🔖 Open · Bookmarks" \
+        "🧮 Tool · Calculator" \
+        "🌐 Tool · Translate" \
+        "📋 Tool · Clipboard" \
+        "📄 Tool · PDF Tools" \
+        "🪟 Go · Windows" \
+        "🏷️ Go · Marks" \
+        "🖥️ Go · SSH" \
+        "⌨️ Help · Keybindings" \
+        "💀 System · Kill" \
+        "🛑 System · Cancel" |
+    rofi_menu "Search" -auto-select -no-custom \
+        -theme-str '
+#window {
+    padding: 0px 20%;
+    children: [top-space, mainbox, bottom-space];
+}
+#mainbox { expand: false; }
+#listview { lines: 12; columns: 2; }
+top-space, bottom-space { expand: true; }
+'
 )
 
 [[ -n "$MODE" ]] || { notify "Omnisearch closed"; exit 0; }
@@ -615,22 +643,48 @@ case "$MODE" in
             # Exit if user presses Escape or submits an empty string
             [[ $? -ne 0 || -z "$EXPR" ]] && { notify "Calculator closed"; break; }
 
-            # Safely evaluate using Python's math module
-            RESULT=$(python3 -c "
-from math import *
+            # Pass input as data and allow only arithmetic and math functions.
+            RESULT=$(python3 - "$EXPR" <<'PY'
+import ast
+import math
+import operator
+import sys
+
+binary = {
+    ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+    ast.Div: operator.truediv, ast.FloorDiv: operator.floordiv,
+    ast.Mod: operator.mod, ast.Pow: operator.pow,
+}
+unary = {ast.UAdd: operator.pos, ast.USub: operator.neg}
+names = {name: getattr(math, name) for name in dir(math) if not name.startswith('_')}
+names.update(abs=abs, round=round, pow=pow)
+
+def calculate(node):
+    if isinstance(node, ast.Expression):
+        return calculate(node.body)
+    if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+        return node.value
+    if isinstance(node, ast.Name) and node.id in names:
+        return names[node.id]
+    if isinstance(node, ast.BinOp) and type(node.op) in binary:
+        return binary[type(node.op)](calculate(node.left), calculate(node.right))
+    if isinstance(node, ast.UnaryOp) and type(node.op) in unary:
+        return unary[type(node.op)](calculate(node.operand))
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and not node.keywords:
+        function = calculate(node.func)
+        if callable(function):
+            return function(*(calculate(arg) for arg in node.args))
+    raise ValueError('Unsupported expression')
+
 try:
-    expr = '''$EXPR'''
-    # Basic security check to prevent os.system execution
-    if '__' in expr or 'import' in expr or 'os' in expr or 'sys' in expr:
-        print('Security Exception')
-    else:
-        print(eval(expr))
-except Exception as e:
+    print(calculate(ast.parse(sys.argv[1], mode='eval')))
+except (ArithmeticError, SyntaxError, TypeError, ValueError, OverflowError):
     print('Error: Invalid Expression')
-" 2>/dev/null)
+PY
+)
 
             # Display the result
-            ACTION=$(printf "📋 Copy to clipboard\n🔙 Edit expression" | rofi_menu "= $RESULT")
+            ACTION=$(printf "📋 Copy to clipboard\n🔙 Edit expression" | rofi_menu "= $RESULT" -no-custom)
 
             # Exit if user presses Escape on the result screen
             [[ $? -ne 0 ]] && { notify "Calculator closed"; break; }
@@ -678,7 +732,7 @@ except Exception as e:
                 printf '%s\n' \
                     '🇹🇼 To Chinese' \
                     '🇺🇸 To English' |
-                    rofi_menu "Target Language"
+                    rofi_menu "Target Language" -no-custom
             )
             RofiStatus=$?
 
@@ -721,7 +775,7 @@ except Exception as e:
                     printf '%s\n' \
                         '🔙 Edit text' \
                         '❌ Close' |
-                        rofi_menu "Translation Error" \
+                        rofi_menu "Translation Error" -no-custom \
                             -mesg "$(printf \
                                 'Input:\n%s\n\n%s' \
                                 "$QUERY" \
@@ -744,7 +798,7 @@ except Exception as e:
                     '📋 Copy to clipboard' \
                     '🔙 Edit text' \
                     '🌐 Translate again' |
-                    rofi_menu "Translation Result" \
+                    rofi_menu "Translation Result" -no-custom \
                         -mesg "$(printf \
                             'Input:\n%s\n\nTranslation:\n%s' \
                             "$QUERY" \
@@ -800,9 +854,9 @@ except Exception as e:
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"s")
 
-            # Pass the raw unescaped string so modern Rofi can match it literally
+            # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
@@ -845,15 +899,15 @@ except Exception as e:
         # Push to background and stream immediately
         ( fdfind --type f "" "$TARGET_DIR" | shorten_paths > "$RESULTS_FILE" ) &
         SEARCH_PID=$!
-        echo "$SEARCH_PID" >> "$PID_FILE"
+        track_search_pid "$SEARCH_PID"
 
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
             # Use a real tab character ($'\t') to separate the typed filter from the result
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s")
 
-            # Escape regex characters before passing to -select
+            # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
@@ -865,9 +919,6 @@ except Exception as e:
             fi
 
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
-
-            # Safely halt the background search as soon as the user selects a file
-            kill "$SEARCH_PID" 2>/dev/null
 
             # Safely split the tab-separated filter from the result list
             if [[ "$SELECTED" == *$'\t'* ]]; then
@@ -894,6 +945,7 @@ except Exception as e:
         done
 
         kill "$SEARCH_PID" 2>/dev/null
+        rm -f -- "$CACHE_DIR/search-$SEARCH_PID.pid"
         ;;
 
     *Grep*)
@@ -920,19 +972,21 @@ except Exception as e:
                 --smart-case \
                 --max-filesize 10M \
                 --no-binary \
-                "$QUERY" \
+                -- "$QUERY" \
                 "$TARGET_DIR" | \
             tee "$GREP_RAW" | build_grep_rows > "$GREP_DISPLAY"
         ) &
         SEARCH_PID=$!
-        echo "$SEARCH_PID" >> "$PID_FILE"
+        track_search_pid "$SEARCH_PID"
 
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
+            # Rofi returns the original row index, so duplicate display text
+            # still resolves to the correct file and line.
+            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"i")
 
-            # Escape regex characters before passing to -select to prevent Rofi crashes
+            # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
@@ -944,9 +998,6 @@ except Exception as e:
 
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
-            # Safely halt the background search as soon as the user selects a file
-            kill "$SEARCH_PID" 2>/dev/null
-
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
                 LAST_FILTER="${FIRST_LINE%%$'\t'*}"
@@ -956,20 +1007,18 @@ except Exception as e:
                 CLEAN_SELECTED="$SELECTED"
             fi
 
-            LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+            FIRST_INDEX="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION=""
+            if [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]]; then
+                LAST_SELECTION=$(sed -n "$((FIRST_INDEX + 1))p" "$GREP_DISPLAY")
+            fi
 
             ACTION=$(select_action grep) || continue
 
             GREP_ITEMS=()
-            while IFS= read -r row_text; do
-                [[ -z "$row_text" ]] && continue
-
-                # Added -e to handle matched lines that legitimately start with a hyphen
-                INDEX=$(cat "$GREP_DISPLAY" | grep -nF -m 1 -e "$row_text" | cut -d: -f1)
-                [[ -n "$INDEX" ]] || continue
-
-                MATCH=$(sed -n "${INDEX}p" "$GREP_RAW")
+            while IFS= read -r row_index; do
+                [[ "$row_index" =~ ^[0-9]+$ ]] || continue
+                MATCH=$(sed -n "$((row_index + 1))p" "$GREP_RAW")
                 FILE="${MATCH%%$'\t'*}"
                 REST="${MATCH#*$'\t'}"
                 LINE="${REST%%$'\t'*}"
@@ -981,6 +1030,7 @@ except Exception as e:
         done
 
         kill "$SEARCH_PID" 2>/dev/null
+        rm -f -- "$CACHE_DIR/search-$SEARCH_PID.pid"
         ;;
 
     *Documents*)
@@ -989,14 +1039,14 @@ except Exception as e:
 
         ( fdfind --type f --extension md . "$DOCUMENT_DIR" | shorten_paths > "$RESULTS_FILE" ) &
         SEARCH_PID=$!
-        echo "$SEARCH_PID" >> "$PID_FILE"
+        track_search_pid "$SEARCH_PID"
 
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s")
 
-            # Escape regex characters
+            # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
@@ -1007,7 +1057,6 @@ except Exception as e:
             fi
 
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
-            kill "$SEARCH_PID" 2>/dev/null
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1033,6 +1082,7 @@ except Exception as e:
         done
 
         kill "$SEARCH_PID" 2>/dev/null
+        rm -f -- "$CACHE_DIR/search-$SEARCH_PID.pid"
         ;;
 
     *Cancel*)
@@ -1043,16 +1093,8 @@ except Exception as e:
         pdf_command --pdf-search
         ;;
 
-    *PDF\ Saved\ Searches*)
-        pdf_command --pdf-view
-        ;;
-
-    *PDF\ Open*)
-        pdf_command --pdf-open
-        ;;
-
-    *PDF\ Cancel*)
-        pdf_command --pdf-cancel
+    *PDF\ Tools*)
+        show_pdf_tools
         ;;
 
     *History*)
@@ -1069,24 +1111,31 @@ except Exception as e:
 
         HISTORY_DATA=$(
             sqlite3 -separator $'\t' "$HISTORY_COPY" \
-                "SELECT url, COALESCE(REPLACE(REPLACE(title, char(10), ' '), char(13), ' '), url)
+                "SELECT url, COALESCE(REPLACE(REPLACE(REPLACE(title, char(10), ' '), char(13), ' '), char(9), ' '), url)
                  FROM urls
                  ORDER BY last_visit_time DESC
-                 LIMIT 1000" |
-            awk -F'\t' '!seen[$2]++'
+                 LIMIT 1000"
         )
 
         [[ -n "$HISTORY_DATA" ]] || { notify "🚫 No history data found."; exit 0; }
 
+        HISTORY_ROWS=()
+        HISTORY_URLS=()
+        while IFS=$'\t' read -r URL TITLE; do
+            [[ -n "$URL" ]] || continue
+            HISTORY_ROWS+=("${TITLE:-$URL} │ $URL")
+            HISTORY_URLS+=("$URL")
+        done <<< "$HISTORY_DATA"
+
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i")
 
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
-            SELECTED=$(printf '%s\n' "$HISTORY_DATA" | cut -f2 | rofi_menu "History" "${ROFI_ARGS[@]}")
+            SELECTED=$(printf '%s\n' "${HISTORY_ROWS[@]}" | rofi_menu "History" "${ROFI_ARGS[@]}")
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
@@ -1098,15 +1147,16 @@ except Exception as e:
                 CLEAN_SELECTED="$SELECTED"
             fi
 
-            LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+            FIRST_INDEX="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION=""
+            [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]] && LAST_SELECTION="${HISTORY_ROWS[FIRST_INDEX]:-}"
 
             ACTION=$(select_action url) || continue
 
             URLS=()
-            while IFS= read -r title; do
-                [[ -z "$title" ]] && continue
-                URL=$(printf '%s\n' "$HISTORY_DATA" | awk -F'\t' -v t="$title" '$2 == t {print $1; exit}')
+            while IFS= read -r row_index; do
+                [[ "$row_index" =~ ^[0-9]+$ ]] || continue
+                URL="${HISTORY_URLS[row_index]:-}"
                 [[ -n "$URL" ]] && URLS+=("$URL")
             done <<< "$CLEAN_SELECTED"
 
@@ -1125,23 +1175,30 @@ except Exception as e:
         BMARK_DATA=$(
             jq -r '
                 .. | objects | select(.url != null) |
-                "\(.url)\t\((.name // "Untitled") | gsub("\n"; " "))"
-            ' "$BOOKMARK" |
-            awk -F'\t' '!seen[$2]++'
+                "\(.url)\t\((.name // "Untitled") | gsub("[\\n\\r\\t]"; " "))"
+            ' "$BOOKMARK"
         )
 
         [[ -n "$BMARK_DATA" ]] || { notify "🚫 No bookmarks found."; exit 0; }
 
+        BMARK_ROWS=()
+        BMARK_URLS=()
+        while IFS=$'\t' read -r URL TITLE; do
+            [[ -n "$URL" ]] || continue
+            BMARK_ROWS+=("${TITLE:-Untitled} │ $URL")
+            BMARK_URLS+=("$URL")
+        done <<< "$BMARK_DATA"
+
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i")
 
-            # Escape regex characters
+            # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
-            SELECTED=$(printf '%s\n' "$BMARK_DATA" | cut -f2 | rofi_menu "Bookmarks" "${ROFI_ARGS[@]}")
+            SELECTED=$(printf '%s\n' "${BMARK_ROWS[@]}" | rofi_menu "Bookmarks" "${ROFI_ARGS[@]}")
             [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
@@ -1153,15 +1210,16 @@ except Exception as e:
                 CLEAN_SELECTED="$SELECTED"
             fi
 
-            LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
+            FIRST_INDEX="${CLEAN_SELECTED%%$'\n'*}"
+            LAST_SELECTION=""
+            [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]] && LAST_SELECTION="${BMARK_ROWS[FIRST_INDEX]:-}"
 
             ACTION=$(select_action url) || continue
 
             URLS=()
-            while IFS= read -r title; do
-                [[ -z "$title" ]] && continue
-                URL=$(printf '%s\n' "$BMARK_DATA" | awk -F'\t' -v t="$title" '$2 == t {print $1; exit}')
+            while IFS= read -r row_index; do
+                [[ "$row_index" =~ ^[0-9]+$ ]] || continue
+                URL="${BMARK_URLS[row_index]:-}"
                 [[ -n "$URL" ]] && URLS+=("$URL")
             done <<< "$CLEAN_SELECTED"
 
@@ -1182,10 +1240,13 @@ header_size = 32
 record_header_size = 28
 
 def notify(message):
-    subprocess.run(["notify-send", "-i", os.path.expanduser("~/.config/i3/share/64x64/list.png"),
-                    "Rofi Omnisearch", message],
-                   stdout=subprocess.DEVNULL,
-                   stderr=subprocess.DEVNULL)
+    try:
+        subprocess.run(["notify-send", "-i", os.path.expanduser("~/.config/i3/share/64x64/list.png"),
+                        "Rofi Omnisearch", message],
+                       stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL)
+    except FileNotFoundError:
+        pass
 
 try:
     with open(history_file, "rb") as f:
@@ -1266,6 +1327,7 @@ result = subprocess.run(
         os.path.expanduser("~/.config/rofi/config_omnisearch.rasi"),
         "-p",
         "Clipboard",
+        "-no-custom",
         "-format",
         "s",
     ],
@@ -1282,15 +1344,21 @@ try:
     index = int(selected.split("\t", 1)[0])
 except (ValueError, IndexError):
     sys.exit(0)
+if not 0 <= index < len(entries):
+    sys.exit(0)
 
 clipboard_text = entries[index]
 clipboard_bytes = clipboard_text.encode("utf-8")
 
 for selection in ("clipboard", "primary"):
-    subprocess.run(
-        ["xclip", "-selection", selection],
-        input=clipboard_bytes,
-    )
+    try:
+        subprocess.run(
+            ["xclip", "-selection", selection],
+            input=clipboard_bytes,
+        )
+    except FileNotFoundError:
+        notify("xclip is not installed")
+        break
 PY
         ;;
 
@@ -1327,7 +1395,7 @@ PY
             grep -E '^Host ' ~/.ssh/config 2>/dev/null |
             awk '{print $2}' |
             grep -v '[*?!]' |
-            rofi_menu "SSH to" -multi-select
+            rofi_menu "SSH to" -multi-select -no-custom
         )
 
         [[ -n "$SELECTED" ]] || { notify "🚫 No SSH hosts found or selection cancelled."; exit 0; }
@@ -1345,7 +1413,7 @@ PY
     *Kill*)
         SELECTED_PIDS=$(
             ps axww --no-headers -o pid,cmd |
-            rofi_menu "Kill process" -multi-select |
+            rofi_menu "Kill process" -multi-select -no-custom |
             awk '{print $1}'
         )
 
@@ -1358,7 +1426,7 @@ PY
                 "SIGTERM" \
                 "Cancel" \
                 "SIGKILL" |
-            rofi_menu "Kill $COUNT process(es)" -auto-select
+            rofi_menu "Kill $COUNT process(es)" -auto-select -no-custom
         )
 
         case "$SIGNAL" in

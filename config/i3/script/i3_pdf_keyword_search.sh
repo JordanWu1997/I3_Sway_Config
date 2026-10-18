@@ -4,7 +4,7 @@
 set -u
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 query=''
-directory="$HOME/Documents/PAPERS"
+directory=''
 batch=no
 viewer=sioyek
 max_files=-1
@@ -13,7 +13,7 @@ show_help() {
     cat <<EOF
 Usage: i3_pdf_keyword_search.sh [options]
   --keywords=WORD1,WORD2, -w=...  Literal words that must all occur in a PDF
-  --dir=DIR, -d=DIR               Directory to search (default: $HOME/Documents/PAPERS)
+  --dir=DIR, -d=DIR               Directory to search (default: PDF search location)
   --max_num=N, -n=N               Stop after N matching PDFs (default: unlimited)
   --viewer=PROGRAM               Viewer for opening results (default: sioyek)
   --all_at_once, -a               Open matching PDFs after search

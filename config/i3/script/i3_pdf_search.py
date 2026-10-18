@@ -49,7 +49,10 @@ def write_json_atomic(path, value):
 
 def pdf_paths(directory):
     for root, dirs, files in os.walk(directory):
-        dirs[:] = sorted(d for d in dirs if not (Path(root) / d).is_symlink())
+        dirs[:] = sorted(
+            (d for d in dirs if not (Path(root) / d).is_symlink()),
+            key=lambda d: (d != "Documents", d.startswith("."), d.casefold()),
+        )
         for name in sorted(files):
             path = Path(root) / name
             if name.lower().endswith(".pdf") and path.is_file():
@@ -128,14 +131,30 @@ def scan(args):
     file_count = 0
     match_count = 0
     skipped = 0
+    scanned = 0
+    started = time.monotonic()
+    last_progress = 0
     completed = False
+    def progress(force=False):
+        nonlocal last_progress
+        now = time.monotonic()
+        if force or now - last_progress >= 0.5:
+            write_json_atomic(args.progress, {"scanned": scanned, "files": file_count,
+                                              "matches": match_count, "skipped": skipped,
+                                              "seconds": int(now - started),
+                                              "done": completed})
+            last_progress = now
+
     try:
+        progress(True)
         with open(args.records, "w", encoding="utf-8") as records, \
                 open(args.display, "w", encoding="utf-8") as display:
             for path in pdf_paths(directory):
+                scanned += 1
                 text = extract_text(path, args.timeout)
                 if text is None:
                     skipped += 1
+                    progress()
                     continue
                 matches = matching_lines(text, args.query, args.mode, args.max_matches_per_file)
                 eligible = bool(matches)
@@ -148,6 +167,7 @@ def scan(args):
                     else:
                         eligible = bool(re.search(args.query, text, re.IGNORECASE))
                 if not eligible:
+                    progress()
                     continue
 
                 file_count += 1
@@ -165,11 +185,17 @@ def scan(args):
                     records.write(json.dumps(row, ensure_ascii=False) + "\n")
                     records.flush()
                     if row["kind"] == "file":
-                        label = f"PDF {path.name} — {path.parent} ({len(matches)} lines)"
+                        if args.mode == "words":
+                            detail = f"all words in PDF; {len(matches)} excerpt lines"
+                        else:
+                            detail = f"{len(matches)} matching lines"
+                        label = f"PDF {path.name} — {path.parent} ({detail})"
                     else:
                         label = f"  p{row['page']} {path.name}: {row['snippet']}"
-                    display.write(f"{row['id']:06d}\t{safe_label(label)}\n")
-                    display.flush()
+                    if row["kind"] == "file":
+                        display.write(f"{row['id']:06d}\t{safe_label(label)}\n")
+                        display.flush()
+                progress()
                 if args.max_files > 0 and file_count >= args.max_files:
                     break
 
@@ -178,14 +204,16 @@ def scan(args):
         write_json_atomic(args.meta, {"directory": str(directory), "query": args.query,
                                       "mode": args.mode, "files": file_count,
                                       "matches": match_count, "skipped": skipped,
+                                      "scanned": scanned, "max_files": args.max_files,
                                       "created": datetime.now(timezone.utc).isoformat()})
         completed = True
+        progress(True)
         return 0
     except SearchCancelled:
         return 130
     finally:
         if not completed:
-            for path in (args.records, args.display):
+            for path in (args.records, args.display, args.progress):
                 try:
                     Path(path).unlink()
                 except FileNotFoundError:
@@ -227,26 +255,6 @@ def status(args):
     return 1
 
 
-def follow(args):
-    path = Path(args.display)
-    while not path.exists() and process_start(args.pid) is not None:
-        time.sleep(0.05)
-    if not path.exists():
-        return 0
-    with path.open(encoding="utf-8") as stream:
-        while True:
-            line = stream.readline()
-            if line:
-                print(line, end="", flush=True)
-            elif process_start(args.pid) is not None:
-                time.sleep(0.05)
-            else:
-                # The scanner has finished; consume any lines written just before exit.
-                for remaining in stream:
-                    print(remaining, end="", flush=True)
-                return 0
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -260,6 +268,7 @@ def main():
     scanner.add_argument("--cache-display", required=True)
     scanner.add_argument("--meta", required=True)
     scanner.add_argument("--active", required=True)
+    scanner.add_argument("--progress", required=True)
     scanner.add_argument("--timeout", type=int, default=30)
     scanner.add_argument("--max-matches-per-file", type=int, default=200)
     scanner.add_argument("--max-files", type=int, default=-1)
@@ -267,13 +276,9 @@ def main():
     canceller.add_argument("--cache-dir", required=True)
     checker = commands.add_parser("status")
     checker.add_argument("--active", required=True)
-    follower = commands.add_parser("follow")
-    follower.add_argument("--display", required=True)
-    follower.add_argument("--pid", required=True, type=int)
     args = parser.parse_args()
     try:
-        return {"scan": scan, "cancel": cancel, "status": status,
-                "follow": follow}[args.command](args)
+        return {"scan": scan, "cancel": cancel, "status": status}[args.command](args)
     except (OSError, ValueError, re.error) as error:
         print(f"PDF search: {error}", file=sys.stderr)
         return 1

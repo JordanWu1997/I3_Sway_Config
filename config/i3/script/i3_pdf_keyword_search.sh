@@ -1,220 +1,46 @@
 #!/usr/bin/env bash
+# Compatibility entry point. PDF scanning and result actions live in Omnisearch.
 
-###########################################################
-# Author      : Kuan-Hsien Wu
-# Contact     : jordankhwu@gmail.com
-# Datetime    : 2024-12-13 14:06:51
-# Description : Search PDF file contains specific word and open it
-###########################################################
+set -u
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+query=''
+directory="$HOME/Documents/PAPERS"
+batch=no
+viewer=sioyek
+max_files=-1
 
-# Resources
-# -- https://linuxcommandlibrary.com/man/pdftotext#:~:text=If%20text%2Dfile%20is%20not,text%20is%20sent%20to%20stdout.
-
-# Wrong message
-show_wrong_usage_message () {
-    echo "Wrong Usage:"
-    echo "  $0"
+show_help() {
+    cat <<EOF
+Usage: i3_pdf_keyword_search.sh [options]
+  --keywords=WORD1,WORD2, -w=...  Literal words that must all occur in a PDF
+  --dir=DIR, -d=DIR               Directory to search (default: $HOME/Documents/PAPERS)
+  --max_num=N, -n=N               Stop after N matching PDFs (default: unlimited)
+  --viewer=PROGRAM               Viewer for opening results (default: sioyek)
+  --all_at_once, -a               Open matching PDFs after search
+  --kill, -k                      Cancel active PDF searches
+  --help, -h                      Show this message
+EOF
 }
 
-# Help message
-show_help_message () {
-    echo "Usage:"
-    echo "  pdf_keyword_search.sh [options]"
-    echo ""
-    echo "OPTIONS"
-    echo "  --keywords=KEYWORD1,KEYWORD2, -w Keywords to search (separated by comma)"
-    echo "  --dir=DIR, -d                    Directory to search for PDF files"
-    echo "                                   (DEFAULT: $HOME/Documents/PAPERS)"
-    echo "  --max_num=MAX_NUM, -n            Maxium number of PDF files to find (DEFAULT: -1)"
-    echo "  --viewer=VIEWER                  Specify PDF viewer to use (DEFAULT: zathura)"
-    echo "  --all_at_once, -a                Show all matched files at once (DEFAULT: false)"
-    echo "  --kill, -k                       Kill searching process"
-    echo "  --help, -h                       Show this help message"
-}
+for option in "$@"; do
+    case "$option" in
+        --keywords=*|-w=*) query=${option#*=} ;;
+        --dir=*|-d=*) directory=${option#*=} ;;
+        --max_num=*|-n=*) max_files=${option#*=} ;;
+        --viewer=*) viewer=${option#*=} ;;
+        --all_at_once|-a) batch=all ;;
+        --kill|-k) exec "$script_dir/i3_rofi_omnisearch.sh" --pdf-cancel ;;
+        --help|-h) show_help; exit 0 ;;
+        *) show_help >&2; exit 2 ;;
+    esac
+done
 
-search_and_open () {
-    # Input arguments
-    keywords=$1
-    input_dir=$2
-    max_num=$3
-    PDF_viewer=$4
-    show_all_at_once=$5
+if [[ ! $max_files =~ ^-?[0-9]+$ ]] || (( max_files == 0 )); then
+    printf 'Invalid --max_num value: %s\n' "$max_files" >&2
+    exit 2
+fi
 
-    # Split keywords separated by comma (,)
-    IFS=',' read -r -a keywords <<< "$keywords"
-
-    # Set the PDF viewer name for the kill command logic
-    # This might need adjustment if the process name differs from $PDF_VIEWER
-    local viewer_pname=$(basename "$PDF_viewer")
-
-    # Loop through pdf files (including files contain space or other special characters)
-    count=0
-    find "$input_dir" -iname '*.pdf' -print0 | while IFS= read -r -d '' file; do
-        echo "[INFO] Scanning ${file} ..."
-
-        # Ignore invalid file
-        if [[ ! -f $file ]]; then
-            continue
-        fi
-
-        # Convert pdf to text
-        context=$(pdftotext -nopgbrk -q -- "${file}" -)
-
-        # Match keyword
-        local all_matched=true
-        for keyword in "${keywords[@]}"; do
-            if ! grep -Fiq -- "$keyword" <<< "$context"; then
-                all_matched=false
-                break
-            fi
-        done
-
-        # If all keywords are matched
-        if ${all_matched}; then
-            echo [INFO] ${keywords[@]} are all found in ${file} ...
-
-            # Update count
-            count=$(expr ${count} + 1)
-
-            # Switch layout for titlebar
-            i3-msg layout stacking
-
-            # Skip the interactive prompt if showing all at once
-            if ${show_all_at_once}; then
-                echo "[INFO] Opening ${SEARCH_TEXT} ..."
-                echo "[INFO] Showing all at once, skipping interactive prompt."
-                "$PDF_viewer" "$file" &
-                if [[ ${max_num} -ge 1 ]] && [[ ${count} -ge ${max_num} ]]; then
-                    echo "[INFO] ${count} results are found ..."
-                    break
-                fi
-                continue
-            fi
-
-            # Open file. Using '&' for background opening for all_at_once or if
-            echo [INFO] "Opening ${SEARCH_TEXT} ..."
-            "$PDF_viewer" "$file" &
-            local pdf_pid=$! # Capture the PID of the viewer process
-
-            # The --action flag takes an 'id,label'. The command outputs the chosen 'id'.
-            local choice
-            choice=$(dunstify \
-                --action="keep,Keep Open" \
-                --action="close,Close File" \
-                --action="end,End Search" \
-                --icon="info" \
-                --timeout=0 \
-                "PDF Found (${count}/${max_num})" \
-                "Keywords: ${keywords[@]} found in $(basename "${file}")"
-            )
-
-            # Actions
-            case "$choice" in
-                "keep")
-                    echo "[INFO] Keeping file open and continuing search."
-                    ;;
-                "close")
-                    echo "[INFO] Closing file and continuing search."
-                    # Kill the specific viewer process for this file
-                    kill -TERM $pdf_pid 2>/dev/null
-                    ;;
-                "end")
-                    echo "[INFO] Ending search process."
-                    # Kill the specific viewer process for this file and break
-                    kill -TERM $pdf_pid 2>/dev/null
-                    break # Break out of the while loop
-                    ;;
-                *)
-                    # Default case if the notification times out or is closed without action
-                    echo "[INFO] Notification closed without action. Continuing search."
-                    ;;
-            esac
-
-            # Break if count reaches maximum
-            if [[ ${max_num} -ge 1 ]] && [[ ${count} -ge ${max_num} ]]; then
-                echo [INFO] ${count} results are found ...
-                break
-            fi
-        fi
-
-    done
-}
-
-# Main
-main () {
-
-    # Parse input arguments
-    while [[ $# -gt 0 ]]; do
-
-        case "$1" in
-            --dir=*|-d=*)
-                INPUT_DIR="${1#*=}"
-                shift
-                ;;
-            --keywords=*|-w=*)
-                KEYWORDS="${1#*=}"
-                shift
-                ;;
-            --max_num=*|-n=*)
-                MAX_NUM="${1#*=}"
-                shift
-                ;;
-            --viewer=*)
-                PDF_VIEWER="${1#*=}"
-                shift
-                ;;
-            --all_at_once|-a)
-                SHOW_ALL_AT_ONCE=true
-                shift
-                ;;
-            --kill|-k)
-                kill $(pgrep bash -a | grep pdf_keyword_search | cut -d' ' -f1)
-                exit
-                ;;
-            --help|-h)
-                show_help_message
-                exit
-                ;;
-            *)
-                show_wrong_usage_message
-                echo
-                show_help_message
-                exit
-        esac
-
-    done
-
-    # Assign default value
-    : ${INPUT_DIR:=$HOME/Documents/PAPERS}
-    : ${MAX_NUM:=-1}
-    : ${PDF_VIEWER:=sioyek}
-    : ${SHOW_ALL_AT_ONCE:=false}
-
-    # Switch to interactively mode if there are no provided keywords
-    if [[ -z ${KEYWORDS} ]]; then
-        echo '[INFO] No keyword is provided ... Switch to interactive mode'
-        KEYWORDS=$(rofi -dmenu -p Keyword | tr ' ' ',')
-    fi
-
-    # Early Stop
-    if [[ -z ${KEYWORDS} ]]; then
-        echo '[ERROR] No keyword is provided ... Quitting'
-        show_help_message
-        exit
-    fi
-
-    # Check if pdftotext is installed
-    if [[ ! $(command -v pdftotext) ]]; then
-        echo '[ERROR] Command pdftotext is not found ... Quitting ...'
-        echo '[INFO] You should install poppler-utils to provide pdftotext function'
-        echo '[INFO] In Ubuntu, try apt install poppler-utils'
-        echo '[INFO] In Fedora, try dnf install poppler-utils'
-        return
-    fi
-
-    # Start searching
-    search_and_open "$KEYWORDS" "$INPUT_DIR" "$MAX_NUM" "$PDF_VIEWER" "$SHOW_ALL_AT_ONCE"
-}
-
-# Main
-main "$@"
+# The former script treated comma-separated terms as literal AND words.
+query=${query//,/ }
+exec "$script_dir/i3_rofi_omnisearch.sh" --pdf-search-compat \
+    "$query" "$directory" "$batch" "$viewer" "$max_files"

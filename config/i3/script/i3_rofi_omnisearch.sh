@@ -69,32 +69,32 @@ rofi_menu() {
 # The complete list below is generated from the config files at runtime.
 shortcut_guide_items() {
     printf '%s\n' \
-        'Launch  |  Applications                         Super+D' \
-        'Launch  |  Commands                             Super+Shift+D' \
-        'Launch  |  Omnisearch                          Super+Backslash' \
-        'Launch  |  Terminal                            Super+Enter' \
-        'Windows |  Focus left/down/up/right            Super+H/J/K/L' \
-        'Windows |  Move left/down/up/right             Super+Shift+H/J/K/L' \
-        'Windows |  Resize or position                 Super+Slash' \
-        'Windows |  Toggle floating                    Super+Shift+Space' \
-        'Windows |  Toggle fullscreen                  Super+F' \
-        'Windows |  Close focused window               Super+Shift+Q' \
-        'Windows |  Hide in scratchpad                 Super+Z' \
-        'Windows |  Show scratchpad                    Super+G' \
-        'Windows |  Mark focused window                Super+M' \
-        'Windows |  Go to marked window                Super+Apostrophe' \
-        'Workspace | Go to workspace 1-10             Super+1-0' \
-        'Workspace | Move window to workspace 1-10    Super+Shift+1-0' \
-        'Workspace | Next / previous workspace        Super+Tab / Super+Shift+Tab' \
-        'Modes   |  System controls                    Ctrl+Alt+S' \
-        'Modes   |  Display controls                   Super+Shift+X' \
-        'Modes   |  Window layout                      Super+Shift+W' \
-        'Modes   |  Workspace tools                    Super+Shift+P' \
-        'Modes   |  Customization                      Super+Shift+C' \
-        'Capture |  Screenshot selection              Print Screen' \
-        'Capture |  Active window screenshot          Super+Print Screen' \
-        'Media   |  Volume up/down                     Volume keys' \
-        'Media   |  Play/pause                         Play/Pause key'
+        'Launch    |  Applications                    Super+D' \
+        'Launch    |  Commands                        Super+Shift+D' \
+        'Launch    |  Omnisearch                      Super+Backslash' \
+        'Launch    |  Terminal                        Super+Enter' \
+        'Windows   |  Focus left/down/up/right        Super+H/J/K/L' \
+        'Windows   |  Move left/down/up/right         Super+Shift+H/J/K/L' \
+        'Windows   |  Resize or position              Super+Slash' \
+        'Windows   |  Toggle floating                 Super+Shift+Space' \
+        'Windows   |  Toggle fullscreen               Super+F' \
+        'Windows   |  Close focused window            Super+Shift+Q' \
+        'Windows   |  Hide in scratchpad              Super+Z' \
+        'Windows   |  Show scratchpad                 Super+G' \
+        'Windows   |  Mark focused window             Super+M' \
+        'Windows   |  Go to marked window             Super+Apostrophe' \
+        'Workspace |  Go to workspace 1-10            Super+1-0' \
+        'Workspace |  Move window to workspace 1-10   Super+Shift+1-0' \
+        'Workspace |  Next / previous workspace       Super+Tab / Super+Shift+Tab' \
+        'Modes     |  System controls                 Ctrl+Alt+S' \
+        'Modes     |  Display controls                Super+Shift+X' \
+        'Modes     |  Window layout                   Super+Shift+W' \
+        'Modes     |  Workspace tools                 Super+Shift+P' \
+        'Modes     |  Customization                   Super+Shift+C' \
+        'Capture   |  Screenshot selection            Print Screen' \
+        'Capture   |  Active window screenshot        Super+Print Screen' \
+        'Media     |  Volume up/down                  Volume keys' \
+        'Media     |  Play/pause                      Play/Pause key'
 }
 
 show_all_keybindings() {
@@ -154,17 +154,11 @@ notify() {
 
 global_cancel() {
     local count=0
-    local pdf_pid_file="$CACHE_DIR/pdfgrep-search.pid"
 
-    # 1. Kill PDF worker if running
-    if [[ -s "$pdf_pid_file" ]]; then
-        local pdf_pid=$(<"$pdf_pid_file")
-        if [[ "$pdf_pid" =~ ^[0-9]+$ ]] && kill -0 "$pdf_pid" 2>/dev/null; then
-            pkill -TERM -P "$pdf_pid" 2>/dev/null || true
-            kill -TERM "$pdf_pid" 2>/dev/null || true
-            ((count++))
-        fi
-        rm -f "$pdf_pid_file"
+    # PDF workers have their own PID identity checks and graceful cleanup.
+    if [[ -f "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_search.py" ]]; then
+        python3 "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_search.py" cancel \
+            --cache-dir "$CACHE_DIR/pdf" >/dev/null 2>&1 || true
     fi
 
     # 2. Kill other running instances of this script and their children (rg, fd, etc.)
@@ -269,16 +263,6 @@ action_menu() {
                 "Open containing directory" \
                 "Copy file:line" \
                 "Copy file path"
-            ;;
-        pdf)
-            printf '%s\n' \
-                "Preview match" \
-                "Preview file (Rofi)" \
-                "Preview file (Less)" \
-                "Open PDF" \
-                "Open containing directory" \
-                "Copy PDF path" \
-                "Copy PDF:page"
             ;;
         url)
             printf '%s\n' \
@@ -424,80 +408,6 @@ run_grep_action() {
             ;;
         "Copy file path")
             printf '%s\n' "${files[@]}" | copy_lines "$(cat)"
-            ;;
-    esac
-}
-
-run_pdf_preview() {
-    local match="$1"
-    local file page content
-
-    [[ "$match" =~ ^(.*):([0-9]+):(.*)$ ]] || {
-        notify "Unable to preview selected PDF result"
-        return 1
-    }
-
-    file="${BASH_REMATCH[1]}"
-    page="${BASH_REMATCH[2]}"
-    content="${BASH_REMATCH[3]}"
-
-    rofi \
-        -e "$(printf 'PDF: %s\nPage: %s\n\n%s' \
-            "$file" "$page" "$content")" \
-        "${ROFI_OPTION[@]}"
-}
-
-run_pdf_action() {
-    local action="$1"
-    shift
-
-    local pdfs=()
-    local locations=()
-    local item file page
-
-    for item in "$@"; do
-        IFS=$'\t' read -r file page <<< "$item"
-        [[ -n "$file" ]] || continue
-        pdfs+=("$file")
-        locations+=("$file:$page")
-    done
-
-    (( ${#pdfs[@]} > 0 )) || return 0
-
-    record_recent_files "${pdfs[@]}"
-
-    case "$action" in
-        "Preview file (Rofi)")
-            local f
-            for f in "${pdfs[@]}"; do
-                pdftotext "$f" - | head -n 1000 | rofi_menu "PDF View"
-            done
-            ;;
-        "Preview file (Less)")
-            local f
-            for f in "${pdfs[@]}"; do
-                "$TERMINAL" -e bash -c 'pdftotext "$1" - | less' _ "$f"
-            done
-            ;;
-        "Open PDF")
-            xdg-open "${pdfs[@]}"
-            ;;
-        "Open containing directory")
-            local dir
-            declare -A seen_dirs=()
-
-            for file in "${pdfs[@]}"; do
-                dir="$(dirname "$file")"
-                [[ -n "${seen_dirs[$dir]}" ]] && continue
-                seen_dirs[$dir]=1
-                xdg-open "$dir"
-            done
-            ;;
-        "Copy PDF path")
-            copy_lines "$(printf '%s\n' "${pdfs[@]}")"
-            ;;
-        "Copy PDF:page")
-            copy_lines "$(printf '%s\n' "${locations[@]}")"
             ;;
     esac
 }
@@ -652,6 +562,13 @@ build_grep_rows() {
 # Main mode selector
 # ============================================================
 
+source "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_menu.sh"
+
+if (( $# > 0 )); then
+    pdf_command "$@"
+    exit $?
+fi
+
 MODE=$(
     printf '%s\n' \
         "🚀 Apps" \
@@ -660,8 +577,10 @@ MODE=$(
         "🔍 Grep" \
         "📁 Files" \
         "📝 Documents" \
-        "🔍 PDF Fetch" \
-        "📖 PDF View" \
+        "🔍 PDF Search" \
+        "📖 PDF Saved Searches" \
+        "📄 PDF Open" \
+        "🛑 PDF Cancel" \
         "🕒 Recent Files" \
         "🌐 History" \
         "🔖 Bookmarks" \
@@ -1120,242 +1039,20 @@ except Exception as e:
         global_cancel
         ;;
 
-    *PDF\ Fetch*)
-        command -v pdfgrep >/dev/null 2>&1 || {
-            notify "pdfgrep is not installed"
-            exit 0
-        }
-
-        QUERY=$(rofi_menu "Enter query to fetch")
-        [[ -n "$QUERY" ]] || exit 0
-
-        read -r -a KEYWORDS <<< "$QUERY"
-        (( ${#KEYWORDS[@]} > 0 )) || exit 0
-
-        TARGET_DIR=$(select_directory) || exit 0
-
-        # Unique cache hashes
-        CACHE_HASH=$(printf '%s|%s' "$TARGET_DIR" "$QUERY" | md5sum | awk '{print $1}')
-        PDF_RESULTS="$CACHE_DIR/pdf_results_${CACHE_HASH}.txt"
-        PDF_DISPLAY="$CACHE_DIR/pdf_display_${CACHE_HASH}.txt"
-        PDF_INDEX_META="$CACHE_DIR/pdf_meta_${CACHE_HASH}.txt"
-
-        # Check if perfectly cached already and prompt for overwrite
-        if [[ -s "$PDF_RESULTS" && -s "$PDF_DISPLAY" && -f "$PDF_INDEX_META" ]]; then
-            OVERWRITE=$(printf 'No (Keep current cache)\nYes (Refetch and overwrite)' | rofi_menu "Cache exists. Refetch?")
-
-            if [[ "$OVERWRITE" == "Yes (Refetch and overwrite)" ]]; then
-                notify "🔄 Refetching PDF content in background..."
-                # Clean up old cache before fetching anew
-                rm -f "$PDF_RESULTS" "$PDF_DISPLAY" "$PDF_INDEX_META"
-            elif [[ "$OVERWRITE" == "No (Keep current cache)" ]]; then
-                notify "⚡ Cache kept. Open 'PDF View' to see results."
-                exit 0
-            else
-                notify "Exited PDF Fetch"
-                exit 0
-            fi
-        else
-            notify "🚀 PDF fetch started in background..."
-        fi
-
-        # Spawn background fetch worker
-        (
-            # Use temp files so interrupted searches don't corrupt the cache
-            TMP_RESULTS=$(mktemp)
-            TMP_DISPLAY=$(mktemp)
-
-            # Trap SIGTERM (from Global Cancel) to clean up temp files safely
-            trap 'rm -f "$TMP_RESULTS" "$TMP_DISPLAY"; exit 130' TERM INT
-
-            PDF_COUNT=$(fdfind --type f --extension pdf . "$TARGET_DIR" 2>/dev/null | wc -l)
-            if (( PDF_COUNT == 0 )); then
-                notify-send "PDF Fetch" "No PDF files found in $TARGET_DIR" --icon="$HOME/.config/i3/share/64x64/abc.png"
-                rm -f "$TMP_RESULTS" "$TMP_DISPLAY"
-                exit 0
-            fi
-
-            CURRENT=0
-            fdfind --type f --extension pdf -0 . "$TARGET_DIR" 2>/dev/null | \
-            while IFS= read -r -d '' PDF_FILE; do
-                CURRENT=$((CURRENT + 1))
-
-                # Report progress every 5 files or on completion
-                if (( CURRENT % 5 == 0 || CURRENT == PDF_COUNT )); then
-                    PERCENT=$((CURRENT * 100 / PDF_COUNT))
-                    notify-send -t 1500 "PDF Fetch Progress" "Scanned: $CURRENT/$PDF_COUNT files ($PERCENT%)" --icon="$HOME/.config/i3/share/64x64/abc.png"
-                fi
-
-                MATCHES_ALL=1
-                for KEYWORD in "${KEYWORDS[@]}"; do
-                    if ! timeout 3s pdfgrep --ignore-case --quiet -- "$KEYWORD" "$PDF_FILE" 2>/dev/null; then
-                        MATCHES_ALL=0
-                        break
-                    fi
-                done
-
-                if (( MATCHES_ALL == 1 )); then
-                    for KEYWORD in "${KEYWORDS[@]}"; do
-                        timeout 3s pdfgrep --ignore-case --page-number --with-filename -- "$KEYWORD" "$PDF_FILE" 2>/dev/null
-                    done | sort -u >> "$TMP_RESULTS"
-
-                    for KEYWORD in "${KEYWORDS[@]}"; do
-                        timeout 3s pdfgrep --ignore-case --page-number --with-filename -- "$KEYWORD" "$PDF_FILE" 2>/dev/null
-                    done | sort -u | \
-                    awk -v home="$HOME" -v file_path="$PDF_FILE" '
-                    {
-                        line = $0
-                        content = line
-                        sub(/^.*:[0-9]+:/, "", content)
-                        if (length(content) > 500) content = substr(content, 1, 500) "..."
-                        prefix = line
-                        sub(/:[^:]*$/, "", prefix)
-                        page = prefix
-                        sub(/^.*:/, "", page)
-                        display = file_path
-                        sub(home, "~", display)
-                        n = split(display, path_parts, "/")
-                        short = path_parts[1]
-                        for (i = 2; i < n; i++) {
-                            if (path_parts[i] != "") short = short "/" substr(path_parts[i], 1, 1)
-                        }
-                        if (n > 1) short = short "/" path_parts[n]
-                        print short ":p" page ": " content
-                    }' >> "$TMP_DISPLAY"
-                fi
-            done
-
-            # SUCCESS COMMIT: Only move temps to cache if the loop finished without being killed
-            mv "$TMP_RESULTS" "$PDF_RESULTS"
-            mv "$TMP_DISPLAY" "$PDF_DISPLAY"
-
-            # Save metadata record for the View stage list
-            MATCH_COUNT=$(wc -l < "$PDF_RESULTS")
-            printf '%s\t%s\t%s\n' "$TARGET_DIR" "$QUERY" "$MATCH_COUNT" > "$PDF_INDEX_META"
-
-            notify-send "PDF Fetch Completed" "Successfully cached '$QUERY' ($MATCH_COUNT matches)." --icon="$HOME/.config/i3/share/64x64/abc.png"
-        ) &
-
-        # Register PID globally for Global Cancel support
-        PDF_WORKER_PID=$!
-        echo "$PDF_WORKER_PID" >> "$PID_FILE"
+    *PDF\ Search*)
+        pdf_command --pdf-search
         ;;
 
-    *PDF\ View*)
-        # Gather all completed metadata tracking files
-        # Check if there are any files matching the glob first
-        shopt -s nullglob
-        META_FILES=("$CACHE_DIR"/pdf_meta_*.txt)
-        shopt -u nullglob
+    *PDF\ Saved\ Searches*)
+        pdf_command --pdf-view
+        ;;
 
-        if (( ${#META_FILES[@]} == 0 )); then
-            notify "No cached PDF search pairs found. Run 'PDF Fetch' first."
-            exit 0
-        fi
+    *PDF\ Open*)
+        pdf_command --pdf-open
+        ;;
 
-        # Build selection list of pairs
-        PAIR_LIST=""
-        declare -A PAIR_MAP=()
-
-        for meta in "${META_FILES[@]}"; do
-            [[ -f "$meta" ]] || continue
-            IFS=$'\t' read -r t_dir t_query t_count < "$meta"
-            [[ -n "$t_dir" && -n "$t_query" ]] || continue
-
-            display_str="[$t_dir]: [$t_query] ($t_count matches)"
-            PAIR_LIST+="$display_str"$'\n'
-            PAIR_MAP["$display_str"]="$t_dir|$t_query"
-        done
-
-        SELECTED_PAIR=$(printf '%s' "$PAIR_LIST" | rofi_menu "Select PDF Cache")
-        [[ -n "$SELECTED_PAIR" ]] || { notify "Exited PDF View"; exit 0; }
-
-        # Resolve selected pair back to its cache hash
-        MAPPED_VAL="${PAIR_MAP["$SELECTED_PAIR"]}"
-        IFS='|' read -r TARGET_DIR QUERY <<< "$MAPPED_VAL"
-
-        CACHE_HASH=$(printf '%s|%s' "$TARGET_DIR" "$QUERY" | md5sum | awk '{print $1}')
-        PDF_RESULTS="$CACHE_DIR/pdf_results_${CACHE_HASH}.txt"
-        PDF_DISPLAY="$CACHE_DIR/pdf_display_${CACHE_HASH}.txt"
-
-        [[ -s "$PDF_RESULTS" ]] || { notify "Cache data missing or corrupted."; exit 0; }
-
-        # Interactive view loop for the chosen pair
-        LAST_SELECTION=""
-        LAST_FILTER=""
-        while true; do
-            ROFI_ARGS=("-multi-select" "-format" "f"$'\t'"s")
-
-            # Escape regex characters
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
-            [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
-
-            SELECTED=$(cat "$PDF_DISPLAY" | rofi_menu "PDF Results" -mesg "Query: <b>$QUERY</b> in <i>$TARGET_DIR</i>" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || { notify "Exited PDF View"; break; }
-
-            if [[ "$SELECTED" == *$'\t'* ]]; then
-                FIRST_LINE="${SELECTED%%$'\n'*}"
-                LAST_FILTER="${FIRST_LINE%%$'\t'*}"
-                CLEAN_SELECTED=$(printf '%s\n' "$SELECTED" | cut -f2-)
-            else
-                LAST_FILTER=""
-                CLEAN_SELECTED="$SELECTED"
-            fi
-
-            LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
-
-            ACTION=$(select_action pdf) || continue
-
-            if [[ "$ACTION" == "Preview match" ]]; then
-
-                INDEX=$(grep -nF -m 1 -e "$LAST_SELECTION" "$PDF_DISPLAY" | cut -d: -f1)
-                if [[ -n "$INDEX" ]]; then
-                    FIRST_MATCH=$(sed -n "${INDEX}p" "$PDF_RESULTS")
-
-                    # Parse the File and Page from the cached match
-                    if [[ "$FIRST_MATCH" =~ ^(.*):([0-9]+):(.*)$ ]]; then
-                        P_FILE="${BASH_REMATCH[1]}"
-                        P_PAGE="${BASH_REMATCH[2]}"
-
-                        if command -v pdftotext >/dev/null 2>&1; then
-                            # Build a regex string from your keywords (e.g., "word1|word2")
-                            GREP_REGEX=$(IFS='|'; echo "${KEYWORDS[*]}")
-
-                            # Instantly extract ONLY the matching page, then grep with 5 lines of context
-                            CONTEXT=$(pdftotext -f "$P_PAGE" -l "$P_PAGE" "$P_FILE" - 2>/dev/null | grep -i -E -C 5 "$GREP_REGEX")
-                            [[ -z "$CONTEXT" ]] && CONTEXT="Could not extract text context from this page."
-
-                            # Pop up a wider Rofi text window to read the context
-                            rofi "${ROFI_OPTION[@]}" -e "$CONTEXT"
-                        else
-                            notify "Please install 'poppler-utils' to use context preview."
-                            # Fallback to your old preview function if missing
-                            run_pdf_preview "$FIRST_MATCH"
-                        fi
-                    fi
-                else
-                    notify "Unable to determine preview selection"
-                fi
-                continue
-            fi
-
-            PDF_ITEMS=()
-            while IFS= read -r row_text; do
-                [[ -z "$row_text" ]] && continue
-                INDEX=$(grep -nF -m 1 -e "$row_text" "$PDF_DISPLAY" | cut -d: -f1)
-                [[ -n "$INDEX" ]] || continue
-                MATCH=$(sed -n "${INDEX}p" "$PDF_RESULTS")
-                if [[ "$MATCH" =~ ^(.*):([0-9]+):(.*)$ ]]; then
-                    FILE="${BASH_REMATCH[1]}"
-                    PAGE="${BASH_REMATCH[2]}"
-                    [[ -n "$FILE" && -n "$PAGE" ]] && PDF_ITEMS+=("$FILE"$'\t'"$PAGE")
-                fi
-            done <<< "$CLEAN_SELECTED"
-
-            record_recent_files "${PDF_ITEMS[@]%%$'\t'*}" 2>/dev/null || true
-            [[ ${#PDF_ITEMS[@]} -gt 0 ]] && run_pdf_action "$ACTION" "${PDF_ITEMS[@]}"
-        done
+    *PDF\ Cancel*)
+        pdf_command --pdf-cancel
         ;;
 
     *History*)

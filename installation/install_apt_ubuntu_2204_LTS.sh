@@ -435,6 +435,7 @@ desc_misc_tool_packages () {
     echo "   -- EPUB previewer: calibre"
     echo "   -- Text previewer: catdoc, pandoc"
     echo "   -- Font previewer: fontforge"
+    echo "   -- Trash handler: trash-cli"
     echo "-- Bluetooth: blueman"
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Screenshot: flameshot, peek"
@@ -469,6 +470,8 @@ install_misc_tool_packages () {
     sudo apt install -y catdoc pandoc
     # Font previewer
     sudo apt install -y fontforge
+    # Trash handler
+    sudo apt install -y trash-cli
     # Ueberzug
     sudo apt install -y libxres-dev
     cd "$HOME/Desktop"

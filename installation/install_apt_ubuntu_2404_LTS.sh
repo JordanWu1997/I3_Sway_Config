@@ -435,6 +435,7 @@ desc_misc_tool_packages () {
     echo "   -- EPUB previewer: calibre"
     echo "   -- Text previewer: catdoc, pandoc"
     echo "   -- Font previewer: fontforge"
+    echo "   -- Trash handler: trash-cli"
     echo "-- Bluetooth: blueman"
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Screenshot: flameshot, peek"
@@ -469,6 +470,8 @@ install_misc_tool_packages () {
     sudo apt install -y catdoc pandoc
     # Font previewer
     sudo apt install -y fontforge
+    # Trash handler
+    sudo apt install -y trash-cli
     # Ueberzug
     sudo apt install -y libxres-dev
     /usr/bin/python -m pip install ueberzug --user --break-system-packages
@@ -643,5 +646,5 @@ echo "Post-installation TODO things"
 echo "(1) set default theme that is not pywal but templates"
 echo "(2) set GTK/QT color theme with lxappearance/(Kvantum, qt5, qt4)"
 echo "(3) set chewing as primary input method"
-echo "(4) flatpak packages installation and customization"
+echo "(4) flatpak packages installation and customization (e.g., localsend)"
 echo "(5) dotfiles (e.g. .Xresources)"

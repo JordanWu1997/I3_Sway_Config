@@ -3,8 +3,65 @@
 
 # --- Configuration ---
 # Find your battery device name. It's usually BAT0 or BAT1.
-BATTERY_DIR="/sys/class/power_supply/BAT0"
+BATTERY_DIR="${I3_BATTERY_DIR:-/sys/class/power_supply/BAT0}"
 ERROR_ICON="$HOME/.config/i3/share/64x64/notification.png"
+
+# Prefer BAT0, but support laptops whose battery is named BAT1. An override is
+# useful for diagnostics and testing without reading the live sysfs tree.
+if [[ ! -d $BATTERY_DIR && -z ${I3_BATTERY_DIR:-} ]]; then
+    for candidate in /sys/class/power_supply/BAT*; do
+        if [[ -d $candidate ]]; then
+            BATTERY_DIR=$candidate
+            break
+        fi
+    done
+fi
+
+if [[ ${1:-} == status ]]; then
+    if [[ ! -d $BATTERY_DIR ]]; then
+        printf 'Battery | not present\n'
+        exit 0
+    fi
+    if [[ ! -r $BATTERY_DIR/status || ! -r $BATTERY_DIR/capacity ]]; then
+        printf 'Battery | unreadable\n'
+        exit 0
+    fi
+    IFS= read -r state < "$BATTERY_DIR/status"
+    IFS= read -r capacity < "$BATTERY_DIR/capacity"
+    [[ $capacity =~ ^[0-9]+$ ]] || { printf 'Battery | unreadable\n'; exit 0; }
+    detail=
+    if [[ $state == Discharging || $state == Charging ]]; then
+        if [[ -r $BATTERY_DIR/energy_now && -r $BATTERY_DIR/power_now ]]; then
+            IFS= read -r amount < "$BATTERY_DIR/energy_now"
+            IFS= read -r rate < "$BATTERY_DIR/power_now"
+            if [[ $state == Charging && -r $BATTERY_DIR/energy_full ]]; then
+                IFS= read -r full < "$BATTERY_DIR/energy_full"
+                amount=$((full - amount))
+            elif [[ $state == Charging ]]; then
+                amount=
+            fi
+        elif [[ -r $BATTERY_DIR/charge_now && -r $BATTERY_DIR/current_now ]]; then
+            IFS= read -r amount < "$BATTERY_DIR/charge_now"
+            IFS= read -r rate < "$BATTERY_DIR/current_now"
+            if [[ $state == Charging && -r $BATTERY_DIR/charge_full ]]; then
+                IFS= read -r full < "$BATTERY_DIR/charge_full"
+                amount=$((full - amount))
+            elif [[ $state == Charging ]]; then
+                amount=
+            fi
+        fi
+        if [[ ${amount:-} =~ ^[0-9]+$ && ${rate:-} =~ ^[0-9]+$ ]] && (( rate > 0 && amount >= 0 )); then
+            minutes=$((amount * 60 / rate))
+            if [[ $state == Charging ]]; then
+                detail=$(printf ' · about %dh %02dm to full' "$((minutes / 60))" "$((minutes % 60))")
+            else
+                detail=$(printf ' · about %dh %02dm remaining' "$((minutes / 60))" "$((minutes % 60))")
+            fi
+        fi
+    fi
+    printf 'Battery | %s%% · %s%s\n' "$capacity" "$state" "$detail"
+    exit 0
+fi
 
 # --- Error Handling & Setup ---
 if [ ! -d "$BATTERY_DIR" ]; then
@@ -20,7 +77,8 @@ fi
 
 # --- Variables for Notification Content ---
 NOTIFICATION_TITLE="Battery Info"
-NOTIFICATION_BODY="Status: $STATUS\n"
+CAPACITY=$(cat "$BATTERY_DIR/capacity" 2>/dev/null)
+NOTIFICATION_BODY="Charge: ${CAPACITY:-unknown}%\nStatus: $STATUS\n"
 ICON="battery-good" # Default icon
 
 # --- 1. Get Power Consumption (Watts) ---

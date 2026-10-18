@@ -14,10 +14,35 @@ show_help_message () {
     echo "OPTIONS"
     echo "  [sink]: show sink (speaker) status"
     echo "  [source]: show source (microphone) status"
+    echo "  [status]: print output and microphone state for the System view"
 }
 
 pulseaudio_notification () {
     case $1 in
+        'status')
+            local sink_volume source_volume sink_mute source_mute
+            sink_volume=$(pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null) || {
+                printf 'Audio | unavailable\n'
+                return 0
+            }
+            sink_volume=$(grep -o -m1 '[0-9][0-9]*%' <<< "$sink_volume" | head -n 1)
+            sink_mute=$(pactl get-sink-mute @DEFAULT_SINK@ 2>/dev/null)
+            source_volume=$(pactl get-source-volume @DEFAULT_SOURCE@ 2>/dev/null)
+            source_volume=$(grep -o -m1 '[0-9][0-9]*%' <<< "$source_volume" | head -n 1)
+            source_mute=$(pactl get-source-mute @DEFAULT_SOURCE@ 2>/dev/null)
+            case $sink_mute in
+                *yes*) sink_mute=muted ;;
+                *no*) sink_mute=unmuted ;;
+                *) sink_mute=unknown ;;
+            esac
+            case $source_mute in
+                *yes*) source_mute=muted ;;
+                *no*) source_mute=unmuted ;;
+                *) source_mute=unknown ;;
+            esac
+            printf 'Audio | output %s (%s) · microphone %s (%s)\n' \
+                "${sink_volume:-unknown}" "$sink_mute" "${source_volume:-unknown}" "$source_mute"
+            ;;
         'sink'|'')
             # Pulseaudio volumes from pulsemixer
             VOLUMES=$(pulsemixer --get-volume)

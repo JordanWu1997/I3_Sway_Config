@@ -600,13 +600,13 @@ MODE=$(
         "🕒 Open · Recent Files" \
         "🌐 Open · History" \
         "🔖 Open · Bookmarks" \
+        "🪟 Go · Windows" \
+        "🏷️ Go · Marks" \
+        "🖥️ Go · SSH" \
         "🧮 Tool · Calculator" \
         "🌐 Tool · Translate" \
         "📋 Tool · Clipboard" \
         "📄 Tool · PDF Tools" \
-        "🪟 Go · Windows" \
-        "🏷️ Go · Marks" \
-        "🖥️ Go · SSH" \
         "⌨️ Help · Keybindings" \
         "💀 System · Kill" \
         "🛑 System · Cancel" |
@@ -617,7 +617,7 @@ MODE=$(
     children: [top-space, mainbox, bottom-space];
 }
 #mainbox { expand: false; }
-#listview { lines: 12; columns: 2; }
+#listview { lines: 11; columns: 2; }
 top-space, bottom-space { expand: true; }
 '
 )

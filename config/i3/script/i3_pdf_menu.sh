@@ -78,7 +78,7 @@ pdf_open_record() {
     record_recent_files "$file"
     if [[ -n "$page" ]]; then
         if [[ "$PDF_VIEWER" == sioyek ]]; then
-            sioyek --page "$page" "$file" >/dev/null 2>&1 &
+            sioyek --new-window --page "$page" "$file" >/dev/null 2>&1 &
         else
             "$PDF_VIEWER" "$file" >/dev/null 2>&1 &
         fi

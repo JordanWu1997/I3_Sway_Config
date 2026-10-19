@@ -15,7 +15,7 @@ Usage: i3_pdf_keyword_search.sh [options]
   --keywords=WORD1,WORD2, -w=...  Literal words that must all occur in a PDF
   --dir=DIR, -d=DIR               Directory to search (default: PDF search location)
   --max_num=N, -n=N               Stop after N matching PDFs (default: unlimited)
-  --viewer=PROGRAM               Viewer for opening results (default: sioyek)
+  --viewer=PROGRAM                Viewer for opening results (default: sioyek)
   --all_at_once, -a               Open matching PDFs after search
   --kill, -k                      Cancel active PDF searches
   --help, -h                      Show this message

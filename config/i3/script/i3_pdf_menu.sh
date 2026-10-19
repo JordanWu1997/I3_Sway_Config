@@ -93,18 +93,72 @@ pdf_record_for_id() {
 }
 
 pdf_preview_text() {
-    local file=$1 content
+    local file=$1 snippet=${2:-} return_to=${3:-PDF results}
+    local text_file selected_row total_lines start end context_row message status=0
+    local -a context_args=() full_args=()
     [[ -f "$file" ]] || { notify "PDF no longer exists: $file"; return 1; }
-    # Keep the Rofi list bounded so large PDFs do not stall the X11 menu.
-    content=$(pdftotext "$file" - 2>/dev/null | head -n 1000)
-    [[ -n "$content" ]] || { notify "No extractable text in $(basename -- "$file")"; return 0; }
-    printf '%s\n' "$content" |
-        rofi_menu "PDF text: $(basename -- "$file")" -no-custom \
-            -mesg 'First 1000 lines · Type to filter · Esc: PDF results' >/dev/null || true
+    text_file=$(mktemp) || return 1
+    # A separate subshell keeps the temporary text and cleanup local to this preview.
+    (
+        trap 'rm -f -- "$text_file"' EXIT
+        if ! (set -o pipefail; pdftotext -enc UTF-8 -q -- "$file" - 2>/dev/null | tr '\f' '\n' > "$text_file"); then
+            notify "Could not extract text from $(basename -- "$file")"
+            return 1
+        fi
+        grep -q '[^[:space:]]' "$text_file" || {
+            notify "No extractable text in $(basename -- "$file")"
+            return 0
+        }
+        total_lines=$(awk 'END { print NR }' "$text_file")
+
+        # PDF search snippets are normalized text, so look for the same text in
+        # the full extraction. If it is absent, let Rofi start at the first row.
+        if [[ -n $snippet ]]; then
+            selected_row=$(PDF_PREVIEW_SNIPPET="$snippet" awk '
+                BEGIN {
+                    needle = ENVIRON["PDF_PREVIEW_SNIPPET"]
+                    gsub(/[[:space:]]+/, " ", needle)
+                }
+                {
+                    line = $0
+                    gsub(/[[:space:]]+/, " ", line)
+                    if (index(line, needle) > 0) { print NR - 1; exit }
+                }
+            ' "$text_file")
+        fi
+
+        start=1
+        message="First 1000 lines · Enter: full text · Esc: $return_to"
+        if [[ $selected_row =~ ^[0-9]+$ ]]; then
+            start=$((selected_row + 1 > 500 ? selected_row + 1 - 500 : 1))
+            message="1000 lines around match · Enter: full text · Esc: $return_to"
+            full_args=(-selected-row "$selected_row" -async-pre-read "$((selected_row + 1))")
+        fi
+        end=$((start + 999))
+        if (( end > total_lines )); then
+            end=$total_lines
+            start=$((end > 1000 ? end - 999 : 1))
+        fi
+        if [[ $selected_row =~ ^[0-9]+$ ]]; then
+            context_row=$((selected_row + 1 - start))
+            context_args=(-selected-row "$context_row" -async-pre-read "$((context_row + 1))")
+        fi
+        if (( total_lines <= 1000 )); then
+            message="Complete extracted text ($total_lines lines) · Enter or Esc: $return_to"
+        fi
+
+        (set +o pipefail; sed -n "${start},${end}p" "$text_file" |
+            rofi_menu "PDF text: $(basename -- "$file")" -no-custom "${context_args[@]}" \
+                -mesg "$message" >/dev/null) || status=$?
+        [[ $status == 0 && $total_lines -gt 1000 ]] || return 0
+
+        rofi_menu "Full PDF text: $(basename -- "$file")" -input "$text_file" -no-custom \
+            "${full_args[@]}" -mesg "Complete extracted text · Type to filter · Enter/Esc: $return_to" >/dev/null || true
+    )
 }
 
 pdf_action() {
-    local selected=$1 records=$2 record action file page dir id
+    local selected=$1 records=$2 record action file page snippet dir id
     local -a ids=() files=()
     while IFS= read -r row; do
         id=${row%%$'\t'*}
@@ -115,6 +169,7 @@ pdf_action() {
     [[ -n "$record" ]] || { notify 'PDF result is no longer available'; return 1; }
     file=$(jq -r '.file' <<< "$record")
     page=$(jq -r '.page // empty' <<< "$record")
+    snippet=$(jq -r '.snippet // empty' <<< "$record")
 
     action=$(printf '%s\n' 'Open in Sioyek' 'Preview PDF text (Rofi)' 'Quick page preview' 'Open selected PDFs' \
         'Review selected PDFs' 'Review all matching PDFs' 'Open all matching PDFs' 'Open containing directory' \
@@ -122,7 +177,7 @@ pdf_action() {
         rofi_menu 'PDF action' -no-custom) || return 0
     case "$action" in
         'Open in Sioyek') pdf_open_record "$record" ;;
-        'Preview PDF text (Rofi)') pdf_preview_text "$file" ;;
+        'Preview PDF text (Rofi)') pdf_preview_text "$file" "$snippet" ;;
         'Quick page preview')
             [[ -n "$page" ]] || page=1
             local preview
@@ -255,9 +310,10 @@ pdf_show_pages() {
     (( ${#rows[@]} > 0 )) || { notify 'No page excerpts for this PDF'; return 0; }
     while true; do
         status=0
-        selected=$(printf '%s\n' "${rows[@]}" | rofi_menu "Pages: $(basename -- "$file")" \
-            -no-custom -format s -kb-custom-3 'Alt+a' \
-            -mesg 'Enter: open page · Alt+A: actions · Esc: PDF list') || status=$?
+        selected=$(set +o pipefail; printf '%s\n' "${rows[@]}" | rofi_menu "Pages: $(basename -- "$file")" \
+            -no-custom -format s -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}" \
+            -mesg 'Enter: open page · Alt+A: actions · Alt+B: Search · Esc: PDF list') || status=$?
+        [[ $status == 15 ]] && return 42
         [[ $status == 0 || $status == 12 ]] || return 0
         id=${selected%%$'\t'*}
         [[ $id =~ ^[0-9]+$ ]] || return 0
@@ -272,7 +328,7 @@ pdf_show_pages() {
 }
 
 pdf_show_results() {
-    local key=$1 worker selected records display first_line clean_selected row id record file progress
+    local key=$1 worker selected records display first_line clean_selected row id record file progress page_status
     local last_filter='' last_selection='' rofi_status=0
     local -a rofi_args
     PDF_KEY=$key
@@ -295,14 +351,14 @@ pdf_show_results() {
             records=$PDF_LIVE_RECORDS
             display=$PDF_LIVE_DISPLAY
             progress=$(jq -r '"Scanned \(.scanned // 0) PDFs · \(.files // 0) matches · \(.skipped // 0) skipped · \(.seconds // 0)s"' "$PDF_PROGRESS" 2>/dev/null) || progress='Starting scan'
-            selected=$({
+            selected=$(set +o pipefail; {
                 printf '↻ Refresh results\n'
                 [[ -f "$display" ]] && awk -F '\t' 'index($2, "PDF ") == 1' "$display"
                 :
             } | rofi_menu 'PDF results (scanning)' "${rofi_args[@]}" \
                 -kb-custom-1 'Alt+r' \
-                -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' \
-                -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+R: refresh · Esc: scan continues; PDF Search to reattach") || rofi_status=$?
+                -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}" \
+                -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+R: refresh · Alt+B: Search · Esc: scan continues; PDF Search to reattach") || rofi_status=$?
         else
             [[ -f "$display" ]] || { notify 'PDF search ended without results'; break; }
             [[ -s "$display" ]] || {
@@ -311,11 +367,12 @@ pdf_show_results() {
                 break
             }
             progress=$(jq -r '"\(.files // 0) matching PDFs · \(.matches // 0) excerpts · \(.scanned // 0) scanned"' "$PDF_META" 2>/dev/null) || progress=''
-            selected=$(awk -F '\t' 'index($2, "PDF ") == 1' "$display" |
+            selected=$(set +o pipefail; awk -F '\t' 'index($2, "PDF ") == 1' "$display" |
                 rofi_menu 'PDF results' "${rofi_args[@]}" \
-                    -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' \
-                    -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions") || rofi_status=$?
+                    -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}" \
+                    -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+B: Search") || rofi_status=$?
         fi
+        [[ $rofi_status == 15 ]] && return 42
         [[ "$rofi_status" == 0 || "$rofi_status" == 10 || "$rofi_status" == 11 || "$rofi_status" == 12 ]] || break
         [[ -n "$selected" ]] || { [[ "$rofi_status" == 10 ]] && continue; break; }
         first_line=${selected%%$'\n'*}
@@ -340,7 +397,11 @@ pdf_show_results() {
         [[ -n "$record" ]] || { notify 'PDF result is no longer available'; continue; }
         file=$(jq -r '.file' <<< "$record")
         case "$rofi_status" in
-            11) pdf_show_pages "$records" "$file" ;;
+            11)
+                pdf_show_pages "$records" "$file"
+                page_status=$?
+                [[ $page_status == 42 ]] && return 42
+                ;;
             12) pdf_action "$clean_selected" "$records" ;;
             0)
                 if [[ "$clean_selected" == *$'\n'* ]]; then
@@ -368,6 +429,7 @@ pdf_attach_running() {
                 return
             elif [[ "$include_new" == yes ]]; then
                 pdf_search choose
+                return $?
             else
                 notify 'No PDF searches are running'
             fi
@@ -393,10 +455,11 @@ pdf_attach_running() {
             keys+=("$key")
         done
         rofi_status=0
-        selected=$(printf '%s\n' "${rows[@]}" |
+        selected=$(set +o pipefail; printf '%s\n' "${rows[@]}" |
             rofi_menu 'Running PDF searches' -no-custom -format i \
-                -kb-custom-4 'Alt+c' \
-                -mesg 'Enter: attach · Alt+C: cancel selected scan · Esc: back') || rofi_status=$?
+                -kb-custom-4 'Alt+c' "${ROFI_BACK_BINDING[@]}" \
+                -mesg 'Enter: attach · Alt+C: cancel selected scan · Alt+B: Search · Esc: back') || rofi_status=$?
+        [[ $rofi_status == 15 ]] && return 42
         [[ $rofi_status == 0 || $rofi_status == 13 ]] || return 0
         [[ $selected =~ ^[0-9]+$ && $selected -lt ${#keys[@]} ]] || continue
         key=${keys[selected]}
@@ -416,7 +479,7 @@ pdf_attach_running() {
             continue
         fi
         pdf_show_results "$key"
-        return
+        return $?
     done
 }
 
@@ -448,8 +511,12 @@ pdf_search() {
 
     worker=$(python3 "$PDF_SEARCH_HELPER" status --active "$PDF_ACTIVE" 2>/dev/null) || worker=
     if [[ -n "$worker" ]]; then
-        [[ "$batch" == all ]] && notify 'This PDF search is still running' || pdf_show_results "$PDF_KEY"
-        return 0
+        if [[ "$batch" == all ]]; then
+            notify 'This PDF search is still running'
+            return 0
+        fi
+        pdf_show_results "$PDF_KEY"
+        return $?
     fi
 
     if [[ "$force" != yes && -f "$PDF_META" && -f "$PDF_RECORDS" && -f "$PDF_DISPLAY" ]]; then
@@ -520,8 +587,9 @@ pdf_view_saved() {
     done
     selected=$(printf '%s\n' "${rows[@]}" |
         rofi_menu 'Saved PDF searches' -no-custom -format i \
-            -kb-custom-1 'Alt+r' \
-            -mesg 'Enter: open saved results · Alt+R: refresh selected search') || status=$?
+            -kb-custom-1 'Alt+r' "${ROFI_BACK_BINDING[@]}" \
+            -mesg 'Enter: open saved results · Alt+R: refresh selected search · Alt+B: Search') || status=$?
+    [[ $status == 15 ]] && return 42
     [[ $status == 0 || $status == 10 ]] || return 0
     [[ $selected =~ ^[0-9]+$ ]] || return 0
     key=${keys[selected]}

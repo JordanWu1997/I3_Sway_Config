@@ -7,10 +7,11 @@ set -o pipefail
 # Author      : Kuan-Hsien Wu
 # Contact     : jordankhwu@gmail.com
 # Description : Rofi omnisearch / command palette
+# Workflow    : See OMNISEARCH_WORKFLOW.md in this directory
 ###########################################################
 
 # Requirements:
-#   rofi(>=1.7.0) fd/fdfind ripgrep pdfgrep sqlite3 jq wmctrl xclip git neovim poppler-utils
+#   rofi(>=1.7.0) fd/fdfind ripgrep pdfgrep sqlite3 jq wmctrl xclip git neovim poppler-utils file xdg-utils
 #
 # Optional:
 #   notify-send xdg-open parcellite i3-msg
@@ -26,12 +27,17 @@ set -o pipefail
 ROFI_OPTION=(
     -config "$HOME/.config/rofi/config_omnisearch.rasi"
 )
+# Rofi reserves Alt+B for moving backward by a word. Free it only in menus
+# with an explicit back action; Ctrl+Left still moves backward by a word.
+ROFI_BACK_BINDING=(-kb-move-word-back 'Control+Left' -kb-custom-6 'Alt+b')
 TERMINAL="${TERMINAL:-kitty}"
 DOCUMENT_DIR="$HOME/Documents"
 HISTORY="$HOME/.config/BraveSoftware/Brave-Browser/Default/History"
 BOOKMARK="$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/rofi-omnisearch"
 LAST_DIR_FILE="$CACHE_DIR/last_dir"
+LAST_GREP_QUERY_FILE="$CACHE_DIR/last_grep_query"
+LAST_GREP_DIR_FILE="$CACHE_DIR/last_grep_dir"
 RECENT_FILES_CACHE="$CACHE_DIR/recent_files"
 mkdir -p "$CACHE_DIR"
 
@@ -86,13 +92,13 @@ search_scope_label() {
 
 toggle_search_scope() {
     local status=$1 selection=$2
-    [[ $selection == *$'\t'* ]] && LAST_FILTER=${selection%%$'\t'*}
+    [[ $selection == *$'\t'* ]] && last_filter=${selection%%$'\t'*}
     if [[ $status == 13 ]]; then
         [[ $INCLUDE_HIDDEN == yes ]] && INCLUDE_HIDDEN=no || INCLUDE_HIDDEN=yes
     else
         [[ $INCLUDE_IGNORED == yes ]] && INCLUDE_IGNORED=no || INCLUDE_IGNORED=yes
     fi
-    LAST_SELECTION=""
+    last_selection=''
 }
 
 # ============================================================
@@ -330,17 +336,27 @@ run_file_action() {
 
     (( ${#files[@]} > 0 )) || return 0
 
-    record_recent_files "${files[@]}"
-
     case "$action" in
         "Preview (Rofi)")
-            local file
+            local file encoding mime size choice
             for file in "${files[@]}"; do
+                [[ -r $file ]] || { notify "File is no longer readable: $file"; continue; }
                 # Limit Rofi content preview to 1000 lines to prevent X11 freeze
                 if [[ "${file,,}" == *.pdf ]]; then
                     pdftotext "$file" - | head -n 1000 | rofi_menu "PDF View"
                 else
-                    head -n 1000 "$file" | rofi_menu "File Content"
+                    encoding=$(file --brief --mime-encoding -- "$file" 2>/dev/null) || encoding=binary
+                    if [[ $encoding == binary ]]; then
+                        mime=$(xdg-mime query filetype "$file" 2>/dev/null) || mime='Unknown type'
+                        size=$(stat -c '%s bytes' -- "$file" 2>/dev/null) || size='Unknown size'
+                        choice=$(printf '%s\n' 'Open' 'Open containing directory' 'Copy path' |
+                            rofi_menu "$(basename -- "$file")" -no-custom \
+                                -mesg "${mime:-Unknown type} · $size · $file") || continue
+                        run_file_action "$choice" "$file"
+                    else
+                        head -n 1000 -- "$file" | rofi_menu "File Content" -no-custom \
+                            -mesg "First 1000 lines · $(basename -- "$file")"
+                    fi
                 fi
             done
             ;;
@@ -357,11 +373,11 @@ run_file_action() {
         "Open")
             local file
             for file in "${files[@]}"; do
-                xdg-open "$file"
+                xdg-open "$file" && record_recent_files "$file"
             done
             ;;
         "Edit in Neovim")
-            "$TERMINAL" -e nvim "${files[@]}"
+            "$TERMINAL" -e nvim "${files[@]}" && record_recent_files "${files[@]}"
             ;;
         "Open in terminal")
             local file
@@ -381,13 +397,63 @@ run_file_action() {
     esac
 }
 
+preview_grep_match() {
+    local file=$1 focus=$2 level start end selected_row prompt message
+    [[ -r $file && $focus =~ ^[0-9]+$ && $focus -gt 0 ]] || {
+        notify "Match is no longer available: $file"
+        return 1
+    }
+
+    for level in 0 1 2; do
+        case $level in
+            0)
+                start=$((focus > 10 ? focus - 10 : 1))
+                end=$((focus + 10))
+                prompt="Match ±10: $(basename -- "$file"):$focus"
+                message='Matched line selected · Enter: ±1000 lines · Esc: results'
+                ;;
+            1)
+                start=$((focus > 1000 ? focus - 1000 : 1))
+                end=$((focus + 1000))
+                prompt="Match ±1000: $(basename -- "$file"):$focus"
+                message='Matched line selected · Enter: full file · Esc: results'
+                ;;
+            2)
+                start=1
+                end=0
+                prompt="Full file: $(basename -- "$file"):$focus"
+                message='Matched line selected · Enter or Esc: results'
+                ;;
+        esac
+        selected_row=$((focus - start))
+
+        # Read through the match before showing Rofi so its selected row is present.
+        # Later rows can load asynchronously, including in the full-file view.
+        (set +o pipefail
+            awk -v first="$start" -v last="$end" -v focus="$focus" '
+                NR < first { next }
+                last > 0 && NR > last { exit }
+                {
+                    content = $0
+                    sub(/\r$/, "", content)
+                    if (last > 0 && length(content) > 500)
+                        content = substr(content, 1, 500) "…"
+                    printf "%s %7d │ %s\n", NR == focus ? "▶" : " ", NR, content
+                }
+            ' "$file" |
+                rofi_menu "$prompt" -no-custom -selected-row "$selected_row" \
+                    -async-pre-read "$((selected_row + 1))" -mesg "$message" >/dev/null
+        ) || return 0
+    done
+}
+
 run_grep_action() {
     local action="$1"
     shift
     local files=()
     local lines=()
     local locations=()
-    local item file line
+    local item file line i
 
     for item in "$@"; do
         IFS=$'\t' read -r file line <<< "$item"
@@ -399,39 +465,40 @@ run_grep_action() {
 
     (( ${#files[@]} > 0 )) || return 0
 
-    record_recent_files "${files[@]}"
-
     case "$action" in
         "Preview file (Rofi)")
-            local f
-            for f in "${files[@]}"; do
+            local f line
+            for i in "${!files[@]}"; do
+                f=${files[$i]}
+                line=${lines[$i]}
                 if [[ "${f,,}" == *.pdf ]]; then
-                    pdftotext "$f" - | head -n 1000 | rofi_menu "PDF View"
+                    pdf_preview_text "$f" '' 'Grep results'
                 else
-                    head -n 1000 "$f" | rofi_menu "File Content"
+                    preview_grep_match "$f" "$line"
                 fi
             done
             ;;
         "Preview file (Less)")
-            local f
-            for f in "${files[@]}"; do
+            local f line
+            for i in "${!files[@]}"; do
+                f=${files[$i]}
+                line=${lines[$i]}
                 if [[ "${f,,}" == *.pdf ]]; then
                     "$TERMINAL" -e bash -c 'pdftotext "$1" - | less' _ "$f"
                 else
-                    "$TERMINAL" -e less "$f"
+                    "$TERMINAL" -e less "+${line}g" "$f"
                 fi
             done
             ;;
         "Open at match")
             local nvim_args=()
-            local i
             for i in "${!files[@]}"; do
                 nvim_args+=("+${lines[$i]}" "${files[$i]}")
             done
-            "$TERMINAL" -e nvim "${nvim_args[@]}"
+            "$TERMINAL" -e nvim "${nvim_args[@]}" && record_recent_files "${files[@]}"
             ;;
         "Open file")
-            "$TERMINAL" -e nvim "${files[@]}"
+            "$TERMINAL" -e nvim "${files[@]}" && record_recent_files "${files[@]}"
             ;;
         "Open containing directory")
             local dir
@@ -495,13 +562,17 @@ run_ssh_action() {
 select_directory() {
     local choice
     local last_dir=""
+    local preferred_dir=${1:-}
 
     [[ -f "$LAST_DIR_FILE" ]] &&
         last_dir=$(<"$LAST_DIR_FILE")
 
     choice=$(
         {
-            [[ -n "$last_dir" && -d "$last_dir" ]] &&
+            [[ -n "$preferred_dir" && -d "$preferred_dir" ]] &&
+                printf '🔍 Last Grep │ %s\n' "$preferred_dir"
+
+            [[ -n "$last_dir" && -d "$last_dir" && "$last_dir" != "$preferred_dir" ]] &&
                 printf '🕒 Last used │ %s\n' "$last_dir"
 
             printf '🏠 Home │ %s\n' "$HOME"
@@ -596,15 +667,179 @@ build_grep_rows() {
 }
 
 # ============================================================
+# Shared file, document, and grep search flow
+# ============================================================
+
+start_search_worker() {
+    local kind=$1 directory=$2 query=$3 display=$4 raw=$5 status_file=$6 error_file=$7
+    local -a scope_flags=()
+    : > "$status_file"
+    : > "$error_file"
+
+    if [[ $kind == grep ]]; then
+        search_scope_flags rg scope_flags
+        : > "$raw"
+        : > "$display"
+        (
+            rg --line-buffered --line-number --no-heading --color=never --max-columns=500 \
+                --field-match-separator $'\t' --smart-case --max-filesize 10M --no-binary \
+                "${scope_flags[@]}" -- "$query" "$directory" 2> "$error_file" |
+            tee "$raw" | build_grep_rows > "$display"
+            printf '%s\n' "$?" > "$status_file"
+        ) &
+    else
+        search_scope_flags fd scope_flags
+        : > "$display"
+        if [[ $kind == documents ]]; then
+            ( fdfind --type f --extension md "${scope_flags[@]}" . "$directory" 2> "$error_file" |
+                shorten_paths > "$display"; printf '%s\n' "$?" > "$status_file" ) &
+        else
+            ( fdfind --type f "${scope_flags[@]}" "" "$directory" 2> "$error_file" |
+                shorten_paths > "$display"; printf '%s\n' "$?" > "$status_file" ) &
+        fi
+    fi
+    SEARCH_PID=$!
+    track_search_pid "$SEARCH_PID"
+}
+
+run_search_results() (
+    local kind=$1 directory=$2 query=${3:-}
+    local prompt format default_action preview_action action_type empty_message enter_label
+    local display raw status_file error_file worker_status error_message selected clean_selected first_line row first_index action file match rest line
+    local rofi_status=0 last_filter='' last_selection='' SEARCH_PID=''
+    local INCLUDE_HIDDEN=no INCLUDE_IGNORED=no
+    local -a rofi_args=() files=() grep_items=()
+
+    case $kind in
+        files)
+            prompt=Files; format=s; default_action=Open; preview_action='Preview (Rofi)'; action_type=file
+            enter_label=open
+            empty_message="No files found in $directory"
+            ;;
+        grep)
+            prompt=Grep; format=i; default_action='Open at match'; preview_action='Preview file (Rofi)'; action_type=grep
+            enter_label='open at match'
+            empty_message="No grep matches for '$query' in $directory"
+            ;;
+        documents)
+            prompt=Documents; format=s; default_action=Open; preview_action='Preview (Rofi)'; action_type=file
+            enter_label=open
+            empty_message="No Markdown documents found in $directory"
+            ;;
+        *) return 2 ;;
+    esac
+
+    display=$(mktemp) || return 1
+    raw=$display
+    if [[ $kind == grep ]]; then
+        raw=$(mktemp) || { rm -f -- "$display"; return 1; }
+    fi
+    status_file=$(mktemp) || { rm -f -- "$display" "$raw"; return 1; }
+    error_file=$(mktemp) || { rm -f -- "$display" "$raw" "$status_file"; return 1; }
+    trap '[[ -z $SEARCH_PID ]] || stop_search_worker "$SEARCH_PID"; rm -f -- "$display" "$raw" "$status_file" "$error_file"' EXIT
+    start_search_worker "$kind" "$directory" "$query" "$display" "$raw" "$status_file" "$error_file"
+
+    while true; do
+        rofi_args=(-multi-select -no-custom -async-pre-read 0 -format "f"$'\t'"$format"
+            -kb-row-left 'Control+h' -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a'
+            -kb-custom-4 'Alt+h' -kb-custom-5 'Alt+i' "${ROFI_BACK_BINDING[@]}"
+            -mesg "$(search_scope_label) · Enter: $enter_label · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored · Alt+B: Search")
+        [[ -n $last_selection ]] && rofi_args+=(-select "$last_selection")
+        [[ -n $last_filter ]] && rofi_args+=(-filter "$last_filter")
+
+        rofi_status=0
+        if kill -0 "$SEARCH_PID" 2>/dev/null; then
+            selected=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$display" | rofi_menu "$prompt" "${rofi_args[@]}") || rofi_status=$?
+        else
+            selected=$(set +o pipefail; cat "$display" | rofi_menu "$prompt" "${rofi_args[@]}") || rofi_status=$?
+        fi
+
+        [[ $rofi_status == 15 ]] && return 42
+
+        # A finished worker may have produced partial rows before failing.
+        # Report its error even when the user has selected one of those rows.
+        worker_status=$(<"$status_file")
+        if [[ -n $worker_status && $worker_status != 0 &&
+              ! ( $kind == grep && $worker_status == 1 && ! -s $error_file ) ]]; then
+            error_message=$(head -n 1 -- "$error_file")
+            notify "$prompt search failed${error_message:+: $error_message}"
+            break
+        fi
+
+        if [[ $rofi_status == 13 || $rofi_status == 14 ]]; then
+            toggle_search_scope "$rofi_status" "$selected"
+            stop_search_worker "$SEARCH_PID"
+            start_search_worker "$kind" "$directory" "$query" "$display" "$raw" "$status_file" "$error_file"
+            continue
+        fi
+        if [[ $rofi_status != 0 && $rofi_status != 11 && $rofi_status != 12 ]] || [[ -z $selected ]]; then
+            if [[ ! -s $display ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
+                notify "$empty_message"
+            fi
+            break
+        fi
+
+        if [[ $selected == *$'\t'* ]]; then
+            first_line=${selected%%$'\n'*}
+            last_filter=${first_line%%$'\t'*}
+            clean_selected=$(printf '%s\n' "$selected" | cut -f2-)
+        else
+            last_filter=''
+            clean_selected=$selected
+        fi
+
+        if [[ $kind == grep ]]; then
+            first_index=${clean_selected%%$'\n'*}
+            last_selection=''
+            if [[ $first_index =~ ^[0-9]+$ ]]; then
+                last_selection=$(sed -n "$((first_index + 1))p" "$display")
+            fi
+        else
+            last_selection=${clean_selected%%$'\n'*}
+            last_selection=${last_selection%$'\r'}
+        fi
+
+        case $rofi_status in
+            0) action=$default_action ;;
+            11) action=$preview_action ;;
+            12) action=$(select_action "$action_type") || continue ;;
+        esac
+
+        if [[ $kind == grep ]]; then
+            grep_items=()
+            while IFS= read -r row; do
+                [[ $row =~ ^[0-9]+$ ]] || continue
+                match=$(sed -n "$((row + 1))p" "$raw")
+                file=${match%%$'\t'*}
+                rest=${match#*$'\t'}
+                line=${rest%%$'\t'*}
+                [[ -n $file && $line =~ ^[0-9]+$ ]] && grep_items+=("$file"$'\t'"$line")
+            done <<< "$clean_selected"
+            run_grep_action "$action" "${grep_items[@]}"
+        else
+            files=()
+            while IFS= read -r row; do
+                file=${row##* │ }
+                [[ -n $file ]] && files+=("$file")
+            done <<< "$clean_selected"
+            run_file_action "$action" "${files[@]}"
+        fi
+    done
+)
+
+# ============================================================
 # Main mode selector
 # ============================================================
 
 source "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_menu.sh"
 
 show_pdf_tools() {
-    local choice
+    local choice status=0
     choice=$(printf '%s\n' 'Running searches' 'Saved searches' 'Open PDF by name' 'Cancel all PDF scans' |
-        rofi_menu 'PDF tools' -no-custom) || return 0
+        rofi_menu 'PDF tools' -no-custom "${ROFI_BACK_BINDING[@]}" \
+            -mesg 'Alt+B: Search') || status=$?
+    [[ $status == 15 ]] && return 42
+    [[ $status == 0 ]] || return 0
     case "$choice" in
         'Running searches') pdf_command --pdf-attach ;;
         'Saved searches') pdf_command --pdf-view ;;
@@ -615,9 +850,12 @@ show_pdf_tools() {
 
 if (( $# > 0 )); then
     pdf_command "$@"
-    exit $?
+    PDF_COMMAND_STATUS=$?
+    [[ $PDF_COMMAND_STATUS == 42 ]] || exit "$PDF_COMMAND_STATUS"
 fi
 
+while true; do
+BACK_TO_SEARCH=no
 MODE=$(
     printf '%s\n' \
         "📁 Find · Files" \
@@ -628,7 +866,6 @@ MODE=$(
         "🕒 Open · Recent Files" \
         "🌐 Open · History" \
         "🔖 Open · Bookmarks" \
-        "⌨️ Help · Keybindings" \
         "💀 System · Kill" \
         "🛑 System · Cancel" \
         "🧮 Tool · Calculator" \
@@ -638,7 +875,8 @@ MODE=$(
         "🪟 Go · Windows" \
         "🗂️ Go · Workspaces" \
         "🏷️ Go · Marks" \
-        "🖥️ Go · SSH" |
+        "🖥️ Go · SSH" \
+        "⌨️ Help · Keybindings" |
     rofi_menu "Search" -auto-select -no-custom \
         -theme-str '
 #window {
@@ -646,7 +884,7 @@ MODE=$(
     children: [top-space, mainbox, bottom-space];
 }
 #mainbox { expand: false; }
-#listview { lines: 11; columns: 2; }
+#listview { lines: 10; columns: 2; }
 top-space, bottom-space { expand: true; }
 '
 )
@@ -883,14 +1121,18 @@ PY
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"s"
+                -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}"
+                -mesg 'Enter: open · Alt+P: preview · Alt+A: actions · Alt+B: Search')
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
-            SELECTED=$(printf '%s\n' "$RECENT_DISPLAY" | rofi_menu "Recent files" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
+            ROFI_STATUS=0
+            SELECTED=$(printf '%s\n' "$RECENT_DISPLAY" | rofi_menu "Recent files" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
+            [[ $ROFI_STATUS == 15 ]] && { BACK_TO_SEARCH=yes; break; }
+            [[ -n "$SELECTED" && ( $ROFI_STATUS == 0 || $ROFI_STATUS == 11 || $ROFI_STATUS == 12 ) ]] || break
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -905,7 +1147,11 @@ PY
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
             LAST_SELECTION="${LAST_SELECTION%$'\r'}"
 
-            ACTION=$(select_action file) || continue
+            case $ROFI_STATUS in
+                0) ACTION=Open ;;
+                11) ACTION='Preview (Rofi)' ;;
+                12) ACTION=$(select_action file) || continue ;;
+            esac
 
             FILES=()
             while IFS= read -r row; do
@@ -919,277 +1165,35 @@ PY
 
     *Files*)
         TARGET_DIR=$(select_directory) || { notify "Exited $MODE"; exit 0; }
-
         notify "🔍 Starting file search in $TARGET_DIR..."
-
-        RESULTS_FILE=$(mktemp)
-        trap 'rm -f "$RESULTS_FILE"' EXIT
-
-        INCLUDE_HIDDEN=no
-        INCLUDE_IGNORED=no
-        search_scope_flags fd SEARCH_FLAGS
-        ( fdfind --type f "${SEARCH_FLAGS[@]}" "" "$TARGET_DIR" | shorten_paths > "$RESULTS_FILE" ) &
-        SEARCH_PID=$!
-        track_search_pid "$SEARCH_PID"
-
-        LAST_SELECTION=""
-        LAST_FILTER=""
-        while true; do
-            # Use a real tab character ($'\t') to separate the typed filter from the result
-            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s"
-                "-kb-row-left" "Control+h"
-                "-kb-custom-2" "Alt+p" "-kb-custom-3" "Alt+a" "-kb-custom-4" "Alt+h" "-kb-custom-5" "Alt+i"
-                "-mesg" "$(search_scope_label) · Enter: open · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored")
-
-            # Restore the previous input and selected row after an action.
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
-            [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
-
-            # Stream dynamically if search is still running, otherwise read cache
-            ROFI_STATUS=0
-            if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
-            else
-                SELECTED=$(set +o pipefail; cat "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
-            fi
-            if [[ $ROFI_STATUS == 13 || $ROFI_STATUS == 14 ]]; then
-                toggle_search_scope "$ROFI_STATUS" "$SELECTED"
-                stop_search_worker "$SEARCH_PID"
-                : > "$RESULTS_FILE"
-                search_scope_flags fd SEARCH_FLAGS
-                ( fdfind --type f "${SEARCH_FLAGS[@]}" "" "$TARGET_DIR" | shorten_paths > "$RESULTS_FILE" ) &
-                SEARCH_PID=$!
-                track_search_pid "$SEARCH_PID"
-                continue
-            fi
-            if [[ $ROFI_STATUS != 0 && $ROFI_STATUS != 11 && $ROFI_STATUS != 12 ]] || [[ -z $SELECTED ]]; then
-                if [[ ! -s $RESULTS_FILE ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
-                    notify "No files found in $TARGET_DIR"
-                fi
-                break
-            fi
-
-            # Safely split the tab-separated filter from the result list
-            if [[ "$SELECTED" == *$'\t'* ]]; then
-                FIRST_LINE="${SELECTED%%$'\n'*}"
-                LAST_FILTER="${FIRST_LINE%%$'\t'*}"
-                CLEAN_SELECTED=$(printf '%s\n' "$SELECTED" | cut -f2-)
-            else
-                LAST_FILTER=""
-                CLEAN_SELECTED="$SELECTED"
-            fi
-
-            LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
-
-            case $ROFI_STATUS in
-                0) ACTION=Open ;;
-                11) ACTION='Preview (Rofi)' ;;
-                12) ACTION=$(select_action file) || continue ;;
-            esac
-
-            FILES=()
-            while IFS= read -r row; do
-                FILE="${row##* │ }"
-                [[ -n "$FILE" ]] && FILES+=("$FILE")
-            done <<< "$CLEAN_SELECTED"
-
-            run_file_action "$ACTION" "${FILES[@]}"
-        done
-
-        stop_search_worker "$SEARCH_PID"
+        run_search_results files "$TARGET_DIR"
+        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *Grep*)
-        QUERY=$(rofi_menu "Grep for")
+        LAST_GREP_QUERY=''
+        [[ -f "$LAST_GREP_QUERY_FILE" ]] && LAST_GREP_QUERY=$(<"$LAST_GREP_QUERY_FILE")
+        ROFI_ARGS=()
+        [[ -n "$LAST_GREP_QUERY" ]] && ROFI_ARGS+=(-filter "$LAST_GREP_QUERY")
+        QUERY=$(rofi_menu "Grep for" "${ROFI_ARGS[@]}")
         [[ -n "$QUERY" ]] || { notify "Exited $MODE"; exit 0; }
-
-        TARGET_DIR=$(select_directory) || exit 0
-
+        # Reuse the previous Grep directory while keeping the full directory picker available.
+        if [[ -s "$LAST_GREP_DIR_FILE" ]]; then
+            LAST_GREP_DIR=$(<"$LAST_GREP_DIR_FILE")
+        else
+            LAST_GREP_DIR=''
+        fi
+        TARGET_DIR=$(select_directory "${LAST_GREP_DIR:-}") || exit 0
+        printf '%s' "$QUERY" > "$LAST_GREP_QUERY_FILE"
+        printf '%s' "$TARGET_DIR" > "$LAST_GREP_DIR_FILE"
         notify "🔍 Grepping for '$QUERY' in $TARGET_DIR..."
-
-        GREP_RAW=$(mktemp)
-        GREP_DISPLAY=$(mktemp)
-        trap 'rm -f "$GREP_RAW" "$GREP_DISPLAY"' EXIT
-
-        INCLUDE_HIDDEN=no
-        INCLUDE_IGNORED=no
-        search_scope_flags rg SEARCH_FLAGS
-        # Use --line-buffered to force ripgrep to stream lines instantly
-        (
-            rg \
-                --line-buffered \
-                --line-number \
-                --no-heading \
-                --color=never \
-                --max-columns=500 \
-                --field-match-separator $'\t' \
-                --smart-case \
-                --max-filesize 10M \
-                --no-binary \
-                "${SEARCH_FLAGS[@]}" \
-                -- "$QUERY" \
-                "$TARGET_DIR" | \
-            tee "$GREP_RAW" | build_grep_rows > "$GREP_DISPLAY"
-        ) &
-        SEARCH_PID=$!
-        track_search_pid "$SEARCH_PID"
-
-        LAST_SELECTION=""
-        LAST_FILTER=""
-        while true; do
-            # Rofi returns the original row index, so duplicate display text
-            # still resolves to the correct file and line.
-            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"i"
-                "-kb-row-left" "Control+h"
-                "-kb-custom-2" "Alt+p" "-kb-custom-3" "Alt+a" "-kb-custom-4" "Alt+h" "-kb-custom-5" "Alt+i"
-                "-mesg" "$(search_scope_label) · Enter: open at match · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored")
-
-            # Restore the previous input and selected row after an action.
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
-            [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
-
-            ROFI_STATUS=0
-            if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
-            else
-                SELECTED=$(set +o pipefail; cat "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
-            fi
-            if [[ $ROFI_STATUS == 13 || $ROFI_STATUS == 14 ]]; then
-                toggle_search_scope "$ROFI_STATUS" "$SELECTED"
-                stop_search_worker "$SEARCH_PID"
-                : > "$GREP_RAW"
-                : > "$GREP_DISPLAY"
-                search_scope_flags rg SEARCH_FLAGS
-                (
-                    rg --line-buffered --line-number --no-heading --color=never --max-columns=500 \
-                        --field-match-separator $'\t' --smart-case --max-filesize 10M --no-binary \
-                        "${SEARCH_FLAGS[@]}" -- "$QUERY" "$TARGET_DIR" |
-                    tee "$GREP_RAW" | build_grep_rows > "$GREP_DISPLAY"
-                ) &
-                SEARCH_PID=$!
-                track_search_pid "$SEARCH_PID"
-                continue
-            fi
-            if [[ $ROFI_STATUS != 0 && $ROFI_STATUS != 11 && $ROFI_STATUS != 12 ]] || [[ -z $SELECTED ]]; then
-                if [[ ! -s $GREP_DISPLAY ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
-                    notify "No grep matches for '$QUERY' in $TARGET_DIR"
-                fi
-                break
-            fi
-
-            if [[ "$SELECTED" == *$'\t'* ]]; then
-                FIRST_LINE="${SELECTED%%$'\n'*}"
-                LAST_FILTER="${FIRST_LINE%%$'\t'*}"
-                CLEAN_SELECTED=$(printf '%s\n' "$SELECTED" | cut -f2-)
-            else
-                LAST_FILTER=""
-                CLEAN_SELECTED="$SELECTED"
-            fi
-
-            FIRST_INDEX="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION=""
-            if [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]]; then
-                LAST_SELECTION=$(sed -n "$((FIRST_INDEX + 1))p" "$GREP_DISPLAY")
-            fi
-
-            case $ROFI_STATUS in
-                0) ACTION='Open at match' ;;
-                11) ACTION='Preview file (Rofi)' ;;
-                12) ACTION=$(select_action grep) || continue ;;
-            esac
-
-            GREP_ITEMS=()
-            while IFS= read -r row_index; do
-                [[ "$row_index" =~ ^[0-9]+$ ]] || continue
-                MATCH=$(sed -n "$((row_index + 1))p" "$GREP_RAW")
-                FILE="${MATCH%%$'\t'*}"
-                REST="${MATCH#*$'\t'}"
-                LINE="${REST%%$'\t'*}"
-
-                [[ -n "$FILE" && -n "$LINE" ]] && GREP_ITEMS+=("$FILE"$'\t'"$LINE")
-            done <<< "$CLEAN_SELECTED"
-
-            run_grep_action "$ACTION" "${GREP_ITEMS[@]}"
-        done
-
-        stop_search_worker "$SEARCH_PID"
+        run_search_results grep "$TARGET_DIR" "$QUERY"
+        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *Documents*)
-        RESULTS_FILE=$(mktemp)
-        trap 'rm -f "$RESULTS_FILE"' EXIT
-
-        INCLUDE_HIDDEN=no
-        INCLUDE_IGNORED=no
-        search_scope_flags fd SEARCH_FLAGS
-        ( fdfind --type f --extension md "${SEARCH_FLAGS[@]}" . "$DOCUMENT_DIR" | shorten_paths > "$RESULTS_FILE" ) &
-        SEARCH_PID=$!
-        track_search_pid "$SEARCH_PID"
-
-        LAST_SELECTION=""
-        LAST_FILTER=""
-        while true; do
-            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s"
-                "-kb-row-left" "Control+h"
-                "-kb-custom-2" "Alt+p" "-kb-custom-3" "Alt+a" "-kb-custom-4" "Alt+h" "-kb-custom-5" "Alt+i"
-                "-mesg" "$(search_scope_label) · Enter: open · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored")
-
-            # Restore the previous input and selected row after an action.
-            [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
-            [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
-
-            ROFI_STATUS=0
-            if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
-            else
-                SELECTED=$(set +o pipefail; cat "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
-            fi
-            if [[ $ROFI_STATUS == 13 || $ROFI_STATUS == 14 ]]; then
-                toggle_search_scope "$ROFI_STATUS" "$SELECTED"
-                stop_search_worker "$SEARCH_PID"
-                : > "$RESULTS_FILE"
-                search_scope_flags fd SEARCH_FLAGS
-                ( fdfind --type f --extension md "${SEARCH_FLAGS[@]}" . "$DOCUMENT_DIR" | shorten_paths > "$RESULTS_FILE" ) &
-                SEARCH_PID=$!
-                track_search_pid "$SEARCH_PID"
-                continue
-            fi
-            if [[ $ROFI_STATUS != 0 && $ROFI_STATUS != 11 && $ROFI_STATUS != 12 ]] || [[ -z $SELECTED ]]; then
-                if [[ ! -s $RESULTS_FILE ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
-                    notify "No Markdown documents found in $DOCUMENT_DIR"
-                fi
-                break
-            fi
-
-            if [[ "$SELECTED" == *$'\t'* ]]; then
-                FIRST_LINE="${SELECTED%%$'\n'*}"
-                LAST_FILTER="${FIRST_LINE%%$'\t'*}"
-                CLEAN_SELECTED=$(printf '%s\n' "$SELECTED" | cut -f2-)
-            else
-                LAST_FILTER=""
-                CLEAN_SELECTED="$SELECTED"
-            fi
-
-            LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
-            LAST_SELECTION="${LAST_SELECTION%$'\r'}"
-
-            case $ROFI_STATUS in
-                0) ACTION=Open ;;
-                11) ACTION='Preview (Rofi)' ;;
-                12) ACTION=$(select_action file) || continue ;;
-            esac
-
-            FILES=()
-            while IFS= read -r row; do
-                FILE="${row##* │ }"
-                [[ -n "$FILE" ]] && FILES+=("$FILE")
-            done <<< "$CLEAN_SELECTED"
-
-            run_file_action "$ACTION" "${FILES[@]}"
-        done
-
-        stop_search_worker "$SEARCH_PID"
+        run_search_results documents "$DOCUMENT_DIR"
+        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *Cancel*)
@@ -1198,10 +1202,12 @@ PY
 
     *PDF\ Search*)
         pdf_command --pdf-search
+        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *PDF\ Tools*)
         show_pdf_tools
+        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *History*)
@@ -1237,13 +1243,17 @@ PY
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i"
+                -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}"
+                -mesg 'Enter: open · Alt+A: actions · Alt+B: Search')
 
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
-            SELECTED=$(printf '%s\n' "${HISTORY_ROWS[@]}" | rofi_menu "History" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
+            ROFI_STATUS=0
+            SELECTED=$(printf '%s\n' "${HISTORY_ROWS[@]}" | rofi_menu "History" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
+            [[ $ROFI_STATUS == 15 ]] && { BACK_TO_SEARCH=yes; break; }
+            [[ -n "$SELECTED" && ( $ROFI_STATUS == 0 || $ROFI_STATUS == 12 ) ]] || break
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1258,7 +1268,11 @@ PY
             LAST_SELECTION=""
             [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]] && LAST_SELECTION="${HISTORY_ROWS[FIRST_INDEX]:-}"
 
-            ACTION=$(select_action url) || continue
+            if [[ $ROFI_STATUS == 12 ]]; then
+                ACTION=$(select_action url) || continue
+            else
+                ACTION=Open
+            fi
 
             URLS=()
             while IFS= read -r row_index; do
@@ -1269,6 +1283,8 @@ PY
 
             run_url_action "$ACTION" "${URLS[@]}"
         done
+        rm -f -- "$HISTORY_COPY"
+        trap - EXIT
         ;;
 
     *Bookmarks*)
@@ -1299,14 +1315,18 @@ PY
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i"
+                -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}"
+                -mesg 'Enter: open · Alt+A: actions · Alt+B: Search')
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
-            SELECTED=$(printf '%s\n' "${BMARK_ROWS[@]}" | rofi_menu "Bookmarks" "${ROFI_ARGS[@]}")
-            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
+            ROFI_STATUS=0
+            SELECTED=$(printf '%s\n' "${BMARK_ROWS[@]}" | rofi_menu "Bookmarks" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
+            [[ $ROFI_STATUS == 15 ]] && { BACK_TO_SEARCH=yes; break; }
+            [[ -n "$SELECTED" && ( $ROFI_STATUS == 0 || $ROFI_STATUS == 12 ) ]] || break
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1321,7 +1341,11 @@ PY
             LAST_SELECTION=""
             [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]] && LAST_SELECTION="${BMARK_ROWS[FIRST_INDEX]:-}"
 
-            ACTION=$(select_action url) || continue
+            if [[ $ROFI_STATUS == 12 ]]; then
+                ACTION=$(select_action url) || continue
+            else
+                ACTION=Open
+            fi
 
             URLS=()
             while IFS= read -r row_index; do
@@ -1481,20 +1505,31 @@ PY
         ;;
 
     *Marks*)
-        i3-msg -t get_tree |
-            jq -r '
+        MARK_ENTRIES=$(i3-msg -t get_tree | jq -r '
                 recurse(.nodes[], .floating_nodes[]?)
                 | select(.marks != null and (.marks | length > 0))
                 | . as $node
                 | .marks[]
-                | [.,
+                | [$node.id, .,
                    ($node.name // $node.window_properties.title // "(untitled)")
                   ]
                 | @tsv
-            ' |
-            rofi_menu "Jump to mark" -auto-select -format s |
-            cut -f1 |
-            xargs -r -I{} i3-msg '[con_mark="{}"] focus'
+            ') || { notify 'Could not read i3 marks'; exit 1; }
+        [[ -n $MARK_ENTRIES ]] || { notify 'No marked windows'; exit 0; }
+
+        MARK_ROWS=()
+        MARK_IDS=()
+        while IFS=$'\t' read -r MARK_ID MARK_LABEL MARK_TITLE; do
+            [[ $MARK_ID =~ ^[0-9]+$ ]] || continue
+            MARK_IDS+=("$MARK_ID")
+            MARK_ROWS+=("$MARK_LABEL"$'\t'"$MARK_TITLE")
+        done <<< "$MARK_ENTRIES"
+        (( ${#MARK_ROWS[@]} > 0 )) || { notify 'No marked windows'; exit 0; }
+
+        MARK_INDEX=$(printf '%s\n' "${MARK_ROWS[@]}" |
+            rofi_menu "Jump to mark" -auto-select -no-custom -format i) || exit 0
+        [[ $MARK_INDEX =~ ^[0-9]+$ && -n ${MARK_IDS[MARK_INDEX]:-} ]] || exit 0
+        i3-msg "[con_id=${MARK_IDS[MARK_INDEX]}] focus" >/dev/null
         ;;
 
     *Keybindings*)
@@ -1550,3 +1585,5 @@ PY
         esac
         ;;
 esac
+[[ $BACK_TO_SEARCH == yes ]] || break
+done

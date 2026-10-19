@@ -27,8 +27,7 @@ set -o pipefail
 ROFI_OPTION=(
     -config "$HOME/.config/rofi/config_omnisearch.rasi"
 )
-# Rofi reserves Alt+B for moving backward by a word. Free it only in menus
-# with an explicit back action; Ctrl+Left still moves backward by a word.
+# Alt+B always returns to Search; Ctrl+Left keeps word-backward movement.
 ROFI_BACK_BINDING=(-kb-move-word-back 'Control+Left' -kb-custom-6 'Alt+b')
 TERMINAL="${TERMINAL:-kitty}"
 DOCUMENT_DIR="$HOME/Documents"
@@ -40,6 +39,12 @@ LAST_GREP_QUERY_FILE="$CACHE_DIR/last_grep_query"
 LAST_GREP_DIR_FILE="$CACHE_DIR/last_grep_dir"
 RECENT_FILES_CACHE="$CACHE_DIR/recent_files"
 mkdir -p "$CACHE_DIR"
+NAV_BACK_FILE="$CACHE_DIR/nav-back-$$"
+rm -f -- "$NAV_BACK_FILE"
+
+global_back_requested() {
+    [[ -e "$NAV_BACK_FILE" ]]
+}
 
 # ============================================================
 # Global Process Tracking
@@ -107,13 +112,24 @@ toggle_search_scope() {
 
 rofi_menu() {
     local prompt="$1"
+    local status=0 arg has_back=no has_message=no
     shift
 
-    rofi -dmenu \
-        -p "$prompt" \
-        -i \
-        "${ROFI_OPTION[@]}" \
-        "$@"
+    for arg in "$@"; do
+        [[ $arg == -kb-custom-6 ]] && has_back=yes
+        [[ $arg == -mesg ]] && has_message=yes
+    done
+    local -a navigation=()
+    if [[ $prompt != Search && $has_back == no ]]; then
+        navigation+=("${ROFI_BACK_BINDING[@]}")
+    fi
+    if [[ $prompt != Search && $has_message == no ]]; then
+        navigation+=(-mesg 'Esc: back · Alt+B: Search')
+    fi
+
+    rofi -dmenu -p "$prompt" -i "${ROFI_OPTION[@]}" "${navigation[@]}" "$@" || status=$?
+    [[ $status == 15 ]] && : > "$NAV_BACK_FILE"
+    return "$status"
 }
 
 # A short, searchable guide. Keep these labels in sync with the i3 config.
@@ -129,6 +145,8 @@ shortcut_guide_items() {
         'Launch     |  Applications                    Super+D' \
         'Launch     |  Commands                        Super+Shift+D' \
         'Launch     |  Omnisearch                      Super+Backslash' \
+        'Omnisearch |  Escape: back one layer (Search: close)' \
+        'Omnisearch |  Alt+B: return to Search from any menu' \
         'Launch     |  Terminal                        Super+Enter' \
         'Windows    |  Focus left/down/up/right        Super+H/J/K/L' \
         'Windows    |  Move left/down/up/right         Super+Shift+H/J/K/L' \
@@ -172,24 +190,25 @@ show_all_keybindings() {
         }
     ' "$HOME"/.config/i3/config.d/*.config |
         rofi_menu "All keybindings" -no-custom \
-            -mesg 'Read-only guide · Esc: back' >/dev/null
+            -mesg 'Read-only guide · Esc: Keybindings · Alt+B: Search' >/dev/null
 }
 
 show_keybinding_menu() {
     local choice
     while true; do
         choice=$(printf '%s\n' 'Shortcut guide' 'All keybindings' |
-            rofi_menu "Keybindings" -no-custom) || return 0
+            rofi_menu "Keybindings" -no-custom -mesg 'Esc: Search · Alt+B: Search') || return 0
         case $choice in
             'Shortcut guide')
                 shortcut_guide_items |
                     rofi_menu "Shortcut guide" -no-custom \
-                        -mesg 'Search actions or keys. This guide is read-only.' >/dev/null
+                        -mesg 'Read-only guide · Esc: Keybindings · Alt+B: Search' >/dev/null
                 ;;
             'All keybindings')
                 show_all_keybindings
                 ;;
         esac
+        global_back_requested && return 42
     done
 }
 
@@ -350,6 +369,7 @@ run_file_action() {
                 # Limit Rofi content preview to 1000 lines to prevent X11 freeze
                 if [[ "${file,,}" == *.pdf ]]; then
                     pdftotext "$file" - | head -n 1000 | rofi_menu "PDF View"
+                    global_back_requested && return 42
                 else
                     encoding=$(file --brief --mime-encoding -- "$file" 2>/dev/null) || encoding=binary
                     if [[ $encoding == binary ]]; then
@@ -357,11 +377,15 @@ run_file_action() {
                         size=$(stat -c '%s bytes' -- "$file" 2>/dev/null) || size='Unknown size'
                         choice=$(printf '%s\n' 'Open' 'Open containing directory' 'Copy path' |
                             rofi_menu "$(basename -- "$file")" -no-custom \
-                                -mesg "${mime:-Unknown type} · $size · $file") || continue
+                                -mesg "${mime:-Unknown type} · $size · $file · Esc: results · Alt+B: Search") || {
+                                    global_back_requested && return 42
+                                    continue
+                                }
                         run_file_action "$choice" "$file"
                     else
                         head -n 1000 -- "$file" | rofi_menu "File Content" -no-custom \
-                            -mesg "First 1000 lines · $(basename -- "$file")"
+                            -mesg "First 1000 lines · $(basename -- "$file") · Esc: results · Alt+B: Search"
+                        global_back_requested && return 42
                     fi
                 fi
             done
@@ -404,37 +428,38 @@ run_file_action() {
 }
 
 preview_grep_match() {
-    local file=$1 focus=$2 level start end selected_row prompt message
+    local file=$1 focus=$2 level=0 start end selected_row prompt message status
     [[ -r $file && $focus =~ ^[0-9]+$ && $focus -gt 0 ]] || {
         notify "Match is no longer available: $file"
         return 1
     }
 
-    for level in 0 1 2; do
+    while true; do
         case $level in
             0)
                 start=$((focus > 10 ? focus - 10 : 1))
                 end=$((focus + 10))
                 prompt="Match ±10: $(basename -- "$file"):$focus"
-                message='Matched line selected · Enter: ±1000 lines · Esc: results'
+                message='Matched line selected · Enter: ±1000 lines · Esc: results · Alt+B: Search'
                 ;;
             1)
                 start=$((focus > 1000 ? focus - 1000 : 1))
                 end=$((focus + 1000))
                 prompt="Match ±1000: $(basename -- "$file"):$focus"
-                message='Matched line selected · Enter: full file · Esc: results'
+                message='Matched line selected · Enter: full file · Esc: ±10 lines · Alt+B: Search'
                 ;;
             2)
                 start=1
                 end=0
                 prompt="Full file: $(basename -- "$file"):$focus"
-                message='Matched line selected · Enter or Esc: results'
+                message='Matched line selected · Enter: results · Esc: ±1000 lines · Alt+B: Search'
                 ;;
         esac
         selected_row=$((focus - start))
 
         # Read through the match before showing Rofi so its selected row is present.
         # Later rows can load asynchronously, including in the full-file view.
+        status=0
         (set +o pipefail
             awk -v first="$start" -v last="$end" -v focus="$focus" '
                 NR < first { next }
@@ -449,7 +474,16 @@ preview_grep_match() {
             ' "$file" |
                 rofi_menu "$prompt" -no-custom -selected-row "$selected_row" \
                     -async-pre-read "$((selected_row + 1))" -mesg "$message" >/dev/null
-        ) || return 0
+        ) || status=$?
+        global_back_requested && return 42
+        if [[ $status != 0 ]]; then
+            (( level == 0 )) && return 0
+            ((level--))
+        elif (( level == 2 )); then
+            return 0
+        else
+            ((level++))
+        fi
     done
 }
 
@@ -710,7 +744,7 @@ start_search_worker() {
 
 run_search_results() (
     local kind=$1 directory=$2 query=${3:-}
-    local prompt format default_action preview_action action_type empty_message enter_label
+    local prompt format default_action preview_action action_type empty_message enter_label back_label
     local display raw status_file error_file worker_status error_message selected clean_selected first_line row first_index action file match rest line
     local rofi_status=0 last_filter='' last_selection='' SEARCH_PID=''
     local INCLUDE_HIDDEN=no INCLUDE_IGNORED=no
@@ -720,16 +754,19 @@ run_search_results() (
         files)
             prompt=Files; format=s; default_action=Open; preview_action='Preview (Rofi)'; action_type=file
             enter_label=open
+            back_label=directory
             empty_message="No files found in $directory"
             ;;
         grep)
             prompt=Grep; format=i; default_action='Open at match'; preview_action='Preview file (Rofi)'; action_type=grep
             enter_label='open at match'
+            back_label=directory
             empty_message="No grep matches for '$query' in $directory"
             ;;
         documents)
             prompt=Documents; format=s; default_action=Open; preview_action='Preview (Rofi)'; action_type=file
             enter_label=open
+            back_label=Search
             empty_message="No Markdown documents found in $directory"
             ;;
         *) return 2 ;;
@@ -749,7 +786,7 @@ run_search_results() (
         rofi_args=(-multi-select -no-custom -async-pre-read 0 -format "f"$'\t'"$format"
             -kb-row-left 'Control+h' -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a'
             -kb-custom-4 'Alt+h' -kb-custom-5 'Alt+i' "${ROFI_BACK_BINDING[@]}"
-            -mesg "$(search_scope_label) · Enter: $enter_label · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored · Alt+B: Search")
+            -mesg "$(search_scope_label) · Enter: $enter_label · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored · Esc: $back_label · Alt+B: Search")
         [[ -n $last_selection ]] && rofi_args+=(-select "$last_selection")
         [[ -n $last_filter ]] && rofi_args+=(-filter "$last_filter")
 
@@ -808,7 +845,10 @@ run_search_results() (
         case $rofi_status in
             0) action=$default_action ;;
             11) action=$preview_action ;;
-            12) action=$(select_action "$action_type") || continue ;;
+            12) action=$(select_action "$action_type") || {
+                    global_back_requested && return 42
+                    continue
+                } ;;
         esac
 
         if [[ $kind == grep ]]; then
@@ -830,6 +870,7 @@ run_search_results() (
             done <<< "$clean_selected"
             run_file_action "$action" "${files[@]}"
         fi
+        global_back_requested && return 42
     done
 )
 
@@ -841,27 +882,37 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_menu.sh"
 
 show_pdf_tools() {
     local choice status=0
-    choice=$(printf '%s\n' 'Running searches' 'Saved searches' 'Open PDF by name' 'Cancel all PDF scans' |
-        rofi_menu 'PDF tools' -no-custom "${ROFI_BACK_BINDING[@]}" \
-            -mesg 'Alt+B: Search') || status=$?
-    [[ $status == 15 ]] && return 42
-    [[ $status == 0 ]] || return 0
-    case "$choice" in
-        'Running searches') pdf_command --pdf-attach ;;
-        'Saved searches') pdf_command --pdf-view ;;
-        'Open PDF by name') pdf_command --pdf-open ;;
-        'Cancel all PDF scans') pdf_command --pdf-cancel ;;
-    esac
+    while true; do
+        status=0
+        choice=$(printf '%s\n' 'Running searches' 'Saved searches' 'Open PDF by name' 'Cancel all PDF scans' |
+            rofi_menu 'PDF tools' -no-custom "${ROFI_BACK_BINDING[@]}" \
+                -mesg 'Esc: Search · Alt+B: Search') || status=$?
+        [[ $status == 15 ]] && return 42
+        [[ $status == 0 ]] || return 0
+        case "$choice" in
+            'Running searches') pdf_command --pdf-attach ;;
+            'Saved searches') pdf_command --pdf-view ;;
+            'Open PDF by name') pdf_command --pdf-open ;;
+            'Cancel all PDF scans') pdf_command --pdf-cancel ;;
+        esac
+        status=$?
+        [[ $status == 42 ]] && return 42
+        global_back_requested && return 42
+    done
 }
 
 if (( $# > 0 )); then
     pdf_command "$@"
     PDF_COMMAND_STATUS=$?
-    [[ $PDF_COMMAND_STATUS == 42 ]] || exit "$PDF_COMMAND_STATUS"
+    if [[ $PDF_COMMAND_STATUS != 42 ]] && ! global_back_requested; then
+        rm -f -- "$NAV_BACK_FILE"
+        exit "$PDF_COMMAND_STATUS"
+    fi
 fi
 
 while true; do
 BACK_TO_SEARCH=no
+rm -f -- "$NAV_BACK_FILE"
 MODE=$(
     printf '%s\n' \
         "📁 Find · Files" \
@@ -884,6 +935,7 @@ MODE=$(
         "🖥️ Go · SSH" \
         "⌨️ Help · Keybindings" |
     rofi_menu "Search" -auto-select -no-custom \
+        -mesg 'Enter: open · Esc: close Omnisearch' \
         -theme-str '
 #window {
     padding: 0px 20%;
@@ -905,7 +957,8 @@ case "$MODE" in
 
     *Apps*)
         # Invokes Rofi's native application launcher directly
-        rofi -show drun "${ROFI_OPTION[@]}"
+        rofi -show drun "${ROFI_OPTION[@]}" "${ROFI_BACK_BINDING[@]}"
+        [[ $? != 0 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *Calculator*)
@@ -959,8 +1012,11 @@ PY
             # Display the result
             ACTION=$(printf "📋 Copy to clipboard\n🔙 Edit expression" | rofi_menu "= $RESULT" -no-custom)
 
-            # Exit if user presses Escape on the result screen
-            [[ $? -ne 0 ]] && { notify "Calculator closed"; break; }
+            # The result is one layer below the expression input.
+            if [[ $? -ne 0 ]]; then
+                global_back_requested && break
+                continue
+            fi
 
             if [[ "$ACTION" == *Copy* ]]; then
                 copy_lines "$RESULT"
@@ -968,37 +1024,42 @@ PY
             fi
             # If Edit is chosen, the loop natively continues and $EXPR is pre-filled via -filter
         done
+        BACK_TO_SEARCH=yes
         ;;
 
     *Translate*)
         # translate-shell is required for actual translation.
         if ! command -v trans >/dev/null 2>&1; then
             notify "Please install 'translate-shell' (trans)."
-            exit 0
+            BACK_TO_SEARCH=yes
+            continue
         fi
 
         QUERY=""
         TL=""
         LANG_TARGET=""
+        RESELECT_LANGUAGE=no
         while true; do
 
             # 1. Get input text
-            QUERY=$(
-                printf '%s\n' "" |
-                    rofi_menu "Translate (Enter text)" \
-                        -filter "$QUERY"
-            )
-            RofiStatus=$?
+            if [[ $RESELECT_LANGUAGE != yes ]]; then
+                QUERY=$(
+                    printf '%s\n' "" |
+                        rofi_menu "Translate (Enter text)" \
+                            -filter "$QUERY"
+                )
+                RofiStatus=$?
 
-            if [[ $RofiStatus -ne 0 ]]; then
-                notify "Translation closed"
-                break
-            fi
+                if [[ $RofiStatus -ne 0 ]]; then
+                    break
+                fi
 
-            if [[ -z "$QUERY" ]]; then
-                notify "No text entered"
-                continue
+                if [[ -z "$QUERY" ]]; then
+                    notify "No text entered"
+                    continue
+                fi
             fi
+            RESELECT_LANGUAGE=no
 
             # 2. Select target language
             LANG_TARGET=$(
@@ -1011,6 +1072,7 @@ PY
 
             if [[ $RofiStatus -ne 0 ]]; then
                 # Return to text input instead of closing everything.
+                global_back_requested && break
                 continue
             fi
 
@@ -1058,7 +1120,11 @@ PY
                 RofiStatus=$?
                 if [[ $RofiStatus -ne 0 ||
                       "$ACTION" == *"Close"* ]]; then
-                    notify "Translation closed"
+                    global_back_requested && break
+                    if [[ $RofiStatus -ne 0 ]]; then
+                        RESELECT_LANGUAGE=yes
+                        continue
+                    fi
                     break
                 fi
                 # Edit text
@@ -1082,8 +1148,9 @@ PY
 
             # 5. Handle result window close / Escape
             if [[ $RofiStatus -ne 0 ]]; then
-                notify "Translation closed"
-                break
+                global_back_requested && break
+                RESELECT_LANGUAGE=yes
+                continue
             fi
 
             # 6. Copy result
@@ -1106,6 +1173,7 @@ PY
             fi
 
         done
+        BACK_TO_SEARCH=yes
         ;;
 
     # Must be placed before *File*
@@ -1117,7 +1185,8 @@ PY
 
         if [[ -z "$VALID_RECENTS" ]]; then
             notify "No recent files found in history."
-            exit 0
+            BACK_TO_SEARCH=yes
+            continue
         fi
 
         # Generate the list OUTSIDE the loop so it remains stable during this session.
@@ -1129,7 +1198,7 @@ PY
         while true; do
             ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"s"
                 -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}"
-                -mesg 'Enter: open · Alt+P: preview · Alt+A: actions · Alt+B: Search')
+                -mesg 'Enter: open · Alt+P: preview · Alt+A: actions · Esc/Alt+B: Search')
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
@@ -1156,7 +1225,10 @@ PY
             case $ROFI_STATUS in
                 0) ACTION=Open ;;
                 11) ACTION='Preview (Rofi)' ;;
-                12) ACTION=$(select_action file) || continue ;;
+                12) ACTION=$(select_action file) || {
+                        global_back_requested && { BACK_TO_SEARCH=yes; break; }
+                        continue
+                    } ;;
             esac
 
             FILES=()
@@ -1166,40 +1238,51 @@ PY
             done <<< "$CLEAN_SELECTED"
 
             run_file_action "$ACTION" "${FILES[@]}"
+            global_back_requested && { BACK_TO_SEARCH=yes; break; }
         done
+        BACK_TO_SEARCH=yes
         ;;
 
     *Files*)
-        TARGET_DIR=$(select_directory) || { notify "Exited $MODE"; exit 0; }
-        notify "🔍 Starting file search in $TARGET_DIR..."
-        run_search_results files "$TARGET_DIR"
-        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
+        while true; do
+            TARGET_DIR=$(select_directory) || break
+            notify "🔍 Starting file search in $TARGET_DIR..."
+            run_search_results files "$TARGET_DIR"
+            [[ $? == 42 ]] && break
+            global_back_requested && break
+        done
+        BACK_TO_SEARCH=yes
         ;;
 
     *Grep*)
         LAST_GREP_QUERY=''
         [[ -f "$LAST_GREP_QUERY_FILE" ]] && LAST_GREP_QUERY=$(<"$LAST_GREP_QUERY_FILE")
-        ROFI_ARGS=()
-        [[ -n "$LAST_GREP_QUERY" ]] && ROFI_ARGS+=(-filter "$LAST_GREP_QUERY")
-        QUERY=$(rofi_menu "Grep for" "${ROFI_ARGS[@]}")
-        [[ -n "$QUERY" ]] || { notify "Exited $MODE"; exit 0; }
-        # Reuse the previous Grep directory while keeping the full directory picker available.
-        if [[ -s "$LAST_GREP_DIR_FILE" ]]; then
-            LAST_GREP_DIR=$(<"$LAST_GREP_DIR_FILE")
-        else
-            LAST_GREP_DIR=''
-        fi
-        TARGET_DIR=$(select_directory "${LAST_GREP_DIR:-}") || exit 0
-        printf '%s' "$QUERY" > "$LAST_GREP_QUERY_FILE"
-        printf '%s' "$TARGET_DIR" > "$LAST_GREP_DIR_FILE"
-        notify "🔍 Grepping for '$QUERY' in $TARGET_DIR..."
-        run_search_results grep "$TARGET_DIR" "$QUERY"
-        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
+        while true; do
+            ROFI_ARGS=()
+            [[ -n "$LAST_GREP_QUERY" ]] && ROFI_ARGS+=(-filter "$LAST_GREP_QUERY")
+            QUERY=$(rofi_menu "Grep for" "${ROFI_ARGS[@]}") || break
+            [[ -n "$QUERY" ]] || break
+            LAST_GREP_QUERY=$QUERY
+            # Results return to the directory picker; the picker returns to the query.
+            while true; do
+                LAST_GREP_DIR=''
+                [[ -s "$LAST_GREP_DIR_FILE" ]] && LAST_GREP_DIR=$(<"$LAST_GREP_DIR_FILE")
+                TARGET_DIR=$(select_directory "${LAST_GREP_DIR:-}") || break
+                printf '%s' "$QUERY" > "$LAST_GREP_QUERY_FILE"
+                printf '%s' "$TARGET_DIR" > "$LAST_GREP_DIR_FILE"
+                notify "🔍 Grepping for '$QUERY' in $TARGET_DIR..."
+                run_search_results grep "$TARGET_DIR" "$QUERY"
+                [[ $? == 42 ]] && break
+                global_back_requested && break
+            done
+            global_back_requested && break
+        done
+        BACK_TO_SEARCH=yes
         ;;
 
     *Documents*)
         run_search_results documents "$DOCUMENT_DIR"
-        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
+        BACK_TO_SEARCH=yes
         ;;
 
     *Cancel*)
@@ -1208,18 +1291,19 @@ PY
 
     *PDF\ Search*)
         pdf_command --pdf-search
-        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
+        BACK_TO_SEARCH=yes
         ;;
 
     *PDF\ Tools*)
         show_pdf_tools
-        [[ $? == 42 ]] && BACK_TO_SEARCH=yes
+        BACK_TO_SEARCH=yes
         ;;
 
     *History*)
         [[ -f "$HISTORY" ]] || {
             notify "Brave history database not found"
-            exit 0
+            BACK_TO_SEARCH=yes
+            continue
         }
 
         notify "Loading browser history..."
@@ -1236,7 +1320,13 @@ PY
                  LIMIT 1000"
         )
 
-        [[ -n "$HISTORY_DATA" ]] || { notify "🚫 No history data found."; exit 0; }
+        [[ -n "$HISTORY_DATA" ]] || {
+            notify "🚫 No history data found."
+            rm -f -- "$HISTORY_COPY"
+            trap - EXIT
+            BACK_TO_SEARCH=yes
+            continue
+        }
 
         HISTORY_ROWS=()
         HISTORY_URLS=()
@@ -1251,7 +1341,7 @@ PY
         while true; do
             ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i"
                 -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}"
-                -mesg 'Enter: open · Alt+A: actions · Alt+B: Search')
+                -mesg 'Enter: open · Alt+A: actions · Esc/Alt+B: Search')
 
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
@@ -1275,7 +1365,10 @@ PY
             [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]] && LAST_SELECTION="${HISTORY_ROWS[FIRST_INDEX]:-}"
 
             if [[ $ROFI_STATUS == 12 ]]; then
-                ACTION=$(select_action url) || continue
+                ACTION=$(select_action url) || {
+                    global_back_requested && { BACK_TO_SEARCH=yes; break; }
+                    continue
+                }
             else
                 ACTION=Open
             fi
@@ -1288,15 +1381,18 @@ PY
             done <<< "$CLEAN_SELECTED"
 
             run_url_action "$ACTION" "${URLS[@]}"
+            global_back_requested && { BACK_TO_SEARCH=yes; break; }
         done
         rm -f -- "$HISTORY_COPY"
         trap - EXIT
+        BACK_TO_SEARCH=yes
         ;;
 
     *Bookmarks*)
         [[ -f "$BOOKMARK" ]] || {
             notify "Brave bookmarks file not found"
-            exit 0
+            BACK_TO_SEARCH=yes
+            continue
         }
 
         notify "Loading bookmarks..."
@@ -1308,7 +1404,7 @@ PY
             ' "$BOOKMARK"
         )
 
-        [[ -n "$BMARK_DATA" ]] || { notify "🚫 No bookmarks found."; exit 0; }
+        [[ -n "$BMARK_DATA" ]] || { notify "🚫 No bookmarks found."; BACK_TO_SEARCH=yes; continue; }
 
         BMARK_ROWS=()
         BMARK_URLS=()
@@ -1323,7 +1419,7 @@ PY
         while true; do
             ROFI_ARGS=("-multi-select" "-no-custom" "-format" "f"$'\t'"i"
                 -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}"
-                -mesg 'Enter: open · Alt+A: actions · Alt+B: Search')
+                -mesg 'Enter: open · Alt+A: actions · Esc/Alt+B: Search')
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
@@ -1348,7 +1444,10 @@ PY
             [[ "$FIRST_INDEX" =~ ^[0-9]+$ ]] && LAST_SELECTION="${BMARK_ROWS[FIRST_INDEX]:-}"
 
             if [[ $ROFI_STATUS == 12 ]]; then
-                ACTION=$(select_action url) || continue
+                ACTION=$(select_action url) || {
+                    global_back_requested && { BACK_TO_SEARCH=yes; break; }
+                    continue
+                }
             else
                 ACTION=Open
             fi
@@ -1361,15 +1460,18 @@ PY
             done <<< "$CLEAN_SELECTED"
 
             run_url_action "$ACTION" "${URLS[@]}"
+            global_back_requested && { BACK_TO_SEARCH=yes; break; }
         done
+        BACK_TO_SEARCH=yes
         ;;
 
     *Clipboard*)
-        python3 - <<'PY'
+        OMNI_NAV_BACK_FILE="$NAV_BACK_FILE" python3 - <<'PY'
 import os
 import struct
 import subprocess
 import sys
+from pathlib import Path
 
 history_file = os.path.expanduser("~/.local/share/parcellite/history")
 signature = b"1.0ParcelliteHistoryFile"
@@ -1467,6 +1569,12 @@ result = subprocess.run(
         "-no-custom",
         "-format",
         "s",
+        "-kb-move-word-back",
+        "Control+Left",
+        "-kb-custom-6",
+        "Alt+b",
+        "-mesg",
+        "Esc: Search · Alt+B: Search",
     ],
     input="\n".join(display_entries),
     text=True,
@@ -1474,8 +1582,13 @@ result = subprocess.run(
 )
 
 selected = result.stdout.rstrip("\n")
+if result.returncode == 15:
+    Path(os.environ["OMNI_NAV_BACK_FILE"]).touch()
+    sys.exit(42)
+if result.returncode != 0:
+    sys.exit(3)
 if not selected:
-    sys.exit(0)
+    sys.exit(3)
 
 try:
     index = int(selected.split("\t", 1)[0])
@@ -1497,17 +1610,29 @@ for selection in ("clipboard", "primary"):
         notify("xclip is not installed")
         break
 PY
+        [[ $? != 0 ]] && BACK_TO_SEARCH=yes
         ;;
 
     *Windows*)
-        wmctrl -l |
-            rofi_menu "Windows" -auto-select |
-            awk '{print $1}' |
-            xargs -r -I{} wmctrl -i -a {}
+        WINDOW=$(wmctrl -l | rofi_menu "Windows" -auto-select) || {
+            BACK_TO_SEARCH=yes
+            continue
+        }
+        [[ -n "$WINDOW" ]] || { BACK_TO_SEARCH=yes; continue; }
+        wmctrl -i -a "${WINDOW%% *}"
         ;;
 
     *Workspaces*)
-        "$(dirname -- "${BASH_SOURCE[0]}")/i3_workspace_operator.sh" goto
+        i3-msg bar hidden_state show bar_mode >/dev/null
+        WORKSPACE=$(rofi_menu 'Go to WS' -config "$HOME/.config/rofi/config_i3workspace.rasi" \
+            -input "$HOME/.config/i3/share/i3_workspace_name_list.txt")
+        WORKSPACE_STATUS=$?
+        i3-msg bar hidden_state hide bar_mode >/dev/null
+        if [[ $WORKSPACE_STATUS == 0 && -n "$WORKSPACE" ]]; then
+            i3-msg "workspace \"$WORKSPACE\"" >/dev/null
+        else
+            BACK_TO_SEARCH=yes
+        fi
         ;;
 
     *Marks*)
@@ -1521,7 +1646,7 @@ PY
                   ]
                 | @tsv
             ') || { notify 'Could not read i3 marks'; exit 1; }
-        [[ -n $MARK_ENTRIES ]] || { notify 'No marked windows'; exit 0; }
+        [[ -n $MARK_ENTRIES ]] || { notify 'No marked windows'; BACK_TO_SEARCH=yes; continue; }
 
         MARK_ROWS=()
         MARK_IDS=()
@@ -1530,66 +1655,85 @@ PY
             MARK_IDS+=("$MARK_ID")
             MARK_ROWS+=("$MARK_LABEL"$'\t'"$MARK_TITLE")
         done <<< "$MARK_ENTRIES"
-        (( ${#MARK_ROWS[@]} > 0 )) || { notify 'No marked windows'; exit 0; }
+        (( ${#MARK_ROWS[@]} > 0 )) || { notify 'No marked windows'; BACK_TO_SEARCH=yes; continue; }
 
         MARK_INDEX=$(printf '%s\n' "${MARK_ROWS[@]}" |
-            rofi_menu "Jump to mark" -auto-select -no-custom -format i) || exit 0
-        [[ $MARK_INDEX =~ ^[0-9]+$ && -n ${MARK_IDS[MARK_INDEX]:-} ]] || exit 0
+            rofi_menu "Jump to mark" -auto-select -no-custom -format i) || {
+                BACK_TO_SEARCH=yes
+                continue
+            }
+        [[ $MARK_INDEX =~ ^[0-9]+$ && -n ${MARK_IDS[MARK_INDEX]:-} ]] || {
+            BACK_TO_SEARCH=yes
+            continue
+        }
         i3-msg "[con_id=${MARK_IDS[MARK_INDEX]}] focus" >/dev/null
         ;;
 
     *Keybindings*)
         show_keybinding_menu
+        BACK_TO_SEARCH=yes
         ;;
 
     *SSH*)
-        SELECTED=$(
-            grep -E '^Host ' ~/.ssh/config 2>/dev/null |
-            awk '{print $2}' |
-            grep -v '[*?!]' |
-            rofi_menu "SSH to" -multi-select -no-custom
-        )
-
-        [[ -n "$SELECTED" ]] || { notify "🚫 No SSH hosts found or selection cancelled."; exit 0; }
-
-        ACTION=$(select_action ssh) || exit 0
-
-        HOSTS=()
-        while IFS= read -r host; do
-            [[ -n "$host" ]] && HOSTS+=("$host")
-        done <<< "$SELECTED"
-
-        run_ssh_action "$ACTION" "${HOSTS[@]}"
+        ACTION=''
+        while true; do
+            SELECTED=$(
+                grep -E '^Host ' ~/.ssh/config 2>/dev/null |
+                awk '{print $2}' |
+                grep -v '[*?!]' |
+                rofi_menu "SSH to" -multi-select -no-custom
+            ) || break
+            [[ -n "$SELECTED" ]] || break
+            ACTION=$(select_action ssh) || {
+                global_back_requested && break
+                continue
+            }
+            HOSTS=()
+            while IFS= read -r host; do
+                [[ -n "$host" ]] && HOSTS+=("$host")
+            done <<< "$SELECTED"
+            run_ssh_action "$ACTION" "${HOSTS[@]}"
+            break
+        done
+        [[ -z "$ACTION" ]] && BACK_TO_SEARCH=yes
+        global_back_requested && BACK_TO_SEARCH=yes
         ;;
 
     *Kill*)
-        SELECTED_PIDS=$(
-            ps axww --no-headers -o pid,cmd |
-            rofi_menu "Kill process" -multi-select -no-custom |
-            awk '{print $1}'
-        )
-
-        [[ -n "$SELECTED_PIDS" ]] || { notify "🚫 No processes selected."; exit 0; }
-
-        COUNT=$(printf '%s\n' "$SELECTED_PIDS" | grep -c .)
-
-        SIGNAL=$(
-            printf '%s\n' \
-                "SIGTERM" \
-                "Cancel" \
-                "SIGKILL" |
-            rofi_menu "Kill $COUNT process(es)" -auto-select -no-custom
-        )
-
-        case "$SIGNAL" in
-            SIGTERM)
-                printf '%s\n' "$SELECTED_PIDS" | xargs -r kill -TERM
-                ;;
-            SIGKILL)
-                printf '%s\n' "$SELECTED_PIDS" | xargs -r kill -KILL
-                ;;
-        esac
+        SELECTED_PIDS=''
+        while true; do
+            SELECTED_PIDS=$(
+                ps axww --no-headers -o pid,cmd |
+                rofi_menu "Kill process" -multi-select -no-custom |
+                awk '{print $1}'
+            ) || break
+            [[ -n "$SELECTED_PIDS" ]] || break
+            COUNT=$(printf '%s\n' "$SELECTED_PIDS" | grep -c .)
+            SIGNAL=$(
+                printf '%s\n' "SIGTERM" "Cancel" "SIGKILL" |
+                rofi_menu "Kill $COUNT process(es)" -auto-select -no-custom
+            ) || {
+                global_back_requested && break
+                continue
+            }
+            case "$SIGNAL" in
+                SIGTERM)
+                    printf '%s\n' "$SELECTED_PIDS" | xargs -r kill -TERM
+                    break
+                    ;;
+                SIGKILL)
+                    printf '%s\n' "$SELECTED_PIDS" | xargs -r kill -KILL
+                    break
+                    ;;
+            esac
+        done
+        [[ -z "$SELECTED_PIDS" ]] && BACK_TO_SEARCH=yes
+        global_back_requested && BACK_TO_SEARCH=yes
         ;;
 esac
-[[ $BACK_TO_SEARCH == yes ]] || break
+if [[ $BACK_TO_SEARCH == yes ]] || global_back_requested; then
+    continue
+fi
+break
 done
+rm -f -- "$NAV_BACK_FILE"

@@ -37,25 +37,31 @@ pdf_cancel() {
 
 pdf_choose_directory() {
     local choice
-    choice=$({
-        printf '%s\n' "$PDF_DEFAULT_LABEL"
-        [[ "$PDF_DEFAULT_DIR" == "$HOME/Documents" ]] || printf 'All Documents\n'
-        printf 'Home (~)\n'
-        printf 'Choose directory\n'
-    } | rofi_menu 'PDF search location' -no-custom) || return 1
-    case "$choice" in
-        "$PDF_DEFAULT_LABEL")
-            [[ -d "$PDF_DEFAULT_DIR" ]] || {
-                notify "PDF directory does not exist: $PDF_DEFAULT_DIR"
-                return 1
-            }
-            printf '%s\n' "$PDF_DEFAULT_DIR"
-            ;;
-        'All Documents') printf '%s\n' "$HOME/Documents" ;;
-        'Home (~)') printf '%s\n' "$HOME" ;;
-        'Choose directory') select_directory ;;
-        *) return 1 ;;
-    esac
+    while true; do
+        choice=$({
+            printf '%s\n' "$PDF_DEFAULT_LABEL"
+            [[ "$PDF_DEFAULT_DIR" == "$HOME/Documents" ]] || printf 'All Documents\n'
+            printf 'Home (~)\n'
+            printf 'Choose directory\n'
+        } | rofi_menu 'PDF search location' -no-custom) || return 1
+        case "$choice" in
+            "$PDF_DEFAULT_LABEL")
+                [[ -d "$PDF_DEFAULT_DIR" ]] || {
+                    notify "PDF directory does not exist: $PDF_DEFAULT_DIR"
+                    return 1
+                }
+                printf '%s\n' "$PDF_DEFAULT_DIR"
+                return 0
+                ;;
+            'All Documents') printf '%s\n' "$HOME/Documents"; return 0 ;;
+            'Home (~)') printf '%s\n' "$HOME"; return 0 ;;
+            'Choose directory')
+                select_directory && return 0
+                global_back_requested && return 1
+                ;;
+            *) return 1 ;;
+        esac
+    done
 }
 
 pdf_choose_match_mode() {
@@ -147,13 +153,20 @@ pdf_preview_text() {
             message="Complete extracted text ($total_lines lines) · Enter or Esc: $return_to"
         fi
 
-        (set +o pipefail; sed -n "${start},${end}p" "$text_file" |
-            rofi_menu "PDF text: $(basename -- "$file")" -no-custom "${context_args[@]}" \
-                -mesg "$message" >/dev/null) || status=$?
-        [[ $status == 0 && $total_lines -gt 1000 ]] || return 0
+        while true; do
+            status=0
+            (set +o pipefail; sed -n "${start},${end}p" "$text_file" |
+                rofi_menu "PDF text: $(basename -- "$file")" -no-custom "${context_args[@]}" \
+                    -mesg "$message · Alt+B: Search" >/dev/null) || status=$?
+            global_back_requested && return 42
+            [[ $status == 0 && $total_lines -gt 1000 ]] || return 0
 
-        rofi_menu "Full PDF text: $(basename -- "$file")" -input "$text_file" -no-custom \
-            "${full_args[@]}" -mesg "Complete extracted text · Type to filter · Enter/Esc: $return_to" >/dev/null || true
+            status=0
+            rofi_menu "Full PDF text: $(basename -- "$file")" -input "$text_file" -no-custom \
+                "${full_args[@]}" -mesg 'Complete extracted text · Type to filter · Enter: close · Esc: 1000 lines · Alt+B: Search' >/dev/null || status=$?
+            global_back_requested && return 42
+            [[ $status == 0 ]] && return 0
+        done
     )
 }
 
@@ -171,19 +184,31 @@ pdf_action() {
     page=$(jq -r '.page // empty' <<< "$record")
     snippet=$(jq -r '.snippet // empty' <<< "$record")
 
-    action=$(printf '%s\n' 'Open in Sioyek' 'Preview PDF text (Rofi)' 'Quick page preview' 'Open selected PDFs' \
-        'Review selected PDFs' 'Review all matching PDFs' 'Open all matching PDFs' 'Open containing directory' \
-        'Copy PDF path' 'Copy PDF:page' |
-        rofi_menu 'PDF action' -no-custom) || return 0
-    case "$action" in
-        'Open in Sioyek') pdf_open_record "$record" ;;
-        'Preview PDF text (Rofi)') pdf_preview_text "$file" "$snippet" ;;
-        'Quick page preview')
-            [[ -n "$page" ]] || page=1
-            local preview
-            preview=$(pdftotext -f "$page" -l "$page" "$file" - 2>/dev/null | head -c 6000)
-            rofi -e "${preview:-No extractable text on this page}" "${ROFI_OPTION[@]}"
-            ;;
+    while true; do
+        action=$(printf '%s\n' 'Open in Sioyek' 'Preview PDF text (Rofi)' 'Quick page preview' 'Open selected PDFs' \
+            'Review selected PDFs' 'Review all matching PDFs' 'Open all matching PDFs' 'Open containing directory' \
+            'Copy PDF path' 'Copy PDF:page' |
+            rofi_menu 'PDF action' -no-custom -mesg 'Esc: PDF results · Alt+B: Search') || {
+                global_back_requested && return 42
+                return 0
+            }
+        case "$action" in
+            'Open in Sioyek') pdf_open_record "$record" ;;
+            'Preview PDF text (Rofi)')
+                pdf_preview_text "$file" "$snippet"
+                global_back_requested && return 42
+                continue
+                ;;
+            'Quick page preview')
+                [[ -n "$page" ]] || page=1
+                local preview status=0
+                preview=$(pdftotext -f "$page" -l "$page" "$file" - 2>/dev/null | head -c 6000)
+                rofi -e "${preview:-No extractable text on this page}" "${ROFI_OPTION[@]}" \
+                    "${ROFI_BACK_BINDING[@]}" || status=$?
+                [[ $status == 15 ]] && : > "$NAV_BACK_FILE"
+                global_back_requested && return 42
+                continue
+                ;;
         'Open selected PDFs')
             local selected_record
             local -A opened=()
@@ -205,7 +230,10 @@ pdf_action() {
             ;;
         'Copy PDF path') copy_text "$file" ;;
         'Copy PDF:page') copy_text "$file:${page:-1}" ;;
-    esac
+        esac
+        global_back_requested && return 42
+        return 0
+    done
 }
 
 pdf_open_all() {
@@ -321,6 +349,7 @@ pdf_show_pages() {
         [[ -n "$record" ]] || { notify 'PDF result is no longer available'; return 1; }
         if [[ $status == 12 ]]; then
             pdf_action "$selected" "$records"
+            global_back_requested && return 42
         else
             pdf_open_record "$record"
         fi
@@ -358,7 +387,7 @@ pdf_show_results() {
             } | rofi_menu 'PDF results (scanning)' "${rofi_args[@]}" \
                 -kb-custom-1 'Alt+r' \
                 -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}" \
-                -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+R: refresh · Alt+B: Search · Esc: scan continues; PDF Search to reattach") || rofi_status=$?
+                -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+R: refresh · Esc: back (scan continues) · Alt+B: Search") || rofi_status=$?
         else
             [[ -f "$display" ]] || { notify 'PDF search ended without results'; break; }
             [[ -s "$display" ]] || {
@@ -370,7 +399,7 @@ pdf_show_results() {
             selected=$(set +o pipefail; awk -F '\t' 'index($2, "PDF ") == 1' "$display" |
                 rofi_menu 'PDF results' "${rofi_args[@]}" \
                     -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' "${ROFI_BACK_BINDING[@]}" \
-                    -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+B: Search") || rofi_status=$?
+                    -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Esc: back · Alt+B: Search") || rofi_status=$?
         fi
         [[ $rofi_status == 15 ]] && return 42
         [[ "$rofi_status" == 0 || "$rofi_status" == 10 || "$rofi_status" == 11 || "$rofi_status" == 12 ]] || break
@@ -411,6 +440,7 @@ pdf_show_results() {
                 fi
                 ;;
         esac
+        global_back_requested && return 42
     done
 }
 
@@ -464,8 +494,14 @@ pdf_attach_running() {
         [[ $selected =~ ^[0-9]+$ && $selected -lt ${#keys[@]} ]] || continue
         key=${keys[selected]}
         if [[ $key == new ]]; then
-            [[ $rofi_status == 0 ]] && pdf_search choose
-            return
+            if [[ $rofi_status == 0 ]]; then
+                pdf_search choose
+                rofi_status=$?
+                [[ $rofi_status == 42 ]] && return 42
+                global_back_requested && return 42
+            fi
+            # Escape from the new-search flow returns to the running task list.
+            continue
         fi
         [[ $key =~ ^[0-9a-f]{64}$ ]] || continue
         if [[ $rofi_status == 13 ]]; then
@@ -479,34 +515,15 @@ pdf_attach_running() {
             continue
         fi
         pdf_show_results "$key"
-        return $?
+        rofi_status=$?
+        [[ $rofi_status == 42 ]] && return 42
+        # Escape from results goes back to the running task list.
     done
 }
 
-pdf_search() {
-    local scope=${1:-choose} batch=${2:-no} query_override=${3:-}
-    local directory_override=${4:-} mode_override=${5:-} max_files=${6:--1} force=${7:-no}
-    local directory query mode worker attempt
-    if [[ -n "$query_override" ]]; then
-        query=$query_override
-    else
-        query=$(rofi_menu 'Search PDF text') || return 0
-    fi
-    [[ -n "$query" ]] || return 0
-    if [[ -n "$directory_override" ]]; then
-        directory=$directory_override
-    elif [[ "$scope" == default ]]; then
-        directory=$PDF_DEFAULT_DIR
-    elif [[ "$scope" == choose ]]; then
-        directory=$(pdf_choose_directory) || return 0
-    else
-        directory=$(select_directory) || return 0
-    fi
-    [[ -d "$directory" ]] || { notify "Directory does not exist: $directory"; return 1; }
-    directory=$(realpath -- "$directory")
-    mode=${mode_override:-words}
-    [[ "$scope" == choose && -z "$mode_override" ]] && mode=$(pdf_choose_match_mode) || true
-    [[ -n "$mode" ]] || return 0
+pdf_search_execute() {
+    local directory=$1 query=$2 mode=$3 batch=$4 max_files=$5 force=$6
+    local worker attempt
     pdf_cache_paths "$directory" "$query" "$mode" "$max_files"
 
     worker=$(python3 "$PDF_SEARCH_HELPER" status --active "$PDF_ACTIVE" 2>/dev/null) || worker=
@@ -554,6 +571,87 @@ pdf_search() {
     fi
 }
 
+pdf_search() {
+    local scope=${1:-choose} batch=${2:-no} query_override=${3:-}
+    local directory_override=${4:-} mode_override=${5:-} max_files=${6:--1} force=${7:-no}
+    local stage=query directory query mode status
+    local directory_picker=no mode_picker=no
+    [[ -z "$directory_override" && $scope != default ]] && directory_picker=yes
+    [[ $scope == choose && -z "$mode_override" ]] && mode_picker=yes
+
+    while true; do
+        case $stage in
+            query)
+                if [[ -n "$query_override" ]]; then
+                    query=$query_override
+                else
+                    query=$(rofi_menu 'Search PDF text' -filter "${query:-}") || return 0
+                    [[ -n "$query" ]] || return 0
+                fi
+                stage=directory
+                ;;
+            directory)
+                if [[ -n "$directory_override" ]]; then
+                    directory=$directory_override
+                elif [[ $scope == default ]]; then
+                    directory=$PDF_DEFAULT_DIR
+                elif [[ $scope == choose ]]; then
+                    directory=$(pdf_choose_directory) || {
+                        global_back_requested && return 42
+                        [[ -n "$query_override" ]] && return 0
+                        stage=query
+                        continue
+                    }
+                else
+                    directory=$(select_directory) || {
+                        global_back_requested && return 42
+                        [[ -n "$query_override" ]] && return 0
+                        stage=query
+                        continue
+                    }
+                fi
+                [[ -d "$directory" ]] || { notify "Directory does not exist: $directory"; stage=query; continue; }
+                directory=$(realpath -- "$directory")
+                stage=match
+                ;;
+            match)
+                if [[ $mode_picker == yes ]]; then
+                    mode=$(pdf_choose_match_mode) || {
+                        global_back_requested && return 42
+                        if [[ $directory_picker == yes ]]; then
+                            stage=directory
+                        elif [[ -z "$query_override" ]]; then
+                            stage=query
+                        else
+                            return 0
+                        fi
+                        continue
+                    }
+                else
+                    mode=${mode_override:-words}
+                fi
+                stage=run
+                ;;
+            run)
+                pdf_search_execute "$directory" "$query" "$mode" "$batch" "$max_files" "$force"
+                status=$?
+                [[ $status == 42 ]] && return 42
+                global_back_requested && return 42
+                [[ $batch == all ]] && return "$status"
+                if [[ $mode_picker == yes ]]; then
+                    stage=match
+                elif [[ $directory_picker == yes ]]; then
+                    stage=directory
+                elif [[ -z "$query_override" ]]; then
+                    stage=query
+                else
+                    return "$status"
+                fi
+                ;;
+        esac
+    done
+}
+
 pdf_view_saved() {
     local meta row created query mode count directory when key label selected status=0
     local -a entries=() rows=() keys=() saved=()
@@ -585,22 +683,28 @@ pdf_view_saved() {
         keys+=("${key%%$'\t'*}")
         rows+=("${row#*$'\t'*$'\t'}")
     done
-    selected=$(printf '%s\n' "${rows[@]}" |
-        rofi_menu 'Saved PDF searches' -no-custom -format i \
-            -kb-custom-1 'Alt+r' "${ROFI_BACK_BINDING[@]}" \
-            -mesg 'Enter: open saved results · Alt+R: refresh selected search · Alt+B: Search') || status=$?
-    [[ $status == 15 ]] && return 42
-    [[ $status == 0 || $status == 10 ]] || return 0
-    [[ $selected =~ ^[0-9]+$ ]] || return 0
-    key=${keys[selected]}
-    [[ $key =~ ^[0-9a-f]{64}$ ]] || return 0
-    if [[ $status == 0 ]]; then
-        pdf_show_results "$key"
-    else
-        mapfile -d '' -t saved < <(jq -j '.query, "\u0000", .directory, "\u0000", .mode, "\u0000", ((.max_files // -1) | tostring), "\u0000"' "$PDF_CACHE_DIR/$key.meta.json")
-        (( ${#saved[@]} == 4 )) || { notify 'Could not read saved PDF search'; return 1; }
-        pdf_search custom no "${saved[0]}" "${saved[1]}" "${saved[2]}" "${saved[3]}" yes
-    fi
+    while true; do
+        status=0
+        selected=$(printf '%s\n' "${rows[@]}" |
+            rofi_menu 'Saved PDF searches' -no-custom -format i \
+                -kb-custom-1 'Alt+r' "${ROFI_BACK_BINDING[@]}" \
+                -mesg 'Enter: open saved results · Alt+R: refresh selected search · Esc: PDF tools · Alt+B: Search') || status=$?
+        [[ $status == 15 ]] && return 42
+        [[ $status == 0 || $status == 10 ]] || return 0
+        [[ $selected =~ ^[0-9]+$ ]] || continue
+        key=${keys[selected]}
+        [[ $key =~ ^[0-9a-f]{64}$ ]] || continue
+        if [[ $status == 0 ]]; then
+            pdf_show_results "$key"
+        else
+            mapfile -d '' -t saved < <(jq -j '.query, "\u0000", .directory, "\u0000", .mode, "\u0000", ((.max_files // -1) | tostring), "\u0000"' "$PDF_CACHE_DIR/$key.meta.json")
+            (( ${#saved[@]} == 4 )) || { notify 'Could not read saved PDF search'; return 1; }
+            pdf_search custom no "${saved[0]}" "${saved[1]}" "${saved[2]}" "${saved[3]}" yes
+        fi
+        status=$?
+        [[ $status == 42 ]] && return 42
+        global_back_requested && return 42
+    done
 }
 
 pdf_open_by_name() {
@@ -610,13 +714,18 @@ pdf_open_by_name() {
         pdf_open_record "$(jq -nc --arg file "$clipboard" '{file: $file, page: null}')"
         return
     fi
-    directory=$(pdf_choose_directory) || return 0
-    choice=$(
-        { [[ -f "$clipboard" && "${clipboard,,}" == *.pdf ]] && printf '%s\n' "$clipboard"
-          find "$directory" -type f -iname '*.pdf' -print; } |
-        rofi_menu 'Open PDF by filename or path'
-    ) || return 0
-    [[ -n "$choice" ]] || return 0
+    while true; do
+        directory=$(pdf_choose_directory) || return 0
+        choice=$(
+            { [[ -f "$clipboard" && "${clipboard,,}" == *.pdf ]] && printf '%s\n' "$clipboard"
+              find "$directory" -type f -iname '*.pdf' -print; } |
+            rofi_menu 'Open PDF by filename or path'
+        ) || {
+            global_back_requested && return 42
+            continue
+        }
+        [[ -n "$choice" ]] && break
+    done
     file=${choice/#\~/$HOME}
     [[ "$file" == /* ]] || file="$directory/$file"
     [[ -f "$file" && "${file,,}" == *.pdf ]] || {

@@ -15,26 +15,24 @@ display_run () {
     fi
 }
 
-# Get eDP1 paramter (for embedded device: e.g., laptop)
-eDP1_STATUS=$(xrandr | awk '$1~/eDP-?1/ {print $2}')
-
-# Get HDMI1 parameter
-# NOTE: xrandr HDMI1 display information is added when HDMI1 is plugged
-HDMI1_STATUS=$(xrandr | awk '$1~/HDMI-?1/ {print $2}')
-HDMI1_STATUS_LEN=$(xrandr | awk '$1~/HDMI-?1/ {print NF}')
-HDMI1_HEIGHT_ID=$HDMI1_STATUS_LEN
-HDMI1_WIDTH_ID=$(($HDMI1_HEIGHT_ID - 2))
-HDMI1_HEIGHT=$(xrandr | awk -v var="$HDMI1_HEIGHT_ID" '$1~/HDMI-?1/ {print $var}')
-HDMI1_WIDTH=$(xrandr | awk -v var="$HDMI1_WIDTH_ID" '$1~/HDMI-?1/ {print $var}')
-
-# eDP-1, eDP1; HDMI-1, HDMI1
-if xrandr | grep eDP1 -q; then
-    eDP1='eDP1'
-    HDMI1='HDMI1'
-else
-    eDP1='eDP-1'
-    HDMI1='HDMI-1'
-fi
+# Read one XRandR snapshot so connector names and connection states agree.
+XRANDR_QUERY=$(xrandr --query) || {
+    notify-send -u critical "Display change failed" "Could not read display outputs" --icon="$ICON" || true
+    exit 1
+}
+eDP1=$(awk '$1 ~ /^eDP-?[0-9]+$/ && $2 ~ /^(connected|disconnected)$/ {print $1; exit}' <<< "$XRANDR_QUERY")
+HAS_INTERNAL_OUTPUT=${eDP1:+yes}
+[[ -n "$eDP1" ]] || eDP1=eDP-1
+eDP1_STATUS=$(awk -v output="$eDP1" '$1 == output {print $2; exit}' <<< "$XRANDR_QUERY")
+HDMI1=$(awk '$1 ~ /^HDMI-?1$/ && $2 ~ /^(connected|disconnected)$/ {print $1; exit}' <<< "$XRANDR_QUERY")
+[[ -n "$HDMI1" ]] || { [[ "$eDP1" == eDP1 ]] && HDMI1=HDMI1 || HDMI1=HDMI-1; }
+read -r HDMI1_STATUS HDMI1_WIDTH HDMI1_HEIGHT < <(
+    awk -v output="$HDMI1" '$1 == output {
+        if ($2 == "connected" && NF >= 5) print $2, $(NF-2), $NF
+        else print $2
+        exit
+    }' <<< "$XRANDR_QUERY"
+)
 
 # Wrong message
 show_wrong_usage_message () {
@@ -126,7 +124,55 @@ eDP1_1440x810_60 () {
     xrandr --addmode "${eDP1}" "1440x810_60.00"
 }
 
+restore_laptop_display () {
+    local display output_state
+    local -a displays=()
+
+    # Turn on the panel first. --auto only selects a preferred mode when
+    # enabling a disabled output; --preferred also resets an active panel.
+    if ! xrandr --output "$eDP1" --auto --primary --pos 0x0 --rotate normal --scale 1x1 ||
+       ! xrandr --output "$eDP1" --preferred --primary --pos 0x0 --rotate normal --scale 1x1; then
+        notify-send -u critical "Display change failed" "Could not enable $eDP1; other outputs were left on" --icon="$ICON" || true
+        return 1
+    fi
+    output_state=$(xrandr --query) || return 1
+    if ! awk -v output="$eDP1" '$1 == output && $2 == "connected" && $0 ~ /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ {found=1} END {exit !found}' <<< "$output_state"; then
+        notify-send -u critical "Display change failed" "$eDP1 is not active; other outputs were left on" --icon="$ICON" || true
+        return 1
+    fi
+    mapfile -t displays < <(awk -v internal="$eDP1" '$1 != internal && $2 ~ /^(connected|disconnected)$/ && $0 ~ /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ {print $1}' <<< "$output_state")
+    for display in "${displays[@]}"; do
+        xrandr --output "$display" --off || {
+            notify-send -u critical "Display change failed" "Could not disable $display" --icon="$ICON" || true
+            return 1
+        }
+    done
+    notify-send -u low "Set Display" "$eDP1 laptop layout applied" --icon="$ICON" || true
+}
+
+display_run_or_laptop () {
+    display_run "$@" || restore_laptop_display
+}
+
 auto_adjust () {
+    local attempt
+
+    # An internal output briefly reported as disconnected during hotplug must
+    # never fall through to the hardcoded desktop profile.
+    if [[ "$HAS_INTERNAL_OUTPUT" == yes && "$eDP1_STATUS" != connected ]]; then
+        for (( attempt=0; attempt<5; attempt++ )); do
+            sleep 0.2
+            XRANDR_QUERY=$(xrandr --query) || return 1
+            eDP1_STATUS=$(awk -v output="$eDP1" '$1 == output {print $2; exit}' <<< "$XRANDR_QUERY")
+            [[ "$eDP1_STATUS" == connected ]] && break
+        done
+        if [[ "$eDP1_STATUS" != connected ]]; then
+            notify-send -u critical "Display change failed" "$eDP1 is not connected; keeping the current layout" --icon="$ICON" || true
+            return 1
+        fi
+        HDMI1_STATUS=$(awk -v output="$HDMI1" '$1 == output {print $2; exit}' <<< "$XRANDR_QUERY")
+    fi
+
     # Case 1: Laptop + HDMI Display
     if [ "${eDP1_STATUS}" == 'connected' ] && [ "${HDMI1_STATUS}" == 'connected' ]; then
         # Rent: 520mm x 290mm, IOA 24': 520mm x 290mm
@@ -143,7 +189,7 @@ auto_adjust () {
                 #--output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
                 #--output "${eDP1}" --mode 1440x810_60.00 --pos 0x195 --rotate normal
             # Set-3: Locate eDP1 (auto) & HDMI1 (1920x1080)
-            display_run "Rent 24' layout applied" xrandr \
+            display_run_or_laptop "Rent 24' layout applied" xrandr \
                 --output "${HDMI1}" --mode 1920x1080 --primary \
                 --output "${eDP1}" --auto --left-of ${HDMI1}
             # Set-4: Disable eDP1 & enable HDMI1 (1920x1080)
@@ -155,7 +201,7 @@ auto_adjust () {
             # Adjust eDP1 & HDMI1
             HDMI1_1920x1200_50; eDP1_1440x810_60
             # Locate eDP1 & HDMI1
-            display_run "ACER 27' layout applied" xrandr \
+            display_run_or_laptop "ACER 27' layout applied" xrandr \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x270 --rotate normal \
                 --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary
         # Rent: 0mm x 0mm (unknown)
@@ -163,32 +209,24 @@ auto_adjust () {
             # Adjust eDP1 & HDMI1
             HDMI1_1920x1200_50; eDP1_1440x810_60
             # Locate eDP1 & HDMI1 (extented)
-            display_run "External display layout applied" xrandr \
+            display_run_or_laptop "External display layout applied" xrandr \
                 --output "${HDMI1}" --mode 1920x1200_50.00 --pos 1440x0 --rotate normal --primary \
                 --output "${eDP1}" --mode 1440x810_60.00 --pos 0x390 --rotate normal
         # Other HDMI:
         else
-            display_run "External ${HDMI1} layout applied" xrandr --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
+            display_run_or_laptop "External ${HDMI1} layout applied" xrandr --output "${HDMI1}" --auto --primary --right-of "${eDP1}"
         fi
         return
     fi
 
     # Case 2: Laptop only
     if [ "${eDP1_STATUS}" == 'connected' ]; then
-        DISPLAYS=$(xrandr | grep -v eDP | grep -e DP -e HDMI | cut -d' ' -f1)
-        for display in ${DISPLAYS[@]}; do
-            xrandr --output "$display" --off || {
-                notify-send -u critical "Display change failed" "Could not disable $display" --icon="$ICON" || true
-                return 1
-            }
-            sleep 0.1
-        done
-        display_run "${eDP1} laptop layout applied" xrandr --output "${eDP1}" --auto --primary
-        return
+        restore_laptop_display
+        return $?
     fi
 
     # Case 3: No Laptop (PC at home 1 HDMI display + 2 DP displays)
-    if [ "${eDP1_status}" != 'connected' ]; then
+    if [[ "$HAS_INTERNAL_OUTPUT" != yes ]]; then
         #notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
         #xrandr \
             #--output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9 --primary \

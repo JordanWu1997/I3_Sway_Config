@@ -120,6 +120,12 @@ rofi_menu() {
 # The separate "All keybindings" view is generated from config files at runtime.
 shortcut_guide_items() {
     printf '%s\n' \
+        'Mode use   |  Enter: parent mode (top level: exit)' \
+        'Mode use   |  Escape: return to normal keybindings' \
+        'Mode use   |  Ctrl+[: exits most modes' \
+        'Mode use   |  Insert/Vim: Ctrl+[ exits; Mouse: Ctrl+[ scrolls' \
+        'Mode use   |  Adjustments and batch actions stay open for repeats' \
+        'Mode use   |  One-off actions usually exit or return to parent' \
         'Launch     |  Applications                    Super+D' \
         'Launch     |  Commands                        Super+Shift+D' \
         'Launch     |  Omnisearch                      Super+Backslash' \

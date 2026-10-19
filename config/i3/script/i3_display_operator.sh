@@ -150,8 +150,56 @@ restore_laptop_display () {
     notify-send -u low "Set Display" "$eDP1 laptop layout applied" --icon="$ICON" || true
 }
 
+safe_connected_display () {
+    local output=${1:-} state
+
+    # A failed preset may have changed part of the layout; choose from a fresh snapshot.
+    XRANDR_QUERY=$(xrandr --query) || {
+        notify-send -u critical "Display change failed" "Could not recheck display outputs; keeping the current layout" --icon="$ICON" || true
+        return 1
+    }
+
+    # Prefer the internal panel on laptops. Otherwise keep an already visible
+    # primary output, then any visible output, before enabling a new one.
+    if ! awk -v selected="$output" '$1 == selected && $2 == "connected" {found=1} END {exit !found}' <<< "$XRANDR_QUERY"; then
+        output=$(awk '$2 == "connected" && $3 == "primary" && $0 ~ /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ {print $1; exit}' <<< "$XRANDR_QUERY")
+        [[ -n "$output" ]] || output=$(awk '$2 == "connected" && $0 ~ /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ {print $1; exit}' <<< "$XRANDR_QUERY")
+        [[ -n "$output" ]] || output=$(awk '$2 == "connected" {print $1; exit}' <<< "$XRANDR_QUERY")
+    fi
+    if [[ -z "$output" ]]; then
+        notify-send -u critical "Display change failed" "No connected display found; keeping the current layout" --icon="$ICON" || true
+        return 1
+    fi
+
+    # Never disable another output in an unfamiliar display arrangement.
+    if ! xrandr --output "$output" --auto --primary; then
+        notify-send -u critical "Display change failed" "Could not enable $output; keeping the current layout" --icon="$ICON" || true
+        return 1
+    fi
+    state=$(xrandr --query) || return 1
+    if ! awk -v selected="$output" '$1 == selected && $2 == "connected" && $0 ~ /[0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ {found=1} END {exit !found}' <<< "$state"; then
+        notify-send -u critical "Display change failed" "$output did not become active; other outputs were left on" --icon="$ICON" || true
+        return 1
+    fi
+    notify-send -u low "Set Display" "Safe layout: $output active; other outputs left unchanged" --icon="$ICON" || true
+}
+
+laptop_hdmi_profile_matches () {
+    awk -v internal="$eDP1" -v external="$HDMI1" '
+        $2 == "connected" {count++; if ($1 == internal || $1 == external) known++}
+        END {exit !(count == 2 && known == 2)}
+    ' <<< "$XRANDR_QUERY"
+}
+
+desktop_profile_matches () {
+    awk '
+        $2 == "connected" {count++; if ($1 == "DP-1" || $1 == "DP-2" || $1 == "HDMI-0") known++}
+        END {exit !(count == 3 && known == 3)}
+    ' <<< "$XRANDR_QUERY"
+}
+
 display_run_or_laptop () {
-    display_run "$@" || restore_laptop_display
+    display_run "$@" || safe_connected_display "$eDP1"
 }
 
 auto_adjust () {
@@ -171,10 +219,15 @@ auto_adjust () {
             return 1
         fi
         HDMI1_STATUS=$(awk -v output="$HDMI1" '$1 == output {print $2; exit}' <<< "$XRANDR_QUERY")
+        read -r _ HDMI1_WIDTH HDMI1_HEIGHT < <(awk -v output="$HDMI1" '$1 == output {print $2, $(NF-2), $NF; exit}' <<< "$XRANDR_QUERY")
     fi
 
     # Case 1: Laptop + HDMI Display
     if [ "${eDP1_STATUS}" == 'connected' ] && [ "${HDMI1_STATUS}" == 'connected' ]; then
+        if ! laptop_hdmi_profile_matches; then
+            safe_connected_display "$eDP1"
+            return $?
+        fi
         # Rent: 520mm x 290mm, IOA 24': 520mm x 290mm
         if [ "${HDMI1_WIDTH}" == "520mm" ] && [ "${HDMI1_HEIGHT}" == "290mm" ]; then
             #notify-send -u low "Set Display Automatically" "IOA 24' connected" --icon="${ICON}"
@@ -221,12 +274,20 @@ auto_adjust () {
 
     # Case 2: Laptop only
     if [ "${eDP1_STATUS}" == 'connected' ]; then
+        if awk -v internal="$eDP1" '$2 == "connected" && $1 != internal {found=1} END {exit !found}' <<< "$XRANDR_QUERY"; then
+            safe_connected_display "$eDP1"
+            return $?
+        fi
         restore_laptop_display
         return $?
     fi
 
     # Case 3: No Laptop (PC at home 1 HDMI display + 2 DP displays)
     if [[ "$HAS_INTERNAL_OUTPUT" != yes ]]; then
+        if ! desktop_profile_matches; then
+            safe_connected_display
+            return $?
+        fi
         #notify-send -u low "Set Display Automatically" "Connect to DP-1 (normal), DP-4 (normal), HDMI-0 (right)" --icon="${ICON}"
         #xrandr \
             #--output "DP-1" --mode 1920x1080 --pos 0x280 --rotate inverted --brightness 0.9 --primary \
@@ -237,8 +298,8 @@ auto_adjust () {
         display_run "Desktop display layout applied" xrandr \
             --output "DP-1" --mode 1920x1080 --pos 0x840 --rotate inverted --brightness 0.9 --primary \
             --output "DP-2" --mode 1920x1200 --scale 0.8x0.8 --pos 0x1920 --rotate normal --brightness 1.0 \
-            --output "HDMI-0" --mode 1920x1080 --scale-from 1536x864 --pos 1920x0 --rotate right --brightness 0.9
-        return
+            --output "HDMI-0" --mode 1920x1080 --scale-from 1536x864 --pos 1920x0 --rotate right --brightness 0.9 || safe_connected_display
+        return $?
     fi
 }
 

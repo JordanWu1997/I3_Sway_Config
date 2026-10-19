@@ -354,50 +354,70 @@ pdf_show_results() {
 }
 
 pdf_attach_running() {
-    local include_new=${1:-no} active_json task key pid query mode directory scanned files selected
+    local include_new=${1:-no} active_json task key pid query mode directory scanned files selected rofi_status count cancelled=no
     local -a tasks=() rows=() keys=()
-    active_json=$(python3 "$PDF_SEARCH_HELPER" active --cache-dir "$PDF_CACHE_DIR") || {
-        notify 'Could not list running PDF searches'
-        return 1
-    }
-    mapfile -t tasks < <(jq -r '.[] | [.key, (.pid | tostring), .query, .mode, .directory, (.scanned | tostring), (.files | tostring)] | @tsv' <<< "$active_json")
-    if (( ${#tasks[@]} == 0 )); then
+    while true; do
+        tasks=() rows=() keys=()
+        active_json=$(python3 "$PDF_SEARCH_HELPER" active --cache-dir "$PDF_CACHE_DIR") || {
+            notify 'Could not list running PDF searches'
+            return 1
+        }
+        mapfile -t tasks < <(jq -r '.[] | [.key, (.pid | tostring), .query, .mode, .directory, (.scanned | tostring), (.files | tostring)] | @tsv' <<< "$active_json")
+        if (( ${#tasks[@]} == 0 )); then
+            if [[ "$cancelled" == yes ]]; then
+                return
+            elif [[ "$include_new" == yes ]]; then
+                pdf_search choose
+            else
+                notify 'No PDF searches are running'
+            fi
+            return
+        fi
         if [[ "$include_new" == yes ]]; then
-            pdf_search choose
-        else
-            notify 'No PDF searches are running'
+            rows+=('Start new PDF search')
+            keys+=('new')
         fi
-        return
-    fi
-    if [[ "$include_new" == yes ]]; then
-        rows+=('Start new PDF search')
-        keys+=('new')
-    fi
-    for task in "${tasks[@]}"; do
-        IFS=$'\t' read -r key pid query mode directory scanned files <<< "$task"
-        case "$mode" in
-            words) mode='All words' ;;
-            phrase) mode='Exact phrase' ;;
-            regex) mode='Regex' ;;
-        esac
-        if [[ "$directory" == "$HOME" ]]; then
-            directory='~'
-        elif [[ "$directory" == "$HOME/"* ]]; then
-            directory="~/${directory#"$HOME/"}"
+        for task in "${tasks[@]}"; do
+            IFS=$'\t' read -r key pid query mode directory scanned files <<< "$task"
+            case "$mode" in
+                words) mode='All words' ;;
+                phrase) mode='Exact phrase' ;;
+                regex) mode='Regex' ;;
+            esac
+            if [[ "$directory" == "$HOME" ]]; then
+                directory='~'
+            elif [[ "$directory" == "$HOME/"* ]]; then
+                directory="~/${directory#"$HOME/"}"
+            fi
+            rows+=("[$mode] $query  ·  $directory  ·  $scanned scanned  ·  $files PDFs")
+            keys+=("$key")
+        done
+        rofi_status=0
+        selected=$(printf '%s\n' "${rows[@]}" |
+            rofi_menu 'Running PDF searches' -no-custom -format i \
+                -kb-custom-4 'Alt+c' \
+                -mesg 'Enter: attach · Alt+C: cancel selected scan · Esc: back') || rofi_status=$?
+        [[ $rofi_status == 0 || $rofi_status == 13 ]] || return 0
+        [[ $selected =~ ^[0-9]+$ && $selected -lt ${#keys[@]} ]] || continue
+        key=${keys[selected]}
+        if [[ $key == new ]]; then
+            [[ $rofi_status == 0 ]] && pdf_search choose
+            return
         fi
-        rows+=("[$mode] $query  ·  $directory  ·  $scanned scanned  ·  $files PDFs")
-        keys+=("$key")
-    done
-    selected=$(printf '%s\n' "${rows[@]}" |
-        rofi_menu 'Running PDF searches' -no-custom -format i \
-            -mesg 'Enter: attach to search · Esc: back') || return 0
-    [[ $selected =~ ^[0-9]+$ && $selected -lt ${#keys[@]} ]] || return 0
-    key=${keys[selected]}
-    if [[ "$key" == new ]]; then
-        pdf_search choose
-    elif [[ $key =~ ^[0-9a-f]{64}$ ]]; then
+        [[ $key =~ ^[0-9a-f]{64}$ ]] || continue
+        if [[ $rofi_status == 13 ]]; then
+            count=$(python3 "$PDF_SEARCH_HELPER" cancel --cache-dir "$PDF_CACHE_DIR" --key "$key") || return 1
+            cancelled=yes
+            if [[ $count == 1 ]]; then
+                notify 'PDF search cancelled'
+            else
+                notify 'PDF search already finished'
+            fi
+            continue
+        fi
         pdf_show_results "$key"
-    fi
+        return
+    done
 }
 
 pdf_search() {

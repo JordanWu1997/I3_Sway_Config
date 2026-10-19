@@ -242,7 +242,11 @@ def scan(args):
 
 def cancel(args):
     count = 0
-    for active in Path(args.cache_dir).glob("pdf-active-*.json"):
+    if args.key and not re.fullmatch(r"[0-9a-f]{64}", args.key):
+        raise ValueError("invalid PDF search key")
+    active_files = ([Path(args.cache_dir) / f"pdf-active-{args.key}.json"]
+                    if args.key else Path(args.cache_dir).glob("pdf-active-*.json"))
+    for active in active_files:
         try:
             identity = json.loads(active.read_text())
             pid = live_worker_pid(identity)
@@ -322,6 +326,7 @@ def main():
     scanner.add_argument("--max-files", type=int, default=-1)
     canceller = commands.add_parser("cancel")
     canceller.add_argument("--cache-dir", required=True)
+    canceller.add_argument("--key")
     checker = commands.add_parser("status")
     checker.add_argument("--active", required=True)
     checker.add_argument("--quiet", action="store_true")

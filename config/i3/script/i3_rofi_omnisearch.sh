@@ -57,6 +57,44 @@ track_search_pid() {
     printf '%s\n' "$start" > "$CACHE_DIR/search-$1.pid"
 }
 
+stop_search_worker() {
+    local pid=$1
+    pkill -TERM -P "$pid" 2>/dev/null || true
+    kill "$pid" 2>/dev/null || true
+    wait "$pid" 2>/dev/null || true
+    rm -f -- "$CACHE_DIR/search-$pid.pid"
+}
+
+search_scope_flags() {
+    local tool=$1
+    local -n flags=$2
+    flags=()
+    [[ $INCLUDE_HIDDEN == yes ]] && flags+=(--hidden)
+    [[ $INCLUDE_IGNORED == yes ]] && flags+=(--no-ignore)
+    if [[ $INCLUDE_HIDDEN == yes || $INCLUDE_IGNORED == yes ]]; then
+        if [[ $tool == fd ]]; then
+            flags+=(--exclude .git)
+        else
+            flags+=(--glob '!.git/**')
+        fi
+    fi
+}
+
+search_scope_label() {
+    printf 'Hidden: %s · Ignored: %s' "$INCLUDE_HIDDEN" "$INCLUDE_IGNORED"
+}
+
+toggle_search_scope() {
+    local status=$1 selection=$2
+    [[ $selection == *$'\t'* ]] && LAST_FILTER=${selection%%$'\t'*}
+    if [[ $status == 13 ]]; then
+        [[ $INCLUDE_HIDDEN == yes ]] && INCLUDE_HIDDEN=no || INCLUDE_HIDDEN=yes
+    else
+        [[ $INCLUDE_IGNORED == yes ]] && INCLUDE_IGNORED=no || INCLUDE_IGNORED=yes
+    fi
+    LAST_SELECTION=""
+}
+
 # ============================================================
 # Generic helpers
 # ============================================================
@@ -76,39 +114,37 @@ rofi_menu() {
 # The separate "All keybindings" view is generated from config files at runtime.
 shortcut_guide_items() {
     printf '%s\n' \
-        'Launch    |  Applications                    Super+D' \
-        'Launch    |  Commands                        Super+Shift+D' \
-        'Launch    |  Omnisearch                      Super+Backslash' \
-        'Launch    |  Terminal                        Super+Enter' \
-        'Windows   |  Focus left/down/up/right        Super+H/J/K/L' \
-        'Windows   |  Move left/down/up/right         Super+Shift+H/J/K/L' \
-        'Windows   |  Resize or position              Super+Slash' \
-        'Windows   |  Toggle floating                 Super+Shift+Space' \
-        'Windows   |  Toggle fullscreen               Super+F' \
-        'Windows   |  Close focused window            Super+Shift+Q' \
-        'Windows   |  Hide in scratchpad              Super+Z' \
-        'Windows   |  Show scratchpad                 Super+G' \
-        'Windows   |  Mark focused window             Super+M' \
-        'Windows   |  Go to marked window             Super+Apostrophe' \
-        'Workspace |  Go to workspace 1-10            Super+1-0' \
-        'Workspace |  Move window to workspace 1-10   Super+Shift+1-0' \
-        'Workspace |  Next / previous workspace       Super+Tab / Super+Shift+Tab' \
-        'Modes     |  System controls                 Ctrl+Alt+S' \
-        'Modes     |  Display controls                Super+Shift+X' \
-        'Modes     |  Window layout                   Super+Shift+W' \
-        'Modes     |  Workspace tools                 Super+Shift+P' \
-        'Modes     |  Customization                   Super+Shift+C' \
-        'Capture   |  Screenshot selection            Print Screen' \
-        'Capture   |  Active window screenshot        Super+Print Screen' \
-        'Media     |  Volume up/down                  Volume keys' \
-        'Media     |  Play/pause                      Play/Pause key'
+        'Launch     |  Applications                    Super+D' \
+        'Launch     |  Commands                        Super+Shift+D' \
+        'Launch     |  Omnisearch                      Super+Backslash' \
+        'Launch     |  Terminal                        Super+Enter' \
+        'Windows    |  Focus left/down/up/right        Super+H/J/K/L' \
+        'Windows    |  Move left/down/up/right         Super+Shift+H/J/K/L' \
+        'Windows    |  Resize or position              Super+Slash' \
+        'Windows    |  Toggle floating                 Super+Shift+Space' \
+        'Windows    |  Toggle fullscreen               Super+F' \
+        'Windows    |  Close focused window            Super+Shift+Q' \
+        'Windows    |  Hide in scratchpad              Super+Z' \
+        'Windows    |  Show scratchpad                 Super+G' \
+        'Windows    |  Mark focused window             Super+M' \
+        'Windows    |  Go to marked window             Super+Apostrophe' \
+        'Workspace  |  Go to workspace 1-10            Super+1-0' \
+        'Workspace  |  Move window to workspace 1-10   Super+Shift+1-0' \
+        'Workspace  |  Next / previous workspace       Super+Tab / Super+Shift+Tab' \
+        'Modes      |  System controls                 Ctrl+Alt+S' \
+        'Modes      |  Display controls                Super+Shift+X' \
+        'Modes      |  Window layout                   Super+Shift+W' \
+        'Modes      |  Workspace tools                 Super+Shift+P' \
+        'Modes      |  Customization                   Super+Shift+C' \
+        'Capture    |  Screenshot selection            Print Screen' \
+        'Capture    |  Active window screenshot        Super+Print Screen' \
+        'Media      |  Volume up/down                  Volume keys' \
+        'Media      |  Play/pause                      Play/Pause key'
 }
 
 show_all_keybindings() {
-    local selected binding command
-    # Include bindings inside modes, but only global bindings may be run
-    # directly from this menu.
-    selected=$(awk '
+    # This is a guide: selecting a row must never run an arbitrary i3 command.
+    awk '
         /^[[:space:]]*mode[[:space:]]/ && /\{[[:space:]]*$/ {
             mode=$0
             sub(/^[[:space:]]*mode[[:space:]]*/, "", mode)
@@ -124,16 +160,7 @@ show_all_keybindings() {
         }
     ' "$HOME"/.config/i3/config.d/*.config |
         rofi_menu "All keybindings" -no-custom \
-            -mesg 'Global rows run on Enter; mode rows are for reference.' )
-    [[ $selected == '[Global] bindsym '* ]] || return 0
-
-    binding=${selected#'[Global] bindsym '}
-    while [[ $binding == --* ]]; do
-        binding=${binding#* }
-    done
-    command=${binding#* }
-    # A selected global binding retains the old menu's run-on-selection behavior.
-    i3-msg "$command"
+            -mesg 'Read-only guide · Esc: back' >/dev/null
 }
 
 show_keybinding_menu() {
@@ -576,13 +603,13 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_menu.sh"
 
 show_pdf_tools() {
     local choice
-    choice=$(printf '%s\n' 'Running searches' 'Saved searches' 'Open PDF by name' 'Cancel PDF scan' |
+    choice=$(printf '%s\n' 'Running searches' 'Saved searches' 'Open PDF by name' 'Cancel all PDF scans' |
         rofi_menu 'PDF tools' -no-custom) || return 0
     case "$choice" in
         'Running searches') pdf_command --pdf-attach ;;
         'Saved searches') pdf_command --pdf-view ;;
         'Open PDF by name') pdf_command --pdf-open ;;
-        'Cancel PDF scan') pdf_command --pdf-cancel ;;
+        'Cancel all PDF scans') pdf_command --pdf-cancel ;;
     esac
 }
 
@@ -601,16 +628,17 @@ MODE=$(
         "🕒 Open · Recent Files" \
         "🌐 Open · History" \
         "🔖 Open · Bookmarks" \
-        "🪟 Go · Windows" \
-        "🏷️ Go · Marks" \
-        "🖥️ Go · SSH" \
+        "⌨️ Help · Keybindings" \
+        "💀 System · Kill" \
+        "🛑 System · Cancel" \
         "🧮 Tool · Calculator" \
         "🌐 Tool · Translate" \
         "📋 Tool · Clipboard" \
         "📄 Tool · PDF Tools" \
-        "⌨️ Help · Keybindings" \
-        "💀 System · Kill" \
-        "🛑 System · Cancel" |
+        "🪟 Go · Windows" \
+        "🗂️ Go · Workspaces" \
+        "🏷️ Go · Marks" \
+        "🖥️ Go · SSH" |
     rofi_menu "Search" -auto-select -no-custom \
         -theme-str '
 #window {
@@ -897,8 +925,10 @@ PY
         RESULTS_FILE=$(mktemp)
         trap 'rm -f "$RESULTS_FILE"' EXIT
 
-        # Push to background and stream immediately
-        ( fdfind --type f "" "$TARGET_DIR" | shorten_paths > "$RESULTS_FILE" ) &
+        INCLUDE_HIDDEN=no
+        INCLUDE_IGNORED=no
+        search_scope_flags fd SEARCH_FLAGS
+        ( fdfind --type f "${SEARCH_FLAGS[@]}" "" "$TARGET_DIR" | shorten_paths > "$RESULTS_FILE" ) &
         SEARCH_PID=$!
         track_search_pid "$SEARCH_PID"
 
@@ -906,20 +936,38 @@ PY
         LAST_FILTER=""
         while true; do
             # Use a real tab character ($'\t') to separate the typed filter from the result
-            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s"
+                "-kb-row-left" "Control+h"
+                "-kb-custom-2" "Alt+p" "-kb-custom-3" "Alt+a" "-kb-custom-4" "Alt+h" "-kb-custom-5" "Alt+i"
+                "-mesg" "$(search_scope_label) · Enter: open · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored")
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
             # Stream dynamically if search is still running, otherwise read cache
+            ROFI_STATUS=0
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}")
+                SELECTED=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
             else
-                SELECTED=$(cat "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}")
+                SELECTED=$(set +o pipefail; cat "$RESULTS_FILE" | rofi_menu "Files" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
             fi
-
-            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
+            if [[ $ROFI_STATUS == 13 || $ROFI_STATUS == 14 ]]; then
+                toggle_search_scope "$ROFI_STATUS" "$SELECTED"
+                stop_search_worker "$SEARCH_PID"
+                : > "$RESULTS_FILE"
+                search_scope_flags fd SEARCH_FLAGS
+                ( fdfind --type f "${SEARCH_FLAGS[@]}" "" "$TARGET_DIR" | shorten_paths > "$RESULTS_FILE" ) &
+                SEARCH_PID=$!
+                track_search_pid "$SEARCH_PID"
+                continue
+            fi
+            if [[ $ROFI_STATUS != 0 && $ROFI_STATUS != 11 && $ROFI_STATUS != 12 ]] || [[ -z $SELECTED ]]; then
+                if [[ ! -s $RESULTS_FILE ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
+                    notify "No files found in $TARGET_DIR"
+                fi
+                break
+            fi
 
             # Safely split the tab-separated filter from the result list
             if [[ "$SELECTED" == *$'\t'* ]]; then
@@ -934,7 +982,11 @@ PY
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
             LAST_SELECTION="${LAST_SELECTION%$'\r'}"
 
-            ACTION=$(select_action file) || continue
+            case $ROFI_STATUS in
+                0) ACTION=Open ;;
+                11) ACTION='Preview (Rofi)' ;;
+                12) ACTION=$(select_action file) || continue ;;
+            esac
 
             FILES=()
             while IFS= read -r row; do
@@ -945,8 +997,7 @@ PY
             run_file_action "$ACTION" "${FILES[@]}"
         done
 
-        kill "$SEARCH_PID" 2>/dev/null
-        rm -f -- "$CACHE_DIR/search-$SEARCH_PID.pid"
+        stop_search_worker "$SEARCH_PID"
         ;;
 
     *Grep*)
@@ -961,6 +1012,9 @@ PY
         GREP_DISPLAY=$(mktemp)
         trap 'rm -f "$GREP_RAW" "$GREP_DISPLAY"' EXIT
 
+        INCLUDE_HIDDEN=no
+        INCLUDE_IGNORED=no
+        search_scope_flags rg SEARCH_FLAGS
         # Use --line-buffered to force ripgrep to stream lines instantly
         (
             rg \
@@ -973,6 +1027,7 @@ PY
                 --smart-case \
                 --max-filesize 10M \
                 --no-binary \
+                "${SEARCH_FLAGS[@]}" \
                 -- "$QUERY" \
                 "$TARGET_DIR" | \
             tee "$GREP_RAW" | build_grep_rows > "$GREP_DISPLAY"
@@ -985,19 +1040,43 @@ PY
         while true; do
             # Rofi returns the original row index, so duplicate display text
             # still resolves to the correct file and line.
-            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"i")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"i"
+                "-kb-row-left" "Control+h"
+                "-kb-custom-2" "Alt+p" "-kb-custom-3" "Alt+a" "-kb-custom-4" "Alt+h" "-kb-custom-5" "Alt+i"
+                "-mesg" "$(search_scope_label) · Enter: open at match · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored")
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
+            ROFI_STATUS=0
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}")
+                SELECTED=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
             else
-                SELECTED=$(cat "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}")
+                SELECTED=$(set +o pipefail; cat "$GREP_DISPLAY" | rofi_menu "Grep" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
             fi
-
-            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
+            if [[ $ROFI_STATUS == 13 || $ROFI_STATUS == 14 ]]; then
+                toggle_search_scope "$ROFI_STATUS" "$SELECTED"
+                stop_search_worker "$SEARCH_PID"
+                : > "$GREP_RAW"
+                : > "$GREP_DISPLAY"
+                search_scope_flags rg SEARCH_FLAGS
+                (
+                    rg --line-buffered --line-number --no-heading --color=never --max-columns=500 \
+                        --field-match-separator $'\t' --smart-case --max-filesize 10M --no-binary \
+                        "${SEARCH_FLAGS[@]}" -- "$QUERY" "$TARGET_DIR" |
+                    tee "$GREP_RAW" | build_grep_rows > "$GREP_DISPLAY"
+                ) &
+                SEARCH_PID=$!
+                track_search_pid "$SEARCH_PID"
+                continue
+            fi
+            if [[ $ROFI_STATUS != 0 && $ROFI_STATUS != 11 && $ROFI_STATUS != 12 ]] || [[ -z $SELECTED ]]; then
+                if [[ ! -s $GREP_DISPLAY ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
+                    notify "No grep matches for '$QUERY' in $TARGET_DIR"
+                fi
+                break
+            fi
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1014,7 +1093,11 @@ PY
                 LAST_SELECTION=$(sed -n "$((FIRST_INDEX + 1))p" "$GREP_DISPLAY")
             fi
 
-            ACTION=$(select_action grep) || continue
+            case $ROFI_STATUS in
+                0) ACTION='Open at match' ;;
+                11) ACTION='Preview file (Rofi)' ;;
+                12) ACTION=$(select_action grep) || continue ;;
+            esac
 
             GREP_ITEMS=()
             while IFS= read -r row_index; do
@@ -1030,34 +1113,54 @@ PY
             run_grep_action "$ACTION" "${GREP_ITEMS[@]}"
         done
 
-        kill "$SEARCH_PID" 2>/dev/null
-        rm -f -- "$CACHE_DIR/search-$SEARCH_PID.pid"
+        stop_search_worker "$SEARCH_PID"
         ;;
 
     *Documents*)
         RESULTS_FILE=$(mktemp)
         trap 'rm -f "$RESULTS_FILE"' EXIT
 
-        ( fdfind --type f --extension md . "$DOCUMENT_DIR" | shorten_paths > "$RESULTS_FILE" ) &
+        INCLUDE_HIDDEN=no
+        INCLUDE_IGNORED=no
+        search_scope_flags fd SEARCH_FLAGS
+        ( fdfind --type f --extension md "${SEARCH_FLAGS[@]}" . "$DOCUMENT_DIR" | shorten_paths > "$RESULTS_FILE" ) &
         SEARCH_PID=$!
         track_search_pid "$SEARCH_PID"
 
         LAST_SELECTION=""
         LAST_FILTER=""
         while true; do
-            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s")
+            ROFI_ARGS=("-multi-select" "-no-custom" "-async-pre-read" "0" "-format" "f"$'\t'"s"
+                "-kb-row-left" "Control+h"
+                "-kb-custom-2" "Alt+p" "-kb-custom-3" "Alt+a" "-kb-custom-4" "Alt+h" "-kb-custom-5" "Alt+i"
+                "-mesg" "$(search_scope_label) · Enter: open · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored")
 
             # Restore the previous input and selected row after an action.
             [[ -n "$LAST_SELECTION" ]] && ROFI_ARGS+=("-select" "$LAST_SELECTION")
             [[ -n "$LAST_FILTER" ]] && ROFI_ARGS+=("-filter" "$LAST_FILTER")
 
+            ROFI_STATUS=0
             if kill -0 "$SEARCH_PID" 2>/dev/null; then
-                SELECTED=$(tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}")
+                SELECTED=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
             else
-                SELECTED=$(cat "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}")
+                SELECTED=$(set +o pipefail; cat "$RESULTS_FILE" | rofi_menu "Documents" "${ROFI_ARGS[@]}") || ROFI_STATUS=$?
             fi
-
-            [[ -n "$SELECTED" ]] || { notify "Exited $MODE"; break; }
+            if [[ $ROFI_STATUS == 13 || $ROFI_STATUS == 14 ]]; then
+                toggle_search_scope "$ROFI_STATUS" "$SELECTED"
+                stop_search_worker "$SEARCH_PID"
+                : > "$RESULTS_FILE"
+                search_scope_flags fd SEARCH_FLAGS
+                ( fdfind --type f --extension md "${SEARCH_FLAGS[@]}" . "$DOCUMENT_DIR" | shorten_paths > "$RESULTS_FILE" ) &
+                SEARCH_PID=$!
+                track_search_pid "$SEARCH_PID"
+                continue
+            fi
+            if [[ $ROFI_STATUS != 0 && $ROFI_STATUS != 11 && $ROFI_STATUS != 12 ]] || [[ -z $SELECTED ]]; then
+                if [[ ! -s $RESULTS_FILE ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
+                    notify "No Markdown documents found in $DOCUMENT_DIR"
+                fi
+                break
+            fi
 
             if [[ "$SELECTED" == *$'\t'* ]]; then
                 FIRST_LINE="${SELECTED%%$'\n'*}"
@@ -1071,7 +1174,11 @@ PY
             LAST_SELECTION="${CLEAN_SELECTED%%$'\n'*}"
             LAST_SELECTION="${LAST_SELECTION%$'\r'}"
 
-            ACTION=$(select_action file) || continue
+            case $ROFI_STATUS in
+                0) ACTION=Open ;;
+                11) ACTION='Preview (Rofi)' ;;
+                12) ACTION=$(select_action file) || continue ;;
+            esac
 
             FILES=()
             while IFS= read -r row; do
@@ -1082,8 +1189,7 @@ PY
             run_file_action "$ACTION" "${FILES[@]}"
         done
 
-        kill "$SEARCH_PID" 2>/dev/null
-        rm -f -- "$CACHE_DIR/search-$SEARCH_PID.pid"
+        stop_search_worker "$SEARCH_PID"
         ;;
 
     *Cancel*)
@@ -1368,6 +1474,10 @@ PY
             rofi_menu "Windows" -auto-select |
             awk '{print $1}' |
             xargs -r -I{} wmctrl -i -a {}
+        ;;
+
+    *Workspaces*)
+        "$(dirname -- "${BASH_SOURCE[0]}")/i3_workspace_operator.sh" goto
         ;;
 
     *Marks*)

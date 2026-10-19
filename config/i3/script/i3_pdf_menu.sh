@@ -92,6 +92,17 @@ pdf_record_for_id() {
     jq -c --argjson id "$id" 'select(.id == $id)' "$records" | head -n 1
 }
 
+pdf_preview_text() {
+    local file=$1 content
+    [[ -f "$file" ]] || { notify "PDF no longer exists: $file"; return 1; }
+    # Keep the Rofi list bounded so large PDFs do not stall the X11 menu.
+    content=$(pdftotext "$file" - 2>/dev/null | head -n 1000)
+    [[ -n "$content" ]] || { notify "No extractable text in $(basename -- "$file")"; return 0; }
+    printf '%s\n' "$content" |
+        rofi_menu "PDF text: $(basename -- "$file")" -no-custom \
+            -mesg 'First 1000 lines · Type to filter · Esc: PDF results' >/dev/null || true
+}
+
 pdf_action() {
     local selected=$1 records=$2 record action file page dir id
     local -a ids=() files=()
@@ -105,13 +116,14 @@ pdf_action() {
     file=$(jq -r '.file' <<< "$record")
     page=$(jq -r '.page // empty' <<< "$record")
 
-    action=$(printf '%s\n' 'Open in Sioyek' 'Preview page' 'Open selected PDFs' \
+    action=$(printf '%s\n' 'Open in Sioyek' 'Preview PDF text (Rofi)' 'Quick page preview' 'Open selected PDFs' \
         'Review selected PDFs' 'Review all matching PDFs' 'Open all matching PDFs' 'Open containing directory' \
         'Copy PDF path' 'Copy PDF:page' |
         rofi_menu 'PDF action' -no-custom) || return 0
     case "$action" in
         'Open in Sioyek') pdf_open_record "$record" ;;
-        'Preview page')
+        'Preview PDF text (Rofi)') pdf_preview_text "$file" ;;
+        'Quick page preview')
             [[ -n "$page" ]] || page=1
             local preview
             preview=$(pdftotext -f "$page" -l "$page" "$file" - 2>/dev/null | head -c 6000)

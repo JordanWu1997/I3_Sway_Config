@@ -260,7 +260,7 @@ pdf_show_pages() {
 }
 
 pdf_show_results() {
-    local key=$1 worker=${2:-} selected records display first_line clean_selected row id record file progress
+    local key=$1 worker selected records display first_line clean_selected row id record file progress
     local last_filter='' last_selection='' rofi_status=0
     local -a rofi_args
     PDF_KEY=$key
@@ -269,15 +269,17 @@ pdf_show_results() {
     PDF_LIVE_RECORDS="$PDF_CACHE_DIR/$key.live.jsonl"
     PDF_LIVE_DISPLAY="$PDF_CACHE_DIR/$key.live.rows"
     PDF_META="$PDF_CACHE_DIR/$key.meta.json"
+    PDF_ACTIVE="$PDF_CACHE_DIR/pdf-active-$key.json"
     PDF_PROGRESS="$PDF_CACHE_DIR/$key.progress.json"
     while true; do
+        worker=$(python3 "$PDF_SEARCH_HELPER" status --active "$PDF_ACTIVE" 2>/dev/null) || worker=
         records=$PDF_RECORDS
         display=$PDF_DISPLAY
         rofi_args=(-multi-select -no-custom -format "f"$'\t'"s")
         [[ -n "$last_filter" ]] && rofi_args+=(-filter "$last_filter")
         [[ -n "$last_selection" ]] && rofi_args+=(-select "$last_selection")
         rofi_status=0
-        if [[ -n "$worker" ]] && kill -0 "$worker" 2>/dev/null; then
+        if [[ -n "$worker" ]]; then
             records=$PDF_LIVE_RECORDS
             display=$PDF_LIVE_DISPLAY
             progress=$(jq -r '"Scanned \(.scanned // 0) PDFs · \(.files // 0) matches · \(.skipped // 0) skipped · \(.seconds // 0)s"' "$PDF_PROGRESS" 2>/dev/null) || progress='Starting scan'
@@ -288,7 +290,7 @@ pdf_show_results() {
             } | rofi_menu 'PDF results (scanning)' "${rofi_args[@]}" \
                 -kb-custom-1 'Alt+r' \
                 -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a' \
-                -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+R: refresh · Esc: scan continues") || rofi_status=$?
+                -mesg "$progress · Enter: open · Alt+P: pages · Alt+A: actions · Alt+R: refresh · Esc: scan continues; PDF Search to reattach") || rofi_status=$?
         else
             [[ -f "$display" ]] || { notify 'PDF search ended without results'; break; }
             [[ -s "$display" ]] || {
@@ -339,10 +341,57 @@ pdf_show_results() {
     done
 }
 
+pdf_attach_running() {
+    local include_new=${1:-no} active_json task key pid query mode directory scanned files selected
+    local -a tasks=() rows=() keys=()
+    active_json=$(python3 "$PDF_SEARCH_HELPER" active --cache-dir "$PDF_CACHE_DIR") || {
+        notify 'Could not list running PDF searches'
+        return 1
+    }
+    mapfile -t tasks < <(jq -r '.[] | [.key, (.pid | tostring), .query, .mode, .directory, (.scanned | tostring), (.files | tostring)] | @tsv' <<< "$active_json")
+    if (( ${#tasks[@]} == 0 )); then
+        if [[ "$include_new" == yes ]]; then
+            pdf_search choose
+        else
+            notify 'No PDF searches are running'
+        fi
+        return
+    fi
+    if [[ "$include_new" == yes ]]; then
+        rows+=('Start new PDF search')
+        keys+=('new')
+    fi
+    for task in "${tasks[@]}"; do
+        IFS=$'\t' read -r key pid query mode directory scanned files <<< "$task"
+        case "$mode" in
+            words) mode='All words' ;;
+            phrase) mode='Exact phrase' ;;
+            regex) mode='Regex' ;;
+        esac
+        if [[ "$directory" == "$HOME" ]]; then
+            directory='~'
+        elif [[ "$directory" == "$HOME/"* ]]; then
+            directory="~/${directory#"$HOME/"}"
+        fi
+        rows+=("[$mode] $query  ·  $directory  ·  $scanned scanned  ·  $files PDFs")
+        keys+=("$key")
+    done
+    selected=$(printf '%s\n' "${rows[@]}" |
+        rofi_menu 'Running PDF searches' -no-custom -format i \
+            -mesg 'Enter: attach to search · Esc: back') || return 0
+    [[ $selected =~ ^[0-9]+$ && $selected -lt ${#keys[@]} ]] || return 0
+    key=${keys[selected]}
+    if [[ "$key" == new ]]; then
+        pdf_search choose
+    elif [[ $key =~ ^[0-9a-f]{64}$ ]]; then
+        pdf_show_results "$key"
+    fi
+}
+
 pdf_search() {
     local scope=${1:-choose} batch=${2:-no} query_override=${3:-}
     local directory_override=${4:-} mode_override=${5:-} max_files=${6:--1} force=${7:-no}
-    local directory query mode worker
+    local directory query mode worker attempt
     if [[ -n "$query_override" ]]; then
         query=$query_override
     else
@@ -367,7 +416,7 @@ pdf_search() {
 
     worker=$(python3 "$PDF_SEARCH_HELPER" status --active "$PDF_ACTIVE" 2>/dev/null) || worker=
     if [[ -n "$worker" ]]; then
-        [[ "$batch" == all ]] && notify 'This PDF search is still running' || pdf_show_results "$PDF_KEY" "$worker"
+        [[ "$batch" == all ]] && notify 'This PDF search is still running' || pdf_show_results "$PDF_KEY"
         return 0
     fi
 
@@ -396,7 +445,13 @@ pdf_search() {
         wait "$worker" || { notify 'PDF search failed or was cancelled'; return 1; }
         pdf_open_all "$PDF_RECORDS"
     else
-        pdf_show_results "$PDF_KEY" "$worker"
+        # Let the worker publish its identity before the results view checks it.
+        for (( attempt=0; attempt<20; attempt++ )); do
+            python3 "$PDF_SEARCH_HELPER" status --active "$PDF_ACTIVE" --quiet 2>/dev/null && break
+            kill -0 "$worker" 2>/dev/null || break
+            sleep 0.05
+        done
+        pdf_show_results "$PDF_KEY"
     fi
 }
 
@@ -474,7 +529,8 @@ pdf_open_by_name() {
 
 pdf_command() {
     case ${1:-} in
-        --pdf-search) pdf_search choose ;;
+        --pdf-search) pdf_attach_running yes ;;
+        --pdf-attach) pdf_attach_running ;;
         --pdf-search-default) pdf_search default ;;
         --pdf-search-dir) pdf_search directory ;;
         --pdf-search-all) pdf_search default all ;;

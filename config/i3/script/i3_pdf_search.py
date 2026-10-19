@@ -31,6 +31,18 @@ def process_start(pid):
         return None
 
 
+def live_worker_pid(identity):
+    """Return a worker PID only when its saved process start tick still matches."""
+    try:
+        pid = int(identity["pid"])
+        start = identity["start"]
+        if pid > 0 and start and process_start(pid) == start:
+            return pid
+    except (KeyError, TypeError, ValueError):
+        pass
+    return None
+
+
 def stop_worker(_signum, _frame):
     if child is not None and child.poll() is None:
         child.terminate()
@@ -116,13 +128,16 @@ def scan(args):
     signal.signal(signal.SIGTERM, stop_worker)
     signal.signal(signal.SIGINT, stop_worker)
     active = Path(args.active)
-    identity = {"pid": os.getpid(), "start": process_start(os.getpid())}
+    identity = {"pid": os.getpid(), "start": process_start(os.getpid()),
+                "directory": str(directory), "query": args.query, "mode": args.mode,
+                "max_files": args.max_files,
+                "created": datetime.now(timezone.utc).isoformat()}
     if active.exists():
         try:
             prior = json.loads(active.read_text())
         except (OSError, ValueError, KeyError, TypeError):
             prior = {}
-        if prior.get("pid") and process_start(int(prior["pid"])) == prior.get("start"):
+        if live_worker_pid(prior):
             raise ValueError("This PDF search is already running")
         active.unlink(missing_ok=True)
     with active.open("x", encoding="utf-8") as active_file:
@@ -230,8 +245,8 @@ def cancel(args):
     for active in Path(args.cache_dir).glob("pdf-active-*.json"):
         try:
             identity = json.loads(active.read_text())
-            pid = int(identity["pid"])
-            if process_start(pid) == identity.get("start") and pid != os.getpid():
+            pid = live_worker_pid(identity)
+            if pid and pid != os.getpid():
                 os.kill(pid, signal.SIGTERM)
                 count += 1
             else:
@@ -245,14 +260,47 @@ def cancel(args):
 def status(args):
     try:
         identity = json.loads(Path(args.active).read_text())
-        pid = int(identity["pid"])
-        if process_start(pid) == identity.get("start"):
+        pid = live_worker_pid(identity)
+        if pid:
             if not getattr(args, "quiet", False):
                 print(pid)
             return 0
     except (OSError, ValueError, KeyError, TypeError):
         pass
     return 1
+
+
+def active_searches(args):
+    """List live scans; discard markers left behind by crashed workers."""
+    searches = []
+    cache_dir = Path(args.cache_dir)
+    for active in cache_dir.glob("pdf-active-*.json"):
+        key = active.name.removeprefix("pdf-active-").removesuffix(".json")
+        if not re.fullmatch(r"[0-9a-f]{64}", key):
+            continue
+        try:
+            identity = json.loads(active.read_text())
+            pid = live_worker_pid(identity)
+            if not pid or pid == os.getpid():
+                active.unlink(missing_ok=True)
+                continue
+            progress_path = cache_dir / f"{key}.progress.json"
+            try:
+                progress = json.loads(progress_path.read_text())
+            except (OSError, ValueError, TypeError):
+                progress = {}
+            searches.append({"key": key, "pid": pid,
+                             "query": identity.get("query", "Previous search"),
+                             "directory": identity.get("directory", "Unknown location"),
+                             "mode": identity.get("mode", "words"),
+                             "created": identity.get("created", ""),
+                             "scanned": progress.get("scanned", 0),
+                             "files": progress.get("files", 0)})
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+    print(json.dumps(sorted(searches, key=lambda search: search["created"], reverse=True),
+                     ensure_ascii=False))
+    return 0
 
 
 def main():
@@ -276,9 +324,13 @@ def main():
     canceller.add_argument("--cache-dir", required=True)
     checker = commands.add_parser("status")
     checker.add_argument("--active", required=True)
+    checker.add_argument("--quiet", action="store_true")
+    active = commands.add_parser("active")
+    active.add_argument("--cache-dir", required=True)
     args = parser.parse_args()
     try:
-        return {"scan": scan, "cancel": cancel, "status": status}[args.command](args)
+        return {"scan": scan, "cancel": cancel, "status": status,
+                "active": active_searches}[args.command](args)
     except (OSError, ValueError, re.error) as error:
         print(f"PDF search: {error}", file=sys.stderr)
         return 1

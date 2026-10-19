@@ -576,9 +576,10 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/i3_pdf_menu.sh"
 
 show_pdf_tools() {
     local choice
-    choice=$(printf '%s\n' 'Saved searches' 'Open PDF by name' 'Cancel PDF scan' |
+    choice=$(printf '%s\n' 'Running searches' 'Saved searches' 'Open PDF by name' 'Cancel PDF scan' |
         rofi_menu 'PDF tools' -no-custom) || return 0
     case "$choice" in
+        'Running searches') pdf_command --pdf-attach ;;
         'Saved searches') pdf_command --pdf-view ;;
         'Open PDF by name') pdf_command --pdf-open ;;
         'Cancel PDF scan') pdf_command --pdf-cancel ;;

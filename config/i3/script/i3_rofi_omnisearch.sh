@@ -289,7 +289,8 @@ shortcut_guide_items() {
         'Workspace  |  Next / previous workspace       Super+Tab / Super+Shift+Tab' \
         'Modes      |  System controls                 Ctrl+Alt+S' \
         'Share      |  LocalSend receive               Ctrl+Alt+T then l' \
-        'Share      |  Ranger: send selection          ds' \
+        'Share      |  Ranger: send selection          ,s' \
+        'Share      |  Ranger: receive in this folder  ,r' \
         'Modes      |  Display controls                Super+Shift+X' \
         'Modes      |  Window layout                   Super+Shift+W' \
         'Modes      |  Workspace tools                 Super+Shift+P' \
@@ -482,6 +483,54 @@ select_action() {
     printf '%s\n' "$action"
 }
 
+preview_plain_file() {
+    local file=$1 level=0 status=0 limit prompt message has_more=no
+    # Inspect only enough lines to decide whether expanding would reveal more.
+    awk 'NR > 1000 { exit 1 }' "$file" || has_more=yes
+
+    while true; do
+        status=0
+        if (( level == 0 )); then
+            limit=1000
+            prompt="File content: $(basename -- "$file")"
+            if [[ $has_more == yes ]]; then
+                message='First 1000 lines · Enter: full file · Esc: results · Alt+B: Search'
+            else
+                message='Complete file · Enter or Esc: results · Alt+B: Search'
+            fi
+        else
+            limit=0
+            prompt="Full file: $(basename -- "$file")"
+            message='Complete file · Type to filter · Enter: results · Esc: first 1000 lines · Alt+B: Search'
+        fi
+
+        # Stream the full view into Rofi and keep the first line selected.
+        (set +o pipefail
+            awk -v max="$limit" '
+                max > 0 && NR > max { exit }
+                {
+                    content = $0
+                    sub(/\r$/, "", content)
+                    if (max > 0 && length(content) > 500)
+                        content = substr(content, 1, 500) "…"
+                    printf "%7d │ %s\n", NR, content
+                }
+            ' "$file" |
+                rofi_menu "$prompt" -no-custom -selected-row 0 -async-pre-read 1 \
+                    -mesg "$message" >/dev/null
+        ) || status=$?
+        global_back_requested && return 42
+
+        if (( level == 0 )) && [[ $has_more == yes && $status == 0 ]]; then
+            level=1
+        elif (( level == 1 )) && (( status != 0 )); then
+            level=0
+        else
+            return 0
+        fi
+    done
+}
+
 run_file_action() {
     local action="$1"
     shift
@@ -494,9 +543,8 @@ run_file_action() {
             local file encoding mime size choice
             for file in "${files[@]}"; do
                 [[ -r $file ]] || { notify "File is no longer readable: $file"; continue; }
-                # Limit Rofi content preview to 1000 lines to prevent X11 freeze
                 if [[ "${file,,}" == *.pdf ]]; then
-                    pdftotext "$file" - | head -n 1000 | rofi_menu "PDF View"
+                    pdf_preview_text "$file" '' 'results'
                     global_back_requested && return 42
                 else
                     encoding=$(file --brief --mime-encoding -- "$file" 2>/dev/null) || encoding=binary
@@ -511,8 +559,7 @@ run_file_action() {
                                 }
                         run_file_action "$choice" "$file"
                     else
-                        head -n 1000 -- "$file" | rofi_menu "File Content" -no-custom \
-                            -mesg "First 1000 lines · $(basename -- "$file") · Esc: results · Alt+B: Search"
+                        preview_plain_file "$file"
                         global_back_requested && return 42
                     fi
                 fi

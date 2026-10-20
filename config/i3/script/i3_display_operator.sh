@@ -303,113 +303,168 @@ auto_adjust () {
     fi
 }
 
+# Keep output selection predictable: one connected output is selected silently,
+# while two or more outputs require an explicit choice. Every following prompt
+# names the target so the skipped step is still visible to the user.
+choose_connected_display () {
+    local operation=$1 selected
+    local -a displays=()
+    mapfile -t displays < <(awk '$2 == "connected" {print $1}' <<< "$XRANDR_QUERY")
+    if (( ${#displays[@]} == 0 )); then
+        notify-send -u critical "Display change failed" "No connected outputs" --icon="$ICON" || true
+        return 1
+    fi
+    DISPLAY_AUTO_SELECTED=no
+    if (( ${#displays[@]} == 1 )); then
+        SELECTED_DISPLAY=${displays[0]}
+        DISPLAY_AUTO_SELECTED=yes
+        return 0
+    fi
+    selected=$(printf '%s\n' "${displays[@]}" |
+        rofi -dmenu -i -no-custom -p "$operation · Select output") || return 1
+    [[ -n $selected ]] || return 1
+    SELECTED_DISPLAY=$selected
+}
+
+display_target_hint () {
+    if [[ $DISPLAY_AUTO_SELECTED == yes ]]; then
+        printf 'Only connected output: %s' "$SELECTED_DISPLAY"
+    else
+        printf 'Target output: %s' "$SELECTED_DISPLAY"
+    fi
+}
+
+# An active output has a geometry token such as 1920x1080+0+0.
+active_output_geometry () {
+    awk -v output="$1" '
+        $1 == output && $2 == "connected" {
+            for (i = 3; i <= NF; i++) {
+                if ($i ~ /^[0-9]+x[0-9]+[+-][0-9]+[+-][0-9]+$/) {
+                    print $i
+                    exit
+                }
+            }
+        }
+    ' <<< "$XRANDR_QUERY"
+}
+
+# Preserve simple arithmetic in custom coordinates, but reject other bc input.
+evaluate_coordinate () {
+    local value
+    [[ $1 =~ ^[[:space:]0-9+*/().-]+$ && $1 =~ [0-9] ]] || return 1
+    value=$(printf 'scale=2; %s\n' "$1" | bc -l 2>/dev/null) || return 1
+    [[ $value =~ ^[-+]?([0-9]+([.][0-9]*)?|[.][0-9]+)$ ]] || return 1
+    printf '%.0f\n' "$value"
+}
+
 select_display_mode () {
-    # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    DISPLAY_NLS=($(xrandr | awk '$0~/ connected/ {print NR}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[MODE] Select DISPLAY')
-    if [[ -z "${SELECTED_DISPLAY}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
+    local selected_mode
+    local -a modes=()
+    choose_connected_display 'Resolution' || return 1
+    mapfile -t modes < <(awk -v output="$SELECTED_DISPLAY" '
+        $1 == output && $2 == "connected" {in_output = 1; next}
+        in_output && $2 ~ /^(connected|disconnected)$/ {exit}
+        in_output && $1 ~ /^[0-9]+x[0-9]+/ {print $1}
+    ' <<< "$XRANDR_QUERY")
+    if (( ${#modes[@]} == 0 )); then
+        notify-send -u critical "Display change failed" "No modes for $SELECTED_DISPLAY" --icon="$ICON" || true
         return 1
     fi
-    # Select DISPLAY mode
-    SELECTED_DISPLAY_ID=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | awk -v SELECTED_DISPLAY="${SELECTED_DISPLAY}" '$1 == SELECTED_DISPLAY {print NR}')
-    AWK_START=$(expr ${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID} - 1)]} + 1)
-    if [[ ${SELECTED_DISPLAY_ID} == ${#DISPLAYS[@]} ]]; then
-        AWK_END=$(xrandr | wc -l)
+    selected_mode=$(printf '%s\n' "${modes[@]}" 'off' |
+        rofi -dmenu -i -no-custom -p "Resolution · $SELECTED_DISPLAY" \
+            -mesg "$(display_target_hint)") || return 1
+    [[ -n $selected_mode ]] || return 1
+    if [[ $selected_mode == off ]]; then
+        display_run "$SELECTED_DISPLAY disabled" xrandr --output "$SELECTED_DISPLAY" --off
     else
-        AWK_END=${DISPLAY_NLS[$(expr ${SELECTED_DISPLAY_ID})]}
-    fi
-    DISPLAY_MODES=$(xrandr | awk -v start_NL="${AWK_START}" -v end_NL="${AWK_END}" 'NR >= start_NL && NR < end_NL {print $1}')
-    if [[ -z "${DISPLAY_MODES}" ]]; then
-        # Early stop
-        echo "[ERROR] NO Available DISPLAY Mode for ${SELECTED_DISPLAY}. Exiting ..."
-        return 1
-    fi
-    # Add "off" option
-    SELECTED_DISPLAY_MODE=$(echo "${DISPLAY_MODES[*]} off" | tr ' ' '\n' | rofi -dmenu -i -p "Select ${SELECTED_DISPLAY} mode")
-    if [[ -z "${SELECTED_DISPLAY_MODE}" ]]; then
-        echo "[INFO] No display mode selected. Exiting ..."
-        return 1
-    fi
-    if [[ ${SELECTED_DISPLAY_MODE} == 'off' ]]; then
-        display_run "${SELECTED_DISPLAY} disabled" xrandr --output "${SELECTED_DISPLAY}" --off
-    else
-        display_run "${SELECTED_DISPLAY} set to ${SELECTED_DISPLAY_MODE}" xrandr --output "${SELECTED_DISPLAY}" --mode "${SELECTED_DISPLAY_MODE}"
+        display_run "$SELECTED_DISPLAY set to $selected_mode" xrandr --output "$SELECTED_DISPLAY" --mode "$selected_mode"
     fi
 }
 
 select_display_position () {
-    # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[POSITION] Select DISPLAY')
-    if [[ -z "${SELECTED_DISPLAY}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
-        return
+    local geometry current_position choice index reference direction input_pos x_expr y_expr pos_x pos_y
+    local -a rows=() directions=() references=() active_displays=()
+    choose_connected_display 'Position' || return 1
+    geometry=$(active_output_geometry "$SELECTED_DISPLAY")
+    if [[ ! $geometry =~ ^([0-9]+)x([0-9]+)([+-][0-9]+)([+-][0-9]+)$ ]]; then
+        notify-send -u critical "Display change failed" "Enable $SELECTED_DISPLAY before moving it" --icon="$ICON" || true
+        return 1
     fi
-    # Input DISPLAY position
-    INPUT_POS=$(xrandr | grep ' connected' | rofi -dmenu -i -p "Set ${SELECTED_DISPLAY} Position (x,y)")
-    if [[ -z "${INPUT_POS}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY Position for ${SELECTED_DISPLAY} is set. Exiting ..."
-        return
-    fi
-    INPUT_POS_X=$(echo "${INPUT_POS}" | cut -d, -f1)
-    INPUT_POS_Y=$(echo "${INPUT_POS}" | cut -d, -f2)
-    POS_X=$(printf "%.0f" $(echo "scale=2; ${INPUT_POS_X}" | bc -l))
-    POS_Y=$(printf "%.0f" $(echo "scale=2; ${INPUT_POS_Y}" | bc -l))
-    display_run "${SELECTED_DISPLAY} moved to ${POS_X}x${POS_Y}" xrandr --output "${SELECTED_DISPLAY}" --pos "${POS_X}x${POS_Y}"
+    current_position="${BASH_REMATCH[3]},${BASH_REMATCH[4]}"
+    rows=("Keep current ($current_position)" 'Custom X,Y')
+    directions=('keep' 'custom')
+    references=('' '')
+    mapfile -t active_displays < <(awk '$2 == "connected" {print $1}' <<< "$XRANDR_QUERY")
+    for reference in "${active_displays[@]}"; do
+        [[ $reference == "$SELECTED_DISPLAY" ]] && continue
+        [[ -n $(active_output_geometry "$reference") ]] || continue
+        rows+=("Right of $reference" "Left of $reference" "Above $reference" "Below $reference")
+        directions+=(right-of left-of above below)
+        references+=("$reference" "$reference" "$reference" "$reference")
+    done
+    choice=$(printf '%s\n' "${rows[@]}" |
+        rofi -dmenu -i -no-custom -format i -p "Position · $SELECTED_DISPLAY" \
+            -mesg "$(display_target_hint) · Current: $current_position") || return 0
+    [[ $choice =~ ^[0-9]+$ && $choice -lt ${#directions[@]} ]] || return 1
+    index=$choice
+    direction=${directions[index]}
+    case $direction in
+        keep) return 0 ;;
+        custom)
+            input_pos=$(rofi -dmenu -p "Position · $SELECTED_DISPLAY (X,Y)" \
+                -mesg "Current: $current_position · Example: 1920,0 · Esc: cancel" </dev/null) || return 0
+            [[ -n $input_pos ]] || return 0
+            [[ $input_pos == *,* && ${input_pos#*,} != *,* ]] || {
+                notify-send -u critical "Display change failed" "Enter two coordinates as X,Y" --icon="$ICON" || true
+                return 1
+            }
+            x_expr=${input_pos%%,*}
+            y_expr=${input_pos#*,}
+            pos_x=$(evaluate_coordinate "$x_expr") && pos_y=$(evaluate_coordinate "$y_expr") || {
+                notify-send -u critical "Display change failed" "Invalid position: $input_pos" --icon="$ICON" || true
+                return 1
+            }
+            display_run "$SELECTED_DISPLAY moved to ${pos_x}x${pos_y}" \
+                xrandr --output "$SELECTED_DISPLAY" --pos "${pos_x}x${pos_y}"
+            ;;
+        *)
+            display_run "$SELECTED_DISPLAY placed $direction ${references[index]}" \
+                xrandr --output "$SELECTED_DISPLAY" "--$direction" "${references[index]}"
+            ;;
+    esac
 }
 
 select_display_as_primary () {
-    # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[PRIMARY] Select DISPLAY as primary')
-    if [[ -z "${SELECTED_DISPLAY}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
-        return
-    fi
-    display_run "${SELECTED_DISPLAY} is primary" xrandr --output "${SELECTED_DISPLAY}" --primary
+    choose_connected_display 'Primary' || return 1
+    display_run "$SELECTED_DISPLAY is primary" xrandr --output "$SELECTED_DISPLAY" --primary
 }
 
 select_display_scale () {
-    # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[SCALE] Select DISPLAY')
-    if [[ -z "${SELECTED_DISPLAY}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
-        return
-    fi
-    # Select scale
-    SELECTED_SCALE=$(rofi -dmenu -p 'Set DISPLAY scale')
-    [[ -n $SELECTED_SCALE ]] || return 1
-    if [[ ! $SELECTED_SCALE =~ ^([0-9]+([.][0-9]+)?|[.][0-9]+)$ ]] ||
-        ! awk -v value="$SELECTED_SCALE" 'BEGIN {exit !(value > 0)}'; then
+    local selected_scale
+    choose_connected_display 'Scale' || return 1
+    selected_scale=$(rofi -dmenu -p "Scale · $SELECTED_DISPLAY" \
+        -mesg "$(display_target_hint) · Enter a positive value, e.g. 1 or 1.25" </dev/null) || return 0
+    [[ -n $selected_scale ]] || return 0
+    if [[ ! $selected_scale =~ ^([0-9]+([.][0-9]+)?|[.][0-9]+)$ ]] ||
+        ! awk -v value="$selected_scale" 'BEGIN {exit !(value > 0)}'; then
         notify-send -u critical "Display change failed" "Scale must be a positive number" --icon="$ICON" || true
         return 1
     fi
-    display_run "${SELECTED_DISPLAY} scaled to ${SELECTED_SCALE}" xrandr --output "${SELECTED_DISPLAY}" --scale "${SELECTED_SCALE}x${SELECTED_SCALE}"
+    display_run "$SELECTED_DISPLAY scaled to $selected_scale" \
+        xrandr --output "$SELECTED_DISPLAY" --scale "${selected_scale}x${selected_scale}"
 }
 
 select_display_orientation () {
-    # Select DISPLAY
-    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[ORIENTATION] Select DISPLAY')
-    if [[ -z "${SELECTED_DISPLAY}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
-        return
-    fi
-    # Select orientation
-    SELECTED_ORIENTATION=$(echo 'normal left right inverted' | tr ' ' '\n' | rofi -dmenu -i -auto-select -p 'Select DISPLAY orientation')
-    if [[ -n "${SELECTED_ORIENTATION}" ]]; then
-        display_run "${SELECTED_DISPLAY} rotated ${SELECTED_ORIENTATION}" xrandr --output "${SELECTED_DISPLAY}" --rotate "${SELECTED_ORIENTATION}"
-    fi
+    local orientation
+    choose_connected_display 'Orientation' || return 1
+    orientation=$(printf '%s\n' normal left right inverted |
+        rofi -dmenu -i -no-custom -p "Orientation · $SELECTED_DISPLAY" \
+            -mesg "$(display_target_hint)") || return 0
+    [[ -n $orientation ]] || return 0
+    display_run "$SELECTED_DISPLAY rotated $orientation" \
+        xrandr --output "$SELECTED_DISPLAY" --rotate "$orientation"
 }
+
 
 select_input_to_output () {
     # Select INPUT device
@@ -427,14 +482,8 @@ select_input_to_output () {
         echo "[ERROR] Could not parse INPUT ID. Exiting ..."
         return
     fi
-    # Select OUTPUT display
-    DISPLAYS=($(xrandr | awk '$0~/ connected/ {print $1}'))
-    SELECTED_DISPLAY=$(echo "${DISPLAYS[*]}" | tr ' ' '\n' | rofi -dmenu -i -auto-select -p '[MAPPING] Select OUTPUT display')
-    if [[ -z "${SELECTED_DISPLAY}" ]]; then
-        # Early stop
-        echo "[ERROR] NO DISPLAY is selected. Exiting ..."
-        return
-    fi
+    # Select OUTPUT display; a single connected output is chosen automatically.
+    choose_connected_display 'Map pointer' || return 1
     # Execute mapping
     display_run "Input ID ${INPUT_ID} mapped to ${SELECTED_DISPLAY}" xinput map-to-output "${INPUT_ID}" "${SELECTED_DISPLAY}"
 }

@@ -288,6 +288,8 @@ shortcut_guide_items() {
         'Workspace  |  Move window to workspace 1-10   Super+Shift+1-0' \
         'Workspace  |  Next / previous workspace       Super+Tab / Super+Shift+Tab' \
         'Modes      |  System controls                 Ctrl+Alt+S' \
+        'Share      |  LocalSend receive               Ctrl+Alt+T then l' \
+        'Share      |  Ranger: send selection          ds' \
         'Modes      |  Display controls                Super+Shift+X' \
         'Modes      |  Window layout                   Super+Shift+W' \
         'Modes      |  Workspace tools                 Super+Shift+P' \

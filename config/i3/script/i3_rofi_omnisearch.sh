@@ -1032,9 +1032,8 @@ MODE=$(
         "🕒 Open · Recent Files" \
         "🌐 Open · History" \
         "🔖 Open · Bookmarks" \
-        "💀 System · Kill" \
-        "🛑 System · Cancel" \
         "🧹 System · Cache Cleanup" \
+        "💀 System · Kill" \
         "🧮 Tool · Calculator" \
         "🌐 Tool · Translate" \
         "📋 Tool · Clipboard" \
@@ -1043,6 +1042,7 @@ MODE=$(
         "🗂️ Go · Workspaces" \
         "🏷️ Go · Marks" \
         "🖥️ Go · SSH" \
+        "🛑 System · Cancel" \
         "⌨️ Help · Keybindings" |
     rofi_menu "Search" -auto-select -no-custom \
         -mesg 'Enter: open · Esc: close Omnisearch' \
@@ -1052,7 +1052,7 @@ MODE=$(
     children: [top-space, mainbox, bottom-space];
 }
 #mainbox { expand: false; }
-#listview { lines: 11; columns: 2; }
+#listview { lines: 10; columns: 2; }
 top-space, bottom-space { expand: true; }
 '
 )

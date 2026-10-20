@@ -61,6 +61,22 @@ workspace_prev_WS_NUM () {
     fi
 }
 
+# Show the mode bar while choosing a workspace, then restore its prior state.
+workspace_rofi () {
+    local previous_state rofi_status
+    previous_state=$(i3-msg -t get_bar_config bar_mode 2>/dev/null |
+        jq -er '.hidden_state | select(. == "show" or . == "hide")' 2>/dev/null) || previous_state=
+    if [[ $previous_state == hide ]]; then
+        i3-msg 'bar hidden_state show bar_mode' >/dev/null || true
+    fi
+    rofi "$@"
+    rofi_status=$?
+    if [[ $previous_state == hide ]]; then
+        i3-msg 'bar hidden_state hide bar_mode' >/dev/null || true
+    fi
+    return "$rofi_status"
+}
+
 workspace_operation () {
     case $1 in
         # For current workspace
@@ -80,42 +96,32 @@ workspace_operation () {
             ;;
         # For selected workspace
         "goto")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Go to WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Go to WS")
             if [[ ! -z ${WS} ]]; then
                 i3-msg "workspace \"$WS\""
             fi
             ;;
         "goto_with_input")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Go to WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Go to WS")
             if [[ ! -z ${WS} ]]; then
                 i3-msg "workspace \"$WS\""
             fi
             ;;
         "move_container_not_focus")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD to WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD to WS")
             if [[ ! -z ${WS} ]]; then
                 i3-msg "move container to workspace \"$WS\""
             fi
             ;;
         "move_container")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD and focus to")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Move WD and focus to")
             if [[ ! -z ${WS} ]]; then
                 i3-msg "move container to workspace \"$WS\""
                 i3-msg "workspace \"$WS\""
             fi
             ;;
         "move_container_with_input")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Move WD and focus to")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Move WD and focus to")
             if [[ ! -z ${WS} ]]; then
                 i3-msg "move container to workspace \"$WS\""
                 i3-msg "workspace \"$WS\""
@@ -133,17 +139,13 @@ workspace_operation () {
             i3-msg "workspace \"$CURRENT_WS_NAME\""
             ;;
         "swap")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Swap with WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Swap with WS")
             if [[ ! -z ${WS} ]]; then
                 i3-workspace-swap -d "$WS"
             fi
             ;;
         "kill")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Kill WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Kill WS")
             if [[ ! -z ${WS} ]]; then
                 i3-msg "workspace \"$WS\""
                 i3-resurrect save
@@ -152,26 +154,19 @@ workspace_operation () {
             fi
             ;;
         "save")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Save WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Save WS")
             if [[ ! -z ${WS} ]]; then
                 i3-resurrect save -w "$WS"
             fi
             ;;
         "restore")
-            HIDDEN_STATE=$(awk '$0~/default_i3bar_hidden_state/' ~/.config/i3/config | cut -d' ' -f3)
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Restore WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Restore WS")
             if [[ ! -z ${WS} ]]; then
                 i3-resurrect restore -w "$WS"
             fi
             ;;
         "swap_with_input")
-            i3-msg bar hidden_state show bar_mode
-            WS=$(rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Swap with WS")
-            i3-msg bar hidden_state hide bar_mode
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Swap with WS")
             if [[ ! -z ${WS} ]]; then
                 i3-workspace-swap -d "$WS"
             fi

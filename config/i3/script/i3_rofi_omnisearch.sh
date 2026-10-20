@@ -241,6 +241,23 @@ rofi_menu() {
     return "$status"
 }
 
+# Keep the mode bar visible during the workspace picker without changing
+# its visibility after the picker closes.
+workspace_rofi_menu() {
+    local previous_state rofi_status
+    previous_state=$(i3-msg -t get_bar_config bar_mode 2>/dev/null |
+        jq -er '.hidden_state | select(. == "show" or . == "hide")' 2>/dev/null) || previous_state=
+    if [[ $previous_state == hide ]]; then
+        i3-msg 'bar hidden_state show bar_mode' >/dev/null || true
+    fi
+    rofi_menu "$@"
+    rofi_status=$?
+    if [[ $previous_state == hide ]]; then
+        i3-msg 'bar hidden_state hide bar_mode' >/dev/null || true
+    fi
+    return "$rofi_status"
+}
+
 # A short, searchable guide. Keep these labels in sync with the i3 config.
 # The separate "All keybindings" view is generated from config files at runtime.
 shortcut_guide_items() {
@@ -1738,11 +1755,9 @@ PY
         ;;
 
     *Workspaces*)
-        i3-msg bar hidden_state show bar_mode >/dev/null
-        WORKSPACE=$(rofi_menu 'Go to WS' -config "$HOME/.config/rofi/config_i3workspace.rasi" \
+        WORKSPACE=$(workspace_rofi_menu 'Go to WS' -config "$HOME/.config/rofi/config_i3workspace.rasi" \
             -input "$HOME/.config/i3/share/i3_workspace_name_list.txt")
         WORKSPACE_STATUS=$?
-        i3-msg bar hidden_state hide bar_mode >/dev/null
         if [[ $WORKSPACE_STATUS == 0 && -n "$WORKSPACE" ]]; then
             i3-msg "workspace \"$WORKSPACE\"" >/dev/null
         else

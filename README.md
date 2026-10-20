@@ -327,7 +327,7 @@ Note: the term "window" used in this configuration actually refers to "container
     - __Terminal Mode (`[t]`)__
       - Gnome-terminal, kitty, alacrity and other terminals
 - __Toolkit Mode (`[Ctrl]` + `[Alt]` + `[t]`)__
-  - Tool script mode e.g., capture screen, keyboard, caffeine, kdeconnect, etc.
+  - Tool script mode e.g., capture screen, keyboard, caffeine, kdeconnect, localsend-cli etc.
     - __Capture Mode__ (`[c]`)
       - Capture color/text/qrcode on screen
     - __Screenshot Mode (`[s]`)__

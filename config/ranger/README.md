@@ -94,6 +94,15 @@ sudo dnf install calibre
   cd ~/Desktop/dragon; make; sudo mv dragon /usr/local/bin/
   ```
 
+### file transfer function with localsend-cli (LAN file transferrer)
+
+- https://github.com/localsend/localsend
+  ```sh
+  wget https://github.com/localsend/localsend/releases/download/v1.18.2/LocalSend-CLI-1.18.2-linux-x86-64.tar.gz ~/Desktop/
+  cd ~/Desktop; tar -xzf LocalSend-CLI-1.18.2-linux-x86-64.tar.gz
+  tar -xzvf LocalSend-CLI-1.18.2-linux-x86-64.tar.gz; sudo mv local-cli /usr/local/bin/
+  ```
+
 ### archive function (extract/compress files)
 
 - https://github.com/maximtrp/ranger-archives

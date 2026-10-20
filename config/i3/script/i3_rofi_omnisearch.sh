@@ -47,6 +47,115 @@ global_back_requested() {
 }
 
 # ============================================================
+# Cache cleanup
+# ============================================================
+
+show_cache_cleanup() {
+    local helper="$(dirname -- "${BASH_SOURCE[0]}")/i3_omnisearch_cache.py"
+    local snapshot choice confirmation status index id locked size count total summary
+    local result deleted skipped failed filter='' focus=0
+    local -a rows=() ids=() entry_ids=() entry_labels=() entry_locked=() entry_sizes=()
+    local -A marked=() present=()
+
+    while true; do
+        snapshot=$(python3 "$helper" list --cache-dir "$CACHE_DIR") || {
+            notify 'Could not read Omnisearch cache'
+            return 1
+        }
+        mapfile -t entry_ids < <(jq -r '.[].id' <<< "$snapshot")
+        mapfile -t entry_labels < <(jq -r '.[].label' <<< "$snapshot")
+        mapfile -t entry_locked < <(jq -r '.[].locked' <<< "$snapshot")
+        mapfile -t entry_sizes < <(jq -r '.[].size' <<< "$snapshot")
+        if (( ${#entry_ids[@]} == 0 )); then
+            printf '%s\n' 'No stored Omnisearch cache' |
+                rofi_menu 'Cache cleanup' -no-custom \
+                    -mesg 'Esc: Search · Alt+B: Search' >/dev/null
+            return 0
+        fi
+
+        rows=()
+        present=()
+        for index in "${!entry_ids[@]}"; do
+            id=${entry_ids[index]}
+            present["$id"]=1
+            if [[ ${entry_locked[index]} == true ]]; then
+                rows+=("${entry_labels[index]}")
+            elif [[ -v marked["$id"] ]]; then
+                rows+=("☑ ${entry_labels[index]}")
+            else
+                rows+=("☐ ${entry_labels[index]}")
+            fi
+        done
+        for id in "${!marked[@]}"; do
+            [[ -v present["$id"] ]] || unset 'marked[$id]'
+        done
+
+        status=0
+        choice=$(printf '%s\n' "${rows[@]}" |
+            rofi_menu 'Cache cleanup' -no-custom -format "f"$'\t'"i" \
+                -kb-custom-1 'Control+space' -kb-accept-entry 'Return,KP_Enter' \
+                -filter "$filter" -selected-row "$focus" \
+                -mesg 'Ctrl+Space: mark/unmark · Enter: review marks (or current row) · 🔒: protected · Esc: Search · Alt+B: Search') || status=$?
+        [[ $status == 15 ]] && return 42
+        [[ $status == 0 || $status == 10 ]] || return 0
+        [[ $choice == *$'\t'* ]] || continue
+        filter=${choice%$'\t'*}
+        index=${choice##*$'\t'}
+        [[ $index =~ ^[0-9]+$ && $index -lt ${#entry_ids[@]} ]] || continue
+        focus=$index
+        id=${entry_ids[index]}
+        if [[ ${entry_locked[index]} == true ]]; then
+            notify 'Running search cache is protected'
+            continue
+        fi
+        if [[ $status == 10 ]]; then
+            if [[ -v marked["$id"] ]]; then
+                unset 'marked[$id]'
+            else
+                marked["$id"]=1
+            fi
+            continue
+        fi
+
+        if (( ${#marked[@]} == 0 )); then
+            marked["$id"]=1
+        fi
+        ids=()
+        total=0
+        for index in "${!entry_ids[@]}"; do
+            id=${entry_ids[index]}
+            if [[ -v marked["$id"] ]]; then
+                ids+=("$id")
+                ((total+=entry_sizes[index]))
+            fi
+        done
+        (( ${#ids[@]} > 0 )) || continue
+        summary=$(numfmt --to=iec-i --suffix=B "$total" 2>/dev/null) || summary="$total bytes"
+
+        status=0
+        confirmation=$(printf '%s\n' 'Delete selected cache entries' 'Back to cache list' |
+            rofi_menu "Clean ${#ids[@]} entries ($summary)?" -no-custom \
+                -mesg 'Only Omnisearch cache is deleted · Esc: cache list · Alt+B: Search') || status=$?
+        [[ $status == 15 ]] && return 42
+        [[ $status == 0 && $confirmation == 'Delete selected cache entries' ]] || continue
+
+        result=$(python3 "$helper" --cache-dir "$CACHE_DIR" delete "${ids[@]}") || {
+            notify 'Could not clean Omnisearch cache'
+            return 1
+        }
+        deleted=$(jq -r '.deleted' <<< "$result")
+        skipped=$(jq -r '.skipped' <<< "$result")
+        failed=$(jq -r '.failed' <<< "$result")
+        size=$(jq -r '.bytes' <<< "$result")
+        summary=$(numfmt --to=iec-i --suffix=B "$size" 2>/dev/null) || summary="$size bytes"
+        notify "Cleaned $deleted cache entries ($summary). Skipped $skipped; failed $failed."
+        marked=()
+        filter=''
+        focus=0
+    done
+}
+
+# ============================================================
 # Global Process Tracking
 # ============================================================
 
@@ -925,6 +1034,7 @@ MODE=$(
         "🔖 Open · Bookmarks" \
         "💀 System · Kill" \
         "🛑 System · Cancel" \
+        "🧹 System · Cache Cleanup" \
         "🧮 Tool · Calculator" \
         "🌐 Tool · Translate" \
         "📋 Tool · Clipboard" \
@@ -942,7 +1052,7 @@ MODE=$(
     children: [top-space, mainbox, bottom-space];
 }
 #mainbox { expand: false; }
-#listview { lines: 10; columns: 2; }
+#listview { lines: 11; columns: 2; }
 top-space, bottom-space { expand: true; }
 '
 )
@@ -954,6 +1064,11 @@ top-space, bottom-space { expand: true; }
 # ============================================================
 
 case "$MODE" in
+
+    *Cache\ Cleanup*)
+        show_cache_cleanup
+        BACK_TO_SEARCH=yes
+        ;;
 
     *Apps*)
         # Invokes Rofi's native application launcher directly

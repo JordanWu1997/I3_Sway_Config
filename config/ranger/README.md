@@ -98,8 +98,8 @@ sudo dnf install calibre
 
 - https://github.com/localsend/localsend
   ```sh
-  wget https://github.com/localsend/localsend/releases/download/v1.18.2/LocalSend-CLI-1.18.2-linux-x86-64.tar.gz ~/Desktop/
-  cd ~/Desktop; tar -xzf LocalSend-CLI-1.18.2-linux-x86-64.tar.gz
+  cd ~/Downloads
+  wget https://github.com/localsend/localsend/releases/download/v1.18.2/LocalSend-CLI-1.18.2-linux-x86-64.tar.gz
   tar -xzvf LocalSend-CLI-1.18.2-linux-x86-64.tar.gz; sudo mv local-cli /usr/local/bin/
   ```
 

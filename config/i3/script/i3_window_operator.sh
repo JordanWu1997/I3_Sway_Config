@@ -435,15 +435,15 @@ resize_to_input_and_move_floating_to_input_in_one () {
             menu_specs+=('' '' '')
         else
             if (( can_resize_width )); then
-                menu_items+=('Half workspace width' 'One-third workspace width' 'Two-thirds workspace width' 'Quarter workspace width' 'Three-quarters workspace width')
+                menu_items+=('Half workspace width (1/2)' 'One-third workspace width (1/3)' 'Two-thirds workspace width (2/3)' 'Quarter workspace width (1/4)' 'Three-quarters workspace width (3/4)')
                 menu_specs+=(',,1/2,' ',,1/3,' ',,2/3,' ',,1/4,' ',,3/4,')
             fi
             if (( can_resize_height )); then
-                menu_items+=('Half workspace height' 'One-third workspace height' 'Two-thirds workspace height' 'Quarter workspace height' 'Three-quarters workspace height')
+                menu_items+=('Half workspace height (1/2)' 'One-third workspace height (1/3)' 'Two-thirds workspace height (2/3)' 'Quarter workspace height (1/4)' 'Three-quarters workspace height (3/4)')
                 menu_specs+=(',,,1/2' ',,,1/3' ',,,2/3' ',,,1/4' ',,,3/4')
             fi
             if (( can_resize_width && can_resize_height )); then
-                menu_items+=('Half width and height' 'Two-thirds width and height' 'Set a custom size...')
+                menu_items+=('Half width and height (1/2,1/2)' 'Two-thirds width and height (2/3,2/3)' 'Set a custom size...')
                 menu_specs+=(',,1/2,1/2' ',,2/3,2/3' '')
             elif (( can_resize_width )); then
                 menu_items+=('Set a custom width...')

@@ -92,7 +92,7 @@ toolkit_operation () {
                 kill ${PARCELLITE_PID}
             fi
             # Send stderr to null to prevent "Error converting selection from UTF8_STRING" log spamming
-            i3-msg exec 'parcellite 2> /dev/null'
+            i3-msg exec --no-startup-id 'parcellite 2> /dev/null'
             notify-send -u low "Toolkit Mode" "Parcellite is reloaded" --icon="${ICON}"
             ;;
         'reload_ibus_daemon')
@@ -100,11 +100,11 @@ toolkit_operation () {
             if [[ -n ${IBUS_PID} ]]; then
                 kill ${IBUS_PID}
             fi
-            i3-msg exec 'ibus-daemon -r -d -x 2'
+            i3-msg exec --no-startup-id 'ibus-daemon -r -d -x 2'
             notify-send -u low "Toolkit Mode" "ibus-daemon is reloaded" --icon="${ICON}"
             ;;
         'reload_gestures')
-            i3-msg exec 'libinput-gestures-setup restart'
+            i3-msg exec --no-startup-id 'libinput-gestures-setup restart'
             notify-send -u low "Toolkit Mode" "libinput-gestures is reloaded" --icon="${ICON}"
             ;;
         'show_brave_browser')

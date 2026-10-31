@@ -120,9 +120,9 @@ bar_operation () {
             i3-msg "bar hidden_state hide $BAR_ID"
             ;;
         "bar_reload")
-            if i3-msg exec 'killall i3bar && sleep 0.5' &&
-                i3-msg exec 'i3bar -b bar_status && sleep 0.5' &&
-                i3-msg exec 'i3bar -b bar_mode'; then
+            if i3-msg exec --no-startup-id 'killall i3bar && sleep 0.5' &&
+                i3-msg exec --no-startup-id 'i3bar -b bar_status && sleep 0.5' &&
+                i3-msg exec --no-startup-id 'i3bar -b bar_mode'; then
                 notify-send -u low "Bar Mode" "i3bar restart requested" --icon="$HOME/.config/i3/share/64x64/reload.png" || true
             else
                 notify-send -u critical "Bar Mode" "Could not request i3bar restart" --icon="$HOME/.config/i3/share/64x64/reload.png" || true
@@ -137,9 +137,9 @@ bar_operation () {
             export DISPLAY=:1
             export XAUTHORITY=$HOME/.Xauthority
             # i3-msg
-            if ! { i3-msg exec 'killall i3bar && sleep 0.5' &&
-                i3-msg exec 'i3bar -b bar_status && sleep 0.5' &&
-                i3-msg exec 'i3bar -b bar_mode'; }; then
+            if ! { i3-msg exec --no-startup-id 'killall i3bar && sleep 0.5' &&
+                i3-msg exec --no-startup-id 'i3bar -b bar_status && sleep 0.5' &&
+                i3-msg exec --no-startup-id 'i3bar -b bar_mode'; }; then
                 return 1
             fi
             # Verbose

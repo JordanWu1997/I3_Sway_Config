@@ -32,9 +32,9 @@ attach_to_tmux_session () {
         TERMINAL_OPTIONS="${TERMINAL_OPTIONS} --class floating_terminal"
     fi
     if $(tmux list-sessions | grep -q -w $1); then
-        i3-msg exec "${TERMINAL} ${TERMINAL_OPTIONS} -- tmux attach -t $1"
+        i3-msg exec --no-startup-id "${TERMINAL} ${TERMINAL_OPTIONS} -- tmux attach -t $1"
     else
-        i3-msg exec "${TERMINAL} ${TERMINAL_OPTIONS} -- $1"
+        i3-msg exec --no-startup-id "${TERMINAL} ${TERMINAL_OPTIONS} -- $1"
     fi
 }
 

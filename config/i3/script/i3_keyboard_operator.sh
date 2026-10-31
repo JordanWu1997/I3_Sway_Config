@@ -102,7 +102,7 @@ keyboard_operation () {
             sed -i "s/\+grave/\+tmp/g" ${CONFIG}
             sed -i "s/\+Escape/\+grave/g" ${CONFIG}
             sed -i "s/\+tmp/\+Escape/g" ${CONFIG}
-            i3-msg exec libinput-gestures-setup restart
+            i3-msg exec --no-startup-id libinput-gestures-setup restart
             # Reload
             notify-send -u low "Keyboard Mode" "Swap Esc-related keybindings w/ Grave-related keybindings" --icon=${ICON}
             ;;

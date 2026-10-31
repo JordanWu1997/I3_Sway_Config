@@ -265,7 +265,7 @@ shortcut_guide_items() {
         'Mode use   |  Enter: parent mode (top level: exit)' \
         'Mode use   |  Escape: return to normal keybindings' \
         'Mode use   |  Ctrl+[: exits most modes' \
-        'Mode use   |  Insert/Vim: Ctrl+[ exits; Mouse: Ctrl+[ scrolls' \
+        'Mode use   |  Insert: same key or Ctrl+[ exits; Vim: Ctrl+[ exits; Mouse: Ctrl+[ scrolls' \
         'Mode use   |  Adjustments and batch actions stay open for repeats' \
         'Mode use   |  One-off actions usually exit or return to parent' \
         'Launch     |  Applications                    Super+D' \

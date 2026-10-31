@@ -301,7 +301,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __Insert Mode (`[Ctrl]` + `[Alt]` + `[i]` or `[Winkey]` + `[Ctrl]` + `[i]`)__
-  - Disable i3 keybindings. Press `[Ctrl]`+`[[]` to get i3 keybindings back
+  - i3 stops grabbing keys, so every key reaches the focused app (VMs, remote desktops, app shortcuts that clash with i3 globals). Press the same key again, or `[Ctrl]`+`[[]`, to get i3 keybindings back
 - __Vim Keybinding Mode (`[Winkey]` + `[Ctrl]` + `[[]`)__
   - Enable Vim keybindings for navigation, e.g. h/j/k/l. Press `[Ctrl]` + `[[]` to exit mode
 - __Mouse Mode (`[Ctrl]` + `[Alt]` + `[m]`)__

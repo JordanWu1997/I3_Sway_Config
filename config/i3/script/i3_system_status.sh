@@ -126,18 +126,42 @@ collect_session() {
 # Background components
 # ------------------------------------------------------------------
 
-process_status() {
-    local label=$1 name=$2
-    if running "$name"; then
+# Count instances among the given PIDs. A forked child of a matching process
+# (bash subshells and pipelines keep the parent's command line) is part of the
+# same instance, so only PIDs whose parent is not also in the list are counted.
+count_instances() {
+    local -A pidset=()
+    local pid ppid count=0
+    for pid in "$@"; do pidset[$pid]=1; done
+    for pid in "$@"; do
+        ppid=$(ps -o ppid= -p "$pid" 2>/dev/null) || continue
+        ppid=${ppid//[[:space:]]/}
+        [[ -n ${pidset[$ppid]:-} ]] || count=$((count + 1))
+    done
+    printf '%s\n' "$count"
+}
+
+instance_status() {
+    local label=$1 count=$2
+    if (( count > 1 )); then
+        printf '%s | running ×%s (duplicate)\n' "$label" "$count"
+    elif (( count == 1 )); then
         printf '%s | running\n' "$label"
     else
         printf '%s | stopped\n' "$label"
     fi
 }
 
+process_status() {
+    local label=$1 name=$2
+    local -a pids
+    mapfile -t pids < <(pgrep -u "$(id -u)" -x "$name" 2>/dev/null)
+    instance_status "$label" "$(count_instances "${pids[@]}")"
+}
+
 script_status() {
     local label=$1 script=$2 target pid arg resolved
-    local -a argv
+    local -a argv pids=()
     target=$(readlink -f -- "$SCRIPT_DIR/$script") || {
         printf '%s | stopped\n' "$label"
         return
@@ -151,12 +175,12 @@ script_status() {
             [[ $arg == "$script" || $arg == */"$script" ]] || continue
             resolved=$(readlink -f -- "$arg") || continue
             if [[ $resolved == "$target" ]]; then
-                printf '%s | running\n' "$label"
-                return
+                pids+=("$pid")
+                break
             fi
         done
     done < <(pgrep -u "$(id -u)" -f "$script" || true)
-    printf '%s | stopped\n' "$label"
+    instance_status "$label" "$(count_instances "${pids[@]}")"
 }
 
 collect_health() {
@@ -165,9 +189,12 @@ collect_health() {
     process_status 'Clipboard manager' parcellite
     process_status 'Network tray' nm-applet
     process_status 'Bluetooth tray' blueman-applet
+    # comm names are cut to 15 characters: polkit-gnome-authentication-agent-1
+    process_status 'Auth agent (polkit)' polkit-gnome-au
     process_status 'Input method daemon' ibus-daemon
     process_status 'Compositor process' picom
     process_status 'Autotiling process' autotiling
+    process_status 'Focus flash process' flashfocus
     script_status 'Window automark' i3_automark_daemon.py
     script_status 'Battery warning' i3_battery-popup.sh
     script_status 'Notification log' i3_notify_logger.sh
@@ -186,6 +213,7 @@ needs_attention() {
         $1 == "Audio" && $2 ~ /output (0%|[^·]*\(muted\))/ { print; next }
         $1 == "Screen lock helper" && $2 == "stopped" { print; next }
         $1 == "Notification daemon" && $2 == "stopped" { print; next }
+        $2 ~ /\(duplicate\)/ { print; next }
         $1 == "Battery" && $2 ~ /Discharging/ && match($2, /[0-9]+%/) &&
             substr($2, RSTART, RLENGTH - 1) + 0 <= 20 { print; next }
     '

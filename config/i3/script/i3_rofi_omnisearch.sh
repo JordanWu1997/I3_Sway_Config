@@ -271,6 +271,7 @@ shortcut_guide_items() {
         'Launch     |  Applications                    Super+D' \
         'Launch     |  Commands                        Super+Shift+D' \
         'Launch     |  Omnisearch                      Super+Backslash' \
+        'Launch     |  Keybinding help                 Super+Shift+Slash (?)' \
         'Omnisearch |  Escape: back one layer (Search: close)' \
         'Omnisearch |  Alt+B: return to Search from any menu' \
         'Launch     |  Terminal                        Super+Enter' \
@@ -1075,6 +1076,13 @@ show_pdf_tools() {
         global_back_requested && return 42
     done
 }
+
+# Direct entry from the help key: Esc then continues to Search, as the page hint says.
+if [[ ${1:-} == --keybindings ]]; then
+    shift
+    show_keybinding_menu
+    rm -f -- "$NAV_BACK_FILE"
+fi
 
 if (( $# > 0 )); then
     pdf_command "$@"

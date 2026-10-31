@@ -79,12 +79,13 @@ ${color2}system option mode ${alignr}${color1}[Ctrl]+[Alt]+[s]
 ${color2}reload/restart i3 ${alignr}${color1}[Win]+([Shift])+[r]
 ${color2}app./exec. launcher ${alignr}${color1}[Win]+([Shift])+[d]
 ${color2}window selector ${alignr}${color1}[Alt]+([Shift])+[Tab/q]
-${color2}bindkey cheatsheet ${alignr}${color1}[Win]+[Shift]+[/]
+${color2}keybinding help ${alignr}${color1}[Win]+[Shift]+[/]
+${color2}omnisearch ${alignr}${color1}[Win]+[\]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Workspace / Window]${font}${voffset 5}
 ${color2}navigate to WS ${alignr}${color1}[Win]+[(F)\#]
 ${color2}send WD to WS ${alignr}${color1}[Win]+[Shift]+[(F)\#]
 ${color2}kill focused WD ${alignr}${color1}[Win]+[Shift]+[q]
-${color2}change split direction ${alignr}${color1}[Win]+[q/\]
+${color2}change split direction ${alignr}${color1}[Win]+[q]
 ${color2}tiling/tabbed/stacking ${alignr}${color1}[Win]+[e/w/s]
 ${color2}toggle layouts ${alignr}${color1}[Win]+[Shift]+[e]
 ${color2}navigate to WD ${alignr}${color1}[Win]+[vim-key]
@@ -99,9 +100,9 @@ ${color2}toggle WD titlebar ${alignr}${color1}[Win]+[t]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Floating / Scratchpad]${font}${voffset 5}
 ${color2}floating toggle ${alignr}${color1}[Win]+[Shift]+[Space]
 ${color2}floating focus toggle ${alignr}${color1}[Win]+[Space]
-${color2}move floating WD ${alignr}${color1}[left-click] titlebar
-${color2}kill floating WD ${alignr}${color1}[middle-click] titlebar
-${color2}resize floating WD ${alignr}${color1}[right-click] titlebar
+${color2}move WD ${alignr}${color1}[left-drag] titlebar
+${color2}kill WD ${alignr}${color1}[middle-click] titlebar
+${color2}float/tile toggle ${alignr}${color1}[right-click] titlebar
 ${color2}send WD to SP ${alignr}${color1}[Win]+([Shift])+[-/z]
 ${color2}bring WD to FG ${alignr}${color1}[Win]+([Shift])+[=/g]
 ${voffset 5}${alignc}${color3}${font DroidSanMono Nerd Font:bold:size=11}[Function / Mode]${font}${voffset 5}

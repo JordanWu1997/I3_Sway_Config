@@ -131,7 +131,7 @@ reload_dunst () {
 }
 
 enable_dunst_logger () {
-    i3-msg exec --no-startup-id $I3_SCRIPT/i3_notify_logger.sh $HOME/.config/dunst/log.txt
+    i3-msg -- exec --no-startup-id $I3_SCRIPT/i3_notify_logger.sh $HOME/.config/dunst/log.txt
 }
 
 disable_dunst_logger () {

@@ -47,7 +47,7 @@ set $default_i3bar_fontsize 14
 set $default_i3bar_height 30
 
 # Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
-set $default_i3bar_mode hide
+set $default_i3bar_mode dock
 
 # Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
 set $default_i3bar_position top
@@ -60,7 +60,7 @@ set $default_titlebar_style pixel
 set $default_floating_titlebar_style pixel
 
 # Set border width (set pixel number of border width)
-set $default_border_width 4
+set $default_border_width 5
 
 # Set gap width (ONLY for i3-gaps, but i3-gaps has been merged to i3 in i3 v4.22)
 set $default_inner_gap 0

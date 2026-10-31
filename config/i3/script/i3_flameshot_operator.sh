@@ -102,7 +102,7 @@ main () {
     fi
 
     if [[ "${FLASHFOCUS_ON}" == 1 ]]; then
-        i3-msg exec --no-startup-id flashfocus
+        i3-msg -- exec --no-startup-id flashfocus
     fi
 
     # Restore titlebar/border to defaults

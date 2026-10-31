@@ -171,7 +171,7 @@ case $CHANGE_ITEM in
         rm "$HOME/.config/flashfocus/flashfocus.yml"
         ln -s "$FLASHFOCUS_DIR/flashfocus_$NEW_DEFAULT_VALUE.yml" "$FLASHFOCUS_DIR/flashfocus.yml"
         killall flashfocus
-        i3-msg exec --no-startup-id flashfocus
+        i3-msg -- exec --no-startup-id flashfocus
         ;;
     "flashfocus_startup")
         echo $NEW_DEFAULT_VALUE

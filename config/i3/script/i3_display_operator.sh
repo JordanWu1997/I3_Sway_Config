@@ -85,8 +85,8 @@ show_help_message () {
 reload_conky () {
     # Reload conky
     killall conky; sleep 1
-    i3-msg exec --no-startup-id "conky -c $HOME/.config/conky/conky_config_bindkey"
-    i3-msg exec --no-startup-id "conky -c $HOME/.config/conky/conky_config_system"
+    i3-msg -- exec --no-startup-id "conky -c $HOME/.config/conky/conky_config_bindkey"
+    i3-msg -- exec --no-startup-id "conky -c $HOME/.config/conky/conky_config_system"
 }
 
 reload_misc () {

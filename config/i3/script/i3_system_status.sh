@@ -129,26 +129,63 @@ collect_session() {
 # Count instances among the given PIDs. A forked child of a matching process
 # (bash subshells and pipelines keep the parent's command line) is part of the
 # same instance, so only PIDs whose parent is not also in the list are counted.
+# DISPLAY a process was started with; empty when it has none or is unreadable
+process_display() {
+    tr '\0' '\n' < "/proc/$1/environ" 2>/dev/null | sed -n 's/^DISPLAY=//p' | head -n 1
+}
+
+# Print "<here> <elsewhere>": top-level instances on this display, and on
+# other displays. Another login that was never logged out (e.g. a GNOME
+# session on :2) runs its own tray apps; those are not duplicates here.
+# Processes without a DISPLAY count as here.
 count_instances() {
     local -A pidset=()
-    local pid ppid count=0
+    local pid ppid display here=0 elsewhere=0
     for pid in "$@"; do pidset[$pid]=1; done
     for pid in "$@"; do
         ppid=$(ps -o ppid= -p "$pid" 2>/dev/null) || continue
         ppid=${ppid//[[:space:]]/}
-        [[ -n ${pidset[$ppid]:-} ]] || count=$((count + 1))
+        [[ -z ${pidset[$ppid]:-} ]] || continue
+        display=$(process_display "$pid")
+        if [[ -n $display && -n ${DISPLAY:-} && $display != "$DISPLAY" ]]; then
+            elsewhere=$((elsewhere + 1))
+        else
+            here=$((here + 1))
+        fi
     done
-    printf '%s\n' "$count"
+    printf '%s %s\n' "$here" "$elsewhere"
 }
 
 instance_status() {
-    local label=$1 count=$2
-    if (( count > 1 )); then
-        printf '%s | running ×%s (duplicate)\n' "$label" "$count"
-    elif (( count == 1 )); then
-        printf '%s | running\n' "$label"
+    local label=$1 here elsewhere suffix=
+    read -r here elsewhere <<< "$2"
+    (( elsewhere > 0 )) && suffix=" (+${elsewhere} in other sessions)"
+    if (( here > 1 )); then
+        printf '%s | running ×%s (duplicate)%s\n' "$label" "$here" "$suffix"
+    elif (( here == 1 )); then
+        printf '%s | running%s\n' "$label" "$suffix"
     else
-        printf '%s | stopped\n' "$label"
+        printf '%s | stopped%s\n' "$label" "$suffix"
+    fi
+}
+
+# Other graphical logins of this user that are still open. Their programs keep
+# running (and keep memory) until the session is logged out or terminated.
+other_sessions_status() {
+    local id class type state display list=()
+    command -v loginctl >/dev/null || return 0
+    while read -r id _; do
+        [[ -n $id && $id != "${XDG_SESSION_ID:-}" ]] || continue
+        { read -r class; read -r type; read -r state; read -r display; } < <(
+            loginctl show-session "$id" -p Class -p Type -p State -p Display --value 2>/dev/null)
+        [[ $class == user && $type =~ ^(x11|wayland)$ ]] || continue
+        list+=("$id ($type${display:+ $display}, $state)")
+    done < <(loginctl list-sessions --no-legend 2>/dev/null | awk -v u="$USER" '$3 == u')
+    if (( ${#list[@]} )); then
+        local IFS=,
+        printf 'Other logins | %s · end with: loginctl terminate-session ID\n' "${list[*]}"
+    else
+        printf 'Other logins | none\n'
     fi
 }
 
@@ -184,6 +221,7 @@ script_status() {
 }
 
 collect_health() {
+    other_sessions_status
     process_status 'Screen lock helper' xss-lock
     process_status 'Notification daemon' dunst
     process_status 'Clipboard manager' parcellite
@@ -211,8 +249,9 @@ needs_attention() {
         $1 == "Auto-lock on idle" && $2 ~ /^off/ { print; next }
         $1 == "Notifications" && $2 ~ /paused|unavailable/ { print; next }
         $1 == "Audio" && $2 ~ /output (0%|[^·]*\(muted\))/ { print; next }
-        $1 == "Screen lock helper" && $2 == "stopped" { print; next }
-        $1 == "Notification daemon" && $2 == "stopped" { print; next }
+        $1 == "Screen lock helper" && $2 ~ /^stopped/ { print; next }
+        $1 == "Notification daemon" && $2 ~ /^stopped/ { print; next }
+        $1 == "Other logins" && $2 != "none" { print; next }
         $2 ~ /\(duplicate\)/ { print; next }
         $1 == "Battery" && $2 ~ /Discharging/ && match($2, /[0-9]+%/) &&
             substr($2, RSTART, RLENGTH - 1) + 0 <= 20 { print; next }

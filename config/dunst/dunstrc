@@ -35,7 +35,7 @@
     indicate_hidden = yes
 
     # Border height in pixel betwen two notifications
-    separator_height = 4
+    separator_height = 5
 
     # Padding between text and separator.
     padding = 8
@@ -45,7 +45,7 @@
 
     # Frame color and width
     frame_color = "#AD4C2D"
-    frame_width = 4
+    frame_width = 5
 
     # Define a color for the separator.
     separator_color = frame

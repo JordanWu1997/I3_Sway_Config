@@ -39,6 +39,7 @@ load_wal_border_width () {
 
 load_wal_color () {
     WAL_COLOR="$HOME/.cache/wal/colors"
+    WAL_COLOR1="$(awk 'NR==1' $WAL_COLOR)"
     WAL_COLOR3="$(awk 'NR==4' $WAL_COLOR)"
     WAL_COLOR12="$(awk 'NR==13' $WAL_COLOR)"
     WAL_COLOR15="$(awk 'NR==16' $WAL_COLOR)"

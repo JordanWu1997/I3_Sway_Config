@@ -17,3 +17,4 @@
 /config/mpv/watch_later
 /config/mpv/history.log
 /config/mpv/script-opts/file_browser_favourites.txt
+/config/i3/script/__pycache__

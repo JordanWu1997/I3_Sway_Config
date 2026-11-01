@@ -7,14 +7,22 @@ diff_editor=${I3_DIFF_EDITOR:-nvim}
 
 show_help_message () {
     cat <<'HELP'
-Usage: i3_diff_check_operator.sh input_dir REPO_DIR [--i3-only]
-       i3_diff_check_operator.sh latest_git [REPO_DIR] [--i3-only]
+Usage: i3_diff_check_operator.sh input_dir REPO_DIR [--i3-only] [--diff-missing | --diff-missing-i3]
+       i3_diff_check_operator.sh latest_git [REPO_DIR] [--i3-only] [--diff-missing | --diff-missing-i3]
 
 input_dir   Compare tracked config/ and dotfile/ files in the checkout with
             the host. Also report host-only files in the covered app folders.
 latest_git  Compare files changed since the previous commit (including working
             tree edits). If REPO_DIR is omitted, use this script's checkout.
 --i3-only   Limit either mode to i3/config, i3/config.d, and i3/script.
+--diff-missing
+            Also open the diff editor for REPO ONLY and HOST ONLY files. The
+            missing side opens as an empty new file: copy lines over (do / dp
+            in nvim) and save with :w ++p to create it and its parent folders,
+            or quit without saving to leave it missing.
+--diff-missing-i3
+            Like --diff-missing, but only for files under config/i3/. Missing
+            files of other apps are still only listed.
 
 config/ maps to ~/.config/; dotfile/NAME maps to ~/.NAME.
 Sway is excluded. Git-ignored host-only files are skipped.
@@ -46,6 +54,24 @@ map_host_file () {
     return 1
 }
 
+# Open the diff editor; a missing side is passed as a new, unsaved file.
+open_diff () {
+    local path=$1 repo_file=$2 local_file=$3
+    if ! "$diff_editor" -d "$repo_file" "$local_file"; then
+        ((error_count+=1))
+        printf 'Diff editor failed for %s\n' "$path" >&2
+    fi
+}
+
+# Whether a REPO ONLY / HOST ONLY file should open in the diff editor.
+want_missing_diff () {
+    case $diff_missing in
+        all) return 0 ;;
+        i3) [[ $1 == config/i3/* ]] ;;
+        *) return 1 ;;
+    esac
+}
+
 compare_file () {
     local path=$1 repo_file=$2 local_file=$3 cmp_status
 
@@ -57,10 +83,7 @@ compare_file () {
             1)
                 ((changed_count+=1))
                 printf '\nCHANGED %s\n  REPO: %s\n  HOST: %s\n' "$path" "$repo_file" "$local_file"
-                if ! "$diff_editor" -d "$repo_file" "$local_file"; then
-                    ((error_count+=1))
-                    printf 'Diff editor failed for %s\n' "$path" >&2
-                fi
+                open_diff "$path" "$repo_file" "$local_file"
                 return 0
                 ;;
         esac
@@ -75,9 +98,11 @@ compare_file () {
     elif [[ -f $repo_file ]]; then
         ((repo_only_count+=1))
         printf 'REPO ONLY %s\n  REPO: %s\n' "$path" "$repo_file"
+        want_missing_diff "$path" && open_diff "$path" "$repo_file" "$local_file"
     elif [[ -f $local_file ]]; then
         ((host_only_count+=1))
         printf 'HOST ONLY %s\n  HOST: %s\n' "$path" "$local_file"
+        want_missing_diff "$path" && open_diff "$path" "$repo_file" "$local_file"
     else
         ((error_count+=1))
         printf 'CANNOT READ %s\n  REPO: %s\n  HOST: %s\n' "$path" "$repo_file" "$local_file" >&2
@@ -86,7 +111,7 @@ compare_file () {
 }
 
 check_diff () {
-    local mode=${1:-} repo= script_path path root_name local_file arg i3_only=0
+    local mode=${1:-} repo= script_path path root_name local_file arg i3_only=0 diff_missing=
     local -a repo_files pathspecs
     local -A tracked=() app_roots=()
     local same_count=0 changed_count=0 repo_only_count=0 host_only_count=0 error_count=0
@@ -99,6 +124,11 @@ check_diff () {
     for arg in "$@"; do
         case $arg in
             --i3-only) i3_only=1 ;;
+            --diff-missing|--diff-missing-i3)
+                # The two scopes are alternatives; giving both is a usage error.
+                [[ -z $diff_missing ]] || { show_help_message >&2; return 2; }
+                [[ $arg == --diff-missing ]] && diff_missing=all || diff_missing=i3
+                ;;
             --* ) show_help_message >&2; return 2 ;;
             *)
                 [[ -z $repo ]] || { show_help_message >&2; return 2; }
@@ -164,6 +194,7 @@ check_diff () {
                 else
                     ((host_only_count+=1))
                     printf 'HOST ONLY %s\n  HOST: %s\n' "$path" "$local_file"
+                    want_missing_diff "$path" && open_diff "$path" "$repo/$path" "$local_file"
                 fi
             done < <(find -H "$host_root/.config/$root_name" -name .git -prune -o \
                 \( -type f -o -type l \) -print0 | sort -z)

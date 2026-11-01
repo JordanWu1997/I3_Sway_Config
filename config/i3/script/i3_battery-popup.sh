@@ -227,6 +227,9 @@ main (){
 }
 
 
+# Replace a copy left running from an earlier login (see i3_single_instance.sh)
+source "$(dirname "$(readlink -f "$0")")/i3_single_instance.sh"
+
 if [[ -n $LOGFILE ]]; then
     exec >>"$LOGFILE" 2>&1
 fi

@@ -163,22 +163,21 @@ case $CHANGE_ITEM in
         i3-msg reload
         ;;
     "picom")
-        rm "$HOME/.config/picom/picom.conf"
-        ln -s "$PICOM_DIR/picom_$NEW_DEFAULT_VALUE.conf" "$PICOM_DIR/picom.conf"
+        # -f replaces the link in one step (also works when it is missing)
+        ln -sfn "$PICOM_DIR/picom_$NEW_DEFAULT_VALUE.conf" "$PICOM_DIR/picom.conf"
         i3-msg reload
         ;;
     "flashfocus")
-        rm "$HOME/.config/flashfocus/flashfocus.yml"
-        ln -s "$FLASHFOCUS_DIR/flashfocus_$NEW_DEFAULT_VALUE.yml" "$FLASHFOCUS_DIR/flashfocus.yml"
-        killall flashfocus
-        i3-msg -- exec --no-startup-id flashfocus
+        # -f replaces the link in one step (also works when it is missing)
+        ln -sfn "$FLASHFOCUS_DIR/flashfocus_$NEW_DEFAULT_VALUE.yml" "$FLASHFOCUS_DIR/flashfocus.yml"
+        i3-msg -- exec --no-startup-id "$HOME/.config/i3/script/i3_flashfocus_operator.sh restart"
         ;;
     "flashfocus_startup")
         echo $NEW_DEFAULT_VALUE
         if [[ $NEW_DEFAULT_VALUE == "enable" ]]; then
-            sed -i 's/^#exec_always --no-startup-id flashfocus/exec_always --no-startup-id flashfocus/' "$I3_STARTUP_CONFIG_FILE"
+            sed -i 's/^#\(exec --no-startup-id .*i3_flashfocus_operator\.sh start\)/\1/' "$I3_STARTUP_CONFIG_FILE"
         elif [[ $NEW_DEFAULT_VALUE == "disable" ]]; then
-            sed -i 's/^exec_always --no-startup-id flashfocus/#&/' "$I3_STARTUP_CONFIG_FILE"
+            sed -i 's/^exec --no-startup-id .*i3_flashfocus_operator\.sh start/#&/' "$I3_STARTUP_CONFIG_FILE"
         else
             echo Unknown option for flashfocus_startup
         fi

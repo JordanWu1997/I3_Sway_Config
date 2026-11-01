@@ -37,6 +37,9 @@ procmsg() {
   fi
 }
 
+# Replace a copy left running from an earlier login (see i3_single_instance.sh)
+source "$(dirname "$(readlink -f "$0")")/i3_single_instance.sh"
+
 dbus-monitor "interface='org.freedesktop.Notifications'" | \
     while read -r line; do
       procmsg "$line" >> "$logfile"

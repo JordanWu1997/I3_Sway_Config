@@ -21,6 +21,9 @@ send_notification() {
     notify-send "High Memory Usage Alert" "Memory usage is at ${usage}%" -u critical -i "$HOME/.config/i3/share/64x64/notification.png"
 }
 
+# Replace a copy left running from an earlier login (see i3_single_instance.sh)
+source "$(dirname "$(readlink -f "$0")")/i3_single_instance.sh"
+
 # Main loop
 while true; do
     usage=$(get_memory_usage)

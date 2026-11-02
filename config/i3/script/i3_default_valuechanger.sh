@@ -185,13 +185,15 @@ case $CHANGE_ITEM in
         fi
         ;;
     "caffeine_startup")
-        echo $NEW_DEFAULT_VALUE
+        echo "$NEW_DEFAULT_VALUE"
         if [[ $NEW_DEFAULT_VALUE == "enable" ]]; then
-            sed -i 's/^#\(exec --no-startup-id .*i3_toolkit_operator\.sh enable_caffeine\)/\1/' "$I3_STARTUP_CONFIG_FILE"
+            # Uncomment (if commented) and set argument to enable_caffeine
+            sed -i 's/^\(#\?\)\(exec --no-startup-id .*i3_toolkit_operator\.sh \).*/\2enable_caffeine/' "$I3_STARTUP_CONFIG_FILE"
         elif [[ $NEW_DEFAULT_VALUE == "disable" ]]; then
-            sed -i 's/^exec --no-startup-id .*i3_toolkit_operator\.sh enable_caffeine/#&/' "$I3_STARTUP_CONFIG_FILE"
+            # Uncomment (if commented) and set argument to disable_caffeine
+            sed -i 's/^\(#\?\)\(exec --no-startup-id .*i3_toolkit_operator\.sh \).*/\2disable_caffeine/' "$I3_STARTUP_CONFIG_FILE"
         else
-            echo Unknown option for caffeine_startup
+            echo "Unknown option for caffeine_startup: $NEW_DEFAULT_VALUE"
         fi
         ;;
     "conky_style")

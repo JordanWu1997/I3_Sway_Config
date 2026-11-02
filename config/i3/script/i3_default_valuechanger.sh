@@ -47,6 +47,8 @@ show_help_message () {
         echo "  [dunst_icon_position]: left, top, right, off"
         echo "  [picom]: blur, transparency"
         echo "  [flashfocus]: transparency, crystal, intermediate, blur, opaque"
+        echo "  [flashfocus_startup]: enable flashfocus at startup or not"
+        echo "  [caffeine_startup]: enable caffeine at startup or not"
         echo "  [conky_style]: full, light, minimal"
         echo "  [conky_startup]: enable, disable"
         echo "  [conky_system_position]: top_left, top_right"
@@ -180,6 +182,16 @@ case $CHANGE_ITEM in
             sed -i 's/^exec --no-startup-id .*i3_flashfocus_operator\.sh start/#&/' "$I3_STARTUP_CONFIG_FILE"
         else
             echo Unknown option for flashfocus_startup
+        fi
+        ;;
+    "caffeine_startup")
+        echo $NEW_DEFAULT_VALUE
+        if [[ $NEW_DEFAULT_VALUE == "enable" ]]; then
+            sed -i 's/^#\(exec --no-startup-id .*i3_toolkit_operator\.sh enable_caffeine\)/\1/' "$I3_STARTUP_CONFIG_FILE"
+        elif [[ $NEW_DEFAULT_VALUE == "disable" ]]; then
+            sed -i 's/^exec --no-startup-id .*i3_toolkit_operator\.sh enable_caffeine/#&/' "$I3_STARTUP_CONFIG_FILE"
+        else
+            echo Unknown option for caffeine_startup
         fi
         ;;
     "conky_style")

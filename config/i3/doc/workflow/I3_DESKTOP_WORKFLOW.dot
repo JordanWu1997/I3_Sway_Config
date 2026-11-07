@@ -1,0 +1,45 @@
+digraph I3DesktopWorkflow {
+  graph [label="i3 desktop workflow · current setup", labelloc=t, fontsize=30, fontname="DejaVu Sans", rankdir=TB, nodesep=0.36, ranksep=0.55, splines=ortho, pad=0.25, newrank=true];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fontsize=14, margin="0.18,0.12", color="#64748b", fillcolor="#f8fafc"];
+  edge [fontname="DejaVu Sans", fontsize=12, color="#64748b", arrowsize=0.7];
+
+  start [label="i3 session starts\nauto display profile + applets + input + notifications\nlogin summary notification after 8 s", shape=oval, fillcolor="#dbeafe"];
+  normal [label="NORMAL · i3 bindings\nBumblebee bar: status + workspace names\nSeparate mode bar: keyboard context", fillcolor="#bfdbfe", penwidth=2];
+  start -> normal;
+
+  direct [label="Direct shortcuts\nFocus, move, resize, scratchpad, marks\nTerminal, apps, media, screenshots\nHelp: Super+Shift+/", fillcolor="#e0e7ff"];
+  modes [label="i3 modes\nEnter: parent (top level: normal)\nEsc: normal · batch actions can stay", fillcolor="#dbeafe"];
+  omni [label="Omnisearch · Super+Backslash\nFlat two-column Search menu\nEsc: local back · Alt+B: Search", fillcolor="#ede9fe"];
+  ranger [label="Ranger · Ctrl+Alt+2\nNavigate, select, open-with, trash", fillcolor="#ccfbf1"];
+  normal -> direct;
+  normal -> modes;
+  normal -> omni;
+  normal -> ranger;
+
+  system [label="System · Ctrl+Alt+S\nNetwork (Ethernet/Wi-Fi/VPN), Bluetooth, radio\nDisplay, terminal, power, lock", fillcolor="#dbeafe"];
+  toolkit [label="Toolkit · Ctrl+Alt+T\nCapture, keyboard, caffeine, KDE Connect, reload\nLocalSend CLI: press l", fillcolor="#dbeafe"];
+  layout [label="Window + workspace modes\nGeometry, resize, marks, workspace save/restore", fillcolor="#dcfce7"];
+  other_modes [label="Other modes\nMedia, notifications, backlight, bar, gaps, appearance", fillcolor="#fce7f3"];
+  modes -> {system toolkit layout other_modes};
+
+  state [label="System s\nDevices · Session · Background tabs\n⚠ attention summary, read-only", fillcolor="#e0f2fe"];
+  display [label="Display auto / presets\nSafe connected-output fallback", fillcolor="#e0f2fe"];
+  system -> {state display};
+  toolkit -> local_cli;
+  local_cli [label="LocalSend CLI\nFloating terminal for discovery / receiving", fillcolor="#99f6e4"];
+
+  omni_find [label="Find\nFiles, Grep, Documents, PDF search", fillcolor="#ddd6fe"];
+  omni_open [label="Open\nApps, recent files, browser history/bookmarks", fillcolor="#ddd6fe"];
+  omni_other [label="Tool / Go / Help / System\nUtilities, navigation, key guide, cache, cancel", fillcolor="#ddd6fe"];
+  omni -> {omni_find omni_open omni_other};
+  pdf [label="PDF tasks\nBackground scan → attach / saved results\nPreview, review, cancel", fillcolor="#f3e8ff"];
+  omni_find -> pdf;
+
+  send [label=",s · Send selection\nLocalSend picker in ranger terminal\nDirectories archived before transfer", fillcolor="#99f6e4"];
+  receive [label=",r · Receive here\nTemporary LocalSend receiver\nDestination = current ranger directory", fillcolor="#99f6e4"];
+  other_file [label="Other file actions\nRifle open-with, trash-cli, native search", fillcolor="#ccfbf1"];
+  ranger -> {send receive other_file};
+
+  note [label="Transient tools return to their caller.\nRanger redraws after LocalSend exits.\nOnly explicit mode bindings change i3 mode.", shape=note, fillcolor="#f8fafc"];
+  {state display local_cli pdf send receive other_file} -> note [style=invis];
+}

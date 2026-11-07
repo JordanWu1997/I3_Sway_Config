@@ -1,0 +1,65 @@
+digraph OmnisearchSearch {
+  graph [label="Omnisearch: file and text search", labelloc=t, fontsize=30, fontname="DejaVu Sans", rankdir=TB, nodesep=0.38, ranksep=0.68, splines=polyline, pad=0.3];
+  node [shape=box, style="rounded,filled", fillcolor="#f8fafc", color="#64748b", fontname="DejaVu Sans", fontsize=14, margin="0.14,0.09"];
+  edge [color="#64748b", fontname="DejaVu Sans", fontsize=12];
+
+  entry [label="Files, Grep, or Documents", shape=oval, fillcolor="#dbeafe"];
+  kind [label="Mode?", shape=diamond, fillcolor="#fef3c7"];
+  dir [label="Files: choose directory"];
+  query [label="Grep: enter query\nlast query prefilled"];
+  grep_dir [label="Choose directory\nlast Grep directory first"];
+  md [label="Documents: Markdown files\nin Documents directory"];
+  worker [label="Start tracked fd or rg worker", fillcolor="#e0f2fe"];
+  stream [label="Stream rows to Rofi\nretain filter and selected row", fillcolor="#bfdbfe", penwidth=2];
+  input [label="Key or outcome?", shape=diamond, fillcolor="#fef3c7"];
+  scope [label="Alt+H / Alt+I\ntoggle hidden / ignored"];
+  restart [label="Stop and restart worker"];
+  open [label="Enter: open file\nor Grep match in Neovim"];
+  preview [label="Alt+P: preview", shape=diamond, fillcolor="#fef3c7"];
+  levels [label="Grep text: ±10 lines\nthen ±1000, then full file"];
+  fileview [label="Files / Documents text: first 1000 → full file\nEsc: full → first 1000 → results\nPDF: extracted text levels; binary: details / actions"];
+  actions [label="Alt+A: open, preview, edit,\nopen directory, or copy"];
+  back [label="Alt+B: stop worker\nreturn to Search", fillcolor="#dcfce7"];
+  close [label="Esc: stop worker\nFiles/Grep → directory; Documents → Search", fillcolor="#fee2e2"];
+  error [label="Worker error: show tool error", fillcolor="#fee2e2"];
+  empty [label="Finished with zero rows:\nNo matches notification"];
+
+  entry -> kind;
+  kind -> dir [label="Files"];
+  kind -> query [label="Grep"];
+  kind -> md [label="Documents"];
+  query -> grep_dir;
+  {dir grep_dir md} -> worker;
+  worker -> stream;
+  worker -> error [label="failed"];
+  worker -> empty [label="no results"];
+  stream -> input;
+  input -> scope -> restart;
+  input -> open [label="Enter"];
+  input -> preview [label="Alt+P"];
+  preview -> levels [label="Grep text"];
+  preview -> fileview [label="file / document"];
+  input -> actions [label="Alt+A"];
+  resumed [label="After an action, the list reopens\nwith filter and selected row restored", shape=note, fillcolor="#e0f2fe"];
+  {open levels fileview actions restart} -> resumed;
+  input -> back [label="Alt+B"];
+  input -> close [label="Esc"];
+
+  subgraph cluster_other {
+    label="Other result lists"; color="#4ade80"; style=rounded; bgcolor="#f0fdf4";
+    recent [label="Recent Files"];
+    history [label="History"];
+    bookmarks [label="Bookmarks"];
+    list [label="Select saved file or URL"];
+    direct [label="Enter: open"];
+    secondary [label="Alt+A: action menu"];
+    recent_preview [label="Alt+P on Recent: same file preview\n1000 lines → full file"];
+    {recent history bookmarks} -> list;
+    list -> {direct secondary};
+    recent -> recent_preview;
+    again [label="Then return to this list", shape=note, fillcolor="#dcfce7"];
+    {direct secondary recent_preview} -> again;
+  }
+  list_back [label="Alt+B or Esc: Search", shape=note, fillcolor="#dcfce7"];
+  list -> list_back;
+}

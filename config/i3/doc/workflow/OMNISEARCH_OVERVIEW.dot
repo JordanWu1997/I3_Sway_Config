@@ -1,0 +1,79 @@
+digraph OmnisearchOverview {
+  graph [label="Omnisearch: complete menu map", labelloc=t, fontsize=30, fontname="DejaVu Sans", rankdir=LR, nodesep=0.38, ranksep=0.7, splines=polyline, pad=0.3];
+  node [shape=box, style="rounded,filled", fillcolor="#f8fafc", color="#64748b", fontname="DejaVu Sans", fontsize=14, margin="0.14,0.09"];
+  edge [color="#64748b", fontname="DejaVu Sans", fontsize=12];
+
+  start [label="Launch omnisearch", shape=oval, fillcolor="#dbeafe"];
+  args [label="PDF CLI argument?", shape=diamond, fillcolor="#fef3c7"];
+  cli [label="Dispatch PDF command"];
+  root [label="Search menu", fillcolor="#bfdbfe", penwidth=2];
+  close [label="Close omnisearch", shape=oval, fillcolor="#fee2e2"];
+  kbarg [label="--keybindings?\n(Super+Shift+/)", shape=diamond, fillcolor="#fef3c7"];
+  start -> kbarg;
+  kbarg -> args [label="no"];
+  args -> cli [label="yes"];
+  args -> root [label="no"];
+  root -> close [label="Esc"];
+
+  subgraph cluster_find {
+    label="Find"; color="#60a5fa"; style=rounded; bgcolor="#eff6ff";
+    find_menu [label="Find modes", fillcolor="#bfdbfe"];
+    files [label="Files\nchoose directory"];
+    grep [label="Grep\nquery, then directory"];
+    docs [label="Documents\nMarkdown in Documents"];
+    pdf_search [label="PDF Search\nrunning tasks or new scan"];
+    file_results [label="File results"];
+    grep_results [label="Text matches"];
+    doc_results [label="Document results"];
+    pdf_flow [label="PDF workflow\nsee detailed chart"];
+    files -> file_results;
+    grep -> grep_results;
+    docs -> doc_results;
+    pdf_search -> pdf_flow;
+    find_menu -> {files grep docs pdf_search};
+  }
+  subgraph cluster_open {
+    label="Open"; color="#4ade80"; style=rounded; bgcolor="#f0fdf4";
+    open_menu [label="Open modes", fillcolor="#bbf7d0"];
+    apps [label="Apps\nRofi drun"];
+    recent [label="Recent Files\nsaved open history"];
+    history [label="History\nBrave URLs"];
+    bookmarks [label="Bookmarks\nBrave URLs"];
+    open_menu -> {apps recent history bookmarks};
+  }
+  subgraph cluster_tools {
+    label="Tool"; color="#fbbf24"; style=rounded; bgcolor="#fffbeb";
+    tool_menu [label="Tool modes", fillcolor="#fde68a"];
+    calculator [label="Calculator\nevaluate, copy, edit"];
+    translate [label="Translate\ntext, language, result"];
+    clipboard [label="Clipboard\nParcellite to xclip"];
+    pdf_tools [label="PDF Tools\nrunning, saved, open, cancel"];
+    tool_menu -> {calculator translate clipboard pdf_tools};
+  }
+  subgraph cluster_go {
+    label="Go"; color="#c084fc"; style=rounded; bgcolor="#faf5ff";
+    go_menu [label="Go modes", fillcolor="#e9d5ff"];
+    windows [label="Windows\nwmctrl focus"];
+    workspaces [label="Workspaces\nworkspace name selector"];
+    marks [label="Marks\nfocus i3 container ID"];
+    ssh [label="SSH\nconnect or copy host"];
+    go_menu -> {windows workspaces marks ssh};
+  }
+  subgraph cluster_other {
+    label="Help and System"; color="#fb7185"; style=rounded; bgcolor="#fff1f2";
+    other_menu [label="Help and System modes", fillcolor="#fecdd3"];
+    keys [label="Keybindings\nShortcut guide / All keybindings"];
+    kill [label="Kill\nselect PIDs, TERM or KILL"];
+    cancel [label="Cancel\nstop tracked searches"];
+    cache [label="Cache Cleanup\nmark several, review, delete"];
+    other_menu -> {keys kill cancel cache};
+  }
+  kbarg -> keys [label="yes: Keybindings menu first", color="#e11d48"];
+  keys -> root [label="Esc (also after direct entry)", color="#e11d48", constraint=false];
+
+  root -> {find_menu open_menu tool_menu go_menu other_menu};
+  cli -> pdf_flow;
+  pdf_tools -> pdf_flow;
+  back [label="Alt+B from any Omnisearch menu:\nreturn to Search\nEsc: previous layer; at Search: close", shape=note, fillcolor="#dcfce7"];
+  back -> root [color="#2563eb", constraint=false];
+}

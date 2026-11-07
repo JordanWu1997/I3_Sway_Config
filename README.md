@@ -2,8 +2,8 @@
 
 Backup for my configuration of i3WM (X11) and SwayWM (Wayland),
 and configurations of applications for the working environment in X11/Wayland.
-For now, some functions do not work in Wayland, still searching for solutions or alternatives in Wayland.
-For more SwayWM details and i3WM migration progress, please check `./config/sway/README.md`
+The i3WM configuration has been migrated to SwayWM; both are maintained side by side.
+For SwayWM details and the migration record, please check `./config/sway/README.md`
 
 # Table of Contents
 
@@ -67,12 +67,18 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 <details>
 
-> [!WARNING]
-> **SwayWM configuration is EXPERIMENTAL.**
+> [!NOTE]
+> **SwayWM configuration is MIGRATED** from the i3WM configuration (tested on Ubuntu 24.04, sway 1.9).
 
-This repository primarily focuses on a robust **i3WM (X11)** setup. While a Sway (Wayland) configuration exists in `config/sway/`, it is a **work in progress**.
-- Many scripts and tools used in the i3 setup (e.g., `polybar`, `picom`, `xrandr`) do not work in Wayland.
-- See `config/sway/README.md` for a detailed migration status and list of missing alternatives.
+Both window managers are maintained side by side: the i3WM (X11) setup in `config/i3/` and the
+SwayWM (Wayland) setup in `config/sway/`, sharing scripts, wallpapers and application configs.
+- Install the sway environment with `installation/install_sway.sh` (after the i3 installer).
+- X11-only tools were replaced by Wayland equivalents (e.g. `picom` → sway opacity/SwayFX,
+  `xrandr` → `swaymsg output`/kanshi, `flameshot` → grim + slurp, `ibus` → fcitx5);
+  see `config/sway/doc/07_I3_SWAY_CORRESPONDENCE.md` for the full application and script mapping.
+- The few features that have no Wayland equivalent are listed in
+  `config/sway/doc/00_MIGRATION_OVERVIEW.md`; the migration process is in
+  `config/sway/doc/06_MIGRATION_PROCESS.md`.
 
 </details>
 

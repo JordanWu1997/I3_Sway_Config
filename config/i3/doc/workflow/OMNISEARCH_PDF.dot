@@ -1,0 +1,77 @@
+digraph OmnisearchPdf {
+  graph [label="Omnisearch: PDF search and review", labelloc=t, fontsize=30, fontname="DejaVu Sans", rankdir=TB, nodesep=0.38, ranksep=0.68, splines=polyline, pad=0.3];
+  node [shape=box, style="rounded,filled", fillcolor="#f8fafc", color="#64748b", fontname="DejaVu Sans", fontsize=14, margin="0.14,0.09"];
+  edge [color="#64748b", fontname="DejaVu Sans", fontsize=12];
+
+  entry [label="PDF Search or PDF CLI", shape=oval, fillcolor="#dbeafe"];
+  active [label="Running scans?", shape=diamond, fillcolor="#fef3c7"];
+  tasks [label="Running list\nattach, cancel one, or new"];
+  query [label="Enter PDF text query"];
+  dir [label="Choose default folder,\nDocuments, Home, or directory"];
+  mode [label="All words, exact phrase,\nor regex"];
+  key [label="Search key from directory,\nquery, mode, and limit"];
+  state [label="Same search state?", shape=diamond, fillcolor="#fef3c7"];
+  saved_choice [label="Show saved results\nor search again"];
+  scan [label="Start background PDF scan", fillcolor="#e0f2fe"];
+  live [label="Live rows, records, progress"];
+  final [label="Completed rows, records, metadata"];
+  results [label="PDF results list", fillcolor="#bfdbfe", penwidth=2];
+  choice [label="Key or selection?", shape=diamond, fillcolor="#fef3c7"];
+  open [label="Enter one: open in Sioyek\nat matched page"];
+  pages [label="Alt+P: page excerpts\nEnter opens page"];
+  actions [label="Alt+A or multi-select:\nPDF actions"];
+  text [label="Text preview: 1000 lines,\nthen full extracted text"];
+  quick [label="Quick page text preview"];
+  review [label="Review selected or all PDFs\nposition saved"];
+  bulk [label="Open selected/all, directory,\ncopy path or page"];
+  refresh [label="Alt+R while scanning:\nrefresh list"];
+  detach [label="Esc: previous layer\nscan continues", fillcolor="#fef3c7"];
+  back [label="Alt+B: return to Search\nleave scan running", fillcolor="#dcfce7"];
+  entry -> active;
+  active -> tasks [label="yes"];
+  active -> query [label="no"];
+  tasks -> results [label="attach"];
+  tasks -> query [label="new"];
+  query -> dir -> mode -> key -> state;
+  state -> results [label="running"];
+  state -> saved_choice [label="saved"];
+  saved_choice -> results [label="show"];
+  saved_choice -> scan [label="search again"];
+  state -> scan [label="new"];
+  scan -> live -> results;
+  scan -> final -> results;
+  results -> choice;
+  choice -> open [label="Enter, one"];
+  choice -> pages [label="Alt+P"];
+  choice -> actions [label="Alt+A / multiple"];
+  choice -> refresh [label="Alt+R, live"];
+  refreshed [label="List reopens with new progress", shape=note, fillcolor="#e0f2fe"];
+  refresh -> refreshed;
+  pages -> open [label="Enter"];
+  pages -> actions [label="Alt+A"];
+  pages_back [label="Esc: PDF results list", shape=note, fillcolor="#e0f2fe"];
+  pages -> pages_back;
+  actions -> {text quick review bulk};
+  action_return [label="After an action, results reopen\nwith filter and row restored\nPreview Esc returns one layer at a time", shape=note, fillcolor="#e0f2fe"];
+  {open text quick review bulk} -> action_return;
+  choice -> detach [label="Esc"];
+  choice -> back [label="Alt+B"];
+  tasks -> back [label="Alt+B"];
+  pages -> back [label="Alt+B"];
+
+  subgraph cluster_tools {
+    label="PDF Tools"; color="#c084fc"; style=rounded; bgcolor="#faf5ff";
+    tools [label="PDF Tools menu"];
+    running [label="Running searches"];
+    saved [label="Saved searches"];
+    repeat [label="Alt+R: repeat saved query"];
+    byname [label="Open PDF by filename\nor clipboard path"];
+    byname_open [label="Open in Sioyek"];
+    cancel [label="Cancel all PDF scans"];
+    tools -> {running saved byname cancel};
+    saved -> repeat;
+    byname -> byname_open;
+  }
+  tool_note [label="Running: attach or cancel one\nSaved: Enter results, Alt+R rescan\nEsc: parent menu · Alt+B: Search", shape=note, fillcolor="#e9d5ff"];
+  tools -> tool_note;
+}

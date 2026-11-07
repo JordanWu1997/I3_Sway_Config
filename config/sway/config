@@ -1,120 +1,148 @@
+# ~/.config/sway/config
+# vim: ft=swayconfig ff=unix
 # ======================================================================================
-# Migrate from i3 to sway
+# SwayWM configuration (converted from ~/.config/i3/config)
 # ======================================================================================
+# This configuration mirrors the i3 configuration in ../i3 section by section.
+# Every place where sway differs from i3 is marked with a "[SWAY]" comment, and the full
+# conversion record lives in ./doc/ (start with doc/00_MIGRATION_OVERVIEW.md).
+#
+# Please see `man 5 sway`, `man 5 sway-input`, `man 5 sway-output`, `man 5 sway-bar`.
+#
 # --------------------------------------------------------------------------------------
 # Author: Jordan Kuan-Hsien Wu
 # Email:  jordankhwu@gmail.com
-# Date:   2022/11/09
+# Date:   2021/12/24 (i3), migrated to sway 2026/11/07
 # --------------------------------------------------------------------------------------
 
 # ======================================================================================
-# All About Sway Settings
-# ======================================================================================
-# Setup sway settings
-# DO NOT MOVE/REMOVE lines within this section unless you know what you are doing
-
-# Enable xwayland for X applications
-xwayland enable
-
-# Display Setup
-# NOTE: Sway get output devices: sway-msg -t get_outputs
-output eDP-1 {
-    scale 1.0
-    resolution 1920x1080
-    position 0 360
-    transform 0
-}
-output HDMI-A-1 {
-    scale 1
-    resolution 1920x1080
-    position 1280 0
-    transform 0
-}
-
-# Keyboard and Trackpad Setup
-# NOTE: Sway get input devices: sway-msg -t get_outputs/get_inputs
-input "type:keyboard" {
-    xkb_layout us
-    xkb_options ctrl:nocaps
-}
-input "type:touchpad" {
-    tap enabled
-    natural_scroll enabled
-}
-
-# ======================================================================================
-# All About And Variables
+# All About Variables
 # ======================================================================================
 # Set variables
-# DO NOT MOVE/REMOVE lines within this section unless you know what you are doing
+# PLEASE DO NOT MOVE/REMOVE LINES IN THIS SECTION UNLESS YOU KNOW WHAT YOU ARE DOING !!!
+# (sway_default_valuechanger.sh edits the `set $default_*` lines below in place)
 
-# Setup monitor order according to frequent-usage priority
-# If the monitor does not exist, workspaces will still work as normal
-set $monitor1 HDMI-A-1
-set $monitor2 eDP-1
-set $monitor3 VIRTUAL1
-set $monitor4 VIRTUAL2
+# Script directories
+# [SWAY] i3 relied on $I3_SCRIPT exported from ~/.profile. Display managers start sway
+#        without a login shell (and fish never reads ~/.profile), so both paths are also
+#        defined here. Scripts that only talk i3 IPC are shared from the i3 directory
+#        (sway exports I3SOCK, so i3-msg/i3ipc work unchanged); X11-dependent ones have
+#        Wayland ports in the sway directory.
+set $I3_SCRIPT   $HOME/.config/i3/script
+set $SWAY_SCRIPT $HOME/.config/sway/script
 
-# Set font
-set $default_font DroidSansMono Nerd Font
+# Set monitor order according to frequent-usage priority
+# If the monitor does not exist, workspaces will just spawn in current monitor
+# [SWAY] Output names come from DRM, not from the X driver:
+#        X (nvidia) HDMI-0 -> HDMI-A-1, X DP-1 -> DP-1, eDP1 -> eDP-1, VIRTUAL1 -> HEADLESS-1.
+#        List yours with: swaymsg -t get_outputs
+set $monitor1 DP-1
+set $monitor2 HDMI-A-1
+set $monitor3 DP-2
+set $monitor4 HEADLESS-1
+set $monitor5 HEADLESS-2
 
-# Set terminal
-set $terminal kitty --config $HOME/.config/kitty/kitty_dracula.conf
+# Set font (RECOMMENDED: DroidSansMono Nerd Font Bold)
+set $default_font Operator-caska
 
-# Set rofi in dracula theme
-set $rofi rofi -config "$HOME/.config/rofi/config_dracula.rasi"
+# Set terminal (RECOMMENDED: kitty)
+# kitty runs natively on Wayland; `--class X` sets the Wayland app_id to X.
+set $terminal kitty
 
-# Set i3bar fontsize (RECOMMENDED: 12)
-set $default_i3bar_fontsize 12
+# Set i3bar fontsize (RECOMMENDED: 12)  [SWAY] applies to swaybar
+set $default_i3bar_fontsize 14
 
-# Set i3bar height (RECOMMENDED: 25)
-set $default_i3bar_height 25
+# Set i3bar height (RECOMMENDED: 25)  [SWAY] applies to swaybar
+set $default_i3bar_height 30
 
 # Set i3bar show-up mode (RECOMMENDED: dock, AVAIL: dock/hdie)
-set $default_i3bar_mode hide
+set $default_i3bar_mode dock
 
 # Set i3bar position (RECOMMENDED: top, AVAIL: top/bottom)
 set $default_i3bar_position top
 
 # Set titlebar fontsize (RECOMMENDED: 12)
-set $default_titlebar_fontsize 12
+set $default_titlebar_fontsize 15
 
 # Set window titlebar style (set normal/pixel to show/hide titlebar)
 set $default_titlebar_style pixel
-set $default_floating_titlebar_style normal
+set $default_floating_titlebar_style pixel
 
 # Set border width (set pixel number of border width)
-set $default_border_width 3
+set $default_border_width 5
 
-# Set gap width (ONLY for i3-gap)
+# Set gap width
 set $default_inner_gap 0
-set $default_outer_gap 0
+set $default_outer_gap 10
+
+# Set default conky startup (enable/disable)
+set $default_conky_startup disable
+
+# Set default conky location (for both system monitor and bindkey cheatsheet)
+set $default_conky_system_alignment top_right
+set $default_conky_bindkey_alignment bottom_left
+
+# Set default conky gap_y to avoid being blocked by swaybar (RECOMMEMDED: 30)
+set $default_conky_gap_y 30
+
+# Set default conky gap opacity (RECOMMENDED: 64, AVAIL: 0-256)
+set $default_conky_opacity 64
+
+# [SWAY] Set input method framework (RECOMMENDED on sway: fcitx5, AVAIL: ibus/fcitx5)
+# -- Switch with: sway_input_method.sh use ibus|fcitx5  (rewrites this line and
+#    ~/.config/environment.d/60-sway-input-method.conf; log out and back in afterwards)
+set $default_input_method fcitx5
+
+# [SWAY] Set screenshot tool for PrtScn (RECOMMENDED on sway: grim, AVAIL: grim/flameshot)
+# -- grim = grim + slurp + swappy/satty (wlroots-native); flameshot = flameshot daemon + gui
+set $default_screenshot_tool grim
 
 # ======================================================================================
 # All About Color Template
 # ======================================================================================
-# Load color from Xresource, then set color for i3 containers/windows
+# [SWAY] sway has no `set_from_resource` (no X resource database). Colors come from:
+#   1. ./share/colors-sway-fallback  - the same fallback values the i3 config used
+#   2. ~/.cache/wal/colors-sway-i3   - generated by pywal from the user template
+#                                      ./share/wal_templates/colors-sway-i3 (installed to
+#                                      ~/.config/wal/templates/ by the install script).
+#      Later `set` lines win, so pywal colors override the fallback when present.
+#      A missing file is silently skipped by sway's `include`.
+# NOTE: like i3, colors are read when the config is parsed. After wal generates a new
+#       palette, run `swaymsg reload` (sway_wal_operator.sh does this for you).
 
-# Default theme
-## class                 border  backgr. text    indicator child_border
-#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-#client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-#client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-#client.urgent           #2f343a #900000 #ffffff #900000   #900000
-#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-#client.background       #ffffff
+# Startup-Wal (DO NOT MOVE current and following line unless you know what you are doing)
+# [SWAY] -n: do not let wal set the wallpaper with feh; sway sets it below via swaybg.
+exec wal --nine -n -s -t -i $HOME/.config/i3/share/default_wallpaper
 
-# Dracula theme [https://draculatheme.com/]
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-client.background       #F8F8F2
+# Default wallpaper (feh -> swaybg, managed by sway itself)
+output * bg $HOME/.config/i3/share/default_wallpaper fill
+# Re-apply the wallpaper chosen at runtime (swaybg cannot be queried; `reload` would
+# otherwise reset it to the default above). State: ~/.cache/sway_wallpaper
+exec_always $SWAY_SCRIPT/sway_wallpaper_operator.sh feh restore_last
+
+include ./share/colors-sway-fallback
+include ~/.cache/wal/colors-sway-i3
+
+# Set transparency mannually
+set $transp #00000000
 
 # ======================================================================================
-# All About Windows Settings
+# All About Input/Output Settings
+# ======================================================================================
+# [SWAY] New section: replaces xrandr, setxkbmap, xset, xinput, numlockx, imwheel,
+#        unclutter and libinput-gestures, all of which are X11 tools.
+
+include ./config.d/sway_input_output.config
+
+# ======================================================================================
+# All About Mode Names
+# ======================================================================================
+# [SWAY] Must be included before any file that binds `mode "$mode_*"` (see that file).
+
+include ./config.d/sway_mode_name.config
+
+# ======================================================================================
+# All About Window Settings
 # ======================================================================================
 # This is initial setup for all windows and floating windows in sway
 
@@ -123,15 +151,15 @@ include ./config.d/sway_window.config
 # ======================================================================================
 # All About Workspace Settings
 # ======================================================================================
-# This is initial setup for all workspace in sway
+# This is initial setup for all workspaces in sway
 
 include ./config.d/sway_workspace_name.config
 include ./config.d/sway_workspace.config
 
 # ======================================================================================
-# All About Gap Setting
+# All About Gap Settings
 # ======================================================================================
-# This is to set gaps in sway
+# This is setup for gaps in sway
 
 include ./config.d/sway_gap.config
 
@@ -150,15 +178,29 @@ include ./config.d/sway_bindkey.config
 include ./config.d/sway_mode.config
 
 # ======================================================================================
-# All About waybar Settings
+# All About Customization
 # ======================================================================================
-# Start Waybar to display a workspace bar
+# Customization includes wallpaper, theme, and visual effects (e.g. opacity)
+
+include ./config.d/sway_custom.config
+
+# ======================================================================================
+# All About swaybar Settings
+# ======================================================================================
+# Start swaybar to display a status/workspace bar
 
 include ./config.d/sway_bar.config
 
 # ======================================================================================
 # All About Sway Startup Commands/Programs
 # ======================================================================================
-# Following commands/programs will run after Sway starts
+# Following commands/programs will run after sway starts
 
 include ./config.d/sway_startup.config
+
+# ======================================================================================
+# All About Compatiblity Setup for iOS Keyboard (Mod4 -> Mod5)
+# ======================================================================================
+# Compatiblity setup for iOS keyboards
+
+include ./config.d/sway_iOS_compatibility.config

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Sway (user session)
+Comment=Sway started through ~/.config/sway/script/sway_session.sh (loads ~/.profile)
+Exec=/usr/local/bin/sway-session
+Type=Application
+DesktopNames=sway

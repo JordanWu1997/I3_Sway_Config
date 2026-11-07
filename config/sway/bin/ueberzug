@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# ~/.config/sway/bin/ueberzug  -- first in sway's PATH (sway_session.sh / sway_run.sh)
+# ranger's preview_images_method "ueberzug" runs `ueberzug layer --silent`. The original
+# ueberzug draws an X11 child window inside the terminal's X11 window, which does not work
+# under sway (test_v2, even with kitty on XWayland). ueberzugpp is a drop-in replacement
+# with a native Wayland output that positions the image through sway's IPC (also in tmux).
+# Only inside sway: ~/.config/sway/bin is also on PATH under i3 (environment.d), where
+# the next ueberzug in PATH (X11) is the right one.
+if [ -n "${SWAYSOCK:-}" ] && command -v ueberzugpp >/dev/null 2>&1; then
+    if [ "${1:-}" = layer ]; then
+        shift
+        exec ueberzugpp layer --output "${UEBERZUGPP_OUTPUT:-wayland}" "$@"
+    fi
+    exec ueberzugpp "$@"
+fi
+# Not sway, or no ueberzugpp: the next ueberzug in PATH
+self_dir=$(cd "$(dirname "$0")" && pwd -P)
+IFS=: read -ra path_dirs <<< "$PATH"
+for d in "${path_dirs[@]}"; do
+    [ -n "$d" ] && [ -x "$d/ueberzug" ] || continue
+    [ "$(cd "$d" 2>/dev/null && pwd -P)" = "$self_dir" ] && continue
+    exec "$d/ueberzug" "$@"
+done
+echo "ueberzug: install ueberzugpp (installation/install_sway.sh)" >&2
+exit 127

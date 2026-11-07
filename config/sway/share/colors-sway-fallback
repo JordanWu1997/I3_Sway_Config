@@ -1,0 +1,22 @@
+# ~/.config/sway/share/colors-sway-fallback
+# vim: ft=swayconfig ff=unix
+# Fallback palette, identical to the fallbacks of i3's `set_from_resource` lines.
+# Overridden by ~/.cache/wal/colors-sway-i3 when pywal has generated it.
+set $bg  #000000
+set $fg  #ffffff
+set $c0  #000000
+set $c1  #cd0000
+set $c2  #00cd00
+set $c3  #cdcd00
+set $c4  #1167b1
+set $c5  #cd00cd
+set $c6  #00cdcd
+set $c7  #e5e5e5
+set $c8  #7f7f7f
+set $c9  #ff0000
+set $c10 #00ff00
+set $c11 #ffff00
+set $c12 #2a9df4
+set $c13 #ff00ff
+set $c14 #00ffff
+set $c15 #ffffff

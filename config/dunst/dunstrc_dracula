@@ -107,7 +107,7 @@
 	max_icon_size = 100
 
 	### Misc/Advanced ###
-	dmenu = /usr/bin/rofi -dmenu -p dunst
+	dmenu = rofi -dmenu -p dunst
 	browser = /usr/bin/brave-browser
 	title = Dunst
 	class = Dunst

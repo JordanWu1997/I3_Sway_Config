@@ -38,7 +38,13 @@ LAST_DIR_FILE="$CACHE_DIR/last_dir"
 LAST_GREP_QUERY_FILE="$CACHE_DIR/last_grep_query"
 LAST_GREP_DIR_FILE="$CACHE_DIR/last_grep_dir"
 RECENT_FILES_CACHE="$CACHE_DIR/recent_files"
-mkdir -p "$CACHE_DIR"
+# Detached file/text searches: <id>.meta .rows .raw .err .status .pid
+SEARCH_DIR="$CACHE_DIR/search"
+SEARCH_KEEP_COUNT=10
+SEARCH_KEEP_DAYS=7
+SEARCH_KEEP_BYTES=$((200 * 1024 * 1024))
+SCRIPT_PATH=$(realpath -- "${BASH_SOURCE[0]}")
+mkdir -p "$CACHE_DIR" "$SEARCH_DIR"
 NAV_BACK_FILE="$CACHE_DIR/nav-back-$$"
 rm -f -- "$NAV_BACK_FILE"
 
@@ -177,12 +183,27 @@ track_search_pid() {
     printf '%s\n' "$start" > "$CACHE_DIR/search-$1.pid"
 }
 
-stop_search_worker() {
-    local pid=$1
-    pkill -TERM -P "$pid" 2>/dev/null || true
-    kill "$pid" 2>/dev/null || true
-    wait "$pid" 2>/dev/null || true
-    rm -f -- "$CACHE_DIR/search-$pid.pid"
+# True while the worker recorded for search <id> is still the same live process.
+search_running() {
+    local pid start current
+    [[ -s $SEARCH_DIR/$1.pid ]] || return 1
+    pid=$(<"$SEARCH_DIR/$1.pid")
+    [[ -r $CACHE_DIR/search-$pid.pid ]] || return 1
+    start=$(<"$CACHE_DIR/search-$pid.pid")
+    current=$(process_start_tick "$pid") || return 1
+    [[ -n $start && $current == "$start" ]]
+}
+
+cancel_search() {
+    local pid
+    if search_running "$1"; then
+        pid=$(<"$SEARCH_DIR/$1.pid")
+        pkill -TERM -P "$pid" 2>/dev/null || true
+        kill -TERM "$pid" 2>/dev/null || true
+        notify 'Search cancelled'
+    else
+        notify 'Search already finished'
+    fi
 }
 
 search_scope_flags() {
@@ -344,7 +365,7 @@ show_keybinding_menu() {
 
 notify() {
     command -v notify-send >/dev/null 2>&1 &&
-        notify-send -t 1000 "Rofi Omnisearch" "$1" --icon="$HOME/.config/i3/share/64x64/list.png"
+        notify-send -t "${2:-1000}" "Rofi Omnisearch" "$1" --icon="$HOME/.config/i3/share/64x64/list.png"
 }
 
 global_cancel() {
@@ -886,113 +907,205 @@ build_grep_rows() {
 # Shared file, document, and grep search flow
 # ============================================================
 
-start_search_worker() {
-    local kind=$1 directory=$2 query=$3 display=$4 raw=$5 status_file=$6 error_file=$7
-    local -a scope_flags=()
-    : > "$status_file"
-    : > "$error_file"
+search_kind_label() {
+    case $1 in
+        files) printf 'Files' ;;
+        grep) printf 'Grep' ;;
+        documents) printf 'Documents' ;;
+    esac
+}
+
+# Print done, failed, cancelled, or running for search <id>.
+search_state() {
+    local base=$SEARCH_DIR/$1 code kind
+    if [[ -s $base.status ]]; then
+        code=$(<"$base.status")
+        kind=$(head -n 1 -- "$base.meta" 2>/dev/null)
+        if [[ $code == 0 ]] || [[ $kind == grep && $code == 1 && ! -s $base.err ]]; then
+            printf 'done'
+        elif (( code > 128 )); then
+            printf 'cancelled'
+        else
+            printf 'failed'
+        fi
+    elif search_running "$1"; then
+        printf 'running'
+    else
+        printf 'cancelled'
+    fi
+}
+
+# Runs in its own session (see --search-worker), so it outlives Omnisearch
+# and never holds Rofi's keyboard and pointer grab while it works.
+search_worker() {
+    local id=$1 base=$SEARCH_DIR/$1 kind directory query status=0 count label
+    local -a meta scope_flags=()
+    mapfile -t meta < "$base.meta" || return 1
+    kind=${meta[0]} directory=${meta[1]} query=${meta[2]}
+    INCLUDE_HIDDEN=${meta[3]} INCLUDE_IGNORED=${meta[4]}
+    trap 'rm -f -- "$CACHE_DIR/search-$$.pid"; exit 143' TERM
 
     if [[ $kind == grep ]]; then
         search_scope_flags rg scope_flags
-        : > "$raw"
-        : > "$display"
-        (
-            rg --line-buffered --line-number --no-heading --color=never --max-columns=500 \
-                --field-match-separator $'\t' --smart-case --max-filesize 10M --no-binary \
-                "${scope_flags[@]}" -- "$query" "$directory" 2> "$error_file" |
-            tee "$raw" | build_grep_rows > "$display"
-            printf '%s\n' "$?" > "$status_file"
-        ) &
+        rg --line-buffered --line-number --no-heading --color=never --max-columns=500 \
+            --field-match-separator $'\t' --smart-case --max-filesize 10M --no-binary \
+            "${scope_flags[@]}" -- "$query" "$directory" 2> "$base.err" |
+            tee "$base.raw" | build_grep_rows > "$base.rows" || status=$?
+    elif [[ $kind == documents ]]; then
+        search_scope_flags fd scope_flags
+        fdfind --type f --extension md "${scope_flags[@]}" . "$directory" 2> "$base.err" |
+            shorten_paths > "$base.rows" || status=$?
     else
         search_scope_flags fd scope_flags
-        : > "$display"
-        if [[ $kind == documents ]]; then
-            ( fdfind --type f --extension md "${scope_flags[@]}" . "$directory" 2> "$error_file" |
-                shorten_paths > "$display"; printf '%s\n' "$?" > "$status_file" ) &
-        else
-            ( fdfind --type f "${scope_flags[@]}" "" "$directory" 2> "$error_file" |
-                shorten_paths > "$display"; printf '%s\n' "$?" > "$status_file" ) &
-        fi
+        fdfind --type f "${scope_flags[@]}" "" "$directory" 2> "$base.err" |
+            shorten_paths > "$base.rows" || status=$?
     fi
-    SEARCH_PID=$!
-    track_search_pid "$SEARCH_PID"
+    printf '%s\n' "$status" > "$base.status"
+    rm -f -- "$CACHE_DIR/search-$$.pid"
+
+    # Only announce searches that Omnisearch handed off to the background.
+    [[ -e $base.detached ]] || return 0
+    label=$(search_kind_label "$kind")
+    [[ -n $query ]] && label+=" '$query'"
+    if [[ $(search_state "$id") == done ]]; then
+        count=$(wc -l < "$base.rows")
+        notify "$label finished: $count results in ${directory/#$HOME/\~} · Super+\\ → Find · Results" 8000
+    else
+        notify "$label failed: $(head -n 1 -- "$base.err")" 8000
+    fi
 }
 
-run_search_results() (
-    local kind=$1 directory=$2 query=${3:-}
-    local prompt format default_action preview_action action_type empty_message enter_label back_label
-    local display raw status_file error_file worker_status error_message selected clean_selected first_line row first_index action file match rest line
-    local rofi_status=0 last_filter='' last_selection='' SEARCH_PID=''
-    local INCLUDE_HIDDEN=no INCLUDE_IGNORED=no
-    local -a rofi_args=() files=() grep_items=()
+# Walk finished searches newest first. Drop one when it is older than
+# SEARCH_KEEP_DAYS, when SEARCH_KEEP_COUNT newer ones are already kept, or when
+# keeping it would exceed SEARCH_KEEP_BYTES. The newest finished search is
+# always kept, so a single large grep is still there to open. Running
+# searches are never removed.
+prune_searches() {
+    local id size cutoff kept=0 total=0 i
+    local -a metas=("$SEARCH_DIR"/*.meta)
+    [[ -e ${metas[0]} ]] || return 0
+    cutoff=$(( $(date +%s) - SEARCH_KEEP_DAYS * 86400 ))
+    for (( i = ${#metas[@]} - 1; i >= 0; i-- )); do
+        id=${metas[i]##*/}
+        id=${id%.meta}
+        search_running "$id" && continue
+        size=$(du -cb -- "$SEARCH_DIR/$id".* 2>/dev/null | tail -n 1 | cut -f1)
+        if (( $(stat -c %Y -- "${metas[i]}") < cutoff || kept >= SEARCH_KEEP_COUNT ||
+              (kept > 0 && total + size > SEARCH_KEEP_BYTES) )); then
+            rm -f -- "${SEARCH_DIR:?}/${id:?}".*
+        else
+            ((kept++, total += size))
+        fi
+    done
+}
+
+# Start a detached worker and print its search id.
+start_search() {
+    local kind=$1 directory=$2 query=$3 hidden=$4 ignored=$5 id pid
+    id="$(date +%Y%m%d-%H%M%S)-$RANDOM"
+    printf '%s\n' "$kind" "$directory" "$query" "$hidden" "$ignored" > "$SEARCH_DIR/$id.meta"
+    : > "$SEARCH_DIR/$id.rows"
+    setsid "$SCRIPT_PATH" --search-worker "$id" </dev/null >/dev/null 2>&1 &
+    pid=$!
+    track_search_pid "$pid"
+    printf '%s\n' "$pid" > "$SEARCH_DIR/$id.pid"
+    prune_searches
+    printf '%s\n' "$id"
+}
+
+# Show quick searches directly. Slower ones keep running in the background and
+# return 43 so the caller closes Omnisearch and releases the input grab.
+open_search() {
+    local id=$1 base=$SEARCH_DIR/$1 i=0
+    while (( i++ < 15 )) && [[ ! -s $base.status ]] && search_running "$id"; do
+        sleep 0.1
+    done
+    if [[ ! -s $base.status ]] && search_running "$id"; then
+        : > "$base.detached"
+        # The worker may have finished while the marker was being written.
+        if [[ ! -s $base.status ]]; then
+            notify "Still searching in the background. You will be notified when it finishes." 4000
+            return 43
+        fi
+    fi
+    show_search_results "$id"
+}
+
+run_search_results() {
+    local id
+    id=$(start_search "$1" "$2" "${3:-}" no no) || return 1
+    open_search "$id"
+}
+
+show_search_results() (
+    local id=$1 base=$SEARCH_DIR/$1
+    local kind directory query prompt format default_action preview_action action_type empty_message enter_label
+    local display raw state error_message selected clean_selected first_line row first_index action file match rest line progress
+    local rofi_status=0 last_filter='' last_selection='' new_id
+    local INCLUDE_HIDDEN INCLUDE_IGNORED
+    local -a meta rofi_args=() files=() grep_items=()
+
+    mapfile -t meta < "$base.meta" 2>/dev/null || { notify 'Search results are no longer available'; return 1; }
+    kind=${meta[0]} directory=${meta[1]} query=${meta[2]}
+    INCLUDE_HIDDEN=${meta[3]} INCLUDE_IGNORED=${meta[4]}
 
     case $kind in
         files)
             prompt=Files; format=s; default_action=Open; preview_action='Preview (Rofi)'; action_type=file
             enter_label=open
-            back_label=directory
             empty_message="No files found in $directory"
             ;;
         grep)
             prompt=Grep; format=i; default_action='Open at match'; preview_action='Preview file (Rofi)'; action_type=grep
             enter_label='open at match'
-            back_label=directory
             empty_message="No grep matches for '$query' in $directory"
             ;;
         documents)
             prompt=Documents; format=s; default_action=Open; preview_action='Preview (Rofi)'; action_type=file
             enter_label=open
-            back_label=Search
             empty_message="No Markdown documents found in $directory"
             ;;
         *) return 2 ;;
     esac
 
-    display=$(mktemp) || return 1
+    display=$base.rows
     raw=$display
-    if [[ $kind == grep ]]; then
-        raw=$(mktemp) || { rm -f -- "$display"; return 1; }
-    fi
-    status_file=$(mktemp) || { rm -f -- "$display" "$raw"; return 1; }
-    error_file=$(mktemp) || { rm -f -- "$display" "$raw" "$status_file"; return 1; }
-    trap '[[ -z $SEARCH_PID ]] || stop_search_worker "$SEARCH_PID"; rm -f -- "$display" "$raw" "$status_file" "$error_file"' EXIT
-    start_search_worker "$kind" "$directory" "$query" "$display" "$raw" "$status_file" "$error_file"
+    [[ $kind == grep ]] && raw=$base.raw
 
     while true; do
+        state=$(search_state "$id")
+        progress=''
+        [[ $state == running ]] && progress="Still searching · $(wc -l < "$display") rows so far · "
         rofi_args=(-multi-select -no-custom -async-pre-read 0 -format "f"$'\t'"$format"
             -kb-row-left 'Control+h' -kb-custom-2 'Alt+p' -kb-custom-3 'Alt+a'
             -kb-custom-4 'Alt+h' -kb-custom-5 'Alt+i' "${ROFI_BACK_BINDING[@]}"
-            -mesg "$(search_scope_label) · Enter: $enter_label · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored · Esc: $back_label · Alt+B: Search")
+            -mesg "$progress$(search_scope_label) · Enter: $enter_label · Alt+P: preview · Alt+A: actions · Alt+H: hidden · Alt+I: ignored · Esc: back · Alt+B: Search")
         [[ -n $last_selection ]] && rofi_args+=(-select "$last_selection")
         [[ -n $last_filter ]] && rofi_args+=(-filter "$last_filter")
 
+        # A fixed snapshot: Rofi never receives a stream that keeps growing.
         rofi_status=0
-        if kill -0 "$SEARCH_PID" 2>/dev/null; then
-            selected=$(set +o pipefail; tail -n +1 -f --pid="$SEARCH_PID" "$display" | rofi_menu "$prompt" "${rofi_args[@]}") || rofi_status=$?
-        else
-            selected=$(set +o pipefail; cat "$display" | rofi_menu "$prompt" "${rofi_args[@]}") || rofi_status=$?
-        fi
+        selected=$(rofi_menu "$prompt" "${rofi_args[@]}" < "$display") || rofi_status=$?
 
         [[ $rofi_status == 15 ]] && return 42
 
         # A finished worker may have produced partial rows before failing.
         # Report its error even when the user has selected one of those rows.
-        worker_status=$(<"$status_file")
-        if [[ -n $worker_status && $worker_status != 0 &&
-              ! ( $kind == grep && $worker_status == 1 && ! -s $error_file ) ]]; then
-            error_message=$(head -n 1 -- "$error_file")
+        if [[ $state == failed ]]; then
+            error_message=$(head -n 1 -- "$base.err")
             notify "$prompt search failed${error_message:+: $error_message}"
             break
         fi
 
         if [[ $rofi_status == 13 || $rofi_status == 14 ]]; then
             toggle_search_scope "$rofi_status" "$selected"
-            stop_search_worker "$SEARCH_PID"
-            start_search_worker "$kind" "$directory" "$query" "$display" "$raw" "$status_file" "$error_file"
-            continue
+            search_running "$id" && cancel_search "$id"
+            new_id=$(start_search "$kind" "$directory" "$query" "$INCLUDE_HIDDEN" "$INCLUDE_IGNORED") || return 1
+            open_search "$new_id"
+            return $?
         fi
         if [[ $rofi_status != 0 && $rofi_status != 11 && $rofi_status != 12 ]] || [[ -z $selected ]]; then
-            if [[ ! -s $display ]] && ! kill -0 "$SEARCH_PID" 2>/dev/null; then
+            if [[ ! -s $display && $state == done ]]; then
                 notify "$empty_message"
             fi
             break
@@ -1050,6 +1163,57 @@ run_search_results() (
     done
 )
 
+# List running and finished file/text searches, newest first.
+show_background_searches() {
+    local meta id state icon label directory count selected status
+    local -a meta_lines ids rows
+    prune_searches
+    while true; do
+        ids=() rows=()
+        for meta in "$SEARCH_DIR"/*.meta; do
+            [[ -f $meta ]] || continue
+            id=${meta##*/}
+            id=${id%.meta}
+            mapfile -t meta_lines < "$meta"
+            state=$(search_state "$id")
+            case $state in
+                running) icon='⏳ Running' ;;
+                done) icon='✅ Done' ;;
+                failed) icon='⚠️ Failed' ;;
+                *) icon='✖ Cancelled' ;;
+            esac
+            label=$(search_kind_label "${meta_lines[0]}")
+            [[ -n ${meta_lines[2]} ]] && label+=" '${meta_lines[2]}'"
+            directory=${meta_lines[1]/#$HOME/\~}
+            count=$(wc -l < "$SEARCH_DIR/$id.rows" 2>/dev/null) || count=0
+            ids=("$id" "${ids[@]}")
+            rows=("$icon · $label · $directory · $count rows · ${id:9:2}:${id:11:2}" "${rows[@]}")
+        done
+        if (( ${#ids[@]} == 0 )); then
+            notify 'No file or text searches yet'
+            return 0
+        fi
+
+        status=0
+        selected=$(printf '%s\n' "${rows[@]}" |
+            rofi_menu 'Search results' -no-custom -format i \
+                -kb-custom-4 'Alt+c' "${ROFI_BACK_BINDING[@]}" \
+                -mesg 'Enter: open results (snapshot while running) · Alt+C: cancel search · Esc: Search · Alt+B: Search') || status=$?
+        [[ $status == 15 ]] && return 42
+        [[ $status == 0 || $status == 13 ]] || return 0
+        [[ $selected =~ ^[0-9]+$ && $selected -lt ${#ids[@]} ]] || continue
+        id=${ids[selected]}
+        if [[ $status == 13 ]]; then
+            cancel_search "$id"
+            continue
+        fi
+        show_search_results "$id"
+        status=$?
+        [[ $status == 42 || $status == 43 ]] && return "$status"
+        global_back_requested && return 42
+    done
+}
+
 # ============================================================
 # Main mode selector
 # ============================================================
@@ -1077,6 +1241,18 @@ show_pdf_tools() {
     done
 }
 
+close_omnisearch() {
+    rm -f -- "$NAV_BACK_FILE"
+    exit 0
+}
+
+# Internal: detached file/text search started by start_search.
+if [[ ${1:-} == --search-worker ]]; then
+    rm -f -- "$NAV_BACK_FILE"
+    search_worker "$2"
+    exit
+fi
+
 # Direct entry from the help key: Esc then continues to Search, as the page hint says.
 if [[ ${1:-} == --keybindings ]]; then
     shift
@@ -1101,6 +1277,7 @@ MODE=$(
         "📁 Find · Files" \
         "🔍 Find · Grep" \
         "📝 Find · Documents" \
+        "📂 Find · Results" \
         "🔍 Find · PDF Search" \
         "🚀 Open · Apps" \
         "🕒 Open · Recent Files" \
@@ -1126,7 +1303,7 @@ MODE=$(
     children: [top-space, mainbox, bottom-space];
 }
 #mainbox { expand: false; }
-#listview { lines: 10; columns: 2; }
+#listview { lines: 11; columns: 2; }
 top-space, bottom-space { expand: true; }
 '
 )
@@ -1437,7 +1614,9 @@ PY
             TARGET_DIR=$(select_directory) || break
             notify "🔍 Starting file search in $TARGET_DIR..."
             run_search_results files "$TARGET_DIR"
-            [[ $? == 42 ]] && break
+            SEARCH_STATUS=$?
+            [[ $SEARCH_STATUS == 43 ]] && close_omnisearch
+            [[ $SEARCH_STATUS == 42 ]] && break
             global_back_requested && break
         done
         BACK_TO_SEARCH=yes
@@ -1461,7 +1640,9 @@ PY
                 printf '%s' "$TARGET_DIR" > "$LAST_GREP_DIR_FILE"
                 notify "🔍 Grepping for '$QUERY' in $TARGET_DIR..."
                 run_search_results grep "$TARGET_DIR" "$QUERY"
-                [[ $? == 42 ]] && break
+                SEARCH_STATUS=$?
+                [[ $SEARCH_STATUS == 43 ]] && close_omnisearch
+                [[ $SEARCH_STATUS == 42 ]] && break
                 global_back_requested && break
             done
             global_back_requested && break
@@ -1471,6 +1652,13 @@ PY
 
     *Documents*)
         run_search_results documents "$DOCUMENT_DIR"
+        [[ $? == 43 ]] && close_omnisearch
+        BACK_TO_SEARCH=yes
+        ;;
+
+    *Find\ ·\ Results*)
+        show_background_searches
+        [[ $? == 43 ]] && close_omnisearch
         BACK_TO_SEARCH=yes
         ;;
 

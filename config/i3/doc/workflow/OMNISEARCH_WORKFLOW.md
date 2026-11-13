@@ -18,7 +18,7 @@ This documents the current behavior of `i3_rofi_omnisearch.sh`, `i3_pdf_menu.sh`
 
 [Editable diagram source](OMNISEARCH_SEARCH.dot)
 
-The file/text worker stops when its result screen closes. Escape then returns Files and Grep to their directory picker, or Documents to Search. Recent Files stores up to 100 unique opened paths. Grep remembers its last query and directory. A result action returns to its list with the filter and selected row restored. In Files, Documents, and Recent Files, Alt+P opens the first 1000 text lines; Enter expands to the full file, Escape steps back to 1000 lines, and another Escape returns to results. Files with at most 1000 lines have one preview level. PDF files use the same extracted-text preview levels as PDF search; binary files show details and actions. Grep keeps its match-centered ±10, ±1000, and full-file levels.
+Files, Grep, and Documents run `fd`/`rg` in a detached worker (`--search-worker`) that writes to `~/.cache/rofi-omnisearch/search/`. Rofi is never open while rows are still streaming in, so a slow search cannot hold the keyboard and pointer grab. A search that finishes within about 1.5 s opens its results directly. A slower one closes Omnisearch, keeps running, and sends a notification when it finishes. Finished searches are pruned automatically: older than 7 days, beyond the newest 10, or past a 200 MiB total (the newest finished search is always kept). Cache Cleanup also lists them, with running ones protected. **Find · Results** lists them: Enter opens their results (a snapshot while still running), and Alt+C cancels one. Closing a results list does not stop its worker. Escape then returns Files and Grep to their directory picker, or Documents to Search. Recent Files stores up to 100 unique opened paths. Grep remembers its last query and directory. A result action returns to its list with the filter and selected row restored. In Files, Documents, and Recent Files, Alt+P opens the first 1000 text lines; Enter expands to the full file, Escape steps back to 1000 lines, and another Escape returns to results. Files with at most 1000 lines have one preview level. PDF files use the same extracted-text preview levels as PDF search; binary files show details and actions. Grep keeps its match-centered ±10, ±1000, and full-file levels.
 
 ## 3. PDF search and review
 
@@ -46,6 +46,7 @@ PDF searches use a cache key so the same search can be reattached or reopened. C
 | SSH | Read non-wildcard hosts from SSH config → choose hosts → connect or copy their names. |
 | Keybindings | Choose the Shortcut guide or All keybindings (read-only list generated from the i3 config files). Also opened directly with Super+Shift+/ (`--keybindings`); Escape there continues to Search. |
 | Kill | Choose one or more PIDs → select SIGTERM, SIGKILL, or Cancel. |
+| Results | List background Files/Grep/Documents searches → open results, or Alt+C to cancel a running one. |
 | Cancel | Stop tracked file/text workers and PDF scans; report how many were stopped. |
 | Cache Cleanup | Show saved PDF searches, review positions, recent files, remembered inputs, and older cache files. Ctrl+Space marks several entries; Enter reviews the selection; confirm to delete. Running searches stay protected. |
 
@@ -54,7 +55,7 @@ PDF searches use a cache key so the same search can be reattached or reopened. C
 | Screen | Enter | Alt+B (global) | Esc (local) |
 | --- | --- | --- | --- |
 | Search | Open selected mode | — | Close omnisearch |
-| Files / Grep results | Default open action | Return to Search; stop worker | Stop worker; return to directory picker |
+| Files / Grep results | Default open action | Return to Search (worker keeps running) | Return to directory picker (worker keeps running) |
 | Files / Documents / Recent Files text preview | First 1000 → full file → results | Return to Search | Full file → first 1000 → results |
 | Documents, Recent Files, History, Bookmarks | Open selection | Return to Search | Return to Search |
 | PDF setup (query → location → match type) | Continue to next step | Return to Search | Return to previous setup step; query returns to Search |

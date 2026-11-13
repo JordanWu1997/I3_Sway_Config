@@ -12,6 +12,8 @@ from i3_pdf_search import live_worker_pid
 PDF_KEY = re.compile(r"[0-9a-f]{64}")
 PDF_PART = re.compile(r"([0-9a-f]{64})\.(?:jsonl|rows|meta\.json|live\.jsonl|live\.rows|progress\.json)")
 ACTIVE = re.compile(r"pdf-active-([0-9a-f]{64})\.json")
+SEARCH_PART = re.compile(r"(\d{8}-\d{6}-\d+)\.(?:meta|rows|raw|err|status|pid|detached)")
+SEARCH_KINDS = {"files": "Files", "grep": "Grep", "documents": "Documents"}
 STATE_NAMES = {
     "recent_files": "Recent files",
     "last_dir": "Last file search directory",
@@ -43,6 +45,24 @@ def live_search(path):
         return bool(start and stat.rsplit(") ", 1)[1].split()[19] == start)
     except (OSError, IndexError):
         return False
+
+
+def live_background_search(folder, key):
+    """A file/text search is live while its recorded worker PID marker is live."""
+    try:
+        pid = (folder / f"{key}.pid").read_text(encoding="utf-8").strip()
+    except OSError:
+        return False
+    return pid.isdigit() and live_search(folder.parent / f"search-{pid}.pid")
+
+
+def home_short(directory):
+    home = str(Path.home())
+    if directory == home:
+        return "~"
+    if directory.startswith(home + "/"):
+        return "~/" + directory[len(home) + 1:]
+    return directory
 
 
 def human_size(size):
@@ -123,10 +143,7 @@ def inventory(cache):
             details = {}
         query = short(details.get("query", "Unfinished or old search"))
         directory = short(details.get("directory", "Unknown directory"))
-        if directory == str(Path.home()):
-            directory = "~"
-        elif directory.startswith(str(Path.home()) + "/"):
-            directory = "~/" + directory[len(str(Path.home())) + 1:]
+        directory = home_short(directory)
         count = details.get("files")
         count_text = f" · {count} PDFs" if isinstance(count, int) else ""
         locked = key in active_paths and live_pdf(active_paths[key])
@@ -134,6 +151,28 @@ def inventory(cache):
         if locked:
             label = "🔒 Running · " + label
         add(f"pdf:{key}", label, paths, locked)
+
+    search = cache / "search"
+    searches = {}
+    for path in regular_files(search):
+        match = SEARCH_PART.fullmatch(path.name)
+        if match:
+            searches.setdefault(match[1], []).append(path)
+        else:
+            add(f"search-file:{path.name}", f"Other search cache · {short(path.name)}", [path])
+    for key, paths in searches.items():
+        try:
+            meta = (search / f"{key}.meta").read_text(encoding="utf-8").split("\n")
+        except OSError:
+            meta = []
+        kind = SEARCH_KINDS.get(meta[0] if meta else "", "Search")
+        directory = short(home_short(meta[1])) if len(meta) > 1 else "Unknown directory"
+        query = f" '{short(meta[2])}'" if len(meta) > 2 and meta[2] else ""
+        locked = live_background_search(search, key)
+        label = f"{kind} search{query} · {directory}"
+        if locked:
+            label = "🔒 Running · " + label
+        add(f"search:{key}", label, paths, locked)
     return sorted(result, key=lambda item: (not item["locked"], -item["mtime"]))
 
 
@@ -152,6 +191,9 @@ def remove(cache, identifiers):
                 skipped += 1
                 continue
         elif identifier.startswith("root:search-") and live_search(cache / identifier[5:]):
+            skipped += 1
+            continue
+        elif identifier.startswith("search:") and live_background_search(cache / "search", identifier[7:]):
             skipped += 1
             continue
         if item["locked"]:

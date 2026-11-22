@@ -1301,9 +1301,9 @@ MODE=$(
         "🚀 Open · Apps" \
         "🕒 Open · Recent Files" \
         "🌐 Open · History" \
+        "🔔 Open · Notifications" \
         "🔖 Open · Bookmarks" \
-        "🧹 System · Cache Cleanup" \
-        "💀 System · Kill" \
+        "⌨️ Help · Keybindings" \
         "🧮 Tool · Calculator" \
         "🌐 Tool · Translate" \
         "📋 Tool · Clipboard" \
@@ -1312,8 +1312,9 @@ MODE=$(
         "🗂️ Go · Workspaces" \
         "🏷️ Go · Marks" \
         "🖥️ Go · SSH" \
+        "💀 System · Kill" \
         "🛑 System · Cancel" \
-        "⌨️ Help · Keybindings" |
+        "🧹 System · Cache Cleanup" |
     rofi_menu "Search" -auto-select -no-custom \
         -mesg 'Enter: open · Esc: close Omnisearch' \
         -theme-str '
@@ -1334,6 +1335,12 @@ top-space, bottom-space { expand: true; }
 # ============================================================
 
 case "$MODE" in
+
+    *Notifications*)
+        python3 "$I3_SCRIPT/i3_notification_history.py" --menu \
+            --operator "$SWAY_SCRIPT/sway_dunst_operator.sh"
+        BACK_TO_SEARCH=yes
+        ;;
 
     *Cache\ Cleanup*)
         show_cache_cleanup

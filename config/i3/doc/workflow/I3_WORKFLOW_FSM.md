@@ -23,6 +23,7 @@ The sway configuration mirrors this workflow key for key. The differences are li
 | Insert mode | Ctrl+Alt+I or Super+Ctrl+I | **Toggle:** the same keys, or Ctrl+[, return to normal |
 | Keybinding help | Super+Shift+/ | Keybindings menu (Shortcut guide / All keybindings); Escape continues to the Omnisearch Search menu, Escape again closes |
 | System status | Ctrl+Alt+S, then `s` | One read-only Rofi view with tabs **Devices · Session · Background**; ⚠ marks rows that need attention and the header names their tabs. Ctrl+Tab or Shift+←/→ switch tabs; Enter or Escape closes |
+| Notification history | Ctrl+Alt+N → `l` → `h` | Newest-first searchable Rofi list; Enter shows the full notification, Escape returns to the list, then closes it |
 | Caffeine | Ctrl+Alt+T, then Shift+C | `1`/`2` enable/disable now; `s` sets the startup default (`1`/`2`), Enter goes back to Caffeine |
 | Toolkit LocalSend | Ctrl+Alt+T, then `l` | Opens `localsend-cli` in a floating terminal; i3 returns to normal |
 | Ranger send | Ctrl+Alt+2 to open ranger, mark files if needed, then `,s` | LocalSend device picker runs in ranger's terminal; ranger redraws afterwards. A selected directory is archived before sending |

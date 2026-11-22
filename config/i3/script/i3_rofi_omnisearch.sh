@@ -320,7 +320,7 @@ shortcut_guide_items() {
         'Capture    |  Screenshot selection            Print Screen' \
         'Capture    |  Active window screenshot        Super+Print Screen' \
         'Media      |  Volume up/down                  Volume keys' \
-        'Media      |  Play/pause                      Play/Pause key'
+        'Media      |  Play/pause                      Play/Pause key' \
 }
 
 show_all_keybindings() {
@@ -1282,9 +1282,9 @@ MODE=$(
         "🚀 Open · Apps" \
         "🕒 Open · Recent Files" \
         "🌐 Open · History" \
+        "🔔 Open · Notifications" \
         "🔖 Open · Bookmarks" \
-        "🧹 System · Cache Cleanup" \
-        "💀 System · Kill" \
+        "⌨️ Help · Keybindings" \
         "🧮 Tool · Calculator" \
         "🌐 Tool · Translate" \
         "📋 Tool · Clipboard" \
@@ -1293,8 +1293,9 @@ MODE=$(
         "🗂️ Go · Workspaces" \
         "🏷️ Go · Marks" \
         "🖥️ Go · SSH" \
+        "💀 System · Kill" \
         "🛑 System · Cancel" \
-        "⌨️ Help · Keybindings" |
+        "🧹 System · Cache Cleanup" |
     rofi_menu "Search" -auto-select -no-custom \
         -mesg 'Enter: open · Esc: close Omnisearch' \
         -theme-str '
@@ -1315,6 +1316,12 @@ top-space, bottom-space { expand: true; }
 # ============================================================
 
 case "$MODE" in
+
+    *Notifications*)
+        python3 "$(dirname -- "$SCRIPT_PATH")/i3_notification_history.py" --menu \
+            --operator "$(dirname -- "$SCRIPT_PATH")/i3_dunst_operator.sh"
+        BACK_TO_SEARCH=yes
+        ;;
 
     *Cache\ Cleanup*)
         show_cache_cleanup

@@ -37,6 +37,7 @@ PDF searches use a cache key so the same search can be reattached or reopened. C
 | Mode | Flow |
 | --- | --- |
 | Apps | Hand control to Rofi's application launcher (`drun`). |
+| Notifications | Browse every logged notification in a full-screen Rofi list, newest first; Enter opens the complete summary and body as scrollable text rows. The same menu offers logger enable/disable, including Alt+E and Alt+D. |
 | Calculator | Enter an expression → evaluate with the built-in Python calculator → copy the result or edit the expression. |
 | Translate | Enter text → choose Chinese or English → run `trans` → copy, edit, or translate again; errors return to editing. |
 | Clipboard | Read Parcellite history → choose an entry → copy it to the clipboard and primary selection. |

@@ -167,13 +167,7 @@ show_dunst_logger_status () {
 }
 
 show_dunst_logger_history () {
-    tac ~/.config/dunst/log.txt | \
-        sed 's/^string /\n/' | \
-        sed 's/,string/,/g' | \
-        sed 's/", /"\n/g' | \
-        sed 's/^---/\n---/' | \
-        rofi -dmenu -config $HOME/.config/rofi/config_doublecol.rasi -p "Notification History" | \
-        xargs -I {} notify-send -u low logger-history {} --icon=${ICON}
+    python3 "$I3_SCRIPT/i3_notification_history.py"
 }
 
 dunst_operation () {

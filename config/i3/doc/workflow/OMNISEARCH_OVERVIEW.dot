@@ -38,8 +38,9 @@ digraph OmnisearchOverview {
     apps [label="Apps\nRofi drun"];
     recent [label="Recent Files\nsaved open history"];
     history [label="History\nBrave URLs"];
+    notifications [label="Notifications\nBrowse history; logger on/off"];
     bookmarks [label="Bookmarks\nBrave URLs"];
-    open_menu -> {apps recent history bookmarks};
+    open_menu -> {apps recent history notifications bookmarks};
   }
   subgraph cluster_tools {
     label="Tool"; color="#fbbf24"; style=rounded; bgcolor="#fffbeb";

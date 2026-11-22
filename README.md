@@ -660,8 +660,8 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 - __Send Window to Workspace (Absolutely)__
   - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (HDMI1), Note: max # is 10
   - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (eDP1), Note: max # is 10
-  - (`[Winkey]` +) `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
-  - (`[Winkey]` +) `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
+  - `[Winkey]` + `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
+  - `[Winkey]` + `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
   - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to the selected workspace (interactively)
 - __Send Window to Workspace (Relatively)__
   - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace

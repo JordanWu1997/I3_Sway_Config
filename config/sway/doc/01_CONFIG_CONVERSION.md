@@ -18,8 +18,12 @@ Status legend:
 1. **Mechanical pass.** Each `config/i3/config.d/i3_*.config` was transformed into
    `config/sway/config.d/sway_*.config`:
    - Paths and the vim modeline were changed (`ft=swayconfig`).
-   - `exec --no-startup-id` became `exec`. sway accepts the flag, but only to log a
-     warning that it is ignored (`sway/commands/exec_always.c`).
+   - `exec --no-startup-id` became `exec`. Since sway 1.8 the flag is accepted and only
+     skips exporting `DESKTOP_STARTUP_ID` (`sway/commands/exec_always.c`);
+     `XDG_ACTIVATION_TOKEN` and PID-based workspace placement still apply, sway shows no busy
+     cursor, and launch tokens expire after 30 s (wlroots default). So the flag is not needed
+     anywhere; without it XWayland apps can still be placed on the workspace they were
+     launched from.
    - Calls to X11-dependent scripts were redirected from `$I3_SCRIPT/i3_*.sh` to their
      Wayland ports in `$SWAY_SCRIPT/sway_*.sh`.
    - `xdotool key …` became `wtype …`.

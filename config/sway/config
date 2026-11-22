@@ -36,9 +36,8 @@ set $SWAY_SCRIPT $HOME/.config/sway/script
 # [SWAY] Output names come from DRM, not from the X driver:
 #        X (nvidia) HDMI-0 -> HDMI-A-1, X DP-1 -> DP-1, eDP1 -> eDP-1, VIRTUAL1 -> HEADLESS-1.
 #        List yours with: swaymsg -t get_outputs
-set $monitor1 DP-1
-set $monitor2 HDMI-A-1
-set $monitor3 DP-2
+set $monitor1 eDP-1
+set $monitor3 DP-3
 set $monitor4 HEADLESS-1
 set $monitor5 HEADLESS-2
 

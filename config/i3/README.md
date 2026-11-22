@@ -10,6 +10,7 @@ My I3WM configuration files
   - [doc](#doc)
   - [script](#script)
   - [share](#share)
+  - [theme](#theme)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -42,6 +43,7 @@ Document problems I met in customization of i3 wm, backup configurations and som
 ## script
 
 Scripts for i3 wm working environment customized for my favored workflow
+(`i3_<topic>_operator.sh` scripts take an operation argument, run one without arguments for help)
 
 ## share
 

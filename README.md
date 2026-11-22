@@ -101,6 +101,8 @@ Note: the term "window" used in this configuration actually refers to "container
 - [x] __Keyboard-driven Working Environment__: (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Customized Rofi__: easy-to-use selector/launcher. (Check [Section 2](#section-2---details-of-i3-environment))
 - [x] __Customized Conky__: system monitor and keybinding hinter. (Check [Section 2](#section-2---details-of-i3-environment))
+- [x] __Omnisearch__: one rofi entry (`[Winkey]`+`[\]`) for apps, windows, files, text and PDF search; `[Winkey]`+`[?]` opens its keybinding page. (Check [Section 6](#4-miscellaneous))
+- [x] __Desktop Session Services__: XDG autostart (`dex`), saved passwords (`gnome-keyring`), polkit agent on Ubuntu and Fedora. (Check [Section 2](#2-startup-programs))
 - [x] __Configuration Installer Script__: scripts to apply this configuration. (Check [Section 3](#section-3---first-time-usage-for-i3))
 - [x] __Various Mode Usage__: organize related functions into modes to keep keybindings simple. (Check [Section 4](#section-4---mode-usage-for-i3))
 - [x] __Mouse/Trackpad Usage__: empower mouse/trackpad to do more things. (Check [Section 5](#section-5---mouse-usage-for-i3))
@@ -125,18 +127,18 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - Display Manager: [GNOME display manager (GDM)](https://gitlab.gnome.org/GNOME/gdm)
-- i3 Window Manager: [i3](https://github.com/Airblader/i3) `4.22`
-- Status Bar: [i3 bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.20.1` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
-- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.26.5`
-- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.5.1` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7` + [starship](https://starship.rs/) `1.2.1`
-- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.3a` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
-- Text Editor: [neovim](https://github.com/neovim/neovim) `0.8.2` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
-- Application Launcher: [rofi](https://github.com/davatorium/rofi) `1.7.5`
+- i3 Window Manager: [i3](https://github.com/i3/i3) `4.24` (i3-gaps merged since `4.22`)
+- Status Bar: [i3 bar](https://i3wm.org/docs/userguide.html#_configuring_i3bar) `4.24` + [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) `2.0.5`
+- Terminal: [kitty](https://github.com/kovidgoyal/kitty) `0.32.2`
+- Shell: [fish](https://github.com/fish-shell/fish-shell) `3.7.0` + [oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) `7` + [starship](https://starship.rs/) `1.24.2`
+- Terminal Multiplexer: [tmux](https://github.com/tmux/tmux) `3.4` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Text Editor: [neovim](https://github.com/neovim/neovim) `0.9.5` + [my configuration](https://github.com/JordanWu1997/Vim_Tmux_Config)
+- Application Launcher: [rofi](https://github.com/davatorium/rofi) `2.0.0 (next)`
 - Theme Configurer: [pywal](https://github.com/dylanaraps/pywal) `3.3.1`
 - GTK Theme Changer: [lxappearance](https://github.com/lxde/lxappearance)
 - Qt/KDE Theme Change: [Kvantum](https://github.com/tsujan/Kvantum)
-- X Compositor: [picom](https://github.com/jonaburg/picom) `vgit-a8445`
-- Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.9.0`
+- X Compositor: [picom](https://github.com/jonaburg/picom) `vgit-65ad7`
+- Notification Daemon: [dunst](https://github.com/dunst-project/dunst) `1.9.2`
 - GUI File Manager: [Nautilus](https://gitlab.gnome.org/GNOME/nautilus)
 - TUI File Manager: [ranger](https://github.com/ranger/ranger) `1.9.3`
 - Web Browser: [Brave browser](https://brave.com/) + [vimium](https://vimium.github.io/)
@@ -153,7 +155,11 @@ Note: the term "window" used in this configuration actually refers to "container
 - [pywal](https://github.com/dylanaraps/pywal): color theme autotune by wal
 - [feh](https://github.com/derf/feh): image viewer, wallpaper changer
 - [conky](https://github.com/brndnmtthws/conky): system monitor for X window
-- [polkit-gnome](https://fedora.pkgs.org/33/fedora-x86_64/polkit-gnome-0.106-0.7.20170423gita0763a2.fc33.x86_64.rpm.html): GUI software authentication support
+- [polkit-gnome](https://gitlab.gnome.org/Archive/policykit-gnome): GUI software authentication support (path picked automatically: Ubuntu `/usr/lib/policykit-1-gnome/`, Fedora `/usr/libexec/`)
+- [gnome-keyring](https://gitlab.gnome.org/GNOME/gnome-keyring): saved passwords (Secret Service) for browsers, VS Code, Wi-Fi keys, `git-credential-libsecret`
+- [dex](https://github.com/jceb/dex): XDG autostart (`~/.config/autostart`, `/etc/xdg/autostart`) via [i3_autostart_operator.sh](./config/i3/script/i3_autostart_operator.sh)
+  - Skips entries i3 already starts (nm-applet, blueman, picom, parcellite, ibus, kdeconnect, flameshot, ...) so nothing runs twice
+  - Preview what would run: `i3_autostart_operator.sh list`
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
@@ -161,7 +167,9 @@ Note: the term "window" used in this configuration actually refers to "container
 - [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): X session lock
 - [parcellite](https://github.com/rickyrockrat/parcellite): clipboard applet
 - [flashfocus](https://github.com/fennerm/flashfocus): flash when changing focus
-- [dunst](https://github.com/dunst-project/dunst): notification daemon
+- [dunst](https://github.com/dunst-project/dunst): notification daemon (+ [i3_notify_logger.sh](./config/i3/script/i3_notify_logger.sh) for notification history)
+- [flameshot](https://github.com/flameshot-org/flameshot): screenshot tool (background daemon)
+- [libinput-gestures](https://github.com/bulletmark/libinput-gestures): touchpad gestures
 - [kdeconnectd](https://community.kde.org/KDEConnect): mobile phone connector
 - [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status): i3 status bar information support
 - [rjekker/i3-battery-popup](https://github.com/rjekker/i3-battery-popup): battery warning for laptop
@@ -170,6 +178,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [nwg-piotr/autotiling.py](https://github.com/nwg-piotr/autotiling): auto-tile i3 window (dwindling, master-stack layout)
 - [jonaburg/picom](https://github.com/jonaburg/picom): X compositor for blur, transparency, animation support
 - [Airblader/unclutter-xfixes](https://github.com/Airblader/unclutter-xfixes): auto-hide mouse cursor
+- [i3_system_status.sh](./config/i3/script/i3_system_status.sh): login summary notification of session states that may surprise you (volume, caffeine, autotiling, bar mode, Caps Lock)
 
 </details>
 
@@ -325,9 +334,13 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __System Option Mode (`[Ctrl]` + `[Alt]` + `[s]`)__
-  - System command, e.g. exit, power off, reboot, lock, hibernate
-    - __Network Mode (`[d]`)__
-      - Turn on/off RF device, network connection
+  - System command, e.g. exit, power off, reboot, suspend, hibernate (`[Shift]` + `[e/p/r/s/h]`), lock (`[l]`), kill process (`[k]`), status view (`[s]`)
+    - __Network Mode (`[n]`)__
+      - Activate/disconnect saved connections, enable/disable Wi-Fi or all networking
+    - __Radio Blocks Mode (`[r]`)__
+      - Clear/set rfkill soft block
+    - __Display Mode (`[d]`)__
+      - Same as `[Winkey]` + `[Shift]` + `[x]`
     - __Bluetooth Mode (`[b]`)__
       - Turn on/off RF device, connect/disconnect Bluetooth device, Bluetooth discoverability
     - __Terminal Mode (`[t]`)__
@@ -357,7 +370,7 @@ Note: the term "window" used in this configuration actually refers to "container
     - __Redshift Mode (`[z]`)__
       - Screen color temperature tuner, blue light filter
 - __Dunst Mode (`[Ctrl]` + `[Alt]` + `[n]`)__
-  - Dunst actions, including pausing or resuming Dunst
+  - Dunst actions, including pausing or resuming Dunst (do not disturb), notification logger and history
 - __Open URL Mode (`[Ctrl]` + `[Alt]` + `[o]`)__
   - Open URL in web browser
 
@@ -554,7 +567,7 @@ Note: the term "window" used in this configuration actually refers to "container
 
   - The remapping command will be automatically activated as you enter i3
 
-    - Check `./config/i3/config.d/i3_startup.config`
+    - `i3_keyboard_operator.sh default`, started from `./config/i3/config.d/i3_startup.config`
 - All following keybindings can be configured in
   - `./config/i3/config.d/i3_bindkey.config`
   - `./config/i3/config.d/i3_workspace.config`
@@ -620,17 +633,19 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 #### Workspace
 
 - __Go to Workspace (Absolutely)__
-  - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (eDP1)
-  - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (HDMI1)
-  - `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-  - `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+  - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (HDMI1)
+  - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (eDP1)
+  - `[Winkey]` + `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
+  - `[Winkey]` + `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+  - Note: `[Ctrl]`/`[Alt]` + `[Function(F#)]` without `[Winkey]` are disabled so apps keep `Ctrl+F5`, `Alt+F4`, IDE F-keys, etc.
+  - Monitor names are set in `./config/i3/config` (`$monitor1` ~ `$monitor4`)
   - `[Winkey]` + `[Esc]`: Go to selected workspace (interactively)
 - __Go to Workspace (Relatively)__
   - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next existing workspace
   - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
   - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next free workspace (create one if it does not exist)
   - `[Winkey]` + `[Ctrl]` + `[Tab]`: Go to the last visited workspace back and forth
-  - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation. Move to (prev)/next existing workspace (create one if it does not exist)
+  - `[Ctrl]` + `[Alt]` + `[Left/Right]`: Gnome-like workspace operation (disabled by default, uncomment in `i3_workspace.config`). Move to (prev)/next existing workspace (create one if it does not exist)
 - __Swap Workspace (Relatively)__
   - `[Winkey]` + (`[Shift]`) + `[Ctrl]` + `[Grave]`: Swap current workspace with (prev)/next workspace (create one if it does not exist)
   - `[Winkey]` + `[Ctrl]` + `[Esc]`: Swap workspace with selected workspace (interactively)
@@ -643,15 +658,15 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
   - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
   - `[Alt]` + (`[Shift]`) + `[q]`: List all windows on all workspaces with thumbnails i.e. my customized GNOME-like keybinding
 - __Send Window to Workspace (Absolutely)__
-  - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (eDP1), Note: max # is 10
-  - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (HDMI1), Note: max # is 10
-  - `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
-  - `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
+  - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (HDMI1), Note: max # is 10
+  - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (eDP1), Note: max # is 10
+  - (`[Winkey]` +) `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
+  - (`[Winkey]` +) `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
   - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to the selected workspace (interactively)
 - __Send Window to Workspace (Relatively)__
   - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace
   - `[Winkey]` + `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next free workspace
-  - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation. Send window to prev/next workspace (create one if it does not exist)
+  - `[Ctrl]` + `[Alt]` + `[Shift]` + `[Left/Right]`: Gnome-like workspace operation (disabled by default). Send window to prev/next workspace (create one if it does not exist)
 - __Manipulate Scratchpad__
   - `[Ctrl]` + `[Alt]` + `[z]`: List all windows in scratchpad or send current focused window to scratchpad if there are no windows in scratchpad
   - `[Winkey]` + `[-/z]`: Send focused window to scratchpad (background workspace)
@@ -668,6 +683,13 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
   - `[Ctrl]` + `[Alt]` + `[Shift]` + `[u]`: Disable all inner and outer gaps
   - `[Ctrl]` + `[Alt]` + `[Shift]` + `[i]`: Restore to default inner gap size
   - `[Ctrl]` + `[Alt]` + `[Shift]` + `[o]`: Restore to default outer gap size
+
+#### Search and Help
+
+- __Omnisearch__
+  - `[Winkey]` + `[\]`: Omnisearch (apps, windows, files, text, PDF search)
+  - `[Winkey]` + `[?]`: Omnisearch keybinding page
+  - `[Ctrl]` + `[Alt]` + `[?]`: Rofi keybinding hinter
 
 #### Screenshot
 

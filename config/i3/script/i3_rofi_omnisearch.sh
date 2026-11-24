@@ -320,7 +320,7 @@ shortcut_guide_items() {
         'Capture    |  Screenshot selection            Print Screen' \
         'Capture    |  Active window screenshot        Super+Print Screen' \
         'Media      |  Volume up/down                  Volume keys' \
-        'Media      |  Play/pause                      Play/Pause key' \
+        'Media      |  Play/pause                      Play/Pause key'
 }
 
 show_all_keybindings() {

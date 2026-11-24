@@ -104,18 +104,19 @@ desc_session_packages () {
     echo "Session packages including:"
     echo "-- Portals: xdg-desktop-portal-wlr (screen sharing/screenshots), -gtk (file chooser)"
     echo "-- PipeWire: required by the portal for screen sharing (Zoom/Teams/browsers/OBS)"
-    echo "-- polkit-gnome agent, gnome-keyring, libnotify (notify-send)"
+    echo "-- polkit-gnome agent, gnome-keyring, libnotify (notify-send), dex (XDG autostart)"
+    echo "-- libinput tools (sway_keypress_monitor.sh, needs the input group)"
     echo "-- Qt Wayland platform plugins (native Qt apps instead of XWayland)"
     echo "-- Started by sway_startup.config: xsettingsd (GTK settings for XWayland apps),"
     echo "   nm-applet (network tray), blueman-applet (bluetooth tray), xrdb (Xresources for XWayland)"
 }
 install_session_packages () {
     pkg xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-        pipewire wireplumber policykit-1-gnome gnome-keyring libnotify-bin \
+        pipewire wireplumber policykit-1-gnome gnome-keyring libnotify-bin dex libinput-tools \
         qtwayland5 qt6-wayland \
         xsettingsd network-manager-gnome blueman x11-xserver-utils libglib2.0-bin \
         -- xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
-        pipewire wireplumber polkit-gnome gnome-keyring libnotify \
+        pipewire wireplumber polkit-gnome gnome-keyring libnotify dex-autostart libinput-utils \
         qt5-qtwayland qt6-qtwayland \
         xsettingsd network-manager-applet blueman xrdb glib2
 }

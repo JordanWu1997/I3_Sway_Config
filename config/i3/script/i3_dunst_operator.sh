@@ -134,10 +134,10 @@ reload_dunst () {
 }
 
 set_idle_expiry () {
-    local threshold
+    local threshold message
     case "$1" in
-        expire) threshold=0 ;;
-        keep) threshold=120 ;;
+        expire) threshold=0; message='Notifications now expire while you are idle' ;;
+        keep) threshold=120; message='Notifications now stay after 120 seconds of idle time' ;;
         *) return 2 ;;
     esac
 
@@ -146,7 +146,9 @@ set_idle_expiry () {
         return 1
     fi
     sed -i -E "s/^([[:space:]]*idle_threshold[[:space:]]*=[[:space:]]*).*/\1${threshold}/" "$DUNST_CONFIG" || return 1
-    reload_dunst
+    # Restarting dunst clears shown notifications and history-pop; log.txt keeps them
+    reload_dunst || return 1
+    notify-send -u low "Dunst" "$message" --icon="$ICON"
 }
 
 enable_dunst_logger () {

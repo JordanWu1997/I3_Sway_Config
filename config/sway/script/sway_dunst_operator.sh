@@ -37,6 +37,8 @@ show_help_message () {
     echo "  [load_offset]: Load x, y offset to dunst"
     echo "  [reload]: Reload dunst"
     echo "  [reload_all]: Load wal color and border width to dunst and reload dunst"
+    echo "  [expire_while_idle]: Expire notifications while idle"
+    echo "  [keep_while_idle]: Keep notifications after 120 seconds of idle time"
     echo "  [enable_dunst_logger]: Enable dunst logger"
     echo "  [disable_dunst_logger]: Disable dunst logger"
     echo "  [show_dunst_logger_status]: Show dunst logger status"
@@ -147,6 +149,24 @@ reload_dunst () {
     fi
 }
 
+set_idle_expiry () {
+    local threshold message
+    case "$1" in
+        expire) threshold=0; message='Notifications now expire while you are idle' ;;
+        keep) threshold=120; message='Notifications now stay after 120 seconds of idle time' ;;
+        *) return 2 ;;
+    esac
+
+    if ! grep -Eq '^[[:space:]]*idle_threshold[[:space:]]*=' "$DUNST_CONFIG"; then
+        printf 'idle_threshold is missing from %s\n' "$DUNST_CONFIG" >&2
+        return 1
+    fi
+    sed -i -E "s/^([[:space:]]*idle_threshold[[:space:]]*=[[:space:]]*).*/\1${threshold}/" "$DUNST_CONFIG" || return 1
+    # Restarting dunst clears shown notifications and history-pop; log.txt keeps them
+    reload_dunst || return 1
+    notify-send -u low "Dunst" "$message" --icon="$ICON"
+}
+
 enable_dunst_logger () {
     swaymsg exec "$I3_SCRIPT/i3_notify_logger.sh $HOME/.config/dunst/log.txt"
 }
@@ -189,6 +209,12 @@ dunst_operation () {
             load_wal_border_width || return 1
             load_offset_and_text_alignment || return 1
             reload_dunst
+            ;;
+        "expire_while_idle")
+            set_idle_expiry expire
+            ;;
+        "keep_while_idle")
+            set_idle_expiry keep
             ;;
         "enable_dunst_logger")
             disable_dunst_logger

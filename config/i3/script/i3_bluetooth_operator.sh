@@ -5,7 +5,7 @@ ICON="$HOME/.config/i3/share/64x64/wifi-connection.png"
 
 notify() {
     if command -v notify-send >/dev/null 2>&1; then
-        notify-send -u low -a Bluetooth --icon="$ICON" 'Bluetooth' "$1"
+        notify-send -u low -a Bluetooth -h string:x-dunst-stack-tag:bluetooth --icon="$ICON" 'Bluetooth' "$1"
     fi
     return 0
 }
@@ -71,7 +71,7 @@ choose_device() {
     done <<< "$data"
     if (( ${#rows[@]} == 0 )); then
         if [[ $scope == connect ]]; then
-            show_error 'No paired, disconnected Bluetooth devices. Pair a device in Blueman first.'
+            show_error 'No paired, disconnected Bluetooth devices. Pair a new one with [p] in Bluetooth mode.'
         else
             show_error 'No connected Bluetooth devices.'
         fi
@@ -109,6 +109,63 @@ device_action() {
         notify "Disconnected: $name"
     else
         notify "Could not $operation $name: $output"
+        return 1
+    fi
+}
+
+# Pair a new device: scan, pick, pair, trust (auto-reconnect), connect.
+# bluetoothctl in command mode registers no agent of its own, so PIN or passkey
+# confirmations go to the default agent: blueman-applet's dialog.
+pair_device() {
+    local scan_pid data address name paired connected selected output
+    local -a rows=() addresses=() names=()
+
+    if [[ $(controller_property Powered) != yes ]]; then
+        notify 'Bluetooth is off. Turn it on first (Bluetooth mode: 6)'
+        return 1
+    fi
+    # Discovery lasts as long as this bluetoothctl runs; devices it found disappear
+    # about 30 s after it stops, so keep it scanning until a device is picked.
+    bluetoothctl --timeout 120 scan on >/dev/null 2>&1 &
+    scan_pid=$!
+    # Expand the PID now: scan_pid is local and gone when the EXIT trap runs
+    trap "kill $scan_pid 2>/dev/null" EXIT
+    notify 'Scanning for devices… Put the device in pairing mode'
+    sleep 8
+
+    data=$(device_rows 2>/dev/null)
+    while IFS=$'\t' read -r address name paired connected; do
+        [[ -n $address && $paired == no ]] || continue
+        # Unnamed devices only show their address (AA-BB-…): rarely what you want
+        [[ $name == "${address//:/-}" ]] && continue
+        rows+=("$name · $address")
+        addresses+=("$address")
+        names+=("$name")
+    done <<< "$data"
+    if (( ${#rows[@]} == 0 )); then
+        show_error 'No new devices found. Put the device in pairing mode and try again.'
+        return 1
+    fi
+    selected=$(printf '%s\n' "${rows[@]}" |
+        rofi -dmenu -i -no-custom -format i -config "$ROFI_CONFIG" -p 'Pair new device' \
+            -mesg 'Still scanning: Esc and retry if the device is missing') || return 0
+    [[ $selected =~ ^[0-9]+$ && $selected -lt ${#addresses[@]} ]] || return 1
+    address=${addresses[selected]}
+    name=${names[selected]}
+
+    kill "$scan_pid" 2>/dev/null
+    notify "Pairing with $name… Confirm the code if a dialog appears"
+    if ! output=$(timeout 60 bluetoothctl pair "$address" 2>&1) ||
+        ! bluetoothctl info "$address" 2>/dev/null | grep -q 'Paired: yes'; then
+        notify "Could not pair $name: $(tail -n 1 <<< "$output")"
+        return 1
+    fi
+    bluetoothctl trust "$address" >/dev/null 2>&1
+    output=$(timeout 30 bluetoothctl connect "$address" 2>&1)
+    if is_connected "$address"; then
+        notify "Paired and connected: $name"
+    else
+        notify "Paired $name, but could not connect: $(tail -n 1 <<< "$output")"
         return 1
     fi
 }
@@ -157,9 +214,10 @@ case ${1:-} in
     connect_bluetooth_device) device_action connect ;;
     disconnect_bluetooth_device) device_action disconnect ;;
     reconnect_bluetooth_device) device_action reconnect ;;
+    pair_bluetooth_device) pair_device ;;
     enable_bluetooth_discoverability) controller_action Discoverable yes discoverable ;;
     disable_bluetooth_discoverability) controller_action Discoverable no discoverable ;;
     enable_bluetooth) controller_action Powered yes power ;;
     disable_bluetooth) controller_action Powered no power ;;
-    *) printf 'Usage: %s {status|connect_bluetooth_device|disconnect_bluetooth_device|reconnect_bluetooth_device|enable_bluetooth_discoverability|disable_bluetooth_discoverability|enable_bluetooth|disable_bluetooth}\n' "$0" >&2; exit 2 ;;
+    *) printf 'Usage: %s {status|connect_bluetooth_device|disconnect_bluetooth_device|reconnect_bluetooth_device|pair_bluetooth_device|enable_bluetooth_discoverability|disable_bluetooth_discoverability|enable_bluetooth|disable_bluetooth}\n' "$0" >&2; exit 2 ;;
 esac

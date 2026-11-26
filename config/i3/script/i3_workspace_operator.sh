@@ -28,6 +28,7 @@ show_help_message () {
     echo "  [kill_current]: kill current workspace"
     echo "  [goto]: goto selected workspace"
     echo "  [goto_with_input]: goto input workspace"
+    echo "  [bring]: bring selected workspace to current output display and focus it"
     echo "  [move_container]: move current window and focus to selected workspace"
     echo "  [move_container_not_focus]: move current window but not focus to selected workspace"
     echo "  [move_container_with_input]: move current window and focus to input workspace"

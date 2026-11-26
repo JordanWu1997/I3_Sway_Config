@@ -635,13 +635,14 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 #### Workspace
 
 - __Go to Workspace (Absolutely)__
-  - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#) in monitor 1 (HDMI1)
-  - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#) in monitor 2 (eDP1)
-  - `[Winkey]` + `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#) in monitor 3 (VIRTUAL1)
-  - `[Winkey]` + `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#) in monitor 4 (VIRTUAL2)
+  - `[Winkey]` + `[Number(#)]`: Go to workspace number # (A#)
+  - `[Winkey]` + `[Function(F#)]`: Go to workspace number 10+# (B#)
+  - `[Winkey]` + `[Ctrl]` + `[Function(F#)]`: Go to workspace number 20+# (C#)
+  - `[Winkey]` + `[Alt]` + `[Function(F#)]`: Go to workspace number 30+# (D#)
   - Note: `[Ctrl]`/`[Alt]` + `[Function(F#)]` without `[Winkey]` are disabled so apps keep `Ctrl+F5`, `Alt+F4`, IDE F-keys, etc.
-  - Monitor names are set in `./config/i3/config` (`$monitor1` ~ `$monitor4`)
+  - A new workspace opens on the focused monitor; an existing one stays on its monitor
   - `[Winkey]` + `[Esc]`: Go to selected workspace (interactively)
+  - `[Winkey]` + `[Shift]` + `[Esc]`: Bring selected workspace to the focused monitor (interactively)
 - __Go to Workspace (Relatively)__
   - `[Winkey]` + (`[Shift]`) + `[Tab]`: Go to (prev)/next existing workspace
   - `[Winkey]` + (`[Shift]`) + `[Grave]`: Go to (prev)/next workspace (create one if it does not exist)
@@ -655,15 +656,15 @@ Keybindings that are not list in [Prefix: Winkey](#1-prefix-winkey), [Prefix: Wi
 #### Window
 
 - __Kill Windows__
-  - `[Winkey]` + `[Shift]` + `[Esc]`: Kill all windows on current workspace
+  - Workspace mode (`[Winkey]` + `[Shift]` + `[p]`), then `[k]`: Save, then kill all windows on current workspace
 - __List Windows__
   - `[Alt]` + (`[Shift]`) + `[Tab]`: List all windows on all workspaces i.e. windows-like keybinding
   - `[Alt]` + (`[Shift]`) + `[q]`: List all windows on all workspaces with thumbnails i.e. my customized GNOME-like keybinding
 - __Send Window to Workspace (Absolutely)__
-  - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#) in monitor 1 (HDMI1), Note: max # is 10
-  - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#) in monitor 2 (eDP1), Note: max # is 10
-  - `[Winkey]` + `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#) in monitor 3 (VIRTUAL1), Note: max # is 10
-  - `[Winkey]` + `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#) in monitor 4 (VIRTUAL2), Note: max # is 10
+  - `[Winkey]` + `[Shift]` + `[Number(#)]`: Send window to workspace number # (A#), Note: max # is 10
+  - `[Winkey]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 10+# (B#), Note: max # is 10
+  - `[Winkey]` + `[Ctrl]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 20+# (C#), Note: max # is 10
+  - `[Winkey]` + `[Alt]` + `[Shift]` + `[Function(F#)]`: Send window to workspace number 30+# (D#), Note: max # is 10
   - `[Alt]` + (`[Shift]`) + `[Esc]`: Send window (but not focus) to the selected workspace (interactively)
 - __Send Window to Workspace (Relatively)__
   - `[Alt]` + (`[Shift]`) + `[Grave]`: Send window to (prev)/next existing workspace

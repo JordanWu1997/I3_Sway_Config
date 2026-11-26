@@ -49,6 +49,7 @@ show_help_message () {
     echo "  [restore_current]: relaunch saved programs in current workspace"
     echo "  [goto]: goto selected workspace"
     echo "  [goto_with_input]: goto input workspace"
+    echo "  [bring]: bring selected workspace to current output display and focus it"
     echo "  [move_container]: move current window and focus to selected workspace"
     echo "  [move_container_not_focus]: move current window but not focus to selected workspace"
     echo "  [move_container_with_input]: move current window and focus to input workspace"
@@ -217,6 +218,14 @@ workspace_operation () {
             WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Go to WS")
             if [[ -n ${WS} ]]; then
                 swaymsg "workspace $(ws_quote "$WS")"
+            fi
+            ;;
+        "bring")
+            # Read the output first: switching to the workspace may move focus to another display
+            OUTPUT=$(swaymsg -t get_workspaces -r | jq -r '.[] | select(.focused) | .output')
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Bring WS here")
+            if [[ -n ${WS} ]]; then
+                swaymsg "workspace $(ws_quote "$WS"); move workspace to output \"$OUTPUT\""
             fi
             ;;
         "goto_with_input")

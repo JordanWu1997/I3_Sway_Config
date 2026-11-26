@@ -101,6 +101,14 @@ workspace_operation () {
                 i3-msg "workspace \"$WS\""
             fi
             ;;
+        "bring")
+            # Read the output first: switching to the workspace may move focus to another display
+            OUTPUT=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused) | .output')
+            WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -input ${WS_NAME_LIST} -p "Bring WS here")
+            if [[ -n ${WS} ]]; then
+                i3-msg "workspace \"$WS\"; move workspace to output \"$OUTPUT\""
+            fi
+            ;;
         "goto_with_input")
             WS=$(workspace_rofi -dmenu -i -config ${ROFI_SELECTOR_CONFIG} -p "Go to WS")
             if [[ ! -z ${WS} ]]; then

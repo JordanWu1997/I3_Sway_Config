@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-# NOTE: XDG_RUNTIME_DIR variable MUST be added in crontab task for notify-send
-# Example: */15 * * * * XDG_RUNTIME_DIR=/run/user/$(id -u) i3_time_notifier.sh
+# Run from cron, e.g. every 15 minutes (`crontab -e`):
+#   */15 * * * * /home/jordan/.config/i3/script/i3_time_notifier.sh
+# The i3 session's D-Bus address and DISPLAY are taken from the running i3, so the
+# notification shows in the dunst of the i3 session, whatever display (:0, :1 ...)
+# it is on. Nothing is shown while i3 is not running.
+source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
+import_i3_session_env || exit 1
 
 # Send notification
 ICON="$HOME/.config/i3/share/64x64/notification.png"

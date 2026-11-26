@@ -8,6 +8,7 @@ Backup note for i3 configuration
   - [Table of Contents](#table-of-contents)
   - [Context](#context)
     - [Display configuration for X-window](#display-configuration-for-x-window)
+    - [Find the i3 session from cron (DISPLAY, D-Bus)](#find-the-i3-session-from-cron-display-d-bus)
     - [Monitor workspace assignment](#monitor-workspace-assignment)
     - [Lxsession agent](#lxsession-agent)
     - [Hhpc](#hhpc)
@@ -82,6 +83,71 @@ Set additional display mode for monitor
   - `exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend`
 - Shrink mode for eDP1 (for better visual consistency with HDMI1)
   - `exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink`
+
+## Find the i3 session from cron (DISPLAY, D-Bus)
+
+Scripts started by i3 (`exec`, keybindings) inherit the session environment. Scripts started
+by cron do not: cron gives them almost nothing (`HOME`, `PATH`, `SHELL`), so
+
+- `i3-msg` cannot find the i3 IPC socket (it looks it up through the X display)
+- `notify-send` cannot reach dunst (it needs the session D-Bus address)
+
+Hardcoding `export DISPLAY=:1` breaks on machines where i3 runs on `:0` (or the other way
+around), and `XAUTHORITY=$HOME/.Xauthority` is wrong under GDM, which keeps it in
+`/run/user/<uid>/gdm/Xauthority`.
+
+The fix is `i3_session_env.sh`: it copies the session variables from the running i3 process,
+which was started with exactly the right ones.
+
+```
+cron ──► script ──► import_i3_session_env
+                      │ 1. pgrep -n -u <me> -x i3          (newest i3 of this user)
+                      │ 2. read /proc/<pid>/environ
+                      │ 3. export DISPLAY, XAUTHORITY,
+                      │           DBUS_SESSION_BUS_ADDRESS, XDG_RUNTIME_DIR
+                      ▼
+          i3-msg ──► X display ──► i3 IPC socket      (bar refresh)
+          notify-send ──► session D-Bus ──► dunst ──► popup on i3's display
+```
+
+| Variable                   | Used by       | Why                                                         |
+|----------------------------|---------------|-------------------------------------------------------------|
+| `DISPLAY`                  | `i3-msg`, X apps | Which X server (`:0`, `:1` ...); i3 publishes its socket there |
+| `XAUTHORITY`               | `i3-msg`, X apps | Permission to talk to that X server (path differs per login manager) |
+| `DBUS_SESSION_BUS_ADDRESS` | `notify-send` | Reaches the dunst that i3 started, which draws on i3's display |
+| `XDG_RUNTIME_DIR`          | `notify-send` | Fallback to find the session bus (`/run/user/<uid>/bus`)    |
+
+Scripts using it
+
+- `i3_bar_operator.sh bar_refresh_with_crontab [verbose]`: restart i3bar
+- `i3_time_notifier.sh`: show the current time
+
+Crontab (`crontab -e`), no environment variables needed in the line itself
+
+```
+0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
+*/15 * * * * /home/jordan/.config/i3/script/i3_time_notifier.sh
+```
+
+Use it in a new cron script
+
+```bash
+source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
+import_i3_session_env || exit 1   # stops (exit 1) when i3 is not running
+```
+
+Troubleshooting
+
+- Which display is i3 on: `tr '\0' '\n' < /proc/$(pgrep -n -x i3)/environ | grep -E '^(DISPLAY|XAUTHORITY|DBUS)'`
+- Run a cron job the way cron does: `env -i HOME=$HOME PATH=/usr/bin:/bin /home/jordan/.config/i3/script/i3_time_notifier.sh`
+- See cron's own errors: `grep CRON /var/log/syslog` (Ubuntu) or `journalctl -u cron` / `journalctl -u crond` (Fedora)
+
+Limitations
+
+- Nothing runs while i3 is not running: the scripts print `i3 is not running for this user` and exit 1
+- Two logins of the same user at once (e.g. GNOME on `:2` and i3 on `:1`) usually share one
+  D-Bus bus. Notifications then go to whichever notification daemon registered first; with
+  only i3 logged in they always land in i3.
 
 ## Monitor workspace assignment
 

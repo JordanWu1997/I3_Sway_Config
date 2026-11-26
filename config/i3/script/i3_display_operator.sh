@@ -57,7 +57,7 @@ show_help_message () {
     echo "      [HDMI1_auto]: activate HDMI1"
     echo "      [HDMI1_default]: activate HDMI1 in default mode"
     echo "      [HDMI1_1912x960_60]: activate HDMI1 in shrink mode (1912x960_60)"
-    echo "      [HDMI1_1920x1200_50]: activate HDMI1 in extended mode (1920x1080_50)"
+    echo "      [HDMI1_1920x1200_50]: activate HDMI1 in extended mode (1920x1200_50)"
     echo "      [HDMI1_primary]: set HDMI1 as primary display"
     echo "      [HDMI1_off]: deactivate HDMI1"
     echo "  [Combination]"

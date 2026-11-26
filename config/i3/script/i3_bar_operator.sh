@@ -6,6 +6,9 @@ BAR_ID="bar_status"
 BAR_HEIGHT=$(awk '$2=="$default_i3bar_height" {print $3; exit}' "$BAR_CONFIG")
 CONKY_DEFAULT_YOFFSET=$(awk '$2=="$default_conky_gap_y" {print $3; exit}' "$BAR_CONFIG")
 
+# import_i3_session_env: session DISPLAY/XAUTHORITY for cron (bar_refresh_with_crontab)
+source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
+
 bar_state () {
     i3-msg -t get_bar_config "$BAR_ID" |
         jq -er 'select((.mode == "dock" or .mode == "hide") and
@@ -132,10 +135,9 @@ bar_operation () {
         "bar_refresh_with_crontab")
             # In `crontab -e`, add following line to refresh bar every hour
             # 0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
-            # ENV varaible must be set since i3-msg communicates with i3wm via i3 IPC socket (associated with user's X session)
-            #export DISPLAY=:0
-            export DISPLAY=:1
-            export XAUTHORITY=$HOME/.Xauthority
+            # i3-msg finds the i3 IPC socket through the X session, so the session's
+            # DISPLAY/XAUTHORITY are needed (taken from the running i3, see i3_session_env.sh)
+            import_i3_session_env || return 1
             # i3-msg
             if ! { i3-msg -- exec --no-startup-id 'killall i3bar && sleep 0.5' &&
                 i3-msg -- exec --no-startup-id 'i3bar -b bar_status && sleep 0.5' &&
@@ -144,8 +146,6 @@ bar_operation () {
             fi
             # Verbose
             if [[ $2 == 'verbose' ]]; then
-                # Point to run time directory for user-specific data e.g., socket
-                export XDG_RUNTIME_DIR=/run/user/$(id -u)
                 notify-send -u low "Bar Mode" "i3bar restart requested by cron" \
                     --icon="$HOME/.config/i3/share/64x64/reload.png" || true
             fi

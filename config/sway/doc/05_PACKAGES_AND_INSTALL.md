@@ -57,8 +57,7 @@ i3-resurrect, i3-workspace-swap.
 
 1. Log out and back in (group changes).
 2. Choose **Sway (user session)** at login, or run `sway-session` from a TTY.
-3. `swaymsg -t get_outputs`, then set `$monitor1..5` in `~/.config/sway/config`.
-4. `sway -C -c ~/.config/sway/config` validates the config. This is the one check that
+3. `sway -C -c ~/.config/sway/config` validates the config. This is the one check that
    could not be run during the migration.
-5. NVIDIA: `sudo kernelstub -a nvidia-drm.modeset=1` (Pop!_OS), then reboot.
-6. Optional: kanshi profiles (03 §6), choose ibus or fcitx5 (03 §3).
+4. NVIDIA: `sudo kernelstub -a nvidia-drm.modeset=1` (Pop!_OS), then reboot.
+5. Optional: kanshi profiles (03 §6), choose ibus or fcitx5 (03 §3).

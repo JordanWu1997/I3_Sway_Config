@@ -8,6 +8,7 @@ Backup note for i3 configuration
   - [Table of Contents](#table-of-contents)
   - [Context](#context)
     - [Display configuration for X-window](#display-configuration-for-x-window)
+    - [Monitor workspace assignment](#monitor-workspace-assignment)
     - [Lxsession agent](#lxsession-agent)
     - [Hhpc](#hhpc)
     - [Rename workspace](#rename-workspace)
@@ -81,6 +82,85 @@ Set additional display mode for monitor
   - `exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh HDMI1 extend`
 - Shrink mode for eDP1 (for better visual consistency with HDMI1)
   - `exec_always --no-startup-id $I3_SCRIPT/i3_display_operator.sh eDP1 shrink`
+
+## Monitor workspace assignment
+
+Assign each block of 10 workspaces to one monitor (A: ws 1~10, B: ws 11~20, C: ws 21~30, D: ws 31~40).
+REMOVED because I use different monitor setups and want workspaces to open on the monitor I focus on.
+If the assigned monitor does not exist, the workspace just spawns on the current monitor.
+
+- Pros
+  - The workspace number tells which monitor it is on
+  - When a monitor is plugged back in, i3 moves its assigned workspaces back to it
+- Cons
+  - Output names depend on the X driver (Intel DDX: `HDMI1`, `eDP1`; modesetting: `HDMI-1`, `eDP-1`),
+    and a wrong name makes the assignment silently do nothing
+  - `VIRTUAL1`/`VIRTUAL2` only exist with the Intel driver
+  - Does not fit setups that change often
+
+- Monitor variables in `config` (set monitor order according to frequent-usage priority)
+
+  ```
+  # Set monitor order according to frequent-usage priority
+  # If the monitor does not exist, workspaces will just spawn in current monitor
+  set $monitor1 HDMI1
+  set $monitor2 eDP1
+  set $monitor3 VIRTUAL1
+  set $monitor4 VIRTUAL2
+  ```
+
+- Workspace assignment in `config.d/i3_workspace.config`
+
+  ```
+  # Assign workspace for quadra monitor (monitor1 + monitor2 + monitor3 + monitor4)
+  # monitor 1 (ws 1~10)
+  workspace $ws1  output $monitor1
+  workspace $ws2  output $monitor1
+  workspace $ws3  output $monitor1
+  workspace $ws4  output $monitor1
+  workspace $ws5  output $monitor1
+  workspace $ws6  output $monitor1
+  workspace $ws7  output $monitor1
+  workspace $ws8  output $monitor1
+  workspace $ws9  output $monitor1
+  workspace $ws10 output $monitor1
+  # monitor 2 (ws 11~20)
+  workspace $ws11 output $monitor2
+  workspace $ws12 output $monitor2
+  workspace $ws13 output $monitor2
+  workspace $ws14 output $monitor2
+  workspace $ws15 output $monitor2
+  workspace $ws16 output $monitor2
+  workspace $ws17 output $monitor2
+  workspace $ws18 output $monitor2
+  workspace $ws19 output $monitor2
+  workspace $ws20 output $monitor2
+  # monitor 3 (ws 21~30)
+  workspace $ws21 output $monitor3
+  workspace $ws22 output $monitor3
+  workspace $ws23 output $monitor3
+  workspace $ws24 output $monitor3
+  workspace $ws25 output $monitor3
+  workspace $ws26 output $monitor3
+  workspace $ws27 output $monitor3
+  workspace $ws28 output $monitor3
+  workspace $ws29 output $monitor3
+  workspace $ws30 output $monitor3
+  # monitor 4 (ws 31~40)
+  workspace $ws31 output $monitor4
+  workspace $ws32 output $monitor4
+  workspace $ws33 output $monitor4
+  workspace $ws34 output $monitor4
+  workspace $ws35 output $monitor4
+  workspace $ws36 output $monitor4
+  workspace $ws37 output $monitor4
+  workspace $ws38 output $monitor4
+  workspace $ws39 output $monitor4
+  workspace $ws40 output $monitor4
+  ```
+
+- Tip: i3 (>= 4.16) accepts a fallback list of outputs, which covers both driver namings
+  - `workspace $ws1 output HDMI1 HDMI-1 primary`
 
 ## Lxsession agent
 

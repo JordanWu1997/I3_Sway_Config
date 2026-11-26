@@ -78,7 +78,6 @@ Wallpapers, icons and the automark list stay in `~/.config/i3/share`, shared by 
 
 ```bash
 ./installation/install_sway.sh           # packages + links + login entry
-swaymsg -t get_outputs                   # (inside sway) then fix $monitor1..5 in config
 sway -C -c ~/.config/sway/config         # validate the config
 ```
 

@@ -39,9 +39,8 @@ rounds, followed by a final review. The process is described in [06](06_MIGRATIO
    `sway-session` adds `--unsupported-gpu` automatically.
 3. Run `installation/install_sway.sh`.
 4. Log in with **"Sway (user session)"**. It loads `~/.profile`; fish never did.
-5. Fix `$monitor1..5` from `swaymsg -t get_outputs`.
-6. Validate with `sway -C -c ~/.config/sway/config`.
-7. Fix the typo `XMODIFIER` → `XMODIFIERS` in `config/i3/share/default_profile`.
+5. Validate with `sway -C -c ~/.config/sway/config`.
+6. Fix the typo `XMODIFIER` → `XMODIFIERS` in `config/i3/share/default_profile`.
 
 ## Things I fixed or found along the way
 

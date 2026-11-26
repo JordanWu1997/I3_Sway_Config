@@ -25,13 +25,6 @@
 # Set variables
 # PLEASE DO NOT MOVE/REMOVE LINES IN THIS SECTION UNLESS YOU KNOW WHAT YOU ARE DOING !!!
 
-# Set monitor order according to frequent-usage priority
-# If the monitor does not exist, workspaces will just spawn in current monitor
-set $monitor1 HDMI1
-set $monitor2 eDP1
-set $monitor3 VIRTUAL1
-set $monitor4 VIRTUAL2
-
 # Set font (RECOMMENDED: DroidSansMono Nerd Font Bold)
 set $default_font Operator-caska
 

@@ -42,7 +42,7 @@ The sections below are ordered by how badly things break if you skip them.
 - If you have hybrid graphics (Intel/AMD iGPU + NVIDIA), the most reliable setup is to
   let sway render on the iGPU. Pop!_OS "hybrid" mode does this.
 - Output names change from nvidia-X style (`HDMI-0`, `DP-0`) to DRM style (`HDMI-A-1`,
-  `DP-1`). Update `$monitor1..5` in `config` with `swaymsg -t get_outputs`.
+  `DP-1`). List them with `swaymsg -t get_outputs`.
 
 ### 1.3 Session start and environment (`~/.profile` was not loaded)
 - Under X11, i3 was started by Xsession scripts that source `~/.profile`. Wayland

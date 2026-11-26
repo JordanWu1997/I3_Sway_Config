@@ -1998,12 +1998,48 @@ PY
         ;;
 
     *Windows*)
-        WINDOW=$(wmctrl -l | rofi_menu "Windows" -auto-select) || {
+        WINDOW_ENTRIES=$(i3-msg -t get_tree | jq -r '
+            def clean: tostring | gsub("[\\t\\r\\n]+"; " ");
+            def walk($workspace):
+                . as $node
+                | (if .type == "workspace" then .name else $workspace end) as $ws
+                | (if .window != null and $ws != null then
+                    [(.window | tostring),
+                     ((if .focused then "● " else "  " end)
+                      + ((if $ws == "__i3_scratch" then "Scratchpad" else $ws end) | clean)
+                      + "  ·  " + ((.window_properties.class // .window_properties.instance // "Unknown app") | clean)
+                      + "  ·  " + ((.name // .window_properties.title // "(untitled)") | clean))]
+                    | join("\t")
+                   else empty end),
+                  ((.nodes[]?, .floating_nodes[]?) | walk($ws));
+            walk(null)
+        ') || {
+            notify 'Could not read open windows'
             BACK_TO_SEARCH=yes
             continue
         }
-        [[ -n "$WINDOW" ]] || { BACK_TO_SEARCH=yes; continue; }
-        wmctrl -i -a "${WINDOW%% *}"
+        [[ -n $WINDOW_ENTRIES ]] || { notify 'No open windows'; BACK_TO_SEARCH=yes; continue; }
+
+        WINDOW_ROWS=()
+        WINDOW_IDS=()
+        while IFS=$'\t' read -r WINDOW_ID WINDOW_LABEL; do
+            [[ $WINDOW_ID =~ ^[0-9]+$ ]] || continue
+            WINDOW_IDS+=("$WINDOW_ID")
+            WINDOW_ROWS+=("$WINDOW_LABEL")
+        done <<< "$WINDOW_ENTRIES"
+        (( ${#WINDOW_ROWS[@]} > 0 )) || { notify 'No open windows'; BACK_TO_SEARCH=yes; continue; }
+
+        WINDOW_INDEX=$(printf '%s\n' "${WINDOW_ROWS[@]}" |
+            rofi_menu "Open windows" -no-custom -format i \
+                -mesg 'Workspace · App · Title   |   ● focused · Enter: switch · Esc: Search') || {
+            BACK_TO_SEARCH=yes
+            continue
+        }
+        [[ $WINDOW_INDEX =~ ^[0-9]+$ && -n ${WINDOW_IDS[WINDOW_INDEX]:-} ]] || {
+            BACK_TO_SEARCH=yes
+            continue
+        }
+        wmctrl -i -a "$(printf '0x%x' "${WINDOW_IDS[WINDOW_INDEX]}")"
         ;;
 
     *Workspaces*)

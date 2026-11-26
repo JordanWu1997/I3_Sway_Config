@@ -385,8 +385,10 @@ Note: the term "window" used in this configuration actually refers to "container
   - Player control (e.g. previous, pause-play, next, fast-forward, rewind, stop) for spt (spotify TUI front-end), MPV, VLC, and all MPRIS players
     - __Audio Output Mode (`[o]`)__
       - Speaker volume control with pulsemixer (e.g. volume up/down, mute)
+      - Select default output device with rofi (`[d]`)
     - __Audio Input Mode (`[i]`)__
       - Microphone usage (e.g. recording)
+      - Select default input device with rofi (`[d]`)
     - __Spotifyd Mode (`[s]`)__
       - Spotifyd control (e.g. enable, disable, reload) for spotifyd
     - __MPV Mode (`[Shift]`+`[m]`)__

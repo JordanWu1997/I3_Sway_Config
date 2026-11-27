@@ -1,0 +1,13 @@
+# ~/.config/udiskie/config.yml
+# udiskie (USB/removable drive auto-mount), started by i3_startup.config / sway_startup.config.
+# Reference: man udiskie (DEVICE ATTRIBUTES lists what a rule can match;
+# values are shell-style patterns, case-insensitive).
+
+device_config:
+  # Snap packages are squashfs images mounted from loop devices under /snap.
+  # Ignore them, so `udiskie-umount --all` (System mode, then u) and the tray
+  # menu only deal with real removable drives.
+  - loop_file: /var/lib/snapd/snaps/*.snap
+    ignore: true
+  - mount_path: /snap/*
+    ignore: true

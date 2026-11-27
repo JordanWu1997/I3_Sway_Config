@@ -115,7 +115,7 @@ USER_CONFIG_BACKUP="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
 USER_CONFIG_LIST=( \
     bumblebee-status cava conky dunst feh flashfocus glow htop \
     i3 kitty Kvantum ncspot neofetch parcellite picom ranger rofi \
-    spotify-tui vis zathura mpv sioyek \
+    spotify-tui vis zathura mpv sioyek udiskie \
     libinput-gestures.conf warpd starship.toml \
 )
 

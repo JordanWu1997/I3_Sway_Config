@@ -163,6 +163,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
 - [udiskie](https://github.com/coldfix/udiskie): USB/removable drive auto-mount (under `/media/$USER/<label>`), with notifications and a tray icon to unmount/eject (no tray icon on sway)
+  - [config/udiskie/config.yml](./config/udiskie/config.yml) ignores snap package loop devices, so unmount-all and the tray menu only show real drives
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
 - [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing
 - [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): X session lock

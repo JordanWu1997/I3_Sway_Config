@@ -131,17 +131,26 @@ cron ──► script ──► for_each_i3_session [--unique-dbus] CMD
 
 Scripts using it
 
-- `i3_bar_operator.sh bar_refresh_with_crontab [verbose]`: restart i3bar in every i3 session
+- `i3_bar_operator.sh refresh_with_crontab [verbose]`: restart i3bar in every i3 session
 - `i3_time_notifier.sh`: show the current time (once per D-Bus bus, see `--unique-dbus`)
+- `i3_automark_operator.sh refresh_with_crontab [verbose]`: restart the automark daemon in
+  every i3 session
+- `i3_kdeconnect_operator.sh refresh_with_crontab [verbose]`: restart `kdeconnectd` (once per
+  D-Bus bus) and the pointer daemon in the sessions where it is switched on
 
 Crontab (`crontab -e`), no environment variables needed in the line itself
 
 ```
-0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
+0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh refresh_with_crontab
+0 * * * * /home/jordan/.config/i3/script/i3_automark_operator.sh refresh_with_crontab
+0 * * * * /home/jordan/.config/i3/script/i3_kdeconnect_operator.sh refresh_with_crontab
 */15 * * * * /home/jordan/.config/i3/script/i3_time_notifier.sh
 ```
 
-Use it in a new cron script
+Use it in a new cron script: start from the template
+`script/i3_multi_session_template.sh` (operations `list_sessions`, `run`,
+`refresh_with_crontab [verbose]`, with examples for a per-session job, a daemon restart and
+a notification), or by hand:
 
 ```bash
 source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
@@ -153,6 +162,22 @@ for_each_i3_session --unique-dbus notify-send Hi   # once per D-Bus bus (notific
 
 # Only the newest i3 session, imported into the current shell
 import_i3_session_env || exit 1
+```
+
+Process helpers (call them inside a per-session function, they use that session's `DISPLAY`)
+
+| Helper                               | Does                                                                       |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `i3_session_proc_pids PGREP_ARGS...` | PIDs matching `pgrep PGREP_ARGS` whose environment has this `DISPLAY`      |
+| `i3_session_python_pids SCRIPT_NAME` | PIDs of `python* .../SCRIPT_NAME` of this session (exact argv match)       |
+| `i3_session_kill LISTER [ARGS...]`   | Stop what `LISTER ARGS` prints: SIGTERM, SIGKILL after 2s, wait until gone |
+
+```bash
+restart_my_daemon () {
+    i3_session_kill i3_session_python_pids my_daemon.py            # only this session's copy
+    i3-msg -- exec --no-startup-id "python3 $I3_SCRIPT/my_daemon.py" >/dev/null
+}
+for_each_i3_session restart_my_daemon
 ```
 
 ### Multiple i3 sessions
@@ -174,12 +199,25 @@ for each i3 session (DISPLAY=:N, I3SOCK=<its socket>)
 - `killall i3bar` is not used: it kills the bars of every session, so restarting session 2
   would kill the bars just restarted in session 1
 - The old bars are gone before new ones start, so a bar never runs twice on one display
+- The automark and kdeconnect pointer daemons are restarted the same way, through
+  `i3_session_kill i3_session_python_pids <script>.py` and `i3-msg exec`
+
+Rules for scripts that act on several sessions
+
+- No `killall X` / `pkill X` for per-session programs: it hits every session
+- No plain `pgrep -f name.py` to find a daemon: it also matches `vim name.py` or a shell whose
+  command line contains the name (this killed a test shell during development);
+  use `i3_session_python_pids`
+- Start long-running programs with `i3-msg exec`: they then belong to that session's i3, and
+  the cron job neither blocks on them nor takes them down when it exits
+- Per-user D-Bus services (`kdeconnectd`, notifications) exist once per bus, not per session:
+  use `--unique-dbus`
 
 Pitfall: `I3SOCK` wins over `DISPLAY`
 
 `i3-msg` uses `$I3SOCK` first and only falls back to the X display when it is unset. Every
 terminal inside i3 has `I3SOCK` set to that session's socket. Without step 2a/2c above,
-running `bar_refresh_with_crontab` from a terminal sent the `exec i3bar` of *every* session to
+running `refresh_with_crontab` from a terminal sent the `exec i3bar` of *every* session to
 the i3 of that terminal, which then showed duplicated bars. Each session now gets its own
 `I3SOCK` explicitly, so running the scripts from cron or from any terminal behaves the same.
 

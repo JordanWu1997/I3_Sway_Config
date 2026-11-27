@@ -8,6 +8,19 @@
     #z x c v b n m)
 readarray -t ALL_AUTOMARK_LIST < "$HOME/.config/i3/share/i3_automark_list.txt"
 
+# cron does not set I3_SCRIPT
+I3_SCRIPT=${I3_SCRIPT:-$HOME/.config/i3/script}
+# for_each_i3_session, i3_session_kill: per-session env for cron (refresh_with_crontab)
+source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
+
+# Restart the automark daemon of the i3 session on $DISPLAY. It is started through
+# that session's i3, so it runs in the session (not as a child of cron) and connects
+# to the right i3.
+restart_session_automark_daemon () {
+    i3_session_kill i3_session_python_pids i3_automark_daemon.py
+    i3-msg -- exec --no-startup-id "$I3_SCRIPT/i3_automark_daemon.py" >/dev/null
+}
+
 # Wrong message
 show_wrong_usage_message () {
     echo "Wrong Usage:"
@@ -27,6 +40,7 @@ show_help_message () {
     echo "  [cycle_focus_dec]: change focus to next decreasingly-automarked window"
     echo "  [cycle_swap_inc]: swap window with next increasingly-automarked window"
     echo "  [cycle_swap_dec]: swap window with next decreasingly-automarked window"
+    echo "  [refresh_with_crontab] [verbose]: restart automark daemon in every i3 session (for cron)"
 }
 
 cycle_mark_focus () {
@@ -144,6 +158,18 @@ automark_operation () {
             $I3_SCRIPT/i3_automark.py
             cursor_follow_focus
             ;;
+        "refresh_with_crontab")
+            # In `crontab -e`, add following line to refresh automark every hour
+            # 0 * * * * /home/jordan/.config/i3/script/i3_automark_operator.sh refresh_with_crontab
+            # Every i3 session of this user gets its own daemon (see i3_session_env.sh)
+            local status=0
+            for_each_i3_session restart_session_automark_daemon || status=1
+            if [[ ${2:-} == 'verbose' ]]; then
+                for_each_i3_session --unique-dbus notify-send -u low "i3 Automark" \
+                    "Automark restart requested by cron" --icon="${ICON}" || true
+            fi
+            return "$status"
+            ;;
         *)
             show_wrong_usage_message
             echo
@@ -153,9 +179,11 @@ automark_operation () {
 }
 
 # Auto reload daemon if it is not running
-if [[ ! $1 == 'disable' ]] && [[ ! $1 == 'reload' ]]; then
+# (not for refresh_with_crontab: it restarts the daemons itself, and a daemon started
+# here would run in the foreground and block the cron job)
+if [[ ! $1 == 'disable' ]] && [[ ! $1 == 'reload' ]] && [[ ! $1 == 'refresh_with_crontab' ]]; then
     ps -aux | grep "python3 $I3_SCRIPT/i3_automark_daemon.py" | grep -q -v 'grep' || python3 $I3_SCRIPT/i3_automark_daemon.py
 fi
 
 # Main
-automark_operation $1
+automark_operation "$@"

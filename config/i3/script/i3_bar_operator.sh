@@ -6,38 +6,15 @@ BAR_ID="bar_status"
 BAR_HEIGHT=$(awk '$2=="$default_i3bar_height" {print $3; exit}' "$BAR_CONFIG")
 CONKY_DEFAULT_YOFFSET=$(awk '$2=="$default_conky_gap_y" {print $3; exit}' "$BAR_CONFIG")
 
-# for_each_i3_session: session DISPLAY/XAUTHORITY for cron (bar_refresh_with_crontab)
+# for_each_i3_session, i3_session_kill: per-session env for cron
+# (bar_refresh_with_crontab)
 source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
 
-# PIDs of this user's i3bar processes on display $DISPLAY. With several i3 sessions,
-# `killall i3bar` would also kill the bars of the other sessions.
-session_i3bar_pids () {
-    local pid
-    for pid in $(pgrep -u "$(id -u)" -x i3bar); do
-        tr '\0' '\n' < "/proc/$pid/environ" 2>/dev/null |
-            grep -qxF "DISPLAY=$DISPLAY" && echo "$pid"
-    done
-}
-
-# Restart the i3bars of the i3 session on $DISPLAY
+# Restart the i3bars of the i3 session on $DISPLAY. Only that session's bars are
+# killed (`killall i3bar` would also kill the bars of the other i3 sessions), and they
+# are gone before the new ones start, so a bar never runs twice on one display.
 restart_session_i3bar () {
-    local pids tries=20
-    pids=$(session_i3bar_pids)
-    if [[ -n $pids ]]; then
-        # shellcheck disable=SC2086 # one PID per word
-        kill $pids 2>/dev/null
-        # Wait (max 2s) for the old bars to exit before starting new ones
-        while (( tries-- > 0 )) && [[ -n $(session_i3bar_pids) ]]; do
-            sleep 0.1
-        done
-        # Still there: force it, so the new bars never run next to old ones
-        pids=$(session_i3bar_pids)
-        if [[ -n $pids ]]; then
-            # shellcheck disable=SC2086 # one PID per word
-            kill -KILL $pids 2>/dev/null
-            sleep 0.2
-        fi
-    fi
+    i3_session_kill i3_session_proc_pids -x i3bar
     i3-msg -- exec --no-startup-id 'i3bar -b bar_status' >/dev/null &&
         i3-msg -- exec --no-startup-id 'i3bar -b bar_mode' >/dev/null
 }
@@ -111,7 +88,7 @@ show_help_message () {
     echo "  [bar_hidden_state_show]: set hidden state to show"
     echo "  [bar_hidden_state_hide]: set hidden state to hide"
     echo "  [bar_reload]: reload bar"
-    echo "  [bar_refresh_with_crontab]: script to reload i3bar with crontab"
+    echo "  [refresh_with_crontab]: script to reload i3bar with crontab"
 }
 
 # Bar operation
@@ -163,7 +140,7 @@ bar_operation () {
                 return 1
             fi
             ;;
-        "bar_refresh_with_crontab")
+        "refresh_with_crontab")
             # In `crontab -e`, add following line to refresh bar every hour
             # 0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
             # i3-msg finds the i3 IPC socket through the X session, so each session's

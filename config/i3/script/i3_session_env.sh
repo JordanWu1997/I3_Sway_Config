@@ -66,6 +66,55 @@ import_i3_session_env() {
     export I3_SESSION_PID=$pid
 }
 
+# i3_session_proc_pids PGREP_ARGS...: PIDs (one per line) of this user's processes
+# matching PGREP_ARGS (e.g. `-x i3bar`) that run on display $DISPLAY, i.e. belong to
+# the current i3 session. Other sessions' processes are left out.
+i3_session_proc_pids() {
+    local pid
+    for pid in $(pgrep -u "$(id -u)" "$@"); do
+        { tr '\0' '\n' < "/proc/$pid/environ"; } 2>/dev/null |
+            grep -qxF "DISPLAY=$DISPLAY" && echo "$pid"
+    done
+    return 0
+}
+
+# i3_session_python_pids SCRIPT_NAME: PIDs of `python* .../SCRIPT_NAME` processes of
+# the current i3 session (started as `python3 path` or through the script's shebang).
+# Exact argv match, unlike `pgrep -f`, which would also match e.g. `vim SCRIPT_NAME`.
+i3_session_python_pids() {
+    local name=$1 pid arg0 arg1
+    for pid in $(i3_session_proc_pids -f "$name"); do
+        { IFS= read -r -d '' arg0 && IFS= read -r -d '' arg1; } 2>/dev/null \
+            < "/proc/$pid/cmdline" || continue
+        [[ ${arg0##*/} == python* && ${arg1##*/} == "$name" ]] && echo "$pid"
+    done
+    return 0
+}
+
+# i3_session_kill LISTER [ARGS...]: stop the processes `LISTER ARGS...` prints
+# (i3_session_proc_pids or i3_session_python_pids), SIGTERM then SIGKILL after 2s,
+# and return once they are gone. Use it instead of `killall`, which would also kill
+# the copies running in the other i3 sessions.
+#   i3_session_kill i3_session_proc_pids -x i3bar
+#   i3_session_kill i3_session_python_pids my_daemon.py
+i3_session_kill() {
+    local pids tries=20
+    pids=$("$@")
+    [[ -n $pids ]] || return 0
+    # shellcheck disable=SC2086 # one PID per word
+    kill $pids 2>/dev/null
+    while (( tries-- > 0 )) && [[ -n $("$@") ]]; do
+        sleep 0.1
+    done
+    pids=$("$@")
+    if [[ -n $pids ]]; then
+        # shellcheck disable=SC2086
+        kill -KILL $pids 2>/dev/null
+        sleep 0.2
+    fi
+    return 0
+}
+
 # for_each_i3_session [--unique-dbus] COMMAND [ARGS...]
 #
 # Runs COMMAND once for every i3 session of this user, each time in a subshell with

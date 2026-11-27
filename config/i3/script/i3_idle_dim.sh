@@ -16,13 +16,16 @@
 #       i3_toolkit_operator.sh disable_caffeine.
 #   dim / restore: one-shot steps, for swayidle "timeout ... resume ...".
 #
-# X11 (i3): every active output is dimmed with `xrandr --brightness` (software dim,
+# X11 (i3): every active output fades down with `xrandr --brightness` (software dim,
 #   external monitors included); each output's previous brightness is restored.
 #   A redshift tint is kept, as xrandr keeps the current colour curve.
 # Wayland (sway): xrandr cannot reach the outputs, so only the built-in panel's
 #   backlight is dimmed (brightnessctl). External monitors get the notification only.
 
-DIM_BRIGHTNESS=0.3   # X11: xrandr brightness while dimmed (1.0 = normal)
+DIM_BRIGHTNESS=0.3   # X11: xrandr brightness at the end of the fade (1.0 = normal)
+FADE_SECONDS=8       # X11: fade length, a bit under WARN_SECONDS (lock comes at WARN_SECONDS)
+FADE_STEPS=32
+FADE_STEP_SECONDS=$(awk -v t="$FADE_SECONDS" -v n="$FADE_STEPS" 'BEGIN { print t / n }')
 DIM_PERCENT=10       # Wayland: backlight percent while dimmed
 WARN_SECONDS=10
 ICON="$HOME/.config/i3/share/64x64/wrench.png"
@@ -41,13 +44,21 @@ xrandr_brightness () {
         /^[ \t]+Brightness:/ && out != "" { print out, $2; out = "" }'
 }
 
+# Fade every output from its saved brightness down to DIM_BRIGHTNESS over
+# FADE_SECONDS, so the screens darken gradually through the warning. Each step is
+# short, so a kill (activity, or the lock starting) is handled almost at once.
 dim_xrandr () {
-    local output _
+    local output level step
     # A state file left from an earlier dim holds the real brightness: keep it
     [[ -e $XRANDR_STATE ]] || xrandr_brightness > "$XRANDR_STATE"
-    while read -r output _; do
-        xrandr --output "$output" --brightness "$DIM_BRIGHTNESS"
-    done < "$XRANDR_STATE"
+    for (( step = 1; step <= FADE_STEPS; step++ )); do
+        while read -r output level; do
+            # Linear step towards the dim level; an output already darker stays as is
+            xrandr --output "$output" --brightness "$(awk -v l="$level" -v d="$DIM_BRIGHTNESS" \
+                -v s="$step" -v n="$FADE_STEPS" 'BEGIN { if (l < d) d = l; printf "%.3f", l - (l - d) * s / n }')"
+        done < "$XRANDR_STATE"
+        (( step < FADE_STEPS )) && sleep "$FADE_STEP_SECONDS"
+    done
 }
 
 dim_backlight () {
@@ -62,10 +73,11 @@ dim_backlight () {
 }
 
 dim () {
-    if is_x11; then dim_xrandr; else dim_backlight; fi
+    # Warn first: on X11 the fade takes most of the warning time
     notify-send -u normal -t $(( WARN_SECONDS * 1000 )) -a "Screen lock" \
         "Locking in ${WARN_SECONDS} s" "Move the mouse or press a key to stay unlocked" \
         --icon="$ICON"
+    if is_x11; then dim_xrandr; else dim_backlight; fi
 }
 
 restore () {

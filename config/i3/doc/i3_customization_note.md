@@ -19,6 +19,14 @@
     - [Trackpad](#trackpad)
     - [Keyboard](#keyboard)
     - [Reference](#reference)
+  - [Screen Lock and Idle Dimming](#screen-lock-and-idle-dimming)
+    - [How it works](#how-it-works)
+    - [Setup](#setup)
+    - [Test the dimming with xset](#test-the-dimming-with-xset)
+    - [Test the idle inhibitor](#test-the-idle-inhibitor)
+    - [Restore the normal timing](#restore-the-normal-timing)
+    - [Tuning](#tuning)
+    - [Troubleshooting](#troubleshooting)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -177,3 +185,120 @@ This session modifies keyboard keymap and operation for laptop trackpad
 - https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
 - https://blog.ruo-chen.wang/2020/01/switch-from-gnome-to-i3.html
 - https://wiki.archlinux.org/title/libinput
+
+## Screen Lock and Idle Dimming
+
+### How it works
+
+When the session is idle, the screens fade down for 10 seconds before the lock, and
+any key or mouse movement in that time cancels the lock.
+
+| Idle time | What happens | Done by |
+| :-- | :-- | :-- |
+| 9:50 | "Locking in 10 s" notification, every monitor fades to 30% over 8 s | X screen saver activates, `xss-lock --notifier` runs `i3_idle_dim.sh` |
+| 10:00 | Brightness restored, `i3lock` starts | X screen saver cycle, `xss-lock` runs `i3_i3lock_operator.sh` |
+| 10:10 | Screens turn off | DPMS |
+
+- The timing is set by `xset s 590 10 dpms 610 610 610` in
+  `script/i3_toolkit_operator.sh disable_caffeine`, which `i3_startup.config` runs at login.
+  `590` is when the dim starts; `10` (the screen saver cycle) is the warning before the lock.
+- `script/i3_idle_inhibitor.sh` skips all of this while a fullscreen window is visible or
+  the microphone is in use (videos, calls). Music alone does not count.
+- Locking by hand (`loginctl lock-session`, System mode then `l`) and locking on suspend
+  skip the warning.
+- Caffeine (Toolkit mode, then `Shift+c`) turns the screen saver and DPMS off, so nothing
+  dims, locks or turns off.
+
+### Setup
+
+Everything starts at login. To apply changes without logging out:
+
+```bash
+# Restart xss-lock with the dim notifier (also done by Mod+Shift+r)
+~/.config/i3/script/i3_xsslock_operator.sh current_desktop
+# Apply the normal timing
+~/.config/i3/script/i3_toolkit_operator.sh disable_caffeine
+# (Re)start the idle inhibitor; it replaces a running copy
+~/.config/i3/script/i3_idle_inhibitor.sh &
+```
+
+Check that xss-lock runs with the notifier:
+
+```bash
+pgrep -a xss-lock    # the output should include: --notifier i3_idle_dim.sh
+```
+
+### Test the dimming with xset
+
+Use short timers instead of waiting 10 minutes. Make sure nothing is fullscreen and no
+call is running (the idle inhibitor would keep resetting the timer).
+
+```bash
+# Dim after 5 s idle, lock 10 s later
+xset s 5 10
+```
+
+Take your hands off the keyboard and mouse:
+
+- About 5 s: the notification appears and the screens start to fade.
+- Move the mouse during the fade: brightness comes back and nothing locks.
+- Leave it alone: about 15 s, `i3lock` starts. After unlocking, brightness is normal.
+
+To also see the screen turn off after the lock:
+
+```bash
+# Dim at 20 s, lock at 30 s, screen off at 40 s
+xset s 20 10 dpms 40 40 40
+```
+
+To check only the fade and restore, without the screen saver or a lock:
+
+```bash
+~/.config/i3/script/i3_idle_dim.sh    # fades and waits; press Ctrl+C to restore
+```
+
+Show the current timers at any time with `xset q` (sections "Screen Saver" and "DPMS").
+
+### Test the idle inhibitor
+
+```bash
+xset s 20 10 dpms 40 40 40
+```
+
+- Play a video fullscreen (or join a call) and stay idle for a minute: nothing dims or
+  locks. Within 30 s, `xset q` shows `DPMS is Disabled`.
+- Leave fullscreen (or end the call): within 30 s, `xset q` shows `DPMS is Enabled` again.
+- Check whether a program is recording (counts as a call):
+  `pactl list source-outputs | grep -E 'Corked|application.name'`
+
+### Restore the normal timing
+
+The short test timers stay until you restore them or log in again:
+
+```bash
+~/.config/i3/script/i3_toolkit_operator.sh disable_caffeine
+xset q    # Screen Saver: timeout 590 cycle 10; DPMS: Standby 610 Suspend 610 Off 610, Enabled
+```
+
+### Tuning
+
+- Fade: at the top of `script/i3_idle_dim.sh`
+  - `DIM_BRIGHTNESS=0.3`: how dark the fade ends (1.0 = normal)
+  - `FADE_SECONDS=8`: fade length; keep it under the 10 s warning
+  - `FADE_STEPS=16`: smoothness (more steps, more `xrandr` calls)
+- Timing: `xset s 590 10 dpms 610 610 610` in `script/i3_toolkit_operator.sh`
+  (`disable_caffeine`). If you change the warning (`10`), change `WARN_SECONDS` in
+  `script/i3_idle_dim.sh` to match. Keep the DPMS time after the lock time.
+- Inhibitor: `CHECK_SECONDS=30` in `script/i3_idle_inhibitor.sh`; keep it well below the
+  screen saver timeout.
+
+### Troubleshooting
+
+- Screens stay dim (e.g. the dim script was killed with `kill -9`):
+  `~/.config/i3/script/i3_idle_dim.sh restore`
+- Nothing dims: check `pgrep -a xss-lock` (notifier missing: rerun the setup commands)
+  and `xset q` (timeout 0 means Caffeine is on).
+- Screen turns off but does not lock: check that DPMS comes after the lock in `xset q`,
+  and that the idle inhibitor runs (status view: System mode, then `s`, "Idle inhibitor").
+- The fade is a software dim (`xrandr --brightness`); the monitors' backlights stay on.
+  A redshift tint is kept.

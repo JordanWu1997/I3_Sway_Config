@@ -77,8 +77,8 @@ toolkit_operation () {
             ;;
         'disable_caffeine'|'enable_screensaver')
             # Screen saver at 590 s: xss-lock runs i3_idle_dim.sh (dim + warning), then
-            # locks 10 s later at the cycle. Screen off (DPMS) at 600 s as before.
-            xset s 590 10 dpms 600 600 600; xset s blank
+            # locks 10 s later at the cycle. Screen off (DPMS) at 610 s, after the lock.
+            xset s 590 10 dpms 610 610 610; xset s blank
             notify-send -u low "Toolkit Mode" "Caffeine Off (Enable X Screensaver)" --icon="${ICON}"
             ;;
         'toggle_oneko')

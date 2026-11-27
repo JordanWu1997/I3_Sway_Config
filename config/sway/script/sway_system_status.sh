@@ -158,7 +158,7 @@ collect_session() {
     elif caffeine_on; then
         lock='off while caffeine is on'
     else
-        lock='on (not during fullscreen or audio)'
+        lock='on (not during fullscreen or calls)'
     fi
     printf 'Auto-lock on idle | %s\n' "$lock"
     printf 'Autotiling | %s\n' "$(autotiling_mode)"

@@ -9,6 +9,7 @@ Backup note for i3 configuration
   - [Context](#context)
     - [Display configuration for X-window](#display-configuration-for-x-window)
     - [Find the i3 session from cron (DISPLAY, D-Bus)](#find-the-i3-session-from-cron-display-d-bus)
+      - [Multiple i3 sessions](#multiple-i3-sessions)
     - [Monitor workspace assignment](#monitor-workspace-assignment)
     - [Lxsession agent](#lxsession-agent)
     - [Hhpc](#hhpc)
@@ -89,7 +90,7 @@ Set additional display mode for monitor
 Scripts started by i3 (`exec`, keybindings) inherit the session environment. Scripts started
 by cron do not: cron gives them almost nothing (`HOME`, `PATH`, `SHELL`), so
 
-- `i3-msg` cannot find the i3 IPC socket (it looks it up through the X display)
+- `i3-msg` cannot find the i3 IPC socket
 - `notify-send` cannot reach dunst (it needs the session D-Bus address)
 
 Hardcoding `export DISPLAY=:1` breaks on machines where i3 runs on `:0` (or the other way
@@ -97,30 +98,41 @@ around), and `XAUTHORITY=$HOME/.Xauthority` is wrong under GDM, which keeps it i
 `/run/user/<uid>/gdm/Xauthority`.
 
 The fix is `i3_session_env.sh`: it copies the session variables from the running i3 process,
-which was started with exactly the right ones.
+which was started with exactly the right ones. When the same user runs several i3 sessions
+at once (e.g. `:1` and `:2`), `for_each_i3_session` runs the job once in each of them.
 
 ```
-cron ──► script ──► import_i3_session_env
-                      │ 1. pgrep -n -u <me> -x i3          (newest i3 of this user)
-                      │ 2. read /proc/<pid>/environ
-                      │ 3. export DISPLAY, XAUTHORITY,
-                      │           DBUS_SESSION_BUS_ADDRESS, XDG_RUNTIME_DIR
+cron ──► script ──► for_each_i3_session [--unique-dbus] CMD
+                      │ 1. pgrep -u <me> -x i3               (every i3 of this user)
+                      │ 2. for each i3 PID, in its own subshell:
+                      │      import_i3_session_env <pid>
+                      │        a. unset DISPLAY XAUTHORITY DBUS_SESSION_BUS_ADDRESS
+                      │                 XDG_RUNTIME_DIR I3SOCK      (no leaks between sessions)
+                      │        b. read /proc/<pid>/environ, export DISPLAY, XAUTHORITY,
+                      │                 DBUS_SESSION_BUS_ADDRESS, XDG_RUNTIME_DIR
+                      │        c. I3SOCK=$XDG_RUNTIME_DIR/i3/ipc-socket.<pid>
+                      │                 (fallback: `i3 --get-socketpath` on that DISPLAY)
+                      │        d. I3_SESSION_PID=<pid>
+                      │      run CMD
+                      │ 3. return 1 if i3 is not running or CMD failed in any session
                       ▼
-          i3-msg ──► X display ──► i3 IPC socket      (bar refresh)
-          notify-send ──► session D-Bus ──► dunst ──► popup on i3's display
+          i3-msg ──► I3SOCK ──► the i3 of that session          (bar refresh)
+          notify-send ──► session D-Bus ──► dunst ──► popup     (time notifier)
 ```
 
-| Variable                   | Used by       | Why                                                         |
-|----------------------------|---------------|-------------------------------------------------------------|
-| `DISPLAY`                  | `i3-msg`, X apps | Which X server (`:0`, `:1` ...); i3 publishes its socket there |
-| `XAUTHORITY`               | `i3-msg`, X apps | Permission to talk to that X server (path differs per login manager) |
-| `DBUS_SESSION_BUS_ADDRESS` | `notify-send` | Reaches the dunst that i3 started, which draws on i3's display |
-| `XDG_RUNTIME_DIR`          | `notify-send` | Fallback to find the session bus (`/run/user/<uid>/bus`)    |
+| Variable                   | Used by                  | Why                                                                        |
+| -------------------------- | ------------------------ | -------------------------------------------------------------------------- |
+| `DISPLAY`                  | X apps, `i3bar`          | Which X server (`:0`, `:1` ...); also identifies a session's i3bars        |
+| `XAUTHORITY`               | X apps                   | Permission to talk to that X server (path differs per login manager)       |
+| `I3SOCK`                   | `i3-msg`                 | IPC socket of exactly this session's i3 (see pitfall below)                |
+| `DBUS_SESSION_BUS_ADDRESS` | `notify-send`            | Reaches the dunst that i3 started, which draws on i3's display             |
+| `XDG_RUNTIME_DIR`          | `notify-send`, i3 socket | Fallback session bus (`/run/user/<uid>/bus`); dir of `i3/ipc-socket.<pid>` |
+| `I3_SESSION_PID`           | your CMD                 | PID of the i3 the current run belongs to                                   |
 
 Scripts using it
 
-- `i3_bar_operator.sh bar_refresh_with_crontab [verbose]`: restart i3bar
-- `i3_time_notifier.sh`: show the current time
+- `i3_bar_operator.sh bar_refresh_with_crontab [verbose]`: restart i3bar in every i3 session
+- `i3_time_notifier.sh`: show the current time (once per D-Bus bus, see `--unique-dbus`)
 
 Crontab (`crontab -e`), no environment variables needed in the line itself
 
@@ -133,21 +145,68 @@ Use it in a new cron script
 
 ```bash
 source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
-import_i3_session_env || exit 1   # stops (exit 1) when i3 is not running
+
+my_job () { i3-msg ...; }                 # runs with one session's DISPLAY, I3SOCK, D-Bus ...
+for_each_i3_session my_job || exit 1      # every i3 session; exit 1 when i3 is not running
+                                          # or my_job failed in any session
+for_each_i3_session --unique-dbus notify-send Hi   # once per D-Bus bus (notifications)
+
+# Only the newest i3 session, imported into the current shell
+import_i3_session_env || exit 1
 ```
+
+### Multiple i3 sessions
+
+Each session is handled in a subshell, so nothing one session exports reaches the next, and
+a failure in one session does not stop the others.
+
+Restarting i3bar per session (`restart_session_i3bar` in `i3_bar_operator.sh`, also used by
+`bar_reload`)
+
+```
+for each i3 session (DISPLAY=:N, I3SOCK=<its socket>)
+  1. PIDs = this user's i3bar whose /proc/<pid>/environ has DISPLAY=:N
+  2. kill PIDs (SIGTERM), wait up to 2s; still alive ──► SIGKILL
+  3. i3-msg exec 'i3bar -b bar_status'   ──► started by that session's i3
+     i3-msg exec 'i3bar -b bar_mode'
+```
+
+- `killall i3bar` is not used: it kills the bars of every session, so restarting session 2
+  would kill the bars just restarted in session 1
+- The old bars are gone before new ones start, so a bar never runs twice on one display
+
+Pitfall: `I3SOCK` wins over `DISPLAY`
+
+`i3-msg` uses `$I3SOCK` first and only falls back to the X display when it is unset. Every
+terminal inside i3 has `I3SOCK` set to that session's socket. Without step 2a/2c above,
+running `bar_refresh_with_crontab` from a terminal sent the `exec i3bar` of *every* session to
+the i3 of that terminal, which then showed duplicated bars. Each session now gets its own
+`I3SOCK` explicitly, so running the scripts from cron or from any terminal behaves the same.
+
+Notifications and the shared D-Bus
+
+Sessions of one user usually share the systemd user bus (`/run/user/<uid>/bus`). Only one
+notification daemon can own `org.freedesktop.Notifications` on it, so every notification shows
+in the dunst that registered first, on that session's display only. `--unique-dbus` sends the
+notification once per distinct bus, so it is not shown twice there. To get notifications on
+every display, each session needs its own bus (e.g. start i3 with `dbus-run-session i3`).
 
 Troubleshooting
 
-- Which display is i3 on: `tr '\0' '\n' < /proc/$(pgrep -n -x i3)/environ | grep -E '^(DISPLAY|XAUTHORITY|DBUS)'`
+- List the i3 sessions: `for p in $(pgrep -x i3); do echo "$p $(tr '\0' '\n' </proc/$p/environ | grep -E '^(DISPLAY|DBUS_SESSION_BUS_ADDRESS)=' | xargs)"; done`
+- List the i3bars and the session they belong to:
+  `for p in $(pgrep -x i3bar); do echo "$p $(tr '\0' '\n' </proc/$p/environ | grep -E '^(DISPLAY|I3SOCK)=' | xargs) $(tr '\0' ' ' </proc/$p/cmdline)"; done`
+  (each `DISPLAY` should show exactly one `bar_status` and one `bar_mode`)
+- See what each session gets: `bash -c 'source ~/.config/i3/script/i3_session_env.sh; for_each_i3_session bash -c "echo \$I3_SESSION_PID \$DISPLAY \$I3SOCK"'`
 - Run a cron job the way cron does: `env -i HOME=$HOME PATH=/usr/bin:/bin /home/jordan/.config/i3/script/i3_time_notifier.sh`
 - See cron's own errors: `grep CRON /var/log/syslog` (Ubuntu) or `journalctl -u cron` / `journalctl -u crond` (Fedora)
 
 Limitations
 
 - Nothing runs while i3 is not running: the scripts print `i3 is not running for this user` and exit 1
-- Two logins of the same user at once (e.g. GNOME on `:2` and i3 on `:1`) usually share one
-  D-Bus bus. Notifications then go to whichever notification daemon registered first; with
-  only i3 logged in they always land in i3.
+- A session whose IPC socket cannot be found prints `Cannot find the IPC socket of i3 (PID <pid>)`
+  and is skipped (the script then exits 1); the other sessions are still handled
+- Notifications show on one display only while the sessions share a D-Bus bus (see above)
 
 ## Monitor workspace assignment
 

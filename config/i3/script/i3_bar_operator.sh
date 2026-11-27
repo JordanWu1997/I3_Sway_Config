@@ -6,8 +6,41 @@ BAR_ID="bar_status"
 BAR_HEIGHT=$(awk '$2=="$default_i3bar_height" {print $3; exit}' "$BAR_CONFIG")
 CONKY_DEFAULT_YOFFSET=$(awk '$2=="$default_conky_gap_y" {print $3; exit}' "$BAR_CONFIG")
 
-# import_i3_session_env: session DISPLAY/XAUTHORITY for cron (bar_refresh_with_crontab)
+# for_each_i3_session: session DISPLAY/XAUTHORITY for cron (bar_refresh_with_crontab)
 source "$(dirname "$(readlink -f "$0")")/i3_session_env.sh"
+
+# PIDs of this user's i3bar processes on display $DISPLAY. With several i3 sessions,
+# `killall i3bar` would also kill the bars of the other sessions.
+session_i3bar_pids () {
+    local pid
+    for pid in $(pgrep -u "$(id -u)" -x i3bar); do
+        tr '\0' '\n' < "/proc/$pid/environ" 2>/dev/null |
+            grep -qxF "DISPLAY=$DISPLAY" && echo "$pid"
+    done
+}
+
+# Restart the i3bars of the i3 session on $DISPLAY
+restart_session_i3bar () {
+    local pids tries=20
+    pids=$(session_i3bar_pids)
+    if [[ -n $pids ]]; then
+        # shellcheck disable=SC2086 # one PID per word
+        kill $pids 2>/dev/null
+        # Wait (max 2s) for the old bars to exit before starting new ones
+        while (( tries-- > 0 )) && [[ -n $(session_i3bar_pids) ]]; do
+            sleep 0.1
+        done
+        # Still there: force it, so the new bars never run next to old ones
+        pids=$(session_i3bar_pids)
+        if [[ -n $pids ]]; then
+            # shellcheck disable=SC2086 # one PID per word
+            kill -KILL $pids 2>/dev/null
+            sleep 0.2
+        fi
+    fi
+    i3-msg -- exec --no-startup-id 'i3bar -b bar_status' >/dev/null &&
+        i3-msg -- exec --no-startup-id 'i3bar -b bar_mode' >/dev/null
+}
 
 bar_state () {
     i3-msg -t get_bar_config "$BAR_ID" |
@@ -123,9 +156,7 @@ bar_operation () {
             i3-msg "bar hidden_state hide $BAR_ID"
             ;;
         "bar_reload")
-            if i3-msg -- exec --no-startup-id 'killall i3bar && sleep 0.5' &&
-                i3-msg -- exec --no-startup-id 'i3bar -b bar_status && sleep 0.5' &&
-                i3-msg -- exec --no-startup-id 'i3bar -b bar_mode'; then
+            if restart_session_i3bar; then
                 notify-send -u low "Bar Mode" "i3bar restart requested" --icon="$HOME/.config/i3/share/64x64/reload.png" || true
             else
                 notify-send -u critical "Bar Mode" "Could not request i3bar restart" --icon="$HOME/.config/i3/share/64x64/reload.png" || true
@@ -135,20 +166,18 @@ bar_operation () {
         "bar_refresh_with_crontab")
             # In `crontab -e`, add following line to refresh bar every hour
             # 0 * * * * /home/jordan/.config/i3/script/i3_bar_operator.sh bar_refresh_with_crontab
-            # i3-msg finds the i3 IPC socket through the X session, so the session's
-            # DISPLAY/XAUTHORITY are needed (taken from the running i3, see i3_session_env.sh)
-            import_i3_session_env || return 1
-            # i3-msg
-            if ! { i3-msg -- exec --no-startup-id 'killall i3bar && sleep 0.5' &&
-                i3-msg -- exec --no-startup-id 'i3bar -b bar_status && sleep 0.5' &&
-                i3-msg -- exec --no-startup-id 'i3bar -b bar_mode'; }; then
-                return 1
-            fi
-            # Verbose
-            if [[ $2 == 'verbose' ]]; then
-                notify-send -u low "Bar Mode" "i3bar restart requested by cron" \
+            # i3-msg finds the i3 IPC socket through the X session, so each session's
+            # DISPLAY/XAUTHORITY are needed (taken from its i3, see i3_session_env.sh).
+            # The bars of every i3 session of this user are restarted.
+            local status=0
+            for_each_i3_session restart_session_i3bar || status=1
+            # Verbose (once per D-Bus bus, sessions sharing one dunst get one popup)
+            if [[ ${2:-} == 'verbose' ]]; then
+                for_each_i3_session --unique-dbus notify-send -u low "Bar Mode" \
+                    "i3bar restart requested by cron" \
                     --icon="$HOME/.config/i3/share/64x64/reload.png" || true
             fi
+            return "$status"
             ;;
         *)
             show_wrong_usage_message

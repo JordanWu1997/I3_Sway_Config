@@ -3,7 +3,8 @@
 # Ported from i3_xsslock_operator.sh for sway.
 # Replaced X11 tools:
 #   - xss-lock --transfer-sleep-lock -- i3lock ... -> swayidle -w with
-#       timeout <LOCK>  -> lock         (X screensaver timeout, was xset s 600)
+#       timeout <LOCK-10> -> i3_idle_dim.sh dim, resume restore (was xss-lock --notifier)
+#       timeout <LOCK>  -> lock         (X screensaver timeout, was xset s 590 10)
 #       timeout <DPMS>  -> output * power off / resume power on (was xset dpms 600)
 #       before-sleep    -> lock         (logind sleep, was --transfer-sleep-lock)
 #       lock            -> lock         (`loginctl lock-session` keeps working)
@@ -19,6 +20,7 @@
 # safe for `exec_always` (sway reload) and for concurrent callers (flock).
 
 SWAY_SCRIPT="${SWAY_SCRIPT:-$HOME/.config/sway/script}"
+I3_SCRIPT="${I3_SCRIPT:-$HOME/.config/i3/script}"
 
 RUNTIME="${XDG_RUNTIME_DIR:-/tmp}"
 MODE_FILE="$RUNTIME/sway_idle_mode"
@@ -26,6 +28,8 @@ CAFFEINE_FILE="$RUNTIME/sway_caffeine"
 LOCK_FILE="$RUNTIME/sway_idle_operator.lock"
 LOCK_TIMEOUT="${SWAY_IDLE_LOCK_TIMEOUT:-600}"
 DPMS_TIMEOUT="${SWAY_IDLE_DPMS_TIMEOUT:-610}"
+# Dim the panel and warn this many seconds before the lock (i3: xss-lock --notifier)
+DIM_WARNING=10
 # Marker used to find "our" swayidle (the one-shot swayidle of the Shift+l binding is not ours)
 MARKER="sway_lock_operator.sh"
 
@@ -80,7 +84,9 @@ start_swayidle () {
     lock_cmd="$SWAY_SCRIPT/$MARKER $mode"
     args=(-w)
     if ! caffeine_on; then
-        args+=(timeout "$LOCK_TIMEOUT" "$lock_cmd"
+        args+=(timeout "$(( LOCK_TIMEOUT - DIM_WARNING ))" "$I3_SCRIPT/i3_idle_dim.sh dim"
+               resume "$I3_SCRIPT/i3_idle_dim.sh restore"
+               timeout "$LOCK_TIMEOUT" "$lock_cmd"
                timeout "$DPMS_TIMEOUT" 'swaymsg "output * power off"'
                resume 'swaymsg "output * power on"')
     fi

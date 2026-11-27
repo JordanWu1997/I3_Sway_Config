@@ -99,7 +99,7 @@ collect_session() {
     elif caffeine_on; then
         lock='off while caffeine is on'
     else
-        lock=on
+        lock='on (not during fullscreen or audio)'
     fi
     printf 'Auto-lock on idle | %s\n' "$lock"
     printf 'Autotiling | %s\n' "$(autotiling_mode)"
@@ -237,6 +237,7 @@ collect_health() {
     script_status 'Window automark' i3_automark_daemon.py
     script_status 'Battery warning' i3_battery-popup.sh
     script_status 'Notification log' i3_notify_logger.sh
+    script_status 'Idle inhibitor' i3_idle_inhibitor.sh
 }
 
 # ------------------------------------------------------------------
@@ -251,6 +252,7 @@ needs_attention() {
         $1 == "Notifications" && $2 ~ /paused|unavailable/ { print; next }
         $1 == "Audio" && $2 ~ /output (0%|[^·]*\(muted\))/ { print; next }
         $1 == "Screen lock helper" && $2 ~ /^stopped/ { print; next }
+        $1 == "Idle inhibitor" && $2 ~ /^stopped/ { print; next }
         $1 == "Notification daemon" && $2 ~ /^stopped/ { print; next }
         $1 == "Other logins" && $2 != "none" { print; next }
         $2 ~ /\(duplicate\)/ { print; next }

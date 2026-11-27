@@ -5,6 +5,7 @@
 # Desktop files sway_startup.config already starts or replaces (file names, same on Ubuntu and Fedora)
 SKIP_LIST=(
     blueman.desktop                            # blueman-applet
+    udiskie.desktop                            # udiskie --automount (USB auto-mount)
     nm-applet.desktop                          # nm-applet
     picom.desktop                              # X11 compositor, sway_opacity_operator.sh replaces it
     parcellite-startup.desktop                 # X11 only, cliphist via sway_toolkit_operator.sh

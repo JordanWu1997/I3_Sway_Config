@@ -452,6 +452,7 @@ desc_misc_tool_packages () {
     echo "   -- Text previewer: catdoc, pandoc"
     echo "   -- Font previewer: fontforge"
     echo "-- Bluetooth: blueman"
+    echo "-- USB auto-mount: udiskie"
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Screenshot: flameshot, peek"
     echo "-- OCR Tool: tesseract, tesseract-langpak-eng, tesseract-langpack-chi_tra"
@@ -463,6 +464,8 @@ install_misc_tool_packages () {
     sudo dnf install -y polkit-gnome gnome-screenshot nautilus
     # Bluetooth
     sudo dnf install -y blueman
+    # USB/removable drive auto-mount
+    sudo dnf install -y udiskie
     # Network
     sudo dnf install -y NetworkManager brave-browser firefox
     # Ranger [https://github.com/ranger/ranger]

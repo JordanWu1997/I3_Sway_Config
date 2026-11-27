@@ -108,17 +108,18 @@ desc_session_packages () {
     echo "-- libinput tools (sway_keypress_monitor.sh, needs the input group)"
     echo "-- Qt Wayland platform plugins (native Qt apps instead of XWayland)"
     echo "-- Started by sway_startup.config: xsettingsd (GTK settings for XWayland apps),"
-    echo "   nm-applet (network tray), blueman-applet (bluetooth tray), xrdb (Xresources for XWayland)"
+    echo "   nm-applet (network tray), blueman-applet (bluetooth tray), xrdb (Xresources for XWayland),"
+    echo "   udiskie (USB auto-mount)"
 }
 install_session_packages () {
     pkg xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
         pipewire wireplumber policykit-1-gnome gnome-keyring libnotify-bin dex libinput-tools \
         qtwayland5 qt6-wayland \
-        xsettingsd network-manager-gnome blueman x11-xserver-utils libglib2.0-bin \
+        xsettingsd network-manager-gnome blueman x11-xserver-utils libglib2.0-bin udiskie \
         -- xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk \
         pipewire wireplumber polkit-gnome gnome-keyring libnotify dex-autostart libinput-utils \
         qt5-qtwayland qt6-qtwayland \
-        xsettingsd network-manager-applet blueman xrdb glib2
+        xsettingsd network-manager-applet blueman xrdb glib2 udiskie
 }
 
 # Wayland replacements of X11 tools

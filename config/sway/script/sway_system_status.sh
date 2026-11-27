@@ -358,6 +358,7 @@ collect_health() {
     clipboard_status
     process_status 'Network tray' nm-applet
     process_status 'Bluetooth tray' blueman-applet
+    process_status 'USB automount' udiskie
     # comm names are cut to 15 characters: polkit-gnome-authentication-agent-1
     process_status 'Auth agent (polkit)' polkit-gnome-au
     process_status 'Input method daemon' ibus-daemon

@@ -162,6 +162,7 @@ Note: the term "window" used in this configuration actually refers to "container
   - Preview what would run: `i3_autostart_operator.sh list`
 - [NetworkManger](https://fedoraproject.org/wiki/Tools/NetworkManager): network manager
 - [blueman](https://fedoraproject.org/wiki/Features/Blueman): bluetooth manager
+- [udiskie](https://github.com/coldfix/udiskie): USB/removable drive auto-mount (under `/media/$USER/<label>`), with notifications and a tray icon to unmount/eject (no tray icon on sway)
 - [imwheel](http://imwheel.sourceforge.net/): mouse speed manager
 - [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing
 - [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): X session lock
@@ -334,7 +335,7 @@ Note: the term "window" used in this configuration actually refers to "container
 <summary>Click to expand/shrink</summary>
 
 - __System Option Mode (`[Ctrl]` + `[Alt]` + `[s]`)__
-  - System command, e.g. exit, power off, reboot, suspend, hibernate (`[Shift]` + `[e/p/r/s/h]`), lock (`[l]`), kill process (`[k]`), status view (`[s]`)
+  - System command, e.g. exit, power off, reboot, suspend, hibernate (`[Shift]` + `[e/p/r/s/h]`), lock (`[l]`), kill process (`[k]`), status view (`[s]`), unmount all USB drives (`[u]`)
     - __Network Mode (`[n]`)__
       - Activate/disconnect saved connections, enable/disable Wi-Fi or all networking
     - __Radio Blocks Mode (`[r]`)__

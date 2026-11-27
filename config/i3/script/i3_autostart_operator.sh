@@ -5,6 +5,7 @@
 # Desktop files i3_startup.config already manages (file names, same on Ubuntu and Fedora)
 SKIP_LIST=(
     blueman.desktop                            # blueman-applet
+    udiskie.desktop                            # udiskie --automount (USB auto-mount)
     nm-applet.desktop                          # nm-applet
     picom.desktop                              # i3_picom_operator.sh (own config)
     parcellite-startup.desktop                 # i3_toolkit_operator.sh reload_parcellite

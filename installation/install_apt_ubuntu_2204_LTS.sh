@@ -437,6 +437,7 @@ desc_misc_tool_packages () {
     echo "   -- Font previewer: fontforge"
     echo "   -- Trash handler: trash-cli"
     echo "-- Bluetooth: blueman"
+    echo "-- USB auto-mount: udiskie"
     echo "-- Network: NetworkManager, brave-browser, firefox"
     echo "-- Screenshot: flameshot, peek"
     echo "-- OCR Tool: tesseract, tesseract-langpak-eng, tesseract-langpack-chi_tra"
@@ -450,6 +451,8 @@ install_misc_tool_packages () {
     sudo apt install -y gnome-screenshot nautilus
     # Bluetooth
     sudo apt install -y blueman
+    # USB/removable drive auto-mount
+    sudo apt install -y udiskie
     # Ranger [https://github.com/ranger/ranger]
     sudo apt install -y ranger
     # File previewer

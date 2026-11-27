@@ -83,6 +83,10 @@ if [[ $1 == 'mannual_suspend' ]]; then
 fi
 
 # Main
+# Pause playing media; say what was paused after unlock
+LOCK_MEDIA="$(dirname "$(readlink -f "$0")")/i3_lock_media.sh"
+PAUSED_MEDIA=$("$LOCK_MEDIA" pause)
+
 if [[ $(dunstctl is-paused) == 'false' ]]; then
     #pkill -u "${USER}" -USR1 dunst
     dunstctl set-paused true
@@ -95,3 +99,5 @@ if [[ $(dunstctl is-paused) == 'false' ]]; then
 else
     i3lock_operator $1
 fi
+
+"$LOCK_MEDIA" notify "$PAUSED_MEDIA"

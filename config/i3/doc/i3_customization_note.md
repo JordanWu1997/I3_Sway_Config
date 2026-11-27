@@ -208,6 +208,10 @@ any key or mouse movement in that time cancels the lock.
   skip the warning.
 - Caffeine (Toolkit mode, then `Shift+c`) turns the screen saver and DPMS off, so nothing
   dims, locks or turns off.
+- Every lock (idle, by hand or on suspend) pauses media that is playing (any MPRIS player:
+  Spotify, browsers, mpv) with `script/i3_lock_media.sh`. After unlock a "Paused while
+  locked" notification lists what was paused; nothing resumes by itself. sway does the same
+  from `sway_lock_operator.sh`.
 
 ### Setup
 

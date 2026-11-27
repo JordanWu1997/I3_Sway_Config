@@ -13,6 +13,7 @@
 # If swaylock-effects is installed, current_desktop uses its --screenshots/--effect-blur.
 
 SWAY_SCRIPT="${SWAY_SCRIPT:-$HOME/.config/sway/script}"
+I3_SCRIPT="${I3_SCRIPT:-$HOME/.config/i3/script}"
 
 DEFAULT="$HOME/.config/i3/share/default_thinkpad_wallpaper.png"
 CURRENT_DEFAULT="$HOME/.config/i3/share/default_wallpaper"
@@ -179,15 +180,20 @@ esac
 swaylock_running && exit 0
 
 # Main
+# Pause playing media (i3_lock_media.sh); say what was paused after unlock
+PAUSED_MEDIA=$("$I3_SCRIPT/i3_lock_media.sh" pause)
+notify_paused_media () { "$I3_SCRIPT/i3_lock_media.sh" notify "$PAUSED_MEDIA"; }
+
 if [[ $(dunstctl is-paused 2> /dev/null) == 'false' ]]; then
     dunstctl set-paused true
     # Locker; notifications are resumed after unlock
-    unpause_dunst () { [[ $1 != keep ]] && clean_desktop_images; dunstctl set-paused false; }
+    unpause_dunst () { [[ $1 != keep ]] && clean_desktop_images; dunstctl set-paused false; notify_paused_media; }
     if [[ $1 == current_desktop ]]; then
         lock_operator "$1" unpause_dunst || dunstctl set-paused false
     else
         lock_operator "$1" "unpause_dunst keep" || dunstctl set-paused false
     fi
 else
-    lock_operator "$1"
+    after_unlock () { [[ $1 == current_desktop ]] && clean_desktop_images; notify_paused_media; }
+    lock_operator "$1" "after_unlock $1"
 fi

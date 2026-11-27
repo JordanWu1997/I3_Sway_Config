@@ -168,6 +168,7 @@ Note: the term "window" used in this configuration actually refers to "container
 - [ibus-chewing](https://github.com/definite/ibus-chewing): input method for chewing
 - [xss-lock](https://bitbucket.org/raymonad/xss-lock/src/master/): X session lock
   - Dims all screens 10 s before the idle lock and skips the lock during fullscreen or calls; how it works, how to test it with `xset` and how to restore: [Screen Lock and Idle Dimming](./config/i3/doc/i3_customization_note.md#screen-lock-and-idle-dimming)
+  - Locking pauses playing media (playerctl) and lists what was paused after unlock
 - [parcellite](https://github.com/rickyrockrat/parcellite): clipboard applet
 - [flashfocus](https://github.com/fennerm/flashfocus): flash when changing focus
 - [dunst](https://github.com/dunst-project/dunst): notification daemon (+ [i3_notify_logger.sh](./config/i3/script/i3_notify_logger.sh) for notification history)
